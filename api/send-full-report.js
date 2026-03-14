@@ -265,7 +265,7 @@ ${reportText}
           <div style="font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 12px; line-height: 1.6;">
             Want us to build these systems for you instead?<br>We scope the work first — no commitment.
           </div>
-          <a href="CALENDLY_LINK" style="display: inline-block; background: #C8701A; color: white; font-weight: bold; font-size: 13px; padding: 10px 24px; border-radius: 7px; text-decoration: none;">Book a Free Scoping Call →</a>
+          <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" style="display: inline-block; background: #C8701A; color: white; font-weight: bold; font-size: 13px; padding: 10px 24px; border-radius: 7px; text-decoration: none;">Book a Free Scoping Call →</a>
         </div>
 
         <p style="font-size: 13px; color: #6B7A90; margin-bottom: 4px;">Questions? Reply to this email — I read every one.</p>
