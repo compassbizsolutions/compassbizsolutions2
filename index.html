@@ -846,19 +846,62 @@ function DiagnosticTool({ setPage, paddle }) {
           <div style={{ background: C.navyDark, borderRadius: 12, padding: "20px 20px", marginTop: 20, marginBottom: 16, border: "1px solid rgba(200,112,26,0.2)" }}>
             <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 700, color: C.amber, letterSpacing: 2, marginBottom: 8 }}>WHAT HAPPENS NEXT</div>
             <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 16px" }}>{g("HOW_WE_HELP") || "We can build you a customized 30-day action plan with only the guides and templates that fix your specific leaks — nothing you do not need. Then check in at day 7 and 15 to make sure you are on track."}</p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }} className="calc-grid">
-              <div style={{ background: "rgba(200,112,26,0.12)", border: "1px solid rgba(200,112,26,0.3)", borderRadius: 9, padding: "12px 14px", textAlign: "center" }}>
-                <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.amber }}>$249</div>
-                <div style={{ fontFamily: F.b, fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: 8 }}>30-Day Quick Win Plan</div>
-                <button onClick={function() { paddle("PADDLE_LINK_249_30DAY", "30-Day Plan — $249"); }} style={{ width: "100%", background: C.amber, border: "none", color: C.white, padding: "8px", borderRadius: 7, fontSize: 12, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>Get Started</button>
-              </div>
-              <div style={{ background: "rgba(200,112,26,0.06)", border: "1px solid rgba(200,112,26,0.2)", borderRadius: 9, padding: "12px 14px", textAlign: "center" }}>
-                <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.amber }}>$599</div>
-                <div style={{ fontFamily: F.b, fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: 8 }}>Full 30/60/90 Bundle — saves $147</div>
-                <button onClick={function() { paddle("PADDLE_LINK_599", "Complete 30/60/90 Plan — $599"); }} style={{ width: "100%", background: "rgba(200,112,26,0.3)", border: "1px solid rgba(200,112,26,0.4)", color: C.white, padding: "8px", borderRadius: 7, fontSize: 12, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>Best Value</button>
-              </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }} className="calc-grid">
+
+              {/* $249 card with tooltip */}
+              {(function() {
+                const [show249, setShow249] = useState(false);
+                return (
+                  <div style={{ position: "relative" }}
+                    onMouseEnter={function() { setShow249(true); }}
+                    onMouseLeave={function() { setShow249(false); }}>
+                    {show249 && (
+                      <div style={{ position: "absolute", bottom: "calc(100% + 8px)", left: 0, right: 0, background: C.white, borderRadius: 10, padding: "14px 16px", boxShadow: "0 8px 32px rgba(0,0,0,0.25)", zIndex: 50, border: "1px solid " + C.warm3 }}>
+                        <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 800, color: "#B84C2E", letterSpacing: 1, marginBottom: 8 }}>30-DAY QUICK WIN PLAN</div>
+                        {["In-depth diagnostic — all 10 leak categories","Customized 30-day action plan","Only the guides + docs for YOUR top leaks","Check-in emails at day 7 and day 15","Upgrade to 60-day plan at any time"].map(function(item, i) {
+                          return <div key={i} style={{ display: "flex", gap: 7, marginBottom: 5, fontSize: 11, color: C.body, fontFamily: F.b, lineHeight: 1.4 }}><span style={{ color: C.green, fontWeight: 700, flexShrink: 0 }}>✓</span>{item}</div>;
+                        })}
+                        <div style={{ borderTop: "1px solid " + C.warm2, marginTop: 8, paddingTop: 8, fontSize: 10, color: C.muted, fontFamily: F.b }}>$249 one time · No subscription</div>
+                      </div>
+                    )}
+                    <div style={{ background: "rgba(200,112,26,0.12)", border: "1px solid rgba(200,112,26,0.3)", borderRadius: 9, padding: "12px 14px", textAlign: "center" }}>
+                      <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.amber }}>$249</div>
+                      <div style={{ fontFamily: F.b, fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: 8 }}>30-Day Quick Win Plan</div>
+                      <div style={{ fontFamily: F.b, fontSize: 10, color: "rgba(255,255,255,0.3)", marginBottom: 8, fontStyle: "italic" }}>Hover to see what's included</div>
+                      <button onClick={function() { paddle("PADDLE_LINK_249_30DAY", "30-Day Plan — $249"); }} style={{ width: "100%", background: C.amber, border: "none", color: C.white, padding: "8px", borderRadius: 7, fontSize: 12, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>Get Started</button>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* $599 card with tooltip */}
+              {(function() {
+                const [show599, setShow599] = useState(false);
+                return (
+                  <div style={{ position: "relative" }}
+                    onMouseEnter={function() { setShow599(true); }}
+                    onMouseLeave={function() { setShow599(false); }}>
+                    {show599 && (
+                      <div style={{ position: "absolute", bottom: "calc(100% + 8px)", left: 0, right: 0, background: C.white, borderRadius: 10, padding: "14px 16px", boxShadow: "0 8px 32px rgba(0,0,0,0.25)", zIndex: 50, border: "2px solid " + C.amber }}>
+                        <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 800, color: C.amber, letterSpacing: 1, marginBottom: 8 }}>COMPLETE 30/60/90 BUNDLE</div>
+                        {["In-depth diagnostic — all 10 leak categories","Full 30-day plan + all relevant guides and docs","Full 60-day plan adjusted for your progress","Full 90-day plan to close remaining leaks","Check-ins at day 7, 15, 21, and 28","All 22 guides and templates included","Saves $147 vs buying each plan separately"].map(function(item, i) {
+                          return <div key={i} style={{ display: "flex", gap: 7, marginBottom: 5, fontSize: 11, color: C.body, fontFamily: F.b, lineHeight: 1.4 }}><span style={{ color: C.amber, fontWeight: 700, flexShrink: 0 }}>✓</span>{item}</div>;
+                        })}
+                        <div style={{ borderTop: "1px solid " + C.warm2, marginTop: 8, paddingTop: 8, fontSize: 10, color: C.muted, fontFamily: F.b }}>$599 one time · No subscription · Best value</div>
+                      </div>
+                    )}
+                    <div style={{ background: "rgba(200,112,26,0.06)", border: "1px solid rgba(200,112,26,0.2)", borderRadius: 9, padding: "12px 14px", textAlign: "center" }}>
+                      <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.amber }}>$599</div>
+                      <div style={{ fontFamily: F.b, fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: 8 }}>Full 30/60/90 Bundle — saves $147</div>
+                      <div style={{ fontFamily: F.b, fontSize: 10, color: "rgba(255,255,255,0.3)", marginBottom: 8, fontStyle: "italic" }}>Hover to see what's included</div>
+                      <button onClick={function() { paddle("PADDLE_LINK_599", "Complete 30/60/90 Plan — $599"); }} style={{ width: "100%", background: "rgba(200,112,26,0.3)", border: "1px solid rgba(200,112,26,0.4)", color: C.white, padding: "8px", borderRadius: 7, fontSize: 12, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>Best Value</button>
+                    </div>
+                  </div>
+                );
+              })()}
+
             </div>
-            <button onClick={function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }} style={{ width: "100%", background: "none", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.4)", padding: "10px", borderRadius: 7, fontSize: 12, fontFamily: F.b, cursor: "pointer", marginTop: 10 }}>Want us to do it for you? Book a free call</button>
+            <button onClick={function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }} style={{ width: "100%", background: "none", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.4)", padding: "10px", borderRadius: 7, fontSize: 12, fontFamily: F.b, cursor: "pointer", marginTop: 0 }}>Want us to do it for you? Book a free call</button>
           </div>
 
           <button onClick={function() { setStep(0); setAnswers({}); setCurrent(""); setMultiSel([]); setResult(null); setName(""); setEmail(""); setBiz(""); setPhone(""); }}
