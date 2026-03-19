@@ -1390,53 +1390,59 @@ function TraitCard({ item }) {
   );
 }
 
-// ─── PADDLE PENDING TOAST ─────────────────────────────────────────────────────
 // ─── PACKAGE DETAILS MODAL ────────────────────────────────────────────────────
 const DOCS_DATA = [
-  // Fix-It Guides
-  { type: "guide", icon: "💰", title: "Guide #1: The Pricing Leak Fix",        desc: "Find your true cost per hour. Set a rate that actually makes money.",        bullets: ["True hourly cost calculator","Break-even rate worksheet","Rate increase script","Competitor benchmarking"], guide: "Pairs with: Pricing Worksheet & Rate Calculator template", customNote: "Calculates your specific break-even rate using your wage, truck, and overhead numbers from the calculator." },
-  { type: "guide", icon: "📅", title: "Guide #2: The Scheduling Black Hole",   desc: "Plug the gaps that drain your daily revenue — cancellations and no-shows.",  bullets: ["Daily revenue capacity calculator","No-show tracker","Same-day fill-the-gap script","Confirmation call template"], guide: "Pairs with: Appointment Confirmation Process template", customNote: "Estimates your specific no-show cost based on your job volume and billing rate." },
-  { type: "guide", icon: "👷", title: "Guide #3: The Employee Cost Leak",      desc: "Know exactly what your team costs — and what you're losing to unproductive time.", bullets: ["Loaded labor cost calculator","Productivity benchmark tool","Tardiness cost tracker","Role alignment checklist"], guide: "Pairs with: Employee Handbook + New Hire Training templates", customNote: "Calculates your specific tardiness and idle time cost based on your crew size and billing rate." },
-  { type: "guide", icon: "🔄", title: "Guide #4: The Recurring Revenue Gap",  desc: "Turn one-time customers into monthly income with maintenance agreements.",  bullets: ["Maintenance plan template","Client conversion script","Recurring revenue tracker","Monthly package pricing guide"], guide: "Pairs with: Service Agreement & Maintenance Contract template", customNote: "Estimates how much predictable revenue you could add based on your current job volume and customer base." },
-  { type: "guide", icon: "📄", title: "Guide #5: The Estimate-to-Invoice Leak", desc: "Get paid for every dollar of work you actually do. Stop scope creep.",      bullets: ["Scope creep log","Change order template","Collections follow-up sequence","Bulletproof estimate checklist"], guide: "Pairs with: Change Order Template + Job Completion & Invoicing template", customNote: "Estimates your unbilled work leak based on your job count and average job value." },
-  { type: "guide", icon: "📊", title: "Guide #6: The Cash Flow Blind Spot",    desc: "Stop running out of money when business is good. Understand your cash cycle.", bullets: ["90-day cash flow projection","Seasonal revenue planner","Emergency reserve calculator","5 cash flow rules"], guide: "Standalone guide — no template required", customNote: "Models your specific cash flow cycle using your billing rate, job volume, and typical payment timing." },
-  { type: "guide", icon: "🤝", title: "Guide #7: The Customer Churn Leak",     desc: "Recover lost clients and keep the ones you have.",                           bullets: ["Retention rate calculator","Lost client recovery sequence","Follow-up schedule template","Referral request system"], guide: "Pairs with: Customer Follow-Up Sequence + Referral & Review Request System templates", customNote: "Estimates your churn cost based on your average job value and repeat customer rate." },
-  { type: "guide", icon: "🔧", title: "Guide #8: The Materials Markup Fix",    desc: "Stop buying at cost and selling at cost. Fix your markup.",                  bullets: ["Materials markup calculator","Supplier comparison tool","Markup by category guide","Invoice line-item audit"], guide: "Pairs with: Parts & Supply Ordering Process + Truck Restocking Checklist templates", customNote: "Calculates your markup gap and estimated recovery based on your trade and job mix." },
-  { type: "guide", icon: "⏱️", title: "Guide #9: The Admin Time Drain",        desc: "Reclaim the hours you lose to paperwork and phone calls.",                   bullets: ["Admin time audit","Automation opportunities list","Delegation framework","Weekly schedule template"], guide: "Standalone guide — connects to multiple templates", customNote: "Estimates your admin cost at your billing rate based on hours reported in the calculator." },
-  { type: "guide", icon: "🚚", title: "Guide #10: The Vehicles & Parts Leak",  desc: "Stop hemorrhaging money from your fleet and parts inventory.",               bullets: ["Fleet cost calculator","Parts run cost tracker","Vehicle ROI analysis","Mileage optimization guide"], guide: "Pairs with: Truck Restocking Checklist + Parts & Supply Ordering templates", customNote: "Calculates your specific fleet and parts leak using your truck count, mileage, and parts run frequency." },
-  // Templates
-  { type: "template", icon: "🚚", title: "Truck Restocking Checklist",          desc: "Every tech leaves with what they need. No more mid-job parts runs.",          bullets: ["Daily pre-departure checklist","Minimum stock levels","End-of-day restock log","Supplier reorder triggers"], guide: "Supports Guide #10: Vehicles & Parts Leak", customNote: "Customized with your trade-specific parts categories, supplier names, and stock level thresholds." },
-  { type: "template", icon: "📞", title: "Appointment Confirmation Process",   desc: "Drop no-shows by 25-35% with a same-day-before confirmation system.",        bullets: ["Confirmation call script","Text message templates","What to say when no answer","Cancellation fill-in protocol"], guide: "Supports Guide #2: Scheduling Black Hole", customNote: "Scripts written in your voice, referencing your company name and your typical job types." },
-  { type: "template", icon: "👷", title: "Employee Onboarding Handbook",       desc: "Stop training every new hire from scratch. One handbook, consistent standards.", bullets: ["Day 1-30 checklist","Company standards & expectations","Job site procedures","Tools & vehicle policies"], guide: "Supports Guide #3: Employee Cost Leak", customNote: "Written for your trade, your team size, and your specific job site standards based on calculator responses." },
-  { type: "template", icon: "📄", title: "Job Completion & Invoicing Process", desc: "Every job closes the same way. Invoice sent same day, every time.",           bullets: ["Job closeout checklist","Same-day invoicing protocol","Photo & documentation standard","Customer sign-off process"], guide: "Supports Guide #5: Estimate-to-Invoice Leak", customNote: "Customized to your invoicing workflow, your trade's closeout requirements, and your billing rate." },
-  { type: "template", icon: "🤝", title: "Customer Follow-Up Sequence",        desc: "The call after the job. The check-in at 30 days. The review ask.",            bullets: ["Post-job follow-up script","30-day check-in template","Review request message","Annual maintenance reminder"], guide: "Supports Guide #7: Customer Churn Leak", customNote: "Scripts personalized with your company name, your trade, and your specific service offerings." },
-  { type: "template", icon: "🔧", title: "Parts & Supply Ordering Process",    desc: "Who orders what, from where, and when. Stops duplicate orders.",             bullets: ["Approved supplier list","Order authority levels","Reorder point tracker","Emergency sourcing protocol"], guide: "Supports Guide #8: Materials Markup Fix", customNote: "Customized with your trade-specific parts categories and your typical supplier relationships." },
-  { type: "template", icon: "📚", title: "New Hire Training Documentation",    desc: "Structured training that doesn't depend on one senior tech.",                 bullets: ["Trade-specific skills checklist","Company systems walkthrough","Week-by-week milestones","Sign-off & evaluation form"], guide: "Supports Guide #3: Employee Cost Leak", customNote: "Customized for your trade, your tools, and your specific job site standards." },
-  { type: "template", icon: "⛑️", title: "Safety & Job Site Procedures",       desc: "The docs you need before something goes wrong — not after.",                  bullets: ["Job site safety checklist","Incident reporting procedure","PPE requirements","Customer property protection"], guide: "Supports all guides — foundational document", customNote: "Customized to your trade's specific safety requirements and job site conditions." },
-  { type: "template", icon: "📋", title: "Service Agreement & Maintenance Contract", desc: "Turn one-time customers into monthly income. Professional recurring agreements.", bullets: ["Fill-in service agreement","Payment terms & cancellation","What's included/excluded","Sales script for job completion"], guide: "Supports Guide #4: Recurring Revenue Gap", customNote: "Written for your trade's specific services, your pricing, and your market." },
-  { type: "template", icon: "✏️", title: "Change Order Template",              desc: "Stop doing work you don't get paid for. One form, two signatures.",          bullets: ["Scope change description","Cost & schedule impact table","Dual signature lines","Conversation script"], guide: "Supports Guide #5: Estimate-to-Invoice Leak", customNote: "Formatted with your company name and customized to your trade's typical scope change scenarios." },
-  { type: "template", icon: "⭐", title: "Referral & Review Request System",   desc: "Scripts, templates, and tracking for reviews and referrals.",                 bullets: ["In-person review script","Text message templates","Referral request script","Monthly tracking sheet"], guide: "Supports Guide #7: Customer Churn Leak", customNote: "Scripts written in your voice, referencing your company name, trade, and specific services." },
-  { type: "template", icon: "💰", title: "Pricing Worksheet & Rate Calculator", desc: "Find your real cost per hour — then set a rate that makes money.",           bullets: ["Labor cost calculator","Vehicle & equipment worksheet","Overhead breakdown","Break-even + margin calculator"], guide: "Supports Guide #1: Pricing Leak Fix", customNote: "Pre-filled with your wage, truck count, and billing rate from the calculator — just verify and adjust." },
+  { type:"guide",   icon:"💰", title:"Guide #1: The Pricing Leak Fix",         desc:"Find your true cost per hour. Set a rate that actually makes money.",              bullets:["True hourly cost calculator","Break-even rate worksheet","Rate increase script","Competitor benchmarking"],                                         guide:"Pairs with: Pricing Worksheet & Rate Calculator template",            customNote:"Calculates your specific break-even rate using your wage, truck, and overhead numbers." },
+  { type:"guide",   icon:"📅", title:"Guide #2: The Scheduling Black Hole",    desc:"Plug the gaps that drain your daily revenue — cancellations and no-shows.",      bullets:["Daily revenue capacity calculator","No-show tracker","Same-day fill-the-gap script","Confirmation call template"],                              guide:"Pairs with: Appointment Confirmation Process template",               customNote:"Estimates your specific no-show cost based on your job volume and billing rate." },
+  { type:"guide",   icon:"👷", title:"Guide #3: The Employee Cost Leak",       desc:"Know exactly what your team costs and what you're losing to unproductive time.", bullets:["Loaded labor cost calculator","Productivity benchmark tool","Tardiness cost tracker","Role alignment checklist"],                               guide:"Pairs with: Employee Handbook and New Hire Training templates",        customNote:"Calculates your tardiness and idle time cost based on your crew size and billing rate." },
+  { type:"guide",   icon:"🔄", title:"Guide #4: The Recurring Revenue Gap",    desc:"Turn one-time customers into monthly income with maintenance agreements.",        bullets:["Maintenance plan template","Client conversion script","Recurring revenue tracker","Monthly package pricing guide"],                            guide:"Pairs with: Service Agreement and Maintenance Contract template",      customNote:"Estimates how much predictable revenue you could add based on your job volume." },
+  { type:"guide",   icon:"📄", title:"Guide #5: The Estimate-to-Invoice Leak", desc:"Get paid for every dollar of work you actually do. Stop scope creep.",           bullets:["Scope creep log","Change order template","Collections follow-up sequence","Bulletproof estimate checklist"],                                   guide:"Pairs with: Change Order Template and Job Completion template",        customNote:"Estimates your unbilled work leak based on your job count and average job value." },
+  { type:"guide",   icon:"📊", title:"Guide #6: The Cash Flow Blind Spot",     desc:"Stop running out of money when business is good. Understand your cash cycle.",    bullets:["90-day cash flow projection","Seasonal revenue planner","Emergency reserve calculator","5 cash flow rules"],                                  guide:"Standalone guide — no template required",                             customNote:"Models your specific cash flow cycle using your billing rate, job volume, and payment timing." },
+  { type:"guide",   icon:"🤝", title:"Guide #7: The Customer Churn Leak",      desc:"Recover lost clients and keep the ones you have.",                                bullets:["Retention rate calculator","Lost client recovery sequence","Follow-up schedule template","Referral request system"],                           guide:"Pairs with: Customer Follow-Up Sequence and Referral System templates",customNote:"Estimates your churn cost based on your average job value and repeat customer rate." },
+  { type:"guide",   icon:"🔧", title:"Guide #8: The Materials Markup Fix",     desc:"Stop buying at cost and selling at cost. Fix your markup.",                       bullets:["Materials markup calculator","Supplier comparison tool","Markup by category guide","Invoice line-item audit"],                               guide:"Pairs with: Parts Ordering and Truck Restocking templates",           customNote:"Calculates your markup gap and estimated recovery based on your trade and job mix." },
+  { type:"guide",   icon:"⏱️", title:"Guide #9: The Admin Time Drain",         desc:"Reclaim the hours you lose to paperwork and phone calls.",                        bullets:["Admin time audit","Automation opportunities list","Delegation framework","Weekly schedule template"],                                         guide:"Standalone guide — connects to multiple templates",                   customNote:"Estimates your admin cost at your billing rate based on hours from the calculator." },
+  { type:"guide",   icon:"🚚", title:"Guide #10: The Vehicles and Parts Leak", desc:"Stop hemorrhaging money from your fleet and parts inventory.",                    bullets:["Fleet cost calculator","Parts run cost tracker","Vehicle ROI analysis","Mileage optimization guide"],                                        guide:"Pairs with: Truck Restocking and Parts Ordering templates",           customNote:"Calculates your fleet and parts leak using your truck count and parts run frequency." },
+  { type:"template",icon:"🚚", title:"Truck Restocking Checklist",              desc:"Every tech leaves with what they need. No more mid-job parts runs.",               bullets:["Daily pre-departure checklist","Minimum stock levels","End-of-day restock log","Supplier reorder triggers"],                                   guide:"Supports Guide 10: Vehicles and Parts Leak",                          customNote:"Customized with your trade-specific parts categories and stock level thresholds." },
+  { type:"template",icon:"📞", title:"Appointment Confirmation Process",        desc:"Drop no-shows by 25-35% with a same-day-before confirmation system.",             bullets:["Confirmation call script","Text message templates","What to say when no answer","Cancellation fill-in protocol"],                             guide:"Supports Guide 2: Scheduling Black Hole",                             customNote:"Scripts written in your voice, referencing your company name and typical job types." },
+  { type:"template",icon:"👷", title:"Employee Onboarding Handbook",            desc:"Stop training every new hire from scratch. One handbook, consistent standards.",  bullets:["Day 1-30 checklist","Company standards and expectations","Job site procedures","Tools and vehicle policies"],                                 guide:"Supports Guide 3: Employee Cost Leak",                                customNote:"Written for your trade, your team size, and your specific job site standards." },
+  { type:"template",icon:"📄", title:"Job Completion and Invoicing Process",    desc:"Every job closes the same way. Invoice sent same day, every time.",               bullets:["Job closeout checklist","Same-day invoicing protocol","Photo and documentation standard","Customer sign-off process"],                        guide:"Supports Guide 5: Estimate-to-Invoice Leak",                         customNote:"Customized to your invoicing workflow and your trade's closeout requirements." },
+  { type:"template",icon:"🤝", title:"Customer Follow-Up Sequence",             desc:"The call after the job. The check-in at 30 days. The review ask.",                bullets:["Post-job follow-up script","30-day check-in template","Review request message","Annual maintenance reminder"],                              guide:"Supports Guide 7: Customer Churn Leak",                               customNote:"Scripts personalized with your company name, trade, and specific service offerings." },
+  { type:"template",icon:"🔧", title:"Parts and Supply Ordering Process",       desc:"Who orders what, from where, and when. Stops duplicate orders.",                  bullets:["Approved supplier list","Order authority levels","Reorder point tracker","Emergency sourcing protocol"],                                    guide:"Supports Guide 8: Materials Markup Fix",                              customNote:"Customized with your trade-specific parts categories and supplier relationships." },
+  { type:"template",icon:"📚", title:"New Hire Training Documentation",         desc:"Structured training that does not depend on one senior tech.",                    bullets:["Trade-specific skills checklist","Company systems walkthrough","Week-by-week milestones","Sign-off and evaluation form"],                     guide:"Supports Guide 3: Employee Cost Leak",                                customNote:"Customized for your trade, your tools, and your specific job site standards." },
+  { type:"template",icon:"⛑️", title:"Safety and Job Site Procedures",          desc:"The docs you need before something goes wrong — not after.",                      bullets:["Job site safety checklist","Incident reporting procedure","PPE requirements","Customer property protection"],                                 guide:"Supports all guides — foundational document",                         customNote:"Customized to your trade's specific safety requirements and job site conditions." },
+  { type:"template",icon:"📋", title:"Service Agreement and Maintenance Contract",desc:"Turn one-time customers into monthly income. Professional recurring agreements.", bullets:["Fill-in service agreement","Payment terms and cancellation","What's included and excluded","Sales script for job completion"],              guide:"Supports Guide 4: Recurring Revenue Gap",                             customNote:"Written for your trade's specific services, your pricing, and your market." },
+  { type:"template",icon:"✏️", title:"Change Order Template",                   desc:"Stop doing work you don't get paid for. One form, two signatures.",               bullets:["Scope change description","Cost and schedule impact table","Dual signature lines","Conversation script"],                                     guide:"Supports Guide 5: Estimate-to-Invoice Leak",                         customNote:"Formatted with your company name and customized to your trade's typical scope changes." },
+  { type:"template",icon:"⭐", title:"Referral and Review Request System",      desc:"Scripts, templates, and tracking for reviews and referrals.",                     bullets:["In-person review script","Text message templates","Referral request script","Monthly tracking sheet"],                                        guide:"Supports Guide 7: Customer Churn Leak",                               customNote:"Scripts written in your voice, referencing your company name and services." },
+  { type:"template",icon:"💰", title:"Pricing Worksheet and Rate Calculator",   desc:"Find your real cost per hour — then set a rate that makes money.",               bullets:["Labor cost calculator","Vehicle and equipment worksheet","Overhead breakdown","Break-even plus margin calculator"],                            guide:"Supports Guide 1: Pricing Leak Fix",                                  customNote:"Pre-filled with your wage, truck count, and billing rate from the calculator." },
 ];
 
 function DocCard({ doc, isCustomized }) {
-  const [hovered, setHovered] = useState(false);
+  const [hov, setHov] = useState(false);
+  const borderColor = doc.type === "guide" ? C.slate : C.amber;
   return (
-    <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
-      style={{ background: hovered ? "rgba(255,255,255,0.95)" : C.white, border: `1px solid ${hovered ? C.amber : C.warm3}`, borderTop: `3px solid ${doc.type === "guide" ? C.slate : C.amber}`, borderRadius: 10, padding: "14px", transition: "all 0.2s", position: "relative", cursor: "default" }}>
+    <div
+      onMouseEnter={function() { setHov(true); }}
+      onMouseLeave={function() { setHov(false); }}
+      style={{ background: hov ? "#FDFCFA" : C.white, border: "1px solid " + (hov ? C.amber : C.warm3), borderTop: "3px solid " + borderColor, borderRadius: 10, padding: "14px", transition: "all 0.2s", cursor: "default" }}>
       <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 6 }}>
         <span style={{ fontSize: 20, flexShrink: 0 }}>{doc.icon}</span>
         <div>
           <div style={{ fontFamily: F.b, fontSize: 12, fontWeight: 700, color: C.ink, lineHeight: 1.3 }}>{doc.title}</div>
-          <div style={{ fontSize: 10, color: doc.type === "guide" ? C.slate : C.amber, fontFamily: F.b, fontWeight: 700, letterSpacing: 0.5, marginTop: 2 }}>{doc.type === "guide" ? "FIX-IT GUIDE" : "TEMPLATE"}</div>
+          <div style={{ fontSize: 10, color: borderColor, fontFamily: F.b, fontWeight: 700, letterSpacing: 0.5, marginTop: 2 }}>{doc.type === "guide" ? "FIX-IT GUIDE" : "TEMPLATE"}</div>
         </div>
       </div>
-      {hovered && (
-        <div style={{ borderTop: `1px solid ${C.warm2}`, paddingTop: 8, marginTop: 4 }}>
+      {hov && (
+        <div style={{ borderTop: "1px solid " + C.warm2, paddingTop: 8, marginTop: 4 }}>
           <p style={{ fontSize: 11, color: C.muted, fontFamily: F.b, lineHeight: 1.6, margin: "0 0 6px" }}>{doc.desc}</p>
-          {doc.bullets.map((b, i) => <div key={i} style={{ fontSize: 11, color: C.body, fontFamily: F.b, marginBottom: 3, display: "flex", gap: 6 }}><span style={{ color: C.amber, flexShrink: 0 }}>→</span>{b}</div>)}
-          <div style={{ marginTop: 8, padding: "6px 8px", background: isCustomized ? `${C.amber}15` : C.warm1, borderRadius: 6, borderLeft: `3px solid ${isCustomized ? C.amber : C.slate}` }}>
-            <div style={{ fontSize: 10, fontWeight: 700, color: isCustomized ? C.amber : C.slate, fontFamily: F.b, marginBottom: 2 }}>{isCustomized ? "✦ CUSTOMIZED VERSION" : "GENERIC VERSION"}</div>
+          {doc.bullets.map(function(b, i) {
+            return (
+              <div key={i} style={{ fontSize: 11, color: C.body, fontFamily: F.b, marginBottom: 3, display: "flex", gap: 6 }}>
+                <span style={{ color: C.amber, flexShrink: 0 }}>{"→"}</span>{b}
+              </div>
+            );
+          })}
+          <div style={{ marginTop: 8, padding: "6px 8px", background: isCustomized ? "rgba(200,112,26,0.08)" : C.warm1, borderRadius: 6, borderLeft: "3px solid " + (isCustomized ? C.amber : C.slate) }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: isCustomized ? C.amber : C.slate, fontFamily: F.b, marginBottom: 2 }}>{isCustomized ? "CUSTOMIZED VERSION" : "GENERIC VERSION"}</div>
             <p style={{ fontSize: 10, color: C.muted, fontFamily: F.b, margin: 0, lineHeight: 1.5 }}>{isCustomized ? doc.customNote : "Generic template — you fill in your company details and customize to your operation."}</p>
           </div>
           <div style={{ fontSize: 10, color: C.muted, fontFamily: F.b, marginTop: 6, fontStyle: "italic" }}>{doc.guide}</div>
@@ -1448,93 +1454,65 @@ function DocCard({ doc, isCustomized }) {
 
 function PackageModal({ onClose, initialTab, calcRef, setPage, paddle }) {
   const [tab, setTab] = useState(initialTab || "generic");
-  const guides   = DOCS_DATA.filter(d => d.type === "guide");
-  const templates = DOCS_DATA.filter(d => d.type === "template");
+  const guides = DOCS_DATA.filter(function(d) { return d.type === "guide"; });
+  const templates = DOCS_DATA.filter(function(d) { return d.type === "template"; });
   const isCustomized = tab === "customized";
 
-  useEffect(() => {
+  useEffect(function() {
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
+    return function() { document.body.style.overflow = ""; };
   }, []);
 
   return (
     <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", zIndex: 200, display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "20px 16px", overflowY: "auto" }}>
-      <div onClick={e => e.stopPropagation()} style={{ background: C.warm0, borderRadius: 18, width: "100%", maxWidth: 900, position: "relative", marginTop: 20, marginBottom: 20 }}>
+      <div onClick={function(e) { e.stopPropagation(); }} style={{ background: C.warm0, borderRadius: 18, width: "100%", maxWidth: 900, position: "relative", marginTop: 20, marginBottom: 20 }}>
 
-        {/* Header */}
         <div style={{ background: C.navyDark, borderRadius: "18px 18px 0 0", padding: "24px 28px" }}>
-          <button onClick={onClose} style={{ position: "absolute", top: 16, right: 16, background: "rgba(255,255,255,0.1)", border: "none", color: C.white, width: 32, height: 32, borderRadius: "50%", fontSize: 16, cursor: "pointer", fontFamily: F.b }}>✕</button>
+          <button onClick={onClose} style={{ position: "absolute", top: 16, right: 16, background: "rgba(255,255,255,0.1)", border: "none", color: C.white, width: 32, height: 32, borderRadius: "50%", fontSize: 16, cursor: "pointer", fontFamily: F.b }}>X</button>
           <div style={{ fontFamily: F.d, fontSize: "clamp(18px,3vw,26px)", fontWeight: 800, color: C.white, marginBottom: 16 }}>WHAT'S INCLUDED — ALL 22 DOCUMENTS</div>
-
-          {/* Tab switcher */}
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <button onClick={() => setTab("generic")} style={{ padding: "10px 20px", borderRadius: 8, border: "none", background: tab === "generic" ? "#B84C2E" : "rgba(255,255,255,0.1)", color: C.white, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer", transition: "all 0.2s" }}>
-              Generic DIY — $349
-            </button>
-            <button onClick={() => setTab("customized")} style={{ padding: "10px 20px", borderRadius: 8, border: "none", background: tab === "customized" ? C.amber : "rgba(255,255,255,0.1)", color: C.white, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer", transition: "all 0.2s" }}>
-              Full DIY Package — $599
-            </button>
+            <button onClick={function() { setTab("generic"); }} style={{ padding: "10px 20px", borderRadius: 8, border: "none", background: tab === "generic" ? "#B84C2E" : "rgba(255,255,255,0.1)", color: C.white, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>Generic DIY — $349</button>
+            <button onClick={function() { setTab("customized"); }} style={{ padding: "10px 20px", borderRadius: 8, border: "none", background: tab === "customized" ? C.amber : "rgba(255,255,255,0.1)", color: C.white, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>Full DIY Package — $599</button>
           </div>
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", fontFamily: F.b, marginTop: 10, marginBottom: 0 }}>
-            {isCustomized
-              ? "✦ Based on your in-depth calculator responses — customized to your business details. Hover any document to see exactly what gets customized."
-              : "Based on the free quick scan. Generic templates you customize yourself. Hover any document to see what's inside."}
-          </p>
+          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", fontFamily: F.b, marginTop: 10, marginBottom: 0 }}>{isCustomized ? "Based on your in-depth calculator responses — customized to your business details. Hover any document to see what gets customized." : "Based on the free quick scan. Generic templates you customize yourself. Hover any document to see what's inside."}</p>
         </div>
 
-        {/* Content */}
         <div style={{ padding: "24px 28px" }}>
-
-          {/* Guides section */}
           <div style={{ fontFamily: F.d, fontSize: 13, fontWeight: 700, color: C.slate, letterSpacing: 1.5, marginBottom: 12 }}>10 FIX-IT GUIDES</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10, marginBottom: 28 }}>
-            {guides.map((doc, i) => <DocCard key={i} doc={doc} isCustomized={isCustomized} />)}
+            {guides.map(function(doc, i) { return <DocCard key={i} doc={doc} isCustomized={isCustomized} />; })}
           </div>
 
-          {/* Templates section */}
           <div style={{ fontFamily: F.d, fontSize: 13, fontWeight: 700, color: C.amber, letterSpacing: 1.5, marginBottom: 12 }}>12 PROCESS DOC TEMPLATES</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10, marginBottom: 28 }}>
-            {templates.map((doc, i) => <DocCard key={i} doc={doc} isCustomized={isCustomized} />)}
+            {templates.map(function(doc, i) { return <DocCard key={i} doc={doc} isCustomized={isCustomized} />; })}
           </div>
 
-          {/* 30/60/90 plan — only for customized */}
           {isCustomized && (
-            <div style={{ background: `${C.amber}12`, border: `2px solid ${C.amber}44`, borderRadius: 12, padding: "20px 24px", marginBottom: 28 }}>
+            <div style={{ background: "rgba(200,112,26,0.08)", border: "2px solid rgba(200,112,26,0.25)", borderRadius: 12, padding: "20px 24px", marginBottom: 28 }}>
               <div style={{ fontFamily: F.d, fontSize: 16, fontWeight: 800, color: C.amber, marginBottom: 8 }}>+ 30/60/90-DAY ACTION PLAN</div>
-              <p style={{ fontSize: 13, color: C.body, fontFamily: F.b, lineHeight: 1.7, marginBottom: 12 }}>A prioritized to-do list built specifically around your calculator responses — organized into three time buckets so you know exactly what to do first, what comes next, and what to tackle by month three.</p>
+              <p style={{ fontSize: 13, color: C.body, fontFamily: F.b, lineHeight: 1.7, marginBottom: 12 }}>A prioritized to-do list built around your calculator responses — organized into three time buckets so you know exactly what to do first, next, and by month three.</p>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 10 }}>
-                {[
-                  { period: "Days 1–30", label: "Quick wins", desc: "Easiest, highest-impact actions based on your biggest leaks. Most cost nothing." },
-                  { period: "Days 31–60", label: "Systems", desc: "Process and documentation work. Build the structure that makes wins permanent." },
-                  { period: "Days 61–90", label: "Growth", desc: "Recurring revenue, pricing, and retention — the changes that compound over time." },
-                ].map((p, i) => (
-                  <div key={i} style={{ background: C.white, borderRadius: 9, padding: "14px 16px", border: `1px solid ${C.amber}33` }}>
-                    <div style={{ fontFamily: F.d, fontSize: 14, fontWeight: 800, color: C.amber }}>{p.period}</div>
-                    <div style={{ fontFamily: F.b, fontSize: 12, fontWeight: 700, color: C.ink, marginBottom: 4 }}>{p.label}</div>
-                    <p style={{ fontSize: 11, color: C.muted, fontFamily: F.b, lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
-                  </div>
-                ))}
+                {[{period:"Days 1-30",label:"Quick wins",desc:"Easiest, highest-impact actions based on your biggest leaks. Most cost nothing."},{period:"Days 31-60",label:"Systems",desc:"Process and documentation work. Build the structure that makes wins permanent."},{period:"Days 61-90",label:"Growth",desc:"Recurring revenue, pricing, and retention — changes that compound over time."}].map(function(p, i) {
+                  return (
+                    <div key={i} style={{ background: C.white, borderRadius: 9, padding: "14px 16px", border: "1px solid rgba(200,112,26,0.2)" }}>
+                      <div style={{ fontFamily: F.d, fontSize: 14, fontWeight: 800, color: C.amber }}>{p.period}</div>
+                      <div style={{ fontFamily: F.b, fontSize: 12, fontWeight: 700, color: C.ink, marginBottom: 4 }}>{p.label}</div>
+                      <p style={{ fontSize: 11, color: C.muted, fontFamily: F.b, lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
 
-          {/* CTA */}
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
             {isCustomized ? (
-              <button onClick={() => { onClose(); setTimeout(() => calcRef?.current?.scrollIntoView({ behavior: "smooth" }), 100); }}
-                style={{ background: C.amber, border: "none", color: C.white, padding: "14px 32px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: `0 4px 20px ${C.amber}44` }}>
-                Take the In-Depth Scan — $599 →
-              </button>
+              <button onClick={function() { onClose(); setTimeout(function() { if (calcRef && calcRef.current) calcRef.current.scrollIntoView({ behavior: "smooth" }); }, 100); }} style={{ background: C.amber, border: "none", color: C.white, padding: "14px 32px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>Take the In-Depth Scan — $599</button>
             ) : (
-              <button onClick={() => { onClose(); paddle("PADDLE_LINK_349", "Generic DIY Package — $349"); }}
-                style={{ background: "#B84C2E", border: "none", color: C.white, padding: "14px 32px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>
-                Get Generic DIY Package — $349 →
-              </button>
+              <button onClick={function() { onClose(); paddle("PADDLE_LINK_349", "Generic DIY Package — $349"); }} style={{ background: "#B84C2E", border: "none", color: C.white, padding: "14px 32px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>Get Generic DIY Package — $349</button>
             )}
-            <button onClick={() => setTab(isCustomized ? "generic" : "customized")}
-              style={{ background: "none", border: `2px solid ${C.warm3}`, color: C.muted, padding: "14px 24px", borderRadius: 10, fontSize: 13, fontWeight: 600, fontFamily: F.b, cursor: "pointer" }}>
-              See {isCustomized ? "Generic" : "Customized"} version →
-            </button>
+            <button onClick={function() { setTab(isCustomized ? "generic" : "customized"); }} style={{ background: "none", border: "2px solid " + C.warm3, color: C.muted, padding: "14px 24px", borderRadius: 10, fontSize: 13, fontWeight: 600, fontFamily: F.b, cursor: "pointer" }}>See {isCustomized ? "Generic" : "Customized"} version</button>
           </div>
         </div>
       </div>
