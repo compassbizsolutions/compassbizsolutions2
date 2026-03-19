@@ -342,24 +342,17 @@ Not analyzed: pricing, churn, recurring revenue, materials markup, cash flow, cl
     return d.text||"";
   };
 
-  const buildTeaserSystem = () => `Straight-talking consultant who specializes in ${trade||"blue-collar service"} businesses. You understand how ${trade||"service"} companies actually operate. Short sentences. Plain language. This is the FREE Quick Scan — covers 5 specific areas (scheduling, admin time, vehicles & parts, employee tardiness, unbilled work). Be specific to their trade and numbers, but make clear the Full DIY Package covers all 10 categories.
-
-Our product line for reference — always recommend the SPECIFIC guide or template that addresses their biggest leak:
-Fix-It Guides ($199 for all 10 or included in $599 Full DIY Package): Guide #1: Pricing Leak Fix (comes with Pricing Worksheet & Rate Calculator template) · Guide #2: Scheduling Black Hole (works with Appointment Confirmation Process template — $29 separately or included in $199 template bundle) · Guide #3: Employee Cost Leak (works with Employee Handbook $49 and New Hire Training $49 templates) · Guide #4: Recurring Revenue Gap (works with Service Agreement & Maintenance Contract template $29) · Guide #5: Estimate-to-Invoice Leak (works with Change Order Template $29 and Job Completion & Invoicing $29) · Guide #6: Cash Flow Blind Spot · Guide #7: Customer Churn Leak (works with Customer Follow-Up Sequence $29 and Referral & Review Request System $29) · Guide #8: Materials Markup Fix (works with Parts & Supply Ordering $29 and Truck Restocking $29 templates) · Guide #9: Admin Time Drain · Guide #10: Vehicles & Parts Leak
-
-UPSELL LOGIC — always include this math when recommending individual purchases:
-- If their top 2 leaks require 2+ templates: mention that all 12 templates are $199 (vs $58-147 for 2-3 individually)
-- If their issues span 3+ guide categories: mention the Fix-It Bundle is $199 for all 10
-- If they need both guides AND templates: the Full DIY Package at $599 includes everything plus the personalized diagnostic
+  const buildTeaserSystem = () => `Straight-talking consultant who specializes in ${trade||"blue-collar service"} businesses. Short sentences. Plain language. This is the FREE Quick Scan — covers 5 specific areas (scheduling, admin time, vehicles & parts, employee tardiness, unbilled work). Be specific to their trade and numbers.
 
 Use EXACTLY these tags:
-[HEADLINE] One punchy sentence. Their name + leak number. Reference their trade.
-[WHAT_WE_FOUND] 3-4 sentences. Their actual numbers. 2-3 biggest leaks. Trade-specific language.
-[TOP_LEAK] Category + amount. Why this happens in ${trade||"service"} businesses specifically. Name the EXACT Fix-It Guide and template that addresses it. One concrete fix they can do today.
-[SECOND_LEAK] Same format — name the specific guide and template.
-[WHATS_MISSING] 2-3 sentences. Name the 5 uncovered categories. For each, name the specific Fix-It Guide that covers it. Frame in context of ${trade||"service"} businesses.
-[UPGRADE_HOOK] 2 sentences max. Reference their specific leak number. Show the math: "You're leaking $X — a customized 30-day action plan starts at $249 and covers all 10 categories with your specific numbers." Make it obvious.
-[DOCS_HOOK] Only if their answers show tardiness, parts runs, scheduling issues, or invoicing problems: name the SPECIFIC template(s) that would fix it, with price. Show the bundle math if 2+ templates apply. Skip entirely if not relevant.`;
+[HEADLINE] One punchy sentence. Their trade + their biggest problem.
+[WHAT_WE_FOUND] 3 bullet points starting with • of what stands out from their numbers. Max 15 words each. Specific to their trade.
+[TOP_LEAK] Line 1: Leak name in ALL CAPS — estimated annual cost as a dollar range (e.g. SCHEDULING LEAK — estimated $12,000–$18,000/year). Line 2: One sentence why. Line 3: → name the exact Fix-It Guide and/or template that fixes it.
+[SECOND_LEAK] Same 3-line format.
+[LEAK_TOTAL] One line only: combined estimated annual profit leak across both leaks. Format exactly: Estimated total annual profit leak: $XX,000–$XX,000
+[WHATS_MISSING] 2-3 sentences. Name the 5 uncovered categories and the Fix-It Guide for each.
+[UPGRADE_HOOK] 2 sentences max. Reference their leak total. Mention the 30-day plan starts at $249 and covers all 10 categories.
+[DOCS_HOOK] Only if their answers show parts runs, scheduling issues, or invoicing problems: name the SPECIFIC template that fixes it. Skip if not relevant.`;
 
   const genTeaser = async () => {
     if(!email.trim()||loading) return;
@@ -524,8 +517,19 @@ Use EXACTLY these tags:
                 <div style={{textAlign:"right"}}><div style={{fontFamily:F.d,fontSize:30,fontWeight:800,color:sev.c}}>${Math.round(total).toLocaleString()}</div><div style={{fontSize:9,color:"rgba(255,255,255,0.2)",fontFamily:F.b}}>5 of 10 categories</div></div>
               </div>
               {g("HEADLINE")&&<div style={{...card,borderLeft:`4px solid ${sev.c}`,marginBottom:10}}><p style={{fontSize:15,fontWeight:700,color:C.ink,lineHeight:1.55,fontFamily:F.b,margin:0}}>{g("HEADLINE")}</p></div>}
-              {g("WHAT_WE_FOUND")&&<div style={{...card,marginBottom:10}}><div style={{fontFamily:F.d,fontSize:11,fontWeight:700,color:C.slate,letterSpacing:2,marginBottom:8}}>WHAT WE FOUND</div><p style={{fontSize:13,color:C.body,lineHeight:1.8,fontFamily:F.b,margin:0}}>{g("WHAT_WE_FOUND")}</p></div>}
-              {[{d:g("TOP_LEAK"),n:1,c:C.red},{d:g("SECOND_LEAK"),n:2,c:C.amber}].map(({d,n:num,c})=>d?(<div key={num} style={{...card,borderLeft:`4px solid ${c}`,marginBottom:10}}><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}><div style={{width:22,height:22,borderRadius:"50%",background:c,color:C.white,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:800,fontFamily:F.d,flexShrink:0}}>#{num}</div><div style={{fontFamily:F.d,fontSize:11,fontWeight:700,color:c,letterSpacing:2}}>BIGGEST LEAK</div></div><p style={{fontSize:13,color:C.body,lineHeight:1.8,fontFamily:F.b,margin:0,whiteSpace:"pre-line"}}>{d}</p></div>):null)}
+              {g("WHAT_WE_FOUND")&&<div style={{...card,marginBottom:10}}><div style={{fontFamily:F.d,fontSize:11,fontWeight:700,color:C.slate,letterSpacing:2,marginBottom:8}}>WHAT WE FOUND</div>{g("WHAT_WE_FOUND").split("\n").filter(l=>l.trim()).map((line,i)=><div key={i} style={{display:"flex",gap:8,marginBottom:6,alignItems:"flex-start"}}><span style={{color:C.slate,fontWeight:700,flexShrink:0}}>•</span><span style={{fontFamily:F.b,fontSize:13,color:C.body,lineHeight:1.6}}>{line.replace(/^•\s*/,"")}</span></div>)}</div>}
+              {[{d:g("TOP_LEAK"),n:1,c:C.red},{d:g("SECOND_LEAK"),n:2,c:C.amber}].map(function(lk) {
+                if (!lk.d) return null;
+                const lines = lk.d.split("\n").filter(l=>l.trim());
+                const title = lines[0]||""; const why = lines[1]||""; const fix = lines.find(l=>l.startsWith("→"))||"";
+                return (<div key={lk.n} style={{...card,borderLeft:`4px solid ${lk.c}`,marginBottom:10}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}><div style={{width:22,height:22,borderRadius:"50%",background:lk.c,color:C.white,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:800,fontFamily:F.d,flexShrink:0}}>#{lk.n}</div><div style={{fontFamily:F.d,fontSize:11,fontWeight:700,color:lk.c,letterSpacing:2}}>BIGGEST LEAK</div></div>
+                  {title&&<div style={{fontFamily:F.d,fontSize:13,fontWeight:800,color:C.ink,marginBottom:4}}>{title}</div>}
+                  {why&&<p style={{fontSize:12,color:C.body,lineHeight:1.65,fontFamily:F.b,margin:"0 0 6px"}}>{why}</p>}
+                  {fix&&<div style={{fontSize:12,color:lk.c,fontWeight:700,paddingTop:6,borderTop:`1px solid ${C.warm2}`}}>{fix}</div>}
+                </div>);
+              })}
+              {g("LEAK_TOTAL")&&<div style={{background:C.red,borderRadius:10,padding:"12px 18px",marginBottom:10,textAlign:"center"}}><div style={{fontFamily:F.d,fontSize:10,fontWeight:700,color:"rgba(255,255,255,0.65)",letterSpacing:2,marginBottom:4}}>BOTTOM LINE</div><div style={{fontFamily:F.d,fontSize:15,fontWeight:800,color:C.white}}>{g("LEAK_TOTAL")}</div></div>}
               {g("DOCS_HOOK")&&<div style={{...card,background:C.navyLight,border:`1.5px solid ${C.slateLight}`,marginBottom:10}}><div style={{fontFamily:F.d,fontSize:11,fontWeight:700,color:C.navy,letterSpacing:2,marginBottom:6}}>📋 DOCUMENT THE PROCESS</div><p style={{fontSize:13,color:C.navy,lineHeight:1.65,fontFamily:F.b,margin:"0 0 10px"}}>{g("DOCS_HOOK")}</p><button onClick={()=>{window.scrollTo(0,0);setPage("docs");}} style={{background:C.navy,border:"none",color:C.white,padding:"7px 14px",borderRadius:7,fontSize:11,fontWeight:700,fontFamily:F.b,cursor:"pointer"}}>See Process Docs →</button></div>}
               {/* UPGRADE WALL */}
               <div style={{background:`linear-gradient(160deg,${C.navyDark},${C.navyMid})`,borderRadius:16,padding:"22px 20px",border:"1px solid rgba(200,112,26,0.25)",boxShadow:"0 12px 60px rgba(0,0,0,0.35)",marginBottom:10}}>
@@ -713,7 +717,7 @@ function DiagnosticTool({ setPage, paddle }) {
     setStep(19);
     try {
       const a = answers;
-      const sys = "You are a straight-talking business consultant with 23 years fixing operations inside Fortune-level companies, now working exclusively with blue-collar service businesses. You know the 10 profit leaks cold: 1-Pricing, 2-Scheduling/no-shows, 3-Employee cost, 4-Recurring revenue, 5-Estimate-to-invoice gaps, 6-Cash flow, 7-Customer churn, 8-Materials markup, 9-Admin time drain, 10-Vehicles and parts.\n\nThis owner answered:\nTrade: " + (a.trade||"service") + "\nServices: " + (a.services||"") + "\nYears: " + (a.years||"") + "\nCrew: " + (a.crew||"") + "\nTrucks: " + (a.trucks||"") + "\nJobs/week: " + (a.jobs||"") + "\nAvg invoice: " + (a.invoice||"") + "\nLabor pricing: " + (a.rate||"") + "\nTracking: " + (a.tracking||"") + "\nParts runs: " + (a.partsruns||"") + "\nInvoice timing: " + (a.invoicetiming||"") + "\nRepeat vs new: " + (a.repeat||"") + "\nLast rate increase: " + (a.rates||"") + "\nNo-shows/week: " + (a.noshows||"") + "\nTime wasters: " + (a.timewaste||"") + "\nConcerns: " + (a.concerns||"") + "\n\nRespond ONLY with these exact tags, no other text:\n\n[HEADLINE]\nOne punchy sentence naming the single biggest problem in plain language.\n\n[WHAT_WE_SEE]\n3-4 sentences referencing their actual answers. Be specific. No generic fluff.\n\n[TOP_LEAK]\nBiggest leak. Name it, explain why given their answers, estimate annual dollar impact if numbers allow.\n\n[SECOND_LEAK]\nSame format.\n\n[THIRD_LEAK]\nSame format.\n\n[HOW_WE_HELP]\n2 sentences max. Tell them a customized 30-day action plan with only the guides and templates for their specific leaks is available. Reference Compass Business Solutions. No prices — those are shown separately.";
+      const sys = "You are a straight-talking business consultant with 23 years fixing operations inside Fortune-level companies, now working exclusively with blue-collar service businesses. You know the 10 profit leaks cold: 1-Pricing, 2-Scheduling/no-shows, 3-Employee cost, 4-Recurring revenue, 5-Estimate-to-invoice gaps, 6-Cash flow, 7-Customer churn, 8-Materials markup, 9-Admin time drain, 10-Vehicles and parts.\n\nThis owner answered:\nTrade: " + (a.trade||"service") + "\nServices: " + (a.services||"") + "\nYears: " + (a.years||"") + "\nCrew: " + (a.crew||"") + "\nTrucks: " + (a.trucks||"") + "\nJobs/week: " + (a.jobs||"") + "\nAvg invoice: " + (a.invoice||"") + "\nLabor pricing: " + (a.rate||"") + "\nTracking: " + (a.tracking||"") + "\nParts runs: " + (a.partsruns||"") + "\nInvoice timing: " + (a.invoicetiming||"") + "\nRepeat vs new: " + (a.repeat||"") + "\nLast rate increase: " + (a.rates||"") + "\nNo-shows/week: " + (a.noshows||"") + "\nTime wasters: " + (a.timewaste||"") + "\nConcerns: " + (a.concerns||"") + "\n\nRespond ONLY with these exact tags, no other text:\n\n[HEADLINE]\nOne punchy sentence naming the single biggest problem in plain language.\n\n[WHAT_WE_SEE]\n3 short bullet points starting with • of what stands out from their answers. Each bullet max 15 words. Be specific to their actual numbers and situation.\n\n[TOP_LEAK]\nLine 1: Leak name in ALL CAPS — estimated annual cost as a dollar range based on their numbers (e.g. PRICING LEAK — estimated $18,000–$24,000/year)\nLine 2: One sentence explaining why this is happening in their specific situation.\nLine 3: One bullet starting with → naming the exact Fix-It Guide and/or Process Doc Template that fixes it.\n\n[SECOND_LEAK]\nSame 3-line format.\n\n[THIRD_LEAK]\nSame 3-line format.\n\n[LEAK_TOTAL]\nOne line only: a combined estimated annual profit leak range across all three leaks identified. Format exactly like: Estimated total annual profit leak: $XX,000–$XX,000\n\n[HOW_WE_HELP]\n2 sentences max. Tell them a customized 30-day action plan with only the guides and templates for their specific leaks is available from Compass Business Solutions. No prices.";
       const res = await fetch("/api/generate-report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -856,20 +860,40 @@ function DiagnosticTool({ setPage, paddle }) {
         <div style={{ background: C.warm0, border: "1px solid " + C.warm3, borderTop: "none", borderRadius: "0 0 14px 14px", padding: "24px 28px" }}>
           {g("WHAT_WE_SEE") && (
             <div style={{ background: C.white, borderRadius: 10, padding: "16px 18px", marginBottom: 14, border: "1px solid " + C.warm3 }}>
-              <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: C.slate, letterSpacing: 2, marginBottom: 8 }}>WHAT WE SEE</div>
-              <p style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.8, margin: 0 }}>{g("WHAT_WE_SEE")}</p>
+              <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: C.slate, letterSpacing: 2, marginBottom: 10 }}>WHAT WE SEE</div>
+              {g("WHAT_WE_SEE").split("\n").filter(function(l) { return l.trim(); }).map(function(line, i) {
+                return (
+                  <div key={i} style={{ display: "flex", gap: 8, marginBottom: 7, alignItems: "flex-start" }}>
+                    <span style={{ color: C.slate, fontWeight: 700, flexShrink: 0, fontSize: 13 }}>•</span>
+                    <span style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.6 }}>{line.replace(/^•\s*/, "")}</span>
+                  </div>
+                );
+              })}
             </div>
           )}
           {[["TOP_LEAK","#1 BIGGEST LEAK",C.red],["SECOND_LEAK","#2 LEAK",C.amber],["THIRD_LEAK","#3 LEAK",C.gold]].map(function(lk, i) {
             const content = g(lk[0]);
             if (!content) return null;
+            const lines = content.split("\n").filter(function(l) { return l.trim(); });
             return (
               <div key={i} style={{ background: C.white, borderLeft: "4px solid " + lk[2], borderRadius: "0 10px 10px 0", padding: "14px 16px", marginBottom: 10, border: "1px solid " + C.warm3, borderLeft: "4px solid " + lk[2] }}>
-                <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: lk[2], letterSpacing: 2, marginBottom: 6 }}>{lk[1]}</div>
-                <p style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.75, margin: 0, whiteSpace: "pre-line" }}>{content}</p>
+                <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: lk[2], letterSpacing: 2, marginBottom: 8 }}>{lk[1]}</div>
+                {lines.map(function(line, j) {
+                  if (line.startsWith("→")) return <div key={j} style={{ fontFamily: F.b, fontSize: 12, color: lk[2], fontWeight: 700, marginTop: 8, paddingTop: 8, borderTop: "1px solid " + C.warm2 }}>{line}</div>;
+                  if (j === 0) return <div key={j} style={{ fontFamily: F.d, fontSize: 13, fontWeight: 800, color: C.ink, marginBottom: 4 }}>{line}</div>;
+                  return <p key={j} style={{ fontFamily: F.b, fontSize: 12, color: C.body, lineHeight: 1.65, margin: "2px 0 0" }}>{line}</p>;
+                })}
               </div>
             );
           })}
+
+          {/* Leak total */}
+          {g("LEAK_TOTAL") && (
+            <div style={{ background: "#B84C2E", borderRadius: 10, padding: "14px 18px", marginBottom: 4, textAlign: "center" }}>
+              <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.65)", letterSpacing: 2, marginBottom: 4 }}>BOTTOM LINE</div>
+              <div style={{ fontFamily: F.d, fontSize: 16, fontWeight: 800, color: C.white }}>{g("LEAK_TOTAL")}</div>
+            </div>
+          )}
 
           {/* Upgrade CTA — replaces free 30/60/90 plan */}
           <div style={{ background: C.navyDark, borderRadius: 12, padding: "20px 20px", marginTop: 20, marginBottom: 16, border: "1px solid rgba(200,112,26,0.2)" }}>
