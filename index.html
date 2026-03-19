@@ -932,15 +932,14 @@ function DiagnosticTool({ setPage, paddle }) {
                 btnLabel="Get Started"
                 onBuy={function() { paddle("PADDLE_LINK_249_30DAY", "30-Day Plan — $249"); }}
                 items={[
-                  "In-depth diagnostic identifies your specific top leaks",
-                  "AI ranks your leaks by dollar impact — worst ones addressed first",
-                  "Day-by-day 30-day action plan built around your top issues",
-                  "Only the guides and docs for leaks YOU actually have",
-                  "Everything customized to your trade and operation",
-                  "Check-ins at day 7 and 15 to keep you on track",
-                  "At day 28 — choose to continue to the 60-day phase"
+                  "Deep-dive diagnostic across all 10 profit leak categories",
+                  "Your leaks ranked by dollar impact — biggest ones addressed first",
+                  "Day-by-day 30-day action plan with specific tasks in order",
+                  "Only the Fix-It Guides and Process Docs for issues you actually have",
+                  "Every doc written for your trade and how your operation runs",
+                  "Incremental check-ins for accountability",
                 ]}
-                footer="$249 one time · No subscription · Continue at your pace"
+                footer="$249 one time · Continue to 60-day phase at any time"
               />
               <PlanCard
                 price="$599"
@@ -953,12 +952,12 @@ function DiagnosticTool({ setPage, paddle }) {
                 onBuy={function() { paddle("PADDLE_LINK_599", "Complete 30/60/90 Plan — $599"); }}
                 items={[
                   "All three phases — 30, 60, and 90 days",
-                  "AI ranks ALL your leaks and sequences them across three phases",
-                  "Each phase gets its own day-by-day plan as you progress",
-                  "Only the guides and docs for leaks YOU actually have",
-                  "60-day and 90-day plans adjust based on your real progress",
-                  "Check-ins at day 7, 15, 21, and 28",
-                  "Saves $147 vs buying each phase separately"
+                  "Your leaks sequenced across three phases — worst issues first",
+                  "Each phase gets its own day-by-day plan",
+                  "Only the Fix-It Guides and Process Docs for issues you actually have",
+                  "Every doc written for your trade and how your operation runs",
+                  "Incremental check-ins for accountability throughout",
+                  "Saves $147 vs buying each phase separately",
                 ]}
                 footer="$599 one time · All three phases · Best value"
               />
@@ -1712,8 +1711,14 @@ function WhatWeDoPage({ setPage, calcRef }) {
       title: "FREE BUSINESS DIAGNOSTIC",
       tag: "Free",
       tagColor: C.green,
-      short: "Find your leaks in 3 minutes. No purchase required.",
-      detail: "Answer 16 quick questions about your business. We analyze your answers across all 10 profit leak categories and tell you exactly where the money is going — specific to your trade, your crew size, and your numbers. You get a written report emailed to you.",
+      short: "Find out where your money is going. No strings attached.",
+      intro: "Answer a few quick questions about your operation. We look at your business across all 10 profit leak categories and give you:",
+      bullets: [
+        "Your top three profit leaks — specific to your trade and your numbers",
+        "An estimated annual dollar range for each one",
+        "What is causing them and what it takes to fix each one",
+      ],
+      closing: "What you do with it is entirely up to you. Some people fix it themselves. Some want help. Some just needed to see the number. All three are completely fine.",
       cta: "Start Free Diagnostic",
       action: function(setPage, calcRef) { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }
     },
@@ -1723,7 +1728,14 @@ function WhatWeDoPage({ setPage, calcRef }) {
       tag: "$249",
       tagColor: C.amber,
       short: "Your worst leaks addressed first. Day-by-day. Only what you need.",
-      detail: "We run an in-depth diagnostic across all 10 profit leak categories. The AI identifies YOUR specific issues, ranks them by dollar impact, and builds a day-by-day 30-day plan around your top leaks. You get only the guides and process docs for problems you actually have — customized to your trade and operation. Nothing generic. Check-ins at day 7 and 15. At day 28 we check in — if you made progress, you move to the 60-day phase. If you need help, we get on a call.",
+      intro: "We take a deep look at your operation across all 10 profit leak categories, rank your issues by dollar impact, and build a plan around the ones that matter most to your business:",
+      bullets: [
+        "Your leaks ranked by dollar impact — biggest ones addressed first",
+        "A day-by-day 30-day action plan with specific tasks in order",
+        "Only the Fix-It Guides and Process Docs for issues you actually have",
+        "Every doc written for your trade and how your operation runs",
+        "Incremental check-ins for accountability if you need it",
+      ],
       cta: "Get the 30-Day Plan",
       action: function(setPage, calcRef) { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }
     },
@@ -1732,8 +1744,17 @@ function WhatWeDoPage({ setPage, calcRef }) {
       title: "COMPLETE 30/60/90-DAY PLAN",
       tag: "$599 — saves $147",
       tagColor: C.amber,
-      short: "All three phases. AI-sequenced. Only your docs. Saves $147.",
-      detail: "The AI ranks all 10 leak categories for your specific business and sequences them across three phases — your biggest issues in the first 30 days, next tier in days 31-60, remaining in days 61-90. Each phase gets its own day-by-day plan. You only receive guides and templates for the leaks you actually have, customized to how your operation works. Check-ins throughout. Each 60 and 90-day plan adjusts based on your real progress — not what you planned to do.",
+      short: "All three phases. Fully sequenced. Only your docs. Saves $147.",
+      intro: "We rank all 10 leak categories for your specific business and sequence them across three phases — your biggest issues first, next tier second, remaining third:",
+      bullets: [
+        "Days 1-30 — your top leaks, day-by-day plan, relevant guides and docs",
+        "Days 31-60 — next tier of leaks with their own day-by-day plan",
+        "Days 61-90 — remaining leaks closed out with a final set of docs",
+        "Only guides and templates for leaks you actually have",
+        "Every doc written for your trade and how your operation runs",
+        "Incremental check-ins for accountability throughout all three phases",
+        "Saves $147 vs buying each phase separately",
+      ],
       cta: "Get the Full Bundle",
       action: function(setPage, calcRef) { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }
     },
@@ -1743,7 +1764,14 @@ function WhatWeDoPage({ setPage, calcRef }) {
       tag: "By scope",
       tagColor: C.slate,
       short: "We build and implement the systems for you.",
-      detail: "We interview you and your team, map how your business actually runs, and build the systems — process docs, pricing structures, scheduling workflows, job tracking, whatever you need. You review, we refine, it gets done. Scoping call is free, no commitment.",
+      intro: "For owners who know what needs to change but do not have the bandwidth to do it themselves:",
+      bullets: [
+        "We map how your business actually runs — not how it should run",
+        "We build the process docs, pricing structures, and workflows",
+        "You review, we refine, it gets done",
+        "Scoping call is free with no commitment",
+        "Payment plans available",
+      ],
       cta: "Book a Free Scoping Call",
       action: function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }
     },
@@ -1753,7 +1781,15 @@ function WhatWeDoPage({ setPage, calcRef }) {
       tag: "Coming soon",
       tagColor: C.muted,
       short: "Field service management built for small service businesses.",
-      detail: "Everything a small service business needs to run jobs, track techs, invoice same-day, and manage the back office — without paying enterprise prices or learning software designed for 500-person companies. Join the waitlist to be first.",
+      intro: "Everything a small service business needs — without enterprise pricing or a learning curve designed for 500-person companies:",
+      bullets: [
+        "Job tracking from estimate to invoice",
+        "Tech scheduling and dispatch",
+        "Same-day invoicing built in",
+        "Back office management without the overhead",
+        "Built specifically for trades and field service",
+      ],
+      closing: "Join the waitlist to be notified first.",
       cta: "Join the Waitlist",
       action: function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }
     },
@@ -1761,27 +1797,24 @@ function WhatWeDoPage({ setPage, calcRef }) {
 
   return (
     <div style={{ background: C.warm0, minHeight: "100vh", paddingTop: 64 }}>
-      {/* Header */}
       <div style={{ background: "linear-gradient(160deg," + C.navyDark + "," + C.navy + ")", padding: "64px 24px 52px", textAlign: "center" }}>
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
           <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 4, marginBottom: 10, fontFamily: F.b }}>COMPASS BUSINESS SOLUTIONS</div>
           <h1 style={{ fontFamily: F.d, fontSize: "clamp(28px,6vw,52px)", fontWeight: 800, color: C.white, letterSpacing: 2, marginBottom: 16, lineHeight: 1.1 }}>WHAT WE DO.</h1>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.45)", lineHeight: 1.8, fontFamily: F.b, maxWidth: 480, margin: "0 auto" }}>
-            We find the money your service business is losing and help you stop losing it — from a free scan to a full done-for-you build.
+            We find the money your service business is losing and help you stop losing it — from a free diagnostic to a full done-for-you build.
           </p>
         </div>
       </div>
 
-      {/* Service cards */}
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "48px 24px" }}>
         {services.map(function(svc, i) {
           return <ServiceCard key={i} svc={svc} setPage={setPage} calcRef={calcRef} />;
         })}
 
-        {/* Bottom CTA */}
         <div style={{ background: C.navyDark, borderRadius: 14, padding: "28px 28px", marginTop: 8, textAlign: "center", border: "1px solid rgba(61,107,158,0.2)" }}>
           <div style={{ fontFamily: F.d, fontSize: 18, fontWeight: 800, color: C.white, marginBottom: 8 }}>NOT SURE WHERE TO START?</div>
-          <p style={{ fontFamily: F.b, fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.7, maxWidth: 440, margin: "0 auto 20px" }}>The free diagnostic takes 3 minutes and tells you exactly which of these is right for your situation.</p>
+          <p style={{ fontFamily: F.b, fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.7, maxWidth: 440, margin: "0 auto 20px" }}>The free diagnostic takes 3 minutes and tells you exactly which of these fits your situation.</p>
           <button onClick={function() { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }}
             style={{ background: C.amber, border: "none", color: C.white, padding: "14px 36px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 20px rgba(200,112,26,0.35)" }}>
             Start Free Diagnostic →
@@ -1795,7 +1828,7 @@ function WhatWeDoPage({ setPage, calcRef }) {
 function ServiceCard({ svc, setPage, calcRef }) {
   const [open, setOpen] = useState(false);
   return (
-    <div style={{ background: C.white, borderRadius: 14, border: "1px solid " + C.warm3, marginBottom: 12, overflow: "hidden", transition: "box-shadow 0.2s", boxShadow: open ? "0 4px 24px rgba(26,35,50,0.1)" : "none" }}>
+    <div style={{ background: C.white, borderRadius: 14, border: "1px solid " + C.warm3, marginBottom: 12, overflow: "hidden", boxShadow: open ? "0 4px 24px rgba(26,35,50,0.08)" : "none", transition: "box-shadow 0.2s" }}>
       <div onClick={function() { setOpen(function(v) { return !v; }); }}
         style={{ display: "flex", alignItems: "center", gap: 16, padding: "18px 20px", cursor: "pointer" }}>
         <div style={{ fontSize: 28, flexShrink: 0 }}>{svc.icon}</div>
@@ -1805,12 +1838,23 @@ function ServiceCard({ svc, setPage, calcRef }) {
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
           <div style={{ background: svc.tagColor + "18", border: "1px solid " + svc.tagColor + "44", borderRadius: 99, padding: "4px 12px", fontFamily: F.b, fontSize: 12, fontWeight: 700, color: svc.tagColor }}>{svc.tag}</div>
-          <div style={{ fontFamily: F.b, fontSize: 18, color: C.muted, transition: "transform 0.2s", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}>›</div>
+          <div style={{ fontFamily: F.b, fontSize: 20, color: C.muted, transition: "transform 0.2s", transform: open ? "rotate(90deg)" : "rotate(0deg)", lineHeight: 1 }}>›</div>
         </div>
       </div>
       {open && (
-        <div style={{ padding: "0 20px 20px 64px", borderTop: "1px solid " + C.warm2 }}>
-          <p style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.8, margin: "16px 0 16px" }}>{svc.detail}</p>
+        <div style={{ padding: "4px 20px 20px 68px", borderTop: "1px solid " + C.warm2 }}>
+          {svc.intro && <p style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.75, margin: "14px 0 10px" }}>{svc.intro}</p>}
+          <div style={{ marginBottom: svc.closing ? 12 : 16 }}>
+            {svc.bullets.map(function(b, i) {
+              return (
+                <div key={i} style={{ display: "flex", gap: 10, marginBottom: 7, alignItems: "flex-start" }}>
+                  <span style={{ color: svc.tagColor, fontWeight: 700, flexShrink: 0, fontSize: 14, lineHeight: 1.5 }}>→</span>
+                  <span style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.6 }}>{b}</span>
+                </div>
+              );
+            })}
+          </div>
+          {svc.closing && <p style={{ fontFamily: F.b, fontSize: 13, color: C.muted, lineHeight: 1.7, margin: "0 0 16px", fontStyle: "italic" }}>{svc.closing}</p>}
           <button onClick={function() { svc.action(setPage, calcRef); }}
             style={{ background: svc.tagColor === C.muted ? C.navy : svc.tagColor, border: "none", color: C.white, padding: "11px 24px", borderRadius: 8, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>
             {svc.cta} →
