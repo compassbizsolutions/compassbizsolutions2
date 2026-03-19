@@ -134,12 +134,6 @@ module.exports = async function handler(req, res) {
             <p style="font-size: 13px; color: #3E4E63; line-height: 1.75; margin: 0;">${secondLeak}</p>
           </div>` : ""}
 
-          ${quickWin ? `
-          <div style="background: #F0F7F2; border-left: 4px solid #1E6B45; border-radius: 0 8px 8px 0; padding: 16px 18px; margin-bottom: 16px; border-top: 1px solid #C8E0D0; border-right: 1px solid #C8E0D0; border-bottom: 1px solid #C8E0D0;">
-            <div style="font-size: 10px; font-weight: bold; color: #1E6B45; letter-spacing: 2px; margin-bottom: 6px;">✓ DO THIS TODAY — FREE</div>
-            <p style="font-size: 13px; color: #1a4a30; line-height: 1.65; font-weight: 600; margin: 0;">${quickWin}</p>
-          </div>` : ""}
-
           ${whatMissing ? `
           <div style="background: white; border-radius: 8px; padding: 16px 18px; margin-bottom: 16px; border: 1px solid #D8D4CD;">
             <div style="font-size: 10px; font-weight: bold; color: #6B7A90; letter-spacing: 2px; margin-bottom: 6px;">WHAT THIS SCAN DIDN'T COVER</div>
