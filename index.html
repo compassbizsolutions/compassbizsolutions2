@@ -168,6 +168,7 @@ function Nav({ page, setPage, calcRef }) {
   const navLinks = [
     ["about",      "Our Story"],
     ["profitable", "What Profitable Looks Like"],
+    ["services",   "What We Do"],
   ];
 
   return (
@@ -769,12 +770,33 @@ function DiagnosticTool({ setPage, paddle }) {
       <div style={{ fontFamily: F.d, fontSize: "clamp(16px,3vw,21px)", fontWeight: 700, color: C.ink, marginBottom: 20, lineHeight: 1.35 }}>{q.q}</div>
 
       {q.type === "buttons" && (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-          {q.opts.map(function(opt) {
-            return (
-              <button key={opt} onClick={function() { saveAndNext(opt); }} style={bBase}>{opt}</button>
-            );
-          })}
+        <div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+            {q.opts.map(function(opt) {
+              const sel = current === opt || answers[q.id] === opt;
+              return (
+                <button key={opt} onClick={function() {
+                  if (opt === "Other") { setCurrent("Other"); }
+                  else { saveAndNext(opt); }
+                }} style={sel ? bSel : bBase}>{opt}</button>
+              );
+            })}
+          </div>
+          {current === "Other" && (
+            <div style={{ marginTop: 14 }}>
+              <input autoFocus placeholder="Please describe your trade..." value={current === "Other" ? "" : current}
+                onChange={function(e) { setCurrent(e.target.value || "Other"); }}
+                onKeyDown={function(e) { if (e.key === "Enter" && current.trim() && current !== "Other") saveAndNext(); }}
+                style={{ width: "100%", padding: "13px 15px", border: "2px solid " + C.amber, borderRadius: 9, fontSize: 14, color: C.ink, outline: "none", fontFamily: F.b, background: C.white, boxSizing: "border-box" }} />
+              <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
+                <button onClick={function() { if (current.trim() && current !== "Other") saveAndNext(); }}
+                  disabled={!current.trim() || current === "Other"}
+                  style={{ background: (current.trim() && current !== "Other") ? C.amber : C.warm2, border: "none", color: (current.trim() && current !== "Other") ? C.white : C.ghost, padding: "11px 28px", borderRadius: 8, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: (current.trim() && current !== "Other") ? "pointer" : "default" }}>
+                  Next →
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -909,23 +931,40 @@ function DiagnosticTool({ setPage, paddle }) {
                 btnBg={C.amber}
                 btnLabel="Get Started"
                 onBuy={function() { paddle("PADDLE_LINK_249_30DAY", "30-Day Plan — $249"); }}
-                items={["In-depth diagnostic — all 10 leak categories","Customized 30-day action plan","Only the guides and docs for YOUR top leaks","Check-in emails at day 7 and day 15","Upgrade to 60-day plan at any time"]}
-                footer="$249 one time · No subscription"
+                items={[
+                  "In-depth diagnostic identifies your specific top leaks",
+                  "AI ranks your leaks by dollar impact — worst ones addressed first",
+                  "Day-by-day 30-day action plan built around your top issues",
+                  "Only the guides and docs for leaks YOU actually have",
+                  "Everything customized to your trade and operation",
+                  "Check-ins at day 7 and 15 to keep you on track",
+                  "At day 28 — choose to continue to the 60-day phase"
+                ]}
+                footer="$249 one time · No subscription · Continue at your pace"
               />
               <PlanCard
                 price="$599"
-                label="Full 30/60/90 Bundle — saves $147"
+                label="Full 30/60/90-Day Plan — saves $147"
                 accentColor={C.amber}
                 bg="rgba(200,112,26,0.06)"
                 border="1px solid rgba(200,112,26,0.2)"
-                btnBg="rgba(200,112,26,0.3)"
+                btnBg="rgba(200,112,26,0.45)"
                 btnLabel="Best Value"
                 onBuy={function() { paddle("PADDLE_LINK_599", "Complete 30/60/90 Plan — $599"); }}
-                items={["In-depth diagnostic — all 10 leak categories","Full 30-day plan + guides and docs","Full 60-day plan adjusted for your progress","Full 90-day plan to close remaining leaks","Check-ins at day 7, 15, 21, and 28","All 22 guides and templates included","Saves $147 vs buying each plan separately"]}
-                footer="$599 one time · No subscription · Best value"
+                items={[
+                  "All three phases — 30, 60, and 90 days",
+                  "AI ranks ALL your leaks and sequences them across three phases",
+                  "Each phase gets its own day-by-day plan as you progress",
+                  "Only the guides and docs for leaks YOU actually have",
+                  "60-day and 90-day plans adjust based on your real progress",
+                  "Check-ins at day 7, 15, 21, and 28",
+                  "Saves $147 vs buying each phase separately"
+                ]}
+                footer="$599 one time · All three phases · Best value"
               />
             </div>
             <button onClick={function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }} style={{ width: "100%", background: "none", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.4)", padding: "10px", borderRadius: 7, fontSize: 12, fontFamily: F.b, cursor: "pointer" }}>Want us to do it for you? Book a free call</button>
+            <button onClick={function() { setPage("services"); window.scrollTo(0,0); }} style={{ width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.25)", padding: "6px", fontSize: 11, fontFamily: F.b, cursor: "pointer", textDecoration: "underline" }}>See all services and pricing →</button>
           </div>
 
           <button onClick={function() { setStep(0); setAnswers({}); setCurrent(""); setMultiSel([]); setResult(null); setName(""); setEmail(""); setBiz(""); setPhone(""); }}
@@ -1664,6 +1703,124 @@ function DocsPage({ setPage, paddle }) {
   );
 }
 
+// ─── WHAT WE DO PAGE ─────────────────────────────────────────────────────────
+function WhatWeDoPage({ setPage, calcRef }) {
+
+  const services = [
+    {
+      icon: "🔍",
+      title: "FREE BUSINESS DIAGNOSTIC",
+      tag: "Free",
+      tagColor: C.green,
+      short: "Find your leaks in 3 minutes. No purchase required.",
+      detail: "Answer 16 quick questions about your business. We analyze your answers across all 10 profit leak categories and tell you exactly where the money is going — specific to your trade, your crew size, and your numbers. You get a written report emailed to you.",
+      cta: "Start Free Diagnostic",
+      action: function(setPage, calcRef) { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }
+    },
+    {
+      icon: "📋",
+      title: "30-DAY QUICK WIN PLAN",
+      tag: "$249",
+      tagColor: C.amber,
+      short: "Your worst leaks addressed first. Day-by-day. Only what you need.",
+      detail: "We run an in-depth diagnostic across all 10 profit leak categories. The AI identifies YOUR specific issues, ranks them by dollar impact, and builds a day-by-day 30-day plan around your top leaks. You get only the guides and process docs for problems you actually have — customized to your trade and operation. Nothing generic. Check-ins at day 7 and 15. At day 28 we check in — if you made progress, you move to the 60-day phase. If you need help, we get on a call.",
+      cta: "Get the 30-Day Plan",
+      action: function(setPage, calcRef) { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }
+    },
+    {
+      icon: "📈",
+      title: "COMPLETE 30/60/90-DAY PLAN",
+      tag: "$599 — saves $147",
+      tagColor: C.amber,
+      short: "All three phases. AI-sequenced. Only your docs. Saves $147.",
+      detail: "The AI ranks all 10 leak categories for your specific business and sequences them across three phases — your biggest issues in the first 30 days, next tier in days 31-60, remaining in days 61-90. Each phase gets its own day-by-day plan. You only receive guides and templates for the leaks you actually have, customized to how your operation works. Check-ins throughout. Each 60 and 90-day plan adjusts based on your real progress — not what you planned to do.",
+      cta: "Get the Full Bundle",
+      action: function(setPage, calcRef) { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }
+    },
+    {
+      icon: "🛠️",
+      title: "DONE FOR YOU — CONSULTING",
+      tag: "By scope",
+      tagColor: C.slate,
+      short: "We build and implement the systems for you.",
+      detail: "We interview you and your team, map how your business actually runs, and build the systems — process docs, pricing structures, scheduling workflows, job tracking, whatever you need. You review, we refine, it gets done. Scoping call is free, no commitment.",
+      cta: "Book a Free Scoping Call",
+      action: function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }
+    },
+    {
+      icon: "📱",
+      title: "THE APP — COMING SOON",
+      tag: "Coming soon",
+      tagColor: C.muted,
+      short: "Field service management built for small service businesses.",
+      detail: "Everything a small service business needs to run jobs, track techs, invoice same-day, and manage the back office — without paying enterprise prices or learning software designed for 500-person companies. Join the waitlist to be first.",
+      cta: "Join the Waitlist",
+      action: function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }
+    },
+  ];
+
+  return (
+    <div style={{ background: C.warm0, minHeight: "100vh", paddingTop: 64 }}>
+      {/* Header */}
+      <div style={{ background: "linear-gradient(160deg," + C.navyDark + "," + C.navy + ")", padding: "64px 24px 52px", textAlign: "center" }}>
+        <div style={{ maxWidth: 600, margin: "0 auto" }}>
+          <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 4, marginBottom: 10, fontFamily: F.b }}>COMPASS BUSINESS SOLUTIONS</div>
+          <h1 style={{ fontFamily: F.d, fontSize: "clamp(28px,6vw,52px)", fontWeight: 800, color: C.white, letterSpacing: 2, marginBottom: 16, lineHeight: 1.1 }}>WHAT WE DO.</h1>
+          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.45)", lineHeight: 1.8, fontFamily: F.b, maxWidth: 480, margin: "0 auto" }}>
+            We find the money your service business is losing and help you stop losing it — from a free scan to a full done-for-you build.
+          </p>
+        </div>
+      </div>
+
+      {/* Service cards */}
+      <div style={{ maxWidth: 800, margin: "0 auto", padding: "48px 24px" }}>
+        {services.map(function(svc, i) {
+          return <ServiceCard key={i} svc={svc} setPage={setPage} calcRef={calcRef} />;
+        })}
+
+        {/* Bottom CTA */}
+        <div style={{ background: C.navyDark, borderRadius: 14, padding: "28px 28px", marginTop: 8, textAlign: "center", border: "1px solid rgba(61,107,158,0.2)" }}>
+          <div style={{ fontFamily: F.d, fontSize: 18, fontWeight: 800, color: C.white, marginBottom: 8 }}>NOT SURE WHERE TO START?</div>
+          <p style={{ fontFamily: F.b, fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.7, maxWidth: 440, margin: "0 auto 20px" }}>The free diagnostic takes 3 minutes and tells you exactly which of these is right for your situation.</p>
+          <button onClick={function() { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }}
+            style={{ background: C.amber, border: "none", color: C.white, padding: "14px 36px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 20px rgba(200,112,26,0.35)" }}>
+            Start Free Diagnostic →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ServiceCard({ svc, setPage, calcRef }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ background: C.white, borderRadius: 14, border: "1px solid " + C.warm3, marginBottom: 12, overflow: "hidden", transition: "box-shadow 0.2s", boxShadow: open ? "0 4px 24px rgba(26,35,50,0.1)" : "none" }}>
+      <div onClick={function() { setOpen(function(v) { return !v; }); }}
+        style={{ display: "flex", alignItems: "center", gap: 16, padding: "18px 20px", cursor: "pointer" }}>
+        <div style={{ fontSize: 28, flexShrink: 0 }}>{svc.icon}</div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontFamily: F.d, fontSize: 14, fontWeight: 800, color: C.ink, letterSpacing: 0.5, marginBottom: 3 }}>{svc.title}</div>
+          <div style={{ fontFamily: F.b, fontSize: 13, color: C.muted, lineHeight: 1.5 }}>{svc.short}</div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+          <div style={{ background: svc.tagColor + "18", border: "1px solid " + svc.tagColor + "44", borderRadius: 99, padding: "4px 12px", fontFamily: F.b, fontSize: 12, fontWeight: 700, color: svc.tagColor }}>{svc.tag}</div>
+          <div style={{ fontFamily: F.b, fontSize: 18, color: C.muted, transition: "transform 0.2s", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}>›</div>
+        </div>
+      </div>
+      {open && (
+        <div style={{ padding: "0 20px 20px 64px", borderTop: "1px solid " + C.warm2 }}>
+          <p style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.8, margin: "16px 0 16px" }}>{svc.detail}</p>
+          <button onClick={function() { svc.action(setPage, calcRef); }}
+            style={{ background: svc.tagColor === C.muted ? C.navy : svc.tagColor, border: "none", color: C.white, padding: "11px 24px", borderRadius: 8, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>
+            {svc.cta} →
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── FOOTER ───────────────────────────────────────────────────────────────────
 function Footer({ setPage }) {
   return (
@@ -1677,7 +1834,7 @@ function Footer({ setPage }) {
           </div>
         </div>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center" }}>
-          {[["home","Home"], ["about","Our Story"], ["profitable","What Profitable Looks Like"]].map(([p, l]) => (
+          {[["home","Home"], ["about","Our Story"], ["profitable","What Profitable Looks Like"], ["services","What We Do"]].map(([p, l]) => (
             <button key={p} onClick={() => { setPage(p); window.scrollTo(0,0); }} style={{ background: "none", border: "none", color: C.muted, fontSize: 13, fontFamily: F.b, cursor: "pointer", padding: "6px 10px" }}>{l}</button>
           ))}
         </div>
@@ -1965,6 +2122,7 @@ function App() {
 
         {page === "about"      && <AboutPage  setPage={setPage} calcRef={calcRef} />}
         {page === "profitable" && <WhatProfitableLooksLike setPage={setPage} calcRef={calcRef} />}
+        {page === "services"   && <WhatWeDoPage setPage={setPage} calcRef={calcRef} />}
         {page === "guides"     && <GuidesPage paddle={paddle} />}
         {page === "docs"       && <DocsPage setPage={setPage} paddle={paddle} />}
       </main>
