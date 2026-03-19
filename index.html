@@ -989,13 +989,17 @@ function TraitExpanded({ t, setPage }) {
           <div style={{ overflow: "hidden", maxHeight: hovered ? "600px" : "0px", opacity: hovered ? 1 : 0, transition: "max-height 0.5s ease, opacity 0.3s ease" }}>
             <div style={{ borderTop: `1px solid ${t.color}22`, paddingTop: 14, marginTop: 2 }}>
               <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.85, fontFamily: F.b, margin: "0 0 16px" }}>{t.expanded}</p>
-              {t.cta && (
-                <button onClick={() => { window.scrollTo(0,0); setPage(t.cta.page); }}
-                  style={{ background: "none", border: `1.5px solid ${t.color}88`, color: t.color, padding: "8px 18px", borderRadius: 8, fontSize: 12, fontWeight: 700, fontFamily: F.b, cursor: "pointer", letterSpacing: 0.5, transition: "all 0.2s" }}
-                  onMouseEnter={e => { e.currentTarget.style.background = t.color + "22"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "none"; }}>
-                  {t.cta.label} →
-                </button>
+              {t.docs && t.docs.length > 0 && (
+                <div style={{ borderTop: `1px solid ${t.color}22`, paddingTop: 12 }}>
+                  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 2, fontFamily: F.b, marginBottom: 8 }}>RELEVANT DOCS</div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                    {t.docs.map(function(doc, i) {
+                      return (
+                        <span key={i} style={{ background: t.color + "18", border: "1px solid " + t.color + "44", borderRadius: 99, padding: "4px 12px", fontSize: 11, color: t.color, fontFamily: F.b, fontWeight: 600 }}>{doc}</span>
+                      );
+                    })}
+                  </div>
+                </div>
               )}
             </div>
           </div>
@@ -1012,42 +1016,42 @@ function WhatProfitableLooksLike({ calcRef, setPage }) {
       label: "They have a documented process for everything.",
       detail: "Every job runs the same way. Every tech knows what's expected. Nothing lives only in the owner's head — so the business doesn't fall apart when the owner steps away.",
       expanded: "Most service businesses run on tribal knowledge. The owner knows how things should go. Maybe a few key employees do too. But it's never written down, never taught consistently, and never enforced. When someone quits or calls in sick, chaos follows. Profitable businesses treat process documentation like infrastructure — it's the foundation everything else runs on. Job checklists. Onboarding procedures. How calls get answered. How invoices get sent. When it's written down, it gets done the same way every time — and that consistency is where margin lives.",
-      cta: { label: "See our Process Doc Templates", page: "docs" }
+      docs: ["Truck Restocking Checklist", "Appointment Confirmation Process", "Job Completion & Invoicing Process", "New Hire Training Documentation", "Employee Handbook"]
     },
     {
       icon: "💰", color: "#C8701A",
       label: "They know their real cost — and price above it.",
       detail: "They've done the math on labor, trucks, insurance, and overhead. Their price covers all of it, every time — not just the parts they remembered to count.",
       expanded: "Most service businesses underprice — not because they're not charging enough per hour, but because they haven't counted everything that costs money. Labor burden. Insurance. Truck payments. Fuel. Admin time. Tools and equipment. When you add it all up, your real cost per billable hour is often 40-60% higher than what you think. Profitable businesses have done this math. Their prices aren't guesses — they're calculated minimums with margin built on top. They know what they need to charge to make a profit, and they charge it.",
-      cta: { label: "Fix It Yourself — Guide #1: The Pricing Leak", page: "guides" }
+      docs: ["Pricing Worksheet & Rate Calculator"]
     },
     {
       icon: "👷", color: "#A8782A",
       label: "Their employees know exactly what's expected.",
       detail: "Standards exist in writing. Work is checked against them. When someone drifts, it gets caught early — before it becomes a pattern that costs real money.",
       expanded: "Without written standards, you're managing by vibes. Some techs do great work. Others cut corners. You find out when a customer complains — or doesn't come back. Profitable businesses have an employee handbook that covers more than just HR policy. It covers how jobs get done. What 'good' looks like on a service call. What to do when something goes wrong on site. When expectations are written down and consistently enforced, performance stops being random. You stop losing jobs to employee behavior you didn't catch until it was too late.",
-      cta: { label: "See the Employee Handbook Template", page: "docs" }
+      docs: ["Employee Handbook", "New Hire Training Documentation", "Safety & Job Site Procedures"]
     },
     {
       icon: "🔄", color: "#1A6B64",
       label: "They get paid more than once per customer.",
       detail: "Maintenance contracts, service agreements, seasonal check-ins. They've built predictable monthly income on top of job revenue — so slow weeks don't sink them.",
       expanded: "One-time jobs are the least efficient revenue you can earn. You spend time and money acquiring a customer, do the work, and then start from zero again. Profitable businesses have converted a portion of their customer base into recurring agreements — annual maintenance contracts, service plans, seasonal inspections. It doesn't have to be complicated. Even getting 20% of your customers on a simple annual plan creates a revenue floor that makes the slow months survivable and the strong months genuinely profitable.",
-      cta: { label: "Fix It Yourself — Guide #4: Recurring Revenue", page: "guides" }
+      docs: ["Service Agreement & Maintenance Contract", "Customer Follow-Up Sequence", "Referral & Review Request System"]
     },
     {
       icon: "📊", color: "#1E6B45",
       label: "They know where their money is at all times.",
       detail: "What's coming in. What's going out. What's due. They're never surprised by their own bank account — and they can see a cash crunch coming before it arrives.",
       expanded: "Most small service businesses run on gut feel. The owner checks the bank account and decides if things are okay. That works until it doesn't — until a big invoice is late, a truck needs repair, and payroll is due all in the same week. Profitable businesses have basic cash flow visibility. They know what's invoiced but not collected. They know what's due in the next 30 days. They're not running financial reports every morning — they just have a simple system that gives them enough visibility to make decisions before problems arrive, not after.",
-      cta: { label: "Fix It Yourself — Guide #6: Cash Flow", page: "guides" }
+      docs: ["Job Completion & Invoicing Process", "Change Order Template"]
     },
     {
       icon: "🤝", color: "#5B3D8A",
       label: "They stay in touch with past customers.",
       detail: "Follow-ups are scheduled, not forgotten. Reviews get requested. Repeat work doesn't happen by accident — it happens because they built a system to make it happen.",
       expanded: "Your past customers are the cheapest leads you'll ever have. They already trust you. They already know your work. But most service businesses never follow up — not because they don't want to, but because there's no system that makes it happen automatically. Profitable businesses have a simple sequence: job complete, invoice sent, follow-up scheduled, review requested. It's not complicated. But when it's automated and consistent, it generates repeat business and referrals that show up without any additional marketing spend.",
-      cta: { label: "See the Customer Follow-Up Template", page: "docs" }
+      docs: ["Customer Follow-Up Sequence", "Referral & Review Request System"]
     },
   ];
 
@@ -1112,12 +1116,18 @@ function WhatProfitableLooksLike({ calcRef, setPage }) {
             WHERE DOES YOUR BUSINESS STAND?
           </h2>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.4)", fontFamily: F.b, lineHeight: 1.7, marginBottom: 28 }}>
-            The Free Profit Leak Scan takes 3 minutes and shows you your estimated annual leak across 5 key categories — scheduling, admin, vehicles, employee time, and unbilled work.
+            Start with the free diagnostic and find out exactly which of these six things your business is missing — and what it's costing you.
           </p>
-          <button onClick={() => { setPage("home"); setTimeout(() => calcRef?.current?.scrollIntoView({ behavior: "smooth" }), 80); }}
-            style={{ background: C.amber, border: "none", color: C.white, padding: "15px 36px", borderRadius: 10, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: `0 4px 24px ${C.amber}44` }}>
-            Take the Free Profit Scan →
-          </button>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button onClick={() => { setPage("home"); setTimeout(() => calcRef?.current?.scrollIntoView({ behavior: "smooth" }), 80); }}
+              style={{ background: C.amber, border: "none", color: C.white, padding: "15px 32px", borderRadius: 10, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: `0 4px 24px ${C.amber}44` }}>
+              Start Free Diagnostic →
+            </button>
+            <button onClick={() => { window.scrollTo(0,0); setPage("services"); }}
+              style={{ background: "none", border: "1.5px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.6)", padding: "15px 32px", borderRadius: 10, fontSize: 15, fontWeight: 600, fontFamily: F.b, cursor: "pointer" }}>
+              See Our Packages →
+            </button>
+          </div>
         </div>
       </section>
     </div>
