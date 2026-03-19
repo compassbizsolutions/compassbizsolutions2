@@ -5,6 +5,7 @@
   ],
   "functions": {
     "api/paddle-webhook.js": { "maxDuration": 10 },
-    "api/send-full-report.js": { "maxDuration": 60 }
+    "api/send-full-report.js": { "maxDuration": 60 },
+    "api/send-diagnostic.js": { "maxDuration": 30 }
   }
 }
