@@ -534,56 +534,34 @@ Use EXACTLY these tags:
               {/* UPGRADE WALL */}
               <div style={{background:`linear-gradient(160deg,${C.navyDark},${C.navyMid})`,borderRadius:16,padding:"22px 20px",border:"1px solid rgba(200,112,26,0.25)",boxShadow:"0 12px 60px rgba(0,0,0,0.35)",marginBottom:10}}>
                 {g("WHATS_MISSING")&&<div style={{background:"rgba(0,0,0,0.25)",borderRadius:10,padding:"12px 14px",marginBottom:18,border:"1px solid rgba(255,255,255,0.07)"}}><div style={{fontFamily:F.d,fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.3)",letterSpacing:2.5,marginBottom:6}}>WHAT THIS SCAN DIDN'T COVER</div><p style={{fontSize:12,color:"rgba(255,255,255,0.45)",lineHeight:1.7,fontFamily:F.b,margin:0}}>{g("WHATS_MISSING")}</p></div>}
-                <div style={{textAlign:"center",marginBottom:20}}><div style={{fontFamily:F.d,fontSize:24,fontWeight:800,color:C.white,letterSpacing:1,marginBottom:6}}>WANT THE FULL PICTURE?</div>{g("UPGRADE_HOOK")&&<p style={{fontSize:13,color:"rgba(255,255,255,0.45)",lineHeight:1.65,fontFamily:F.b,maxWidth:380,margin:"0 auto"}}>{g("UPGRADE_HOOK")}</p>}</div>
+                <div style={{textAlign:"center",marginBottom:20}}><div style={{fontFamily:F.d,fontSize:24,fontWeight:800,color:C.white,letterSpacing:1,marginBottom:6}}>READY TO FIX IT?</div>{g("UPGRADE_HOOK")&&<p style={{fontSize:13,color:"rgba(255,255,255,0.45)",lineHeight:1.65,fontFamily:F.b,maxWidth:380,margin:"0 auto"}}>{g("UPGRADE_HOOK")}</p>}</div>
 
-                {/* $599 Full DIY Package — Customized */}
+                {/* $599 Full 30/60/90 Bundle — BEST VALUE */}
                 <div style={{background:"linear-gradient(135deg,rgba(200,112,26,0.18),rgba(200,112,26,0.06))",border:`2px solid ${C.amber}55`,borderRadius:12,padding:"18px",marginBottom:8,position:"relative"}}>
-                  <div style={{position:"absolute",top:-9,right:14,background:C.amber,color:C.white,fontSize:9,fontWeight:800,letterSpacing:1.5,padding:"3px 10px",borderRadius:99,fontFamily:F.b}}>MOST POPULAR</div>
+                  <div style={{position:"absolute",top:-9,right:14,background:C.amber,color:C.white,fontSize:9,fontWeight:800,letterSpacing:1.5,padding:"3px 10px",borderRadius:99,fontFamily:F.b}}>BEST VALUE — SAVE $147</div>
                   <div style={{display:"flex",alignItems:"flex-start",gap:14,marginBottom:12}}>
                     <div style={{flexShrink:0,textAlign:"center"}}><div style={{fontFamily:F.d,fontSize:36,fontWeight:800,color:C.amber,lineHeight:1}}>$599</div><div style={{fontSize:9,color:"rgba(255,255,255,0.3)",fontFamily:F.b}}>one time</div></div>
                     <div>
-                      <div style={{fontFamily:F.d,fontSize:15,fontWeight:700,color:C.white,letterSpacing:0.5,marginBottom:4}}>FULL DIY PACKAGE — CUSTOMIZED</div>
-                      {["In-depth calculator — all 10 leak categories","30/60/90-day to-do list — built around your specific numbers","All 10 Fix-It Guides — trade-specific","All 12 Process Doc templates — customized to your trade & situation"].map((item,i)=><div key={i} style={{fontSize:11,color:"rgba(255,255,255,0.5)",fontFamily:F.b,marginBottom:3,display:"flex",gap:6}}><span style={{color:C.amber,flexShrink:0}}>→</span>{item}</div>)}
+                      <div style={{fontFamily:F.d,fontSize:15,fontWeight:700,color:C.white,letterSpacing:0.5,marginBottom:4}}>COMPLETE 30/60/90-DAY PLAN</div>
+                      {["In-depth diagnostic across all 10 leak categories","Full 30/60/90-day customized action plan","All guides and templates for every leak identified","Day 7, 15, 21 and 28 check-in emails to keep you on track"].map((item,i)=><div key={i} style={{fontSize:11,color:"rgba(255,255,255,0.5)",fontFamily:F.b,marginBottom:3,display:"flex",gap:6}}><span style={{color:C.amber,flexShrink:0}}>→</span>{item}</div>)}
                     </div>
                   </div>
-                  {tokenValid
-                    ? <PBtn onClick={genFull} disabled={loading} bg={C.amber}>{loading?"Building your complete diagnostic...":"Generate My Full Report →"}</PBtn>
-                    : <PBtn onClick={()=>paddle("PADDLE_LINK_599?prefill_email="+encodeURIComponent(email),"Full DIY Package Customized — $599")} bg={C.amber}>Get the Full DIY Package — $599 →</PBtn>
-                  }
-                  {tokenValid && <p style={{fontSize:11,color:"rgba(255,255,255,0.35)",textAlign:"center",marginTop:8,fontFamily:F.b}}>✓ Payment verified — your customized report will be emailed with all 22 files attached</p>}
+                  <PBtn onClick={()=>paddle("PADDLE_LINK_599","Complete 30/60/90 Plan — $599")} bg={C.amber}>Get the Complete Plan — $599 →</PBtn>
                 </div>
 
-                {/* $349 Generic DIY Package */}
+                {/* $249 — 30-Day Plan */}
                 <div style={{background:"rgba(200,112,26,0.08)",border:"1px solid rgba(200,112,26,0.25)",borderRadius:10,padding:"12px 16px",marginBottom:6,display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,flexWrap:"wrap"}}>
                   <div>
-                    <div style={{fontFamily:F.d,fontSize:13,fontWeight:700,color:C.amber,marginBottom:2}}>GENERIC DIY PACKAGE — $349</div>
-                    <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",fontFamily:F.b}}>All 10 guides + all 12 templates. You customize them yourself.</div>
+                    <div style={{fontFamily:F.d,fontSize:13,fontWeight:700,color:C.amber,marginBottom:2}}>30-DAY QUICK WIN PLAN — $249</div>
+                    <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",fontFamily:F.b}}>In-depth diagnostic + customized 30-day plan + guides and docs for your top leaks.</div>
                   </div>
-                  <button onClick={()=>paddle("PADDLE_LINK_349","Generic DIY Package — $349")} style={{background:C.amber,border:"none",color:C.white,padding:"8px 14px",borderRadius:7,fontSize:12,fontWeight:700,fontFamily:F.b,flexShrink:0,cursor:"pointer"}}>Get Package →</button>
-                </div>
-
-                {/* $199 Fix-It Guide Bundle */}
-                <div style={{background:"rgba(168,120,42,0.1)",border:"1px solid rgba(168,120,42,0.3)",borderRadius:10,padding:"12px 16px",marginBottom:6,display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,flexWrap:"wrap"}}>
-                  <div><div style={{fontFamily:F.d,fontSize:13,fontWeight:700,color:C.gold,marginBottom:2}}>FIX-IT GUIDE BUNDLE — $199</div><div style={{fontSize:11,color:"rgba(255,255,255,0.35)",fontFamily:F.b}}>All 10 guides. Fix each leak yourself, at your own pace.</div></div>
-                  <button onClick={()=>paddle("PADDLE_LINK_199","Fix-It Guide Bundle — $199")} style={{background:C.gold,border:"none",color:C.white,padding:"8px 14px",borderRadius:7,fontSize:12,fontWeight:700,fontFamily:F.b,flexShrink:0,cursor:"pointer"}}>Get Bundle →</button>
-                </div>
-
-                {/* $199 Templates Bundle */}
-                <div style={{background:"rgba(61,107,158,0.1)",border:"1px solid rgba(61,107,158,0.25)",borderRadius:10,padding:"12px 16px",marginBottom:6,display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,flexWrap:"wrap"}}>
-                  <div><div style={{fontFamily:F.d,fontSize:13,fontWeight:700,color:C.slateLight,marginBottom:2}}>ALL 12 TEMPLATES — $199</div><div style={{fontSize:11,color:"rgba(255,255,255,0.35)",fontFamily:F.b}}>All 12 process doc templates. You customize them yourself.</div></div>
-                  <button onClick={()=>paddle("PADDLE_LINK_DOCS_199","All 12 Templates — $199")} style={{background:C.slate,border:"none",color:C.white,padding:"8px 14px",borderRadius:7,fontSize:12,fontWeight:700,fontFamily:F.b,flexShrink:0,cursor:"pointer"}}>Get Templates →</button>
+                  <button onClick={()=>paddle("PADDLE_LINK_249_30DAY","30-Day Plan — $249")} style={{background:C.amber,border:"none",color:C.white,padding:"8px 14px",borderRadius:7,fontSize:12,fontWeight:700,fontFamily:F.b,flexShrink:0,cursor:"pointer"}}>Start Here →</button>
                 </div>
 
                 {/* Free Scoping Call */}
                 <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:10,padding:"12px 16px",marginBottom:6,display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,flexWrap:"wrap"}}>
-                  <div><div style={{fontFamily:F.d,fontSize:13,fontWeight:700,color:"rgba(255,255,255,0.7)",marginBottom:2}}>FREE SCOPING CALL</div><div style={{fontSize:11,color:"rgba(255,255,255,0.35)",fontFamily:F.b}}>Want us to build it for you? We scope the work first.</div></div>
+                  <div><div style={{fontFamily:F.d,fontSize:13,fontWeight:700,color:"rgba(255,255,255,0.7)",marginBottom:2}}>WANT US TO DO IT FOR YOU?</div><div style={{fontSize:11,color:"rgba(255,255,255,0.35)",fontFamily:F.b}}>We scope the work first. Free 30-minute call, no commitment.</div></div>
                   <button onClick={()=>window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call","_blank")} style={{background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",color:"rgba(255,255,255,0.6)",padding:"8px 14px",borderRadius:7,fontSize:12,fontWeight:700,fontFamily:F.b,flexShrink:0,cursor:"pointer"}}>Book Call →</button>
-                </div>
-
-                {/* Done For You */}
-                <div style={{background:"rgba(255,255,255,0.02)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:10,padding:"12px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,flexWrap:"wrap"}}>
-                  <div><div style={{fontFamily:F.d,fontSize:13,fontWeight:700,color:"rgba(255,255,255,0.45)",marginBottom:2}}>WE FIX IT FOR YOU — PRICED BY NEED</div><div style={{fontSize:11,color:"rgba(255,255,255,0.28)",fontFamily:F.b}}>Custom systems built for your operation. Payment plans available.</div></div>
-                  <button onClick={()=>window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call","_blank")} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",color:"rgba(255,255,255,0.4)",padding:"8px 14px",borderRadius:7,fontSize:12,fontWeight:700,fontFamily:F.b,flexShrink:0,cursor:"pointer"}}>Learn More →</button>
                 </div>
 
                 {err&&<div style={{background:C.redLight,borderRadius:8,padding:"10px 12px",marginTop:10,fontSize:12,color:C.red,fontFamily:F.b}}>{err}</div>}
@@ -711,7 +689,7 @@ function DiagnosticTool({ setPage, paddle }) {
     setStep(19);
     try {
       const a = answers;
-      const sys = "You are a straight-talking business consultant with 23 years fixing operations inside Fortune-level companies, now working exclusively with blue-collar service businesses. You know the 10 profit leaks cold: 1-Pricing, 2-Scheduling/no-shows, 3-Employee cost, 4-Recurring revenue, 5-Estimate-to-invoice gaps, 6-Cash flow, 7-Customer churn, 8-Materials markup, 9-Admin time drain, 10-Vehicles and parts.\n\nThis owner answered:\nTrade: " + (a.trade||"service") + "\nServices: " + (a.services||"") + "\nYears: " + (a.years||"") + "\nCrew: " + (a.crew||"") + "\nTrucks: " + (a.trucks||"") + "\nJobs/week: " + (a.jobs||"") + "\nAvg invoice: " + (a.invoice||"") + "\nLabor pricing: " + (a.rate||"") + "\nTracking: " + (a.tracking||"") + "\nParts runs: " + (a.partsruns||"") + "\nInvoice timing: " + (a.invoicetiming||"") + "\nRepeat vs new: " + (a.repeat||"") + "\nLast rate increase: " + (a.rates||"") + "\nNo-shows/week: " + (a.noshows||"") + "\nTime wasters: " + (a.timewaste||"") + "\nConcerns: " + (a.concerns||"") + "\n\nRespond ONLY with these exact tags, no other text:\n\n[HEADLINE]\nOne punchy sentence naming the single biggest problem in plain language.\n\n[WHAT_WE_SEE]\n3-4 sentences referencing their actual answers. Be specific. No generic fluff.\n\n[TOP_LEAK]\nBiggest leak. Name it, explain why given their answers, estimate annual dollar impact if numbers allow.\n\n[SECOND_LEAK]\nSame format.\n\n[THIRD_LEAK]\nSame format.\n\n[30_DAY]\nNumbered list. 3 specific free actions for first 30 days. One sentence each. Specific to their trade.\n\n[60_DAY]\nNumbered list. 3 actions days 31-60.\n\n[90_DAY]\nNumbered list. 3 bigger-picture moves days 61-90.\n\n[HOW_WE_HELP]\n2-3 sentences. Mention Compass Business Solutions by name. Reference the specific Fix-It Guides and Process Doc Templates that address their top leaks by name. Mention done-for-you consulting. No prices.";
+      const sys = "You are a straight-talking business consultant with 23 years fixing operations inside Fortune-level companies, now working exclusively with blue-collar service businesses. You know the 10 profit leaks cold: 1-Pricing, 2-Scheduling/no-shows, 3-Employee cost, 4-Recurring revenue, 5-Estimate-to-invoice gaps, 6-Cash flow, 7-Customer churn, 8-Materials markup, 9-Admin time drain, 10-Vehicles and parts.\n\nThis owner answered:\nTrade: " + (a.trade||"service") + "\nServices: " + (a.services||"") + "\nYears: " + (a.years||"") + "\nCrew: " + (a.crew||"") + "\nTrucks: " + (a.trucks||"") + "\nJobs/week: " + (a.jobs||"") + "\nAvg invoice: " + (a.invoice||"") + "\nLabor pricing: " + (a.rate||"") + "\nTracking: " + (a.tracking||"") + "\nParts runs: " + (a.partsruns||"") + "\nInvoice timing: " + (a.invoicetiming||"") + "\nRepeat vs new: " + (a.repeat||"") + "\nLast rate increase: " + (a.rates||"") + "\nNo-shows/week: " + (a.noshows||"") + "\nTime wasters: " + (a.timewaste||"") + "\nConcerns: " + (a.concerns||"") + "\n\nRespond ONLY with these exact tags, no other text:\n\n[HEADLINE]\nOne punchy sentence naming the single biggest problem in plain language.\n\n[WHAT_WE_SEE]\n3-4 sentences referencing their actual answers. Be specific. No generic fluff.\n\n[TOP_LEAK]\nBiggest leak. Name it, explain why given their answers, estimate annual dollar impact if numbers allow.\n\n[SECOND_LEAK]\nSame format.\n\n[THIRD_LEAK]\nSame format.\n\n[HOW_WE_HELP]\n2 sentences max. Tell them a customized 30-day action plan with only the guides and templates for their specific leaks is available. Reference Compass Business Solutions. No prices — those are shown separately.";
       const res = await fetch("/api/generate-report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -868,32 +846,28 @@ function DiagnosticTool({ setPage, paddle }) {
               </div>
             );
           })}
-          <div style={{ fontFamily: F.d, fontSize: 12, fontWeight: 800, color: C.ink, letterSpacing: 1, margin: "20px 0 12px" }}>YOUR 30/60/90-DAY PLAN</div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10, marginBottom: 20 }}>
-            {[["30_DAY","Days 1-30","Quick Wins",C.green],["60_DAY","Days 31-60","Build Systems",C.slate],["90_DAY","Days 61-90","Growth Moves",C.amber]].map(function(p, i) {
-              const content = g(p[0]);
-              if (!content) return null;
-              return (
-                <div key={i} style={{ background: C.white, borderRadius: 10, padding: "14px 16px", border: "1px solid " + C.warm3, borderTop: "3px solid " + p[3] }}>
-                  <div style={{ fontFamily: F.d, fontSize: 13, fontWeight: 800, color: p[3], marginBottom: 2 }}>{p[1]}</div>
-                  <div style={{ fontFamily: F.b, fontSize: 11, color: C.muted, marginBottom: 8 }}>{p[2]}</div>
-                  <div style={{ fontFamily: F.b, fontSize: 12, color: C.body, lineHeight: 1.7, whiteSpace: "pre-line" }}>{content}</div>
-                </div>
-              );
-            })}
-          </div>
-          {g("HOW_WE_HELP") && (
-            <div style={{ background: C.navyDark, borderRadius: 10, padding: "16px 18px", marginBottom: 20 }}>
-              <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: C.amber, letterSpacing: 2, marginBottom: 8 }}>HOW COMPASS CAN HELP</div>
-              <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.65)", lineHeight: 1.8, margin: 0 }}>{g("HOW_WE_HELP")}</p>
+
+          {/* Upgrade CTA — replaces free 30/60/90 plan */}
+          <div style={{ background: C.navyDark, borderRadius: 12, padding: "20px 20px", marginTop: 20, marginBottom: 16, border: "1px solid rgba(200,112,26,0.2)" }}>
+            <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 700, color: C.amber, letterSpacing: 2, marginBottom: 8 }}>WHAT HAPPENS NEXT</div>
+            <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 16px" }}>{g("HOW_WE_HELP") || "We can build you a customized 30-day action plan with only the guides and templates that fix your specific leaks — nothing you do not need. Then check in at day 7 and 15 to make sure you are on track."}</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }} className="calc-grid">
+              <div style={{ background: "rgba(200,112,26,0.12)", border: "1px solid rgba(200,112,26,0.3)", borderRadius: 9, padding: "12px 14px", textAlign: "center" }}>
+                <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.amber }}>$249</div>
+                <div style={{ fontFamily: F.b, fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: 8 }}>30-Day Quick Win Plan</div>
+                <button onClick={function() { paddle("PADDLE_LINK_249_30DAY", "30-Day Plan — $249"); }} style={{ width: "100%", background: C.amber, border: "none", color: C.white, padding: "8px", borderRadius: 7, fontSize: 12, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>Get Started</button>
+              </div>
+              <div style={{ background: "rgba(200,112,26,0.06)", border: "1px solid rgba(200,112,26,0.2)", borderRadius: 9, padding: "12px 14px", textAlign: "center" }}>
+                <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.amber }}>$599</div>
+                <div style={{ fontFamily: F.b, fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: 8 }}>Full 30/60/90 Bundle — saves $147</div>
+                <button onClick={function() { paddle("PADDLE_LINK_599", "Complete 30/60/90 Plan — $599"); }} style={{ width: "100%", background: "rgba(200,112,26,0.3)", border: "1px solid rgba(200,112,26,0.4)", color: C.white, padding: "8px", borderRadius: 7, fontSize: 12, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>Best Value</button>
+              </div>
             </div>
-          )}
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <button onClick={function() { setPage("guides"); window.scrollTo(0, 0); }} style={{ width: "100%", background: C.amber, border: "none", color: C.white, padding: "14px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 20px rgba(200,112,26,0.3)" }}>See the Fix-It Guides and Templates</button>
-            <button onClick={function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }} style={{ width: "100%", background: "none", border: "1.5px solid " + C.warm3, color: C.muted, padding: "12px", borderRadius: 10, fontSize: 13, fontWeight: 600, fontFamily: F.b, cursor: "pointer" }}>Talk to Jen - Free 30-Minute Call</button>
+            <button onClick={function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }} style={{ width: "100%", background: "none", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.4)", padding: "10px", borderRadius: 7, fontSize: 12, fontFamily: F.b, cursor: "pointer", marginTop: 10 }}>Want us to do it for you? Book a free call</button>
           </div>
+
           <button onClick={function() { setStep(0); setAnswers({}); setCurrent(""); setMultiSel([]); setResult(null); setName(""); setEmail(""); setBiz(""); setPhone(""); }}
-            style={{ background: "none", border: "none", color: C.ghost, fontSize: 11, fontFamily: F.b, cursor: "pointer", marginTop: 16, display: "block", width: "100%", textAlign: "center" }}>Start over</button>
+            style={{ background: "none", border: "none", color: C.ghost, fontSize: 11, fontFamily: F.b, cursor: "pointer", marginTop: 8, display: "block", width: "100%", textAlign: "center" }}>Start over</button>
         </div>
       </div>
     );
@@ -1053,11 +1027,12 @@ function WhatProfitableLooksLike({ calcRef, setPage }) {
 // ─── HOW IT WORKS SECTION ─────────────────────────────────────────────────────
 function HowItWorks() {
   const steps = [
-    { num: "01", color: C.slate,  title: "FREE QUICK SCAN", price: "Free", desc: "12 questions. 3 minutes. See your estimated annual profit leak across 5 key areas. AI-generated personalized results emailed to you instantly." },
-    { num: "02", color: C.red,    title: "GENERIC DIY PACKAGE", price: "$349", desc: "All 10 Fix-It Guides + all 12 process doc templates. Generic versions you customize yourself. Everything you need to fix every leak category." },
-    { num: "03", color: C.amber,  title: "FULL DIY PACKAGE", price: "$599", desc: "In-depth 10-category diagnostic + 30/60/90-day customized to-do list + all 22 docs AI-customized to your trade, size, and specific numbers." },
-    { num: "04", color: C.green,  title: "FREE SCOPING CALL", price: "Free", desc: "If you want us to build it for you, we start here. 20-30 minutes, no commitment. We map your operation and tell you exactly what it will cost." },
-    { num: "05", color: C.teal,   title: "WE FIX IT FOR YOU", price: "By scope", desc: "Custom systems, automations, and tools built specifically for your operation. Payment plans available." },
+    { num: "01", color: C.slate,  title: "FREE DIAGNOSTIC", price: "Free", desc: "Answer a few questions. We identify your top leaks and tell you exactly what is costing you money. No purchase required." },
+    { num: "02", color: C.amber,  title: "30-DAY QUICK WIN PLAN", price: "$249", desc: "In-depth diagnostic + a customized 30-day action plan + the specific guides and docs for your top leaks. Check-ins at day 7 and 15 to keep you on track." },
+    { num: "03", color: C.gold,   title: "60-DAY PLAN", price: "$249", desc: "We check in at day 21 and 28, assess your progress, and issue your customized days 31-60 plan adjusted for what you have and have not done yet." },
+    { num: "04", color: C.green,  title: "90-DAY PLAN", price: "$249", desc: "Same pattern. Progress check, updated priorities, days 61-90 plan. By this point most leaks are closed or actively being worked." },
+    { num: "05", color: C.red,    title: "COMPLETE BUNDLE", price: "$599", desc: "All three plans upfront. Saves $147. Everything customized to your business, all docs included, full check-in schedule. Best value." },
+    { num: "06", color: C.teal,   title: "WE DO IT FOR YOU", price: "By scope", desc: "We implement the systems for you. Custom built around how your business actually runs. Payment plans available." },
   ];
   return (
     <section style={{ background: C.warm0, padding: "80px 24px" }}>
