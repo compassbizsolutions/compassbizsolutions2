@@ -548,7 +548,7 @@ Use EXACTLY these tags:
                   </div>
                   {tokenValid
                     ? <PBtn onClick={genFull} disabled={loading} bg={C.amber}>{loading?"Building your complete diagnostic...":"Generate My Full Report →"}</PBtn>
-                    : <PBtn onClick={()=>paddle(`PADDLE_LINK_599?prefill_email=${encodeURIComponent(email)}`,"Full DIY Package Customized — $599")} bg={C.amber}>Get the Full DIY Package — $599 →</PBtn>
+                    : <PBtn onClick={()=>paddle("PADDLE_LINK_599?prefill_email="+encodeURIComponent(email),"Full DIY Package Customized — $599")} bg={C.amber}>Get the Full DIY Package — $599 →</PBtn>
                   }
                   {tokenValid && <p style={{fontSize:11,color:"rgba(255,255,255,0.35)",textAlign:"center",marginTop:8,fontFamily:F.b}}>✓ Payment verified — your customized report will be emailed with all 22 files attached</p>}
                 </div>
@@ -1038,7 +1038,7 @@ function PreviewModal({ item, type, onClose, paddle }) {
               </button>
             ) : (
               <>
-                <button onClick={() => { paddle(item.paddleLink, `${data.title} — ${item.template}`); onClose(); }}
+                <button onClick={() => { paddle(item.paddleLink, data.title + " — " + item.template); onClose(); }}
                   style={{ flex: 1, background: C.navy, border: "none", color: C.white, padding: "12px 20px", borderRadius: 9, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>
                   Download This Template — {item.template} →
                 </button>
@@ -1313,7 +1313,7 @@ function DocsPage({ setPage, paddle }) {
                   <div style={{ background: C.warm1, borderRadius: 9, padding: "10px 12px", textAlign: "center", border: `1px solid ${C.warm3}` }}>
                     <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.ink }}>{d.template}</div>
                     <div style={{ fontSize: 10, color: C.muted, fontFamily: F.b, marginBottom: 6 }}>template download</div>
-                    <button onClick={() => paddle(d.paddleLink, `${d.title} Template — ${d.template}`)} style={{ width: "100%", padding: "7px", border: `1px solid ${C.warm3}`, borderRadius: 6, background: C.white, color: C.body, fontSize: 11, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>
+                    <button onClick={() => paddle(d.paddleLink, d.title + " Template — " + d.template)} style={{ width: "100%", padding: "7px", border: `1px solid ${C.warm3}`, borderRadius: 6, background: C.white, color: C.body, fontSize: 11, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>
                       Download →
                     </button>
                   </div>
