@@ -88,20 +88,51 @@ module.exports = async function handler(req, res) {
           ${leakBlock("#1 BIGGEST LEAK", topLeak, "#B84C2E")}
           ${leakBlock("#2 LEAK", secondLeak, "#C8701A")}
           ${leakBlock("#3 LEAK", thirdLeak, "#A8782A")}
-          ${howWeHelp ? `<div style="background:#1B2E4B;border-radius:8px;padding:16px 18px;margin:20px 0;">
-            <div style="font-size:10px;font-weight:bold;color:#C8701A;letter-spacing:2px;margin-bottom:8px;">WHAT TO DO NEXT</div>
-            <p style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.8;margin:0 0 16px;">${howWeHelp}</p>
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td width="48%" style="padding-right:8px;">
-                  <a href="https://compassbizsolutions.com" style="display:block;text-align:center;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px;border-radius:8px;text-decoration:none;">30-Day Plan — $249</a>
-                </td>
-                <td width="48%" style="padding-left:8px;">
-                  <a href="https://compassbizsolutions.com" style="display:block;text-align:center;background:rgba(200,112,26,0.3);color:white;font-weight:bold;font-size:13px;padding:11px;border-radius:8px;text-decoration:none;border:1px solid rgba(200,112,26,0.5);">Full Bundle — $599</a>
-                </td>
-              </tr>
-            </table>
-          </div>` : ""}
+          ${howWeHelp ? `<p style="font-size:13px;color:#3E4E63;line-height:1.8;margin:20px 0 0;">${howWeHelp}</p>` : ""}
+
+          <!-- What to do next -->
+          <div style="margin:20px 0;">
+            <div style="font-size:11px;font-weight:bold;color:#1A2332;letter-spacing:2px;margin-bottom:16px;">YOUR NEXT STEP — TWO OPTIONS:</div>
+
+            <!-- 30-Day Plan -->
+            <div style="background:white;border:1px solid #D8D4CD;border-top:3px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+                <div>
+                  <div style="font-size:13px;font-weight:bold;color:#1A2332;">30-Day Quick Win Plan</div>
+                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">Start here. See results fast.</div>
+                </div>
+                <div style="font-size:22px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$249</div>
+              </div>
+              <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
+                We run your business through an in-depth 10-category diagnostic. Based on your specific answers, we build a customized 30-day action plan — with only the Fix-It Guides and Process Doc Templates that address <em>your</em> top leaks. Nothing generic. Nothing you don't need.<br><br>
+                You also get check-in emails at day 7 and day 15 to make sure things are moving. At day 28, we'll reach out about your next 30 days.
+              </div>
+              <a href="https://compassbizsolutions.com" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $249 →</a>
+            </div>
+
+            <!-- Full Bundle -->
+            <div style="background:white;border:1px solid #C8701A;border-top:3px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;position:relative;">
+              <div style="display:inline-block;background:#C8701A;color:white;font-size:9px;font-weight:bold;letter-spacing:1.5px;padding:2px 10px;border-radius:99px;margin-bottom:10px;">BEST VALUE — SAVES $147</div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+                <div>
+                  <div style="font-size:13px;font-weight:bold;color:#1A2332;">Complete 30/60/90-Day Plan</div>
+                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">All three phases. All 22 docs. Full check-in schedule.</div>
+                </div>
+                <div style="font-size:22px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$599</div>
+              </div>
+              <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
+                Everything in the 30-day plan, plus we issue your days 31-60 and days 61-90 plans as you progress — each adjusted for what you've actually done, not what you were supposed to do. Check-ins at day 7, 15, 21, and 28.<br><br>
+                Includes all 22 customized guides and templates across all three phases. One payment, everything included. Saves $147 versus buying each phase separately.
+              </div>
+              <a href="https://compassbizsolutions.com" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full 30/60/90 Bundle — $599 →</a>
+            </div>
+
+            <!-- Done For You -->
+            <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-radius:8px;padding:14px 18px;text-align:center;">
+              <div style="font-size:12px;color:#6B7A90;margin-bottom:8px;">Rather have us handle it? We scope, build, and implement the systems for you.</div>
+              <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:12px;padding:9px 20px;border-radius:8px;text-decoration:none;">Book a Free Scoping Call →</a>
+            </div>
+          </div>
           <p style="font-size:13px;color:#6B7A90;margin-bottom:4px;">Questions? Reply to this email — I read every one.</p>
           <p style="margin:0;color:#3E4E63;font-size:13px;">— Jen, Compass Business Solutions</p>
         </div>
