@@ -605,6 +605,320 @@ Use EXACTLY these tags:
   );
 }
 
+// ─── IN-DEPTH INTAKE TOOL ────────────────────────────────────────────────────
+function IntakeSection({ label, number, color, children }) {
+  return (
+    <div style={{ marginBottom: 40 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20, paddingBottom: 12, borderBottom: "2px solid " + color }}>
+        <div style={{ width: 32, height: 32, borderRadius: "50%", background: color, color: C.white, fontFamily: F.d, fontSize: 14, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{number}</div>
+        <div style={{ fontFamily: F.d, fontSize: 16, fontWeight: 800, color: C.ink, letterSpacing: 0.5 }}>{label}</div>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function IntakeQ({ q, id, type, opts, ph, vals, setVals, multiVals, setMultiVals }) {
+  const val = vals[id] || "";
+  const mval = multiVals[id] || [];
+
+  function setVal(v) { setVals(function(p) { const n = {}; Object.keys(p).forEach(function(k) { n[k] = p[k]; }); n[id] = v; return n; }); }
+  function toggleM(o) { setMultiVals(function(p) { const n = {}; Object.keys(p).forEach(function(k) { n[k] = p[k]; }); const cur = p[id] || []; n[id] = cur.indexOf(o) >= 0 ? cur.filter(function(x) { return x !== o; }) : cur.concat([o]); return n; }); }
+
+  const bBase = { border: "2px solid " + C.warm3, borderRadius: 7, padding: "8px 14px", fontSize: 12, fontFamily: F.b, cursor: "pointer", fontWeight: 600, background: C.white, color: C.body, transition: "all 0.15s" };
+  const bSel  = { border: "2px solid " + C.navy, borderRadius: 7, padding: "8px 14px", fontSize: 12, fontFamily: F.b, cursor: "pointer", fontWeight: 700, background: C.navy, color: C.white, transition: "all 0.15s" };
+
+  return (
+    <div style={{ marginBottom: 20 }}>
+      <div style={{ fontFamily: F.b, fontSize: 13, fontWeight: 600, color: C.ink, marginBottom: 10, lineHeight: 1.4 }}>{q}</div>
+      {type === "buttons" && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          {opts.map(function(o) { return <button key={o} onClick={function() { setVal(o); }} style={val === o ? bSel : bBase}>{o}</button>; })}
+        </div>
+      )}
+      {type === "multi" && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          {opts.map(function(o) { const sel = mval.indexOf(o) >= 0; return <button key={o} onClick={function() { toggleM(o); }} style={sel ? bSel : bBase}>{sel ? "✓ " : ""}{o}</button>; })}
+        </div>
+      )}
+      {type === "text" && (
+        <input value={val} onChange={function(e) { setVal(e.target.value); }} placeholder={ph}
+          style={{ width: "100%", padding: "11px 14px", border: "2px solid " + C.warm3, borderRadius: 8, fontSize: 14, color: C.ink, outline: "none", fontFamily: F.b, background: C.white, boxSizing: "border-box" }} />
+      )}
+      {type === "textarea" && (
+        <textarea value={val} onChange={function(e) { setVal(e.target.value); }} placeholder={ph} rows={3}
+          style={{ width: "100%", padding: "11px 14px", border: "2px solid " + C.warm3, borderRadius: 8, fontSize: 14, color: C.ink, outline: "none", fontFamily: F.b, background: C.white, boxSizing: "border-box", resize: "vertical", lineHeight: 1.6 }} />
+      )}
+    </div>
+  );
+}
+
+function InDepthIntake({ customerEmail, planType, onComplete }) {
+  const [vals, setVals]           = useState({});
+  const [multiVals, setMultiVals] = useState({});
+  const [section, setSection]     = useState(0); // 0=intro, 1-11=sections, 12=submit, 13=loading, 14=done
+  const [err, setErr]             = useState("");
+
+  const sections = [
+    { label: "PRICING", number: "01", color: C.red },
+    { label: "SCHEDULING", number: "02", color: C.amber },
+    { label: "EMPLOYEE COST", number: "03", color: C.gold },
+    { label: "RECURRING REVENUE", number: "04", color: C.green },
+    { label: "ESTIMATE TO INVOICE", number: "05", color: C.teal },
+    { label: "CASH FLOW", number: "06", color: C.slate },
+    { label: "CUSTOMER CHURN", number: "07", color: "#9B59B6" },
+    { label: "MATERIALS MARKUP", number: "08", color: C.navy },
+    { label: "ADMIN TIME DRAIN", number: "09", color: "#E67E22" },
+    { label: "VEHICLES & PARTS", number: "10", color: C.red },
+    { label: "SAFETY", number: "11", color: "#27AE60" },
+  ];
+
+  const q = function(id, qtext, type, opts, ph) {
+    return <IntakeQ key={id} q={qtext} id={id} type={type} opts={opts} ph={ph} vals={vals} setVals={setVals} multiVals={multiVals} setMultiVals={setMultiVals} />;
+  };
+
+  const sectionContent = [
+    // Section 1 — Pricing
+    <div>
+      {q("p1_rate", "What is your current hourly rate or flat fee per job?", "text", null, "e.g. $95/hr or $250 flat fee")}
+      {q("p2_basis", "What did you base that number on?", "buttons", ["Gut feel", "What competitors charge", "Actual cost calculation", "Always been that number", "Not sure"])}
+      {q("p3_loaded", "Do you know your true loaded cost per hour — wages, truck, insurance, and overhead combined?", "buttons", ["Yes exactly", "Rough idea", "Not really", "No"])}
+      {q("p4_rates_increase", "When did you last raise your rates?", "buttons", ["Last 6 months", "1-2 years ago", "3-5 years ago", "5+ years ago", "Never"])}
+      {q("p5_rate_variation", "Do you charge different rates for different job types?", "buttons", ["Same rate for everything", "Some variation", "Completely different by job type"])}
+    </div>,
+    // Section 2 — Scheduling
+    <div>
+      {q("s1_lead_time", "What is your average booking lead time right now?", "buttons", ["Same day", "1-3 days", "4-7 days", "1-2 weeks", "2+ weeks"])}
+      {q("s2_confirm", "How do you confirm appointments?", "buttons", ["Phone call", "Text", "Email", "Nothing", "Mix of methods"])}
+      {q("s3_cancellation", "How do you fill a same-day cancellation?", "buttons", ["Call next person on list", "Post on social", "Leave it open", "No process"])}
+      {q("s4_waitlist", "Do you have a waitlist?", "buttons", ["Yes", "No but I should", "No and I am always booked", "No and I have open slots"])}
+      {q("s5_noshows", "What is your average number of no-shows or cancellations per week?", "text", null, "e.g. 2-3 per week")}
+    </div>,
+    // Section 3 — Employee Cost
+    <div>
+      {q("e1_loaded_know", "Do you know your loaded labor cost per tech — wages plus taxes, benefits, and insurance?", "buttons", ["Yes to the dollar", "Rough idea", "Not really", "No"])}
+      {q("e2_loaded_cost", "What is your approximate loaded cost per tech per hour?", "text", null, "e.g. $42/hr (include wages + taxes + benefits + insurance)")}
+      {q("e3_time_track", "How do you track billable vs non-billable time?", "buttons", ["Software", "Timesheets", "We don't", "Informal"])}
+      {q("e4_ramp", "How long before a new hire is fully productive on their own?", "buttons", ["1-2 weeks", "1 month", "2-3 months", "3-6 months", "6+ months"])}
+      {q("e5_onboard", "How do you currently onboard a new hire?", "buttons", ["Written process", "Shadowing only", "Verbal walkthrough", "They figure it out", "Mix"])}
+      {q("e6_certs", "What certifications or licenses do your techs need?", "text", null, "e.g. EPA 608, journeyman electrician, OSHA 10")}
+      {q("e7_attendance", "How often are techs late, idle, or not where they should be?", "buttons", ["Rarely", "Once or twice a week", "Several times a week", "Daily issue"])}
+    </div>,
+    // Section 4 — Recurring Revenue
+    <div>
+      {q("r1_agreements", "Do you currently offer maintenance agreements or service plans?", "buttons", ["Yes active", "Tried it — didn't stick", "No — never tried", "Planning to"])}
+      {q("r2_agreement_detail", "If yes — how many active agreements and what is the average monthly value?", "text", null, "e.g. 12 agreements at $75/month")}
+      {q("r3_predictable", "What percentage of your revenue is predictable month to month?", "buttons", ["Under 10%", "10-25%", "25-50%", "Over 50%"])}
+      {q("r4_script", "Do you have a script or process for offering an agreement at job completion?", "buttons", ["Yes", "Informal", "No"])}
+      {q("r5_blocker", "What has stopped you from offering agreements?", "buttons", ["Never thought about it", "Customers don't want it", "Too complicated to manage", "Pricing is unclear", "Nothing — just haven't done it"])}
+    </div>,
+    // Section 5 — Estimate to Invoice
+    <div>
+      {q("i1_close", "What is your close rate on estimates?", "buttons", ["Under 50%", "50-65%", "65-80%", "Over 80%", "We don't track it"])}
+      {q("i2_scope", "How often does scope change after an estimate?", "buttons", ["Rarely", "Sometimes", "Often", "Almost every job"])}
+      {q("i3_change_order", "Do you have a change order process?", "buttons", ["Yes written", "Verbal only", "We just absorb it", "What is a change order"])}
+      {q("i4_invoice", "Who writes the invoice and when does it go out?", "buttons", ["Me same day", "Me end of week", "Office staff same day", "Office staff when they get to it", "Varies"])}
+      {q("i5_completion", "What does job completion look like — is there a checklist, sign-off, or photo requirement?", "buttons", ["Yes formal process", "Informal", "No", "Depends on the job"])}
+      {q("i6_payment", "What payment methods do you accept?", "multi", ["Cash", "Check", "Credit card", "Financing", "Venmo or Zelle", "Invoice net 30"])}
+      {q("i7_disputes", "What happens when a customer disputes or delays payment?", "buttons", ["We have a collections process", "I follow up manually", "It usually just resolves", "We write it off"])}
+    </div>,
+    // Section 6 — Cash Flow
+    <div>
+      {q("c1_breakeven_know", "Do you know your monthly break-even number?", "buttons", ["Yes exactly", "Rough idea", "Not really", "No"])}
+      {q("c2_breakeven", "What is your approximate monthly break-even?", "text", null, "e.g. $28,000/month")}
+      {q("c3_ar", "What are your average days outstanding on receivables?", "buttons", ["Under 15 days", "15-30 days", "30-45 days", "45-60 days", "60+ days", "We don't track"])}
+      {q("c4_reserve", "Do you have a cash reserve?", "buttons", ["Yes 3+ months", "Yes 1-2 months", "Less than 1 month", "No"])}
+      {q("c5_seasonal", "Is there a predictable slow season when cash gets tight?", "buttons", ["Yes and it's a problem", "Yes but we manage", "No — pretty steady", "Yes and we have no plan"])}
+      {q("c6_loc", "Do you have a line of credit?", "buttons", ["Yes and it's available", "Yes — partially used", "Yes — mostly maxed", "No but I'd qualify", "No"])}
+    </div>,
+    // Section 7 — Customer Churn
+    <div>
+      {q("ch1_followup", "Do you have a post-job follow-up process?", "buttons", ["Yes automated", "Yes manual", "Informal", "No"])}
+      {q("ch2_timing", "How soon after a job do you follow up?", "buttons", ["Same day", "Within 3 days", "Within a week", "We don't"])}
+      {q("ch3_channels", "What channels do you use to follow up?", "multi", ["Phone call", "Text", "Email", "Card in mail", "We don't follow up"])}
+      {q("ch4_reviews", "How many Google reviews do you currently have?", "text", null, "e.g. 47 reviews")}
+      {q("ch5_rating", "What is your current Google rating?", "buttons", ["Under 4.0", "4.0-4.4", "4.5-4.7", "4.8-5.0", "Not on Google"])}
+      {q("ch6_referral", "Do you have a referral program?", "buttons", ["Yes formal", "Informal — word of mouth", "No", "Never thought about it"])}
+      {q("ch7_referral_pct", "What percentage of new customers come from referrals?", "buttons", ["Under 20%", "20-40%", "40-60%", "Over 60%", "No idea"])}
+      {q("ch8_retention", "How many customers from 2+ years ago have you heard from in the last 12 months?", "buttons", ["Most of them", "About half", "A few", "Barely any", "No idea"])}
+    </div>,
+    // Section 8 — Materials Markup
+    <div>
+      {q("m1_markup", "What markup do you apply to parts and materials?", "text", null, "e.g. 25% or 2x cost or $15 flat per item")}
+      {q("m2_consistency", "Is that markup consistent or does it vary?", "buttons", ["Consistent", "Varies by job", "Varies by supplier", "We don't mark up materials", "Not sure"])}
+      {q("m3_tracking", "Do you track materials cost per job?", "buttons", ["Yes in software", "Yes manually", "Roughly", "No"])}
+      {q("m4_suppliers", "Do you have preferred suppliers with negotiated pricing?", "buttons", ["Yes with accounts", "Some informal relationships", "No — we shop around", "No one supplier"])}
+      {q("m5_authority", "Who has authority to order parts?", "buttons", ["Only me", "Lead techs only", "Any tech", "Anyone on the crew"])}
+      {q("m6_process", "Do you have an approved supplier list or ordering process?", "buttons", ["Yes written", "Informal", "No", "Techs handle it themselves"])}
+    </div>,
+    // Section 9 — Admin Time Drain
+    <div>
+      {q("a1_hours", "How many hours per week do YOU personally spend on non-billable admin?", "text", null, "e.g. 15 hours/week")}
+      {q("a2_scheduling", "Who handles scheduling and dispatch?", "buttons", ["Me", "Office staff", "Shared", "Nobody — it's chaos"])}
+      {q("a3_comms", "Who handles customer calls and communication?", "buttons", ["Me", "Office staff", "Techs", "Shared", "Nobody consistently"])}
+      {q("a4_invoicing", "Who handles invoicing and collections?", "buttons", ["Me", "Office staff", "Bookkeeper", "Mixed"])}
+      {q("a5_documented", "Do you have documented processes for any recurring admin tasks?", "buttons", ["Most of them", "Some", "A few", "None written down"])}
+      {q("a6_drain", "What is the single biggest admin time drain each week?", "textarea", null, "e.g. chasing approvals for parts orders, rescheduling customers, tracking down invoices")}
+      {q("a7_delegate", "Have you tried to delegate admin before?", "buttons", ["Yes and it worked", "Yes and it failed", "Tried and gave up", "Never tried"])}
+    </div>,
+    // Section 10 — Vehicles & Parts
+    <div>
+      {q("v1_runs", "How many unplanned parts runs per truck per week on average?", "buttons", ["0", "1-2", "3-5", "More than 5", "Daily"])}
+      {q("v2_stock", "Do you have a standard truck stock list?", "buttons", ["Yes written and followed", "Yes but not followed", "Informal", "No — each tech decides"])}
+      {q("v3_restock", "Do you have a restocking process after each job?", "buttons", ["Yes formal", "End of day", "End of week", "When we run out", "No"])}
+      {q("v4_cost_track", "Do you track cost per mile or cost per day per truck?", "buttons", ["Yes", "Roughly", "No"])}
+      {q("v5_monthly_cost", "What is your approximate monthly cost per truck — payments, insurance, fuel, and maintenance combined?", "text", null, "e.g. $1,800/month per truck")}
+      {q("v6_maintenance", "Do you have a preventive maintenance schedule for your fleet?", "buttons", ["Yes — followed", "Yes — ignored", "No"])}
+    </div>,
+    // Section 11 — Safety
+    <div>
+      {q("sf1_written", "Do you have written safety procedures for job sites?", "buttons", ["Yes current", "Outdated", "Informal", "No"])}
+      {q("sf2_hazards", "What trade-specific hazards do your techs regularly encounter?", "multi", ["Electrical", "Refrigerant handling", "Confined spaces", "Working at heights", "Chemical exposure", "Heavy lifting", "Power tools", "Trenching or excavation", "Gas lines", "Asbestos or lead"])}
+      {q("sf3_incidents", "Have you had any on-the-job incidents or near-misses in the last 2 years?", "buttons", ["No", "1-2 minor", "A few", "Yes — a significant one"])}
+      {q("sf4_reporting", "Do you have a written incident reporting procedure?", "buttons", ["Yes", "Informal", "No"])}
+      {q("sf5_ppe", "Do you require PPE and does someone check compliance?", "buttons", ["Yes — required and checked", "Required but not checked", "Informal", "No PPE requirements"])}
+      {q("sf6_property", "Do you have a customer property protection protocol?", "buttons", ["Yes written", "Verbal only", "Informal", "No"])}
+    </div>,
+  ];
+
+  function buildSummary() {
+    const lines = [];
+    Object.keys(vals).forEach(function(k) { if (vals[k]) lines.push(k + ": " + vals[k]); });
+    Object.keys(multiVals).forEach(function(k) { if (multiVals[k] && multiVals[k].length) lines.push(k + ": " + multiVals[k].join(", ")); });
+    return lines.join("\n");
+  }
+
+  async function submit() {
+    setSection(13);
+    try {
+      const summary = buildSummary();
+      const res = await fetch("/api/generate-report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system: buildIntakeSystem(vals, multiVals, planType),
+          prompt: "Generate the full customized plan now based on all intake answers.",
+          max_tokens: 2500
+        })
+      });
+      const data = await res.json();
+      const text = data.text || "";
+      if (!text) throw new Error("empty");
+
+      await fetch("/api/send-plan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: customerEmail, planType: planType, answers: vals, multiAnswers: multiVals, report: text })
+      });
+
+      setSection(14);
+      if (onComplete) onComplete(text);
+    } catch(e) {
+      setErr("Something went wrong generating your plan. Please try again or email hello@compassbizsolutions.com");
+      setSection(12);
+    }
+  }
+
+  function buildIntakeSystem(v, mv, plan) {
+    const all = {};
+    Object.keys(v).forEach(function(k) { all[k] = v[k]; });
+    Object.keys(mv).forEach(function(k) { all[k] = (mv[k]||[]).join(", "); });
+    const answers = Object.keys(all).map(function(k) { return k + ": " + all[k]; }).join("\n");
+
+    const phaseDesc = plan === "599"
+      ? "Generate a COMPLETE 30/60/90-day plan — all three phases. Phase 1 (days 1-30) covers their top leaks. Phase 2 (days 31-60) covers the next tier. Phase 3 (days 61-90) covers remaining leaks."
+      : "Generate a 30-DAY plan only — covering their top leaks ranked by dollar impact.";
+
+    return "You are a seasoned business consultant specializing in blue-collar service businesses. You have deep expertise in all 10 profit leak categories: 1-Pricing, 2-Scheduling, 3-Employee Cost, 4-Recurring Revenue, 5-Estimate-to-Invoice, 6-Cash Flow, 7-Customer Churn, 8-Materials Markup, 9-Admin Time Drain, 10-Vehicles and Parts.\n\nHere are the complete intake answers for this business:\n\n" + answers + "\n\n" + phaseDesc + "\n\nIMPORTANT RULES:\n- Rank the leaks by estimated annual dollar impact based on their actual answers\n- Only include leak categories where their answers indicate a real problem\n- Each day's task must be specific, actionable, and sized for a busy owner — 30-60 minutes max\n- Reference the exact guide or doc by name where relevant\n- Do not mention AI, automation tools, or software they haven't mentioned using\n- Write like a consultant talking directly to this owner — plain language, no jargon\n\nUse EXACTLY these tags:\n\n[LEAK_RANKING]\nNumbered list of their leaks ranked 1-10 by estimated annual dollar impact. Format: 1. LEAK NAME — $XX,000-$XX,000/year estimated. One line each.\n\n[LEAK_TOTAL]\nEstimated total annual profit leak: $XX,000-$XX,000\n\n[PHASE_1_INTRO]\n2-3 sentences. What phase 1 focuses on and why these leaks were prioritized for their situation.\n\n[PHASE_1_PLAN]\nDay-by-day plan for days 1-30. Format exactly:\nDay 1: [specific task — what to do, what to gather, what to complete]\nDay 2: [specific task]\n...continue through Day 30. Every day gets a task. Group related tasks — e.g. days 1-3 might all be about pricing setup. Each task should name the specific guide or doc if one applies.\n\n[PHASE_1_DOCS]\nList only the guides and templates that apply to Phase 1 leaks. Format: bullet list with doc name and one sentence on how it applies to their specific situation.\n\n" + (plan === "599" ? "[PHASE_2_INTRO]\n2-3 sentences. What phase 2 focuses on.\n\n[PHASE_2_PLAN]\nDay-by-day plan for days 31-60. Same format as Phase 1.\n\n[PHASE_2_DOCS]\nList only the guides and templates that apply to Phase 2 leaks.\n\n[PHASE_3_INTRO]\n2-3 sentences. What phase 3 focuses on.\n\n[PHASE_3_PLAN]\nDay-by-day plan for days 61-90. Same format as Phase 1.\n\n[PHASE_3_DOCS]\nList only the guides and templates that apply to Phase 3 leaks.\n\n" : "") + "[CLOSING]\n2-3 sentences. Direct, encouraging, specific to their situation. No generic motivation — reference something specific from their answers.";
+  }
+
+  const pct = section === 0 ? 0 : section >= 12 ? 100 : Math.round((section / 11) * 100);
+
+  // INTRO
+  if (section === 0) return (
+    <div style={{ background: C.navyDark, borderRadius: 16, padding: "40px 32px", textAlign: "center", border: "1px solid rgba(200,112,26,0.25)" }}>
+      <div style={{ fontSize: 44, marginBottom: 16 }}>📋</div>
+      <div style={{ fontFamily: F.d, fontSize: "clamp(20px,4vw,28px)", fontWeight: 800, color: C.white, marginBottom: 12 }}>YOUR IN-DEPTH BUSINESS INTAKE</div>
+      <p style={{ fontFamily: F.b, fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.8, maxWidth: 500, margin: "0 auto 12px" }}>This intake covers all 10 profit leak categories across 11 sections. The more specific your answers, the more precise your plan and documents will be.</p>
+      <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.7, maxWidth: 480, margin: "0 auto 28px" }}>Most questions are tap-to-answer. A few ask for specific numbers — those are the ones that drive the dollar estimates in your plan. Takes about 15-20 minutes.</p>
+      <button onClick={function() { setSection(1); }} style={{ background: C.amber, border: "none", color: C.white, padding: "16px 44px", borderRadius: 10, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 24px rgba(200,112,26,0.4)" }}>Start Intake →</button>
+    </div>
+  );
+
+  // SECTIONS 1-11
+  if (section >= 1 && section <= 11) {
+    const sec = sections[section - 1];
+    return (
+      <div style={{ background: C.white, borderRadius: 16, padding: "28px 24px", border: "1px solid " + C.warm3 }}>
+        {/* Progress */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
+          <div style={{ flex: 1, height: 5, background: C.warm2, borderRadius: 99 }}>
+            <div style={{ width: pct + "%", height: "100%", background: sec.color, borderRadius: 99, transition: "width 0.4s" }} />
+          </div>
+          <div style={{ fontFamily: F.b, fontSize: 12, color: C.muted, flexShrink: 0 }}>Section {section} of 11</div>
+        </div>
+
+        <IntakeSection label={sec.label} number={sec.number} color={sec.color}>
+          {sectionContent[section - 1]}
+        </IntakeSection>
+
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8, paddingTop: 20, borderTop: "1px solid " + C.warm2 }}>
+          <button onClick={function() { setSection(function(s) { return Math.max(0, s - 1); }); }}
+            style={{ background: "none", border: "none", color: C.muted, fontSize: 13, fontFamily: F.b, cursor: "pointer" }}>← Back</button>
+          <button onClick={function() { setSection(function(s) { return s + 1; }); }}
+            style={{ background: sec.color, border: "none", color: C.white, padding: "12px 32px", borderRadius: 9, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>
+            {section === 11 ? "Review & Submit →" : "Next Section →"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // REVIEW & SUBMIT
+  if (section === 12) {
+    const answered = Object.keys(vals).filter(function(k) { return vals[k]; }).length + Object.keys(multiVals).filter(function(k) { return multiVals[k] && multiVals[k].length; }).length;
+    return (
+      <div style={{ background: C.white, borderRadius: 16, padding: "32px 28px", border: "1px solid " + C.warm3, textAlign: "center" }}>
+        <div style={{ fontSize: 40, marginBottom: 16 }}>✅</div>
+        <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.ink, marginBottom: 8 }}>INTAKE COMPLETE</div>
+        <p style={{ fontFamily: F.b, fontSize: 14, color: C.muted, lineHeight: 1.7, maxWidth: 440, margin: "0 auto 8px" }}>You answered {answered} questions across all 11 sections. We have everything we need to build your customized plan.</p>
+        <p style={{ fontFamily: F.b, fontSize: 13, color: C.muted, lineHeight: 1.7, maxWidth: 440, margin: "0 auto 24px" }}>Your plan will be generated now and emailed to {customerEmail}. This takes about 30 seconds.</p>
+        {err && <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: "12px 16px", marginBottom: 16, fontSize: 13, color: C.red, fontFamily: F.b }}>{err}</div>}
+        <button onClick={submit} style={{ background: C.amber, border: "none", color: C.white, padding: "16px 44px", borderRadius: 10, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 24px rgba(200,112,26,0.4)", marginBottom: 12 }}>
+          Build My Plan →
+        </button>
+        <div>
+          <button onClick={function() { setSection(1); }} style={{ background: "none", border: "none", color: C.muted, fontSize: 12, fontFamily: F.b, cursor: "pointer" }}>← Go back and review answers</button>
+        </div>
+      </div>
+    );
+  }
+
+  // LOADING
+  if (section === 13) return (
+    <div style={{ background: C.navyDark, borderRadius: 16, padding: "56px 32px", textAlign: "center", border: "1px solid rgba(200,112,26,0.25)" }}>
+      <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 20 }}>
+        {[0,1,2].map(function(i) { return <div key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: C.amber, animation: "dot 1.2s ease-in-out " + (i * 0.2) + "s infinite" }} />; })}
+      </div>
+      <div style={{ fontFamily: F.d, fontSize: 20, fontWeight: 700, color: C.white, marginBottom: 8 }}>BUILDING YOUR PLAN</div>
+      <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.7 }}>Ranking your leaks by dollar impact.<br />Building your day-by-day plan.<br />Selecting your specific guides and docs.<br />This takes about 30 seconds.</p>
+    </div>
+  );
+
+  // DONE
+  if (section === 14) return (
+    <div style={{ background: C.navyDark, borderRadius: 16, padding: "48px 32px", textAlign: "center", border: "1px solid rgba(30,107,69,0.4)" }}>
+      <div style={{ fontSize: 48, marginBottom: 16 }}>🎯</div>
+      <div style={{ fontFamily: F.d, fontSize: 24, fontWeight: 800, color: C.white, marginBottom: 12 }}>YOUR PLAN IS ON ITS WAY</div>
+      <p style={{ fontFamily: F.b, fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.8, maxWidth: 460, margin: "0 auto 8px" }}>Your customized plan has been sent to {customerEmail}. It includes your leak ranking, dollar estimates, day-by-day action plan, and the specific guides and docs for your situation.</p>
+      <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.7, maxWidth: 440, margin: "0 auto 0" }}>Check your inbox — and your spam folder just in case. Questions? Reply to the email and Jen reads every one.</p>
+    </div>
+  );
+
+  return null;
+}
+
+
 // ─── PLAN CARD WITH TOOLTIP ───────────────────────────────────────────────────
 function PlanCard({ price, label, accentColor, bg, border, btnBg, btnLabel, onBuy, items, footer }) {
   const [show, setShow] = useState(false);
@@ -2062,7 +2376,10 @@ function PaddleToast({ msg, onClose }) {
 }
 
 function App() {
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState(function() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("page") || "home";
+  });
   const [toast, setToast] = useState("");
   const [modal, setModal] = useState(null); // "generic" | "customized" | null
   const calcRef = useRef(null);
@@ -2177,6 +2494,7 @@ function App() {
         {page === "about"      && <AboutPage  setPage={setPage} calcRef={calcRef} />}
         {page === "profitable" && <WhatProfitableLooksLike setPage={setPage} calcRef={calcRef} />}
         {page === "services"   && <WhatWeDoPage setPage={setPage} calcRef={calcRef} />}
+        {page === "intake"     && <div style={{ background: C.warm0, minHeight: "100vh", paddingTop: 80 }}><div style={{ maxWidth: 760, margin: "0 auto", padding: "0 24px 80px" }}><InDepthIntake customerEmail="test@test.com" planType="249" onComplete={function() {}} /></div></div>}
         {page === "guides"     && <GuidesPage paddle={paddle} />}
         {page === "docs"       && <DocsPage setPage={setPage} paddle={paddle} />}
       </main>

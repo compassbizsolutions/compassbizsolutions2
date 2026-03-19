@@ -7,6 +7,7 @@
     "api/paddle-webhook.js": { "maxDuration": 10 },
     "api/send-full-report.js": { "maxDuration": 60 },
     "api/send-diagnostic.js": { "maxDuration": 30 },
-    "api/send-checkin.js": { "maxDuration": 15 }
+    "api/send-checkin.js": { "maxDuration": 15 },
+    "api/send-plan.js": { "maxDuration": 60 }
   }
 }
