@@ -196,7 +196,7 @@ function Nav({ page, setPage, calcRef }) {
           ))}
           <button onClick={goScan}
             style={{ marginLeft: 8, background: C.amber, border: "none", color: C.white, padding: "9px 18px", borderRadius: 8, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: `0 3px 14px ${C.amber}44`, whiteSpace: "nowrap" }}>
-            Free Scan →
+            Run Free Diagnostic →
           </button>
         </div>
 
@@ -222,7 +222,7 @@ function Nav({ page, setPage, calcRef }) {
           ))}
           <button onClick={goScan}
             style={{ background: C.amber, border: "none", color: C.white, padding: "12px 16px", borderRadius: 8, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", marginTop: 8, boxShadow: `0 3px 14px ${C.amber}44` }}>
-            Free Scan →
+            Run Free Diagnostic →
           </button>
         </div>
       </div>
@@ -656,8 +656,16 @@ function IntakeQ({ q, id, type, opts, ph, vals, setVals, multiVals, setMultiVals
 function InDepthIntake({ customerEmail, planType, onComplete }) {
   const [vals, setVals]           = useState({});
   const [multiVals, setMultiVals] = useState({});
-  const [section, setSection]     = useState(0); // 0=intro, 1-11=sections, 12=submit, 13=loading, 14=done
+  const [section, setSection]     = useState(0); // 0=intro, 0.5=capture, 1-11=sections, 12=submit, 13=loading, 14=done
   const [err, setErr]             = useState("");
+
+  // Lead capture fields
+  const [leadName, setLeadName]       = useState("");
+  const [leadBiz, setLeadBiz]         = useState("");
+  const [leadEmail, setLeadEmail]     = useState(customerEmail || "");
+  const [leadPhone, setLeadPhone]     = useState("");
+  const [leadAddress, setLeadAddress] = useState("");
+  const [captureErr, setCaptureErr]   = useState("");
 
   const sections = [
     { label: "PRICING", number: "01", color: C.red },
@@ -796,7 +804,7 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          system: buildIntakeSystem(vals, multiVals, planType),
+          system: buildIntakeSystem(vals, multiVals, planType, leadName, leadBiz, leadAddress),
           prompt: "Generate the full customized plan now based on all intake answers.",
           max_tokens: 2500
         })
@@ -808,7 +816,10 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
       await fetch("/api/send-plan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: customerEmail, planType: planType, answers: vals, multiAnswers: multiVals, report: text })
+        body: JSON.stringify({
+          email: leadEmail, name: leadName, biz: leadBiz, phone: leadPhone, address: leadAddress,
+          planType: planType, answers: vals, multiAnswers: multiVals, report: text
+        })
       });
 
       setSection(14);
@@ -819,7 +830,7 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
     }
   }
 
-  function buildIntakeSystem(v, mv, plan) {
+  function buildIntakeSystem(v, mv, plan, name, biz, address) {
     const all = {};
     Object.keys(v).forEach(function(k) { all[k] = v[k]; });
     Object.keys(mv).forEach(function(k) { all[k] = (mv[k]||[]).join(", "); });
@@ -829,7 +840,7 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
       ? "Generate a COMPLETE 30/60/90-day plan — all three phases. Phase 1 (days 1-30) covers their top leaks. Phase 2 (days 31-60) covers the next tier. Phase 3 (days 61-90) covers remaining leaks."
       : "Generate a 30-DAY plan only — covering their top leaks ranked by dollar impact.";
 
-    return "You are a seasoned business consultant specializing in blue-collar service businesses. You have deep expertise in all 10 profit leak categories: 1-Pricing, 2-Scheduling, 3-Employee Cost, 4-Recurring Revenue, 5-Estimate-to-Invoice, 6-Cash Flow, 7-Customer Churn, 8-Materials Markup, 9-Admin Time Drain, 10-Vehicles and Parts.\n\nHere are the complete intake answers for this business:\n\n" + answers + "\n\n" + phaseDesc + "\n\nIMPORTANT RULES:\n- Rank the leaks by estimated annual dollar impact based on their actual answers\n- Only include leak categories where their answers indicate a real problem\n- Each day's task must be specific, actionable, and sized for a busy owner — 30-60 minutes max\n- Reference the exact guide or doc by name where relevant\n- Do not mention AI, automation tools, or software they haven't mentioned using\n- Write like a consultant talking directly to this owner — plain language, no jargon\n\nUse EXACTLY these tags:\n\n[LEAK_RANKING]\nNumbered list of their leaks ranked 1-10 by estimated annual dollar impact. Format: 1. LEAK NAME — $XX,000-$XX,000/year estimated. One line each.\n\n[LEAK_TOTAL]\nEstimated total annual profit leak: $XX,000-$XX,000\n\n[PHASE_1_INTRO]\n2-3 sentences. What phase 1 focuses on and why these leaks were prioritized for their situation.\n\n[PHASE_1_PLAN]\nDay-by-day plan for days 1-30. Format exactly:\nDay 1: [specific task — what to do, what to gather, what to complete]\nDay 2: [specific task]\n...continue through Day 30. Every day gets a task. Group related tasks — e.g. days 1-3 might all be about pricing setup. Each task should name the specific guide or doc if one applies.\n\n[PHASE_1_DOCS]\nList only the guides and templates that apply to Phase 1 leaks. Format: bullet list with doc name and one sentence on how it applies to their specific situation.\n\n" + (plan === "599" ? "[PHASE_2_INTRO]\n2-3 sentences. What phase 2 focuses on.\n\n[PHASE_2_PLAN]\nDay-by-day plan for days 31-60. Same format as Phase 1.\n\n[PHASE_2_DOCS]\nList only the guides and templates that apply to Phase 2 leaks.\n\n[PHASE_3_INTRO]\n2-3 sentences. What phase 3 focuses on.\n\n[PHASE_3_PLAN]\nDay-by-day plan for days 61-90. Same format as Phase 1.\n\n[PHASE_3_DOCS]\nList only the guides and templates that apply to Phase 3 leaks.\n\n" : "") + "[CLOSING]\n2-3 sentences. Direct, encouraging, specific to their situation. No generic motivation — reference something specific from their answers.";
+    return "You are a seasoned business consultant specializing in blue-collar service businesses. You have deep expertise in all 10 profit leak categories: 1-Pricing, 2-Scheduling, 3-Employee Cost, 4-Recurring Revenue, 5-Estimate-to-Invoice, 6-Cash Flow, 7-Customer Churn, 8-Materials Markup, 9-Admin Time Drain, 10-Vehicles and Parts.\n\nBUSINESS: " + (biz||"this business") + (address ? " — " + address : "") + (name ? " — Owner: " + name : "") + "\n\nHere are the complete intake answers:\n\n" + answers + "\n\n" + phaseDesc + "\n\nIMPORTANT RULES:\n- Rank the leaks by estimated annual dollar impact based on their actual answers\n- Only include leak categories where their answers indicate a real problem\n- Each day task must be 15-20 minutes max for a busy owner — be explicit about time\n- Every task that involves numbers must reference the specific Compass worksheet or template by name (e.g. 'Open the Pricing Worksheet & Rate Calculator — complete Section 1: Labor Cost')\n- Every task that builds a document must name which Compass Process Doc Template it feeds into\n- Group consecutive days into named sprints (e.g. Days 1-5: PRICING FOUNDATION) — use plain text headers like === DAYS 1-5: PRICING FOUNDATION === with no markdown asterisks\n- Write like a consultant talking directly to this owner — use their actual numbers, trade, and situation throughout\n- Do not use markdown bold (**text**), bullet dashes, or --- separators anywhere in your response\n- Do not mention AI\n\nUse EXACTLY these tags:\n\n[LEAK_RANKING]\nNumbered list. Each line: NUMBER. LEAK NAME — $XX,000-$XX,000/year | one sentence specific to their situation.\n\n[LEAK_TOTAL]\nEstimated total annual profit leak: $XX,000-$XX,000\n\n[PHASE_1_INTRO]\n2-3 sentences. What phase 1 focuses on and why these leaks were prioritized.\n\n[PHASE_1_PLAN]\nDay-by-day plan days 1-30. Format each line exactly as:\nDay N: [15-20 min task — specific, names the exact doc or worksheet if applicable]\nGroup with plain text sprint headers like: === DAYS 1-5: PRICING FOUNDATION ===\n\n[PHASE_1_DOCS]\nBulleted list. Each item: Doc/Guide name — one sentence on exactly how it applies to their situation and which section to complete first.\n\n" + (plan === "599" ? "[PHASE_2_INTRO]\n2-3 sentences.\n\n[PHASE_2_PLAN]\nSame format as Phase 1, days 31-60.\n\n[PHASE_2_DOCS]\nSame format.\n\n[PHASE_3_INTRO]\n2-3 sentences.\n\n[PHASE_3_PLAN]\nSame format, days 61-90.\n\n[PHASE_3_DOCS]\nSame format.\n\n" : "") + "[CLOSING]\n2-3 sentences. Direct, specific to their numbers and situation. No generic motivation.";
   }
 
   const pct = section === 0 ? 0 : section >= 12 ? 100 : Math.round((section / 11) * 100);
@@ -841,9 +852,37 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
       <div style={{ fontFamily: F.d, fontSize: "clamp(20px,4vw,28px)", fontWeight: 800, color: C.white, marginBottom: 12 }}>YOUR IN-DEPTH BUSINESS INTAKE</div>
       <p style={{ fontFamily: F.b, fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.8, maxWidth: 500, margin: "0 auto 12px" }}>This intake covers all 10 profit leak categories across 11 sections. The more specific your answers, the more precise your plan and documents will be.</p>
       <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.7, maxWidth: 480, margin: "0 auto 28px" }}>Most questions are tap-to-answer. A few ask for specific numbers — those are the ones that drive the dollar estimates in your plan. Takes about 15-20 minutes.</p>
-      <button onClick={function() { setSection(1); }} style={{ background: C.amber, border: "none", color: C.white, padding: "16px 44px", borderRadius: 10, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 24px rgba(200,112,26,0.4)" }}>Start Intake →</button>
+      <button onClick={function() { setSection(0.5); }} style={{ background: C.amber, border: "none", color: C.white, padding: "16px 44px", borderRadius: 10, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 24px rgba(200,112,26,0.4)" }}>Start Intake →</button>
     </div>
   );
+
+  // LEAD CAPTURE
+  if (section === 0.5) {
+    const iStyle = { width: "100%", padding: "12px 14px", border: "2px solid " + C.warm3, borderRadius: 9, fontSize: 14, color: C.ink, outline: "none", fontFamily: F.b, background: C.white, boxSizing: "border-box" };
+    return (
+      <div style={{ background: C.white, borderRadius: 16, padding: "32px 28px", border: "1px solid " + C.warm3 }}>
+        <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.ink, marginBottom: 6 }}>BEFORE WE START</div>
+        <p style={{ fontFamily: F.b, fontSize: 14, color: C.muted, lineHeight: 1.7, marginBottom: 24 }}>We need a few details so we can address your plan correctly and follow up with you.</p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }} className="calc-grid">
+          <input value={leadName} onChange={function(e) { setLeadName(e.target.value); }} placeholder="Your first name" style={iStyle} />
+          <input value={leadBiz} onChange={function(e) { setLeadBiz(e.target.value); }} placeholder="Business name" style={iStyle} />
+          <input value={leadEmail} onChange={function(e) { setLeadEmail(e.target.value); }} placeholder="Email address" type="email" style={iStyle} />
+          <input value={leadPhone} onChange={function(e) { setLeadPhone(e.target.value); }} placeholder="Phone number" type="tel" style={iStyle} />
+        </div>
+        <input value={leadAddress} onChange={function(e) { setLeadAddress(e.target.value); }} placeholder="Business address (city and state is fine)" style={{ ...iStyle, marginBottom: 6 }} />
+        {captureErr && <div style={{ color: C.red, fontSize: 13, fontFamily: F.b, marginTop: 8, marginBottom: 4 }}>{captureErr}</div>}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 20 }}>
+          <button onClick={function() { setSection(0); }} style={{ background: "none", border: "none", color: C.muted, fontSize: 13, fontFamily: F.b, cursor: "pointer" }}>← Back</button>
+          <button onClick={function() {
+            if (!leadName.trim() || !leadEmail.trim() || !leadBiz.trim() || !leadPhone.trim()) { setCaptureErr("Please fill in all fields."); return; }
+            setCaptureErr(""); setSection(1);
+          }} style={{ background: C.amber, border: "none", color: C.white, padding: "13px 32px", borderRadius: 9, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>
+            Let's Go →
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // SECTIONS 1-11
   if (section >= 1 && section <= 11) {
@@ -910,7 +949,7 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
     <div style={{ background: C.navyDark, borderRadius: 16, padding: "48px 32px", textAlign: "center", border: "1px solid rgba(30,107,69,0.4)" }}>
       <div style={{ fontSize: 48, marginBottom: 16 }}>🎯</div>
       <div style={{ fontFamily: F.d, fontSize: 24, fontWeight: 800, color: C.white, marginBottom: 12 }}>YOUR PLAN IS ON ITS WAY</div>
-      <p style={{ fontFamily: F.b, fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.8, maxWidth: 460, margin: "0 auto 8px" }}>Your customized plan has been sent to {customerEmail}. It includes your leak ranking, dollar estimates, day-by-day action plan, and the specific guides and docs for your situation.</p>
+      <p style={{ fontFamily: F.b, fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.8, maxWidth: 460, margin: "0 auto 8px" }}>Your customized plan has been sent to {leadEmail}. It includes your leak ranking, dollar estimates, day-by-day action plan, and the specific guides and docs for your situation.</p>
       <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.7, maxWidth: 440, margin: "0 auto 0" }}>Check your inbox — and your spam folder just in case. Questions? Reply to the email and Jen reads every one.</p>
     </div>
   );
@@ -2494,7 +2533,12 @@ function App() {
         {page === "about"      && <AboutPage  setPage={setPage} calcRef={calcRef} />}
         {page === "profitable" && <WhatProfitableLooksLike setPage={setPage} calcRef={calcRef} />}
         {page === "services"   && <WhatWeDoPage setPage={setPage} calcRef={calcRef} />}
-        {page === "intake"     && <div style={{ background: C.warm0, minHeight: "100vh", paddingTop: 80 }}><div style={{ maxWidth: 760, margin: "0 auto", padding: "0 24px 80px" }}><InDepthIntake customerEmail="test@test.com" planType="249" onComplete={function() {}} /></div></div>}
+        {page === "intake"     && (function() {
+          const params = new URLSearchParams(window.location.search);
+          const intakeEmail = params.get("email") || "";
+          const intakePlan  = params.get("plan") || "249";
+          return <div style={{ background: C.warm0, minHeight: "100vh", paddingTop: 80 }}><div style={{ maxWidth: 760, margin: "0 auto", padding: "0 24px 80px" }}><InDepthIntake customerEmail={intakeEmail} planType={intakePlan} onComplete={function() {}} /></div></div>;
+        })()}
         {page === "guides"     && <GuidesPage paddle={paddle} />}
         {page === "docs"       && <DocsPage setPage={setPage} paddle={paddle} />}
       </main>
