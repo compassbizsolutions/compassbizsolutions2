@@ -1334,21 +1334,21 @@ function TraitExpanded({ t, setPage }) {
   const [hovered, setHovered] = useState(false);
   return (
     <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
-      style={{ background: hovered ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.03)", border: `1px solid ${hovered ? t.color + "66" : t.color + "33"}`, borderLeft: `4px solid ${t.color}`, borderRadius: 14, padding: "24px 28px", cursor: "default", transition: "all 0.25s" }}>
+      style={{ background: hovered ? C.white : C.warm0, border: `1px solid ${hovered ? t.color + "55" : C.warm3}`, borderLeft: `4px solid ${t.color}`, borderRadius: 14, padding: "24px 28px", cursor: "default", transition: "all 0.25s", boxShadow: hovered ? "0 4px 24px rgba(26,35,50,0.08)" : "none" }}>
       <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
         <div style={{ fontSize: 30, flexShrink: 0, marginTop: 2 }}>{t.icon}</div>
         <div style={{ flex: 1 }}>
           <div style={{ fontFamily: F.d, fontSize: "clamp(15px,3vw,20px)", fontWeight: 700, color: t.color, letterSpacing: 0.5, marginBottom: hovered ? 12 : 0, transition: "margin 0.25s" }}>{t.label}</div>
           <div style={{ overflow: "hidden", maxHeight: hovered ? "600px" : "0px", opacity: hovered ? 1 : 0, transition: "max-height 0.5s ease, opacity 0.3s ease" }}>
             <div style={{ borderTop: `1px solid ${t.color}22`, paddingTop: 14, marginTop: 2 }}>
-              <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.85, fontFamily: F.b, margin: "0 0 16px" }}>{t.expanded}</p>
+              <p style={{ fontSize: 14, color: C.body, lineHeight: 1.85, fontFamily: F.b, margin: "0 0 16px" }}>{t.expanded}</p>
               {t.docs && t.docs.length > 0 && (
                 <div style={{ borderTop: `1px solid ${t.color}22`, paddingTop: 12 }}>
-                  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 2, fontFamily: F.b, marginBottom: 8 }}>RELEVANT DOCS</div>
+                  <div style={{ fontSize: 10, color: C.muted, fontWeight: 700, letterSpacing: 2, fontFamily: F.b, marginBottom: 8 }}>RELEVANT DOCS</div>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                     {t.docs.map(function(doc, i) {
                       return (
-                        <span key={i} style={{ background: t.color + "18", border: "1px solid " + t.color + "44", borderRadius: 99, padding: "4px 12px", fontSize: 11, color: t.color, fontFamily: F.b, fontWeight: 600 }}>{doc}</span>
+                        <span key={i} style={{ background: t.color + "14", border: "1px solid " + t.color + "44", borderRadius: 99, padding: "4px 12px", fontSize: 11, color: t.color, fontFamily: F.b, fontWeight: 600 }}>{doc}</span>
                       );
                     })}
                   </div>
@@ -1409,8 +1409,8 @@ function WhatProfitableLooksLike({ calcRef, setPage }) {
   ];
 
   return (
-    <div style={{ paddingTop: 64, background: "#0C1520", minHeight: "100vh" }}>
-      {/* Header */}
+    <div style={{ paddingTop: 64, background: C.warm0, minHeight: "100vh" }}>
+      {/* Header — keep dark navy like other pages */}
       <section style={{ background: `linear-gradient(160deg, ${C.navyDark} 0%, ${C.navy} 100%)`, padding: "72px 24px", textAlign: "center" }}>
         <div style={{ maxWidth: 700, margin: "0 auto" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,76,46,0.15)", border: "1px solid rgba(184,76,46,0.3)", borderRadius: 99, padding: "5px 16px", marginBottom: 20 }}>
@@ -1427,30 +1427,30 @@ function WhatProfitableLooksLike({ calcRef, setPage }) {
       </section>
 
       {/* Why it happens */}
-      <section style={{ padding: "56px 24px 0", background: "#0C1520" }}>
+      <section style={{ padding: "56px 24px 0", background: C.warm1 }}>
         <div style={{ maxWidth: 680, margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ fontFamily: F.d, fontSize: "clamp(24px, 5vw, 42px)", fontWeight: 800, color: C.white, letterSpacing: 1, lineHeight: 1.1, marginBottom: 20 }}>
+          <h2 style={{ fontFamily: F.d, fontSize: "clamp(24px, 5vw, 42px)", fontWeight: 800, color: C.ink, letterSpacing: 1, lineHeight: 1.1, marginBottom: 20 }}>
             IT'S NEVER <span style={{ color: C.amber }}>ONE BIG THING.</span>
           </h2>
-          <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 16, lineHeight: 1.9, margin: "0 auto", fontFamily: F.b }}>
+          <p style={{ color: C.body, fontSize: 16, lineHeight: 1.9, margin: "0 auto", fontFamily: F.b }}>
             It's pricing that's slightly off. Jobs that run a little long. Estimates that don't match invoices. Employees who don't follow a process because there isn't one written down. Customers who never hear from you again after the job is done.
           </p>
-          <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 15, lineHeight: 1.9, margin: "16px auto 0", fontFamily: F.b }}>
+          <p style={{ color: C.muted, fontSize: 15, lineHeight: 1.9, margin: "16px auto 0", fontFamily: F.b }}>
             None of it feels serious on its own. Add it up at the end of the year and it's often $40,000 to $100,000 — gone. Not stolen. Just never captured.
           </p>
         </div>
       </section>
 
-      {/* Six traits — hover to expand */}
-      <section style={{ padding: "72px 24px", background: "#0C1520" }}>
+      {/* Six traits */}
+      <section style={{ padding: "56px 24px 72px", background: C.warm1 }}>
         <div style={{ maxWidth: 860, margin: "0 auto", display: "flex", flexDirection: "column", gap: 16 }}>
           {traits.map((t, i) => <TraitExpanded key={i} t={t} setPage={setPage} />)}
         </div>
       </section>
 
-      {/* HBR quote */}
-      <section style={{ padding: "0 24px 72px", background: "#0C1520" }}>
-        <div style={{ background: "rgba(61,107,158,0.1)", border: "1px solid rgba(61,107,158,0.2)", borderLeft: `4px solid ${C.slate}`, borderRadius: 14, padding: "28px 32px", maxWidth: 800, margin: "0 auto 48px" }}>
+      {/* HBR quote + CTA */}
+      <section style={{ padding: "56px 24px 72px", background: C.navyDark }}>
+        <div style={{ background: "rgba(61,107,158,0.15)", border: "1px solid rgba(61,107,158,0.25)", borderLeft: `4px solid ${C.slate}`, borderRadius: 14, padding: "28px 32px", maxWidth: 800, margin: "0 auto 48px" }}>
           <p style={{ fontSize: 16, color: "rgba(255,255,255,0.65)", lineHeight: 1.85, fontStyle: "italic", fontFamily: F.b, margin: "0 0 14px" }}>
             "A service needs to be compellingly designed, and management must field a workforce capable of producing it at an attractive price. Service firms must also manage their customers — and develop creative ways to fund the distinctive value they offer."
           </p>
@@ -1463,12 +1463,11 @@ function WhatProfitableLooksLike({ calcRef, setPage }) {
           </div>
         </div>
 
-        {/* CTA */}
         <div style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
           <h2 style={{ fontFamily: F.d, fontSize: "clamp(22px,4vw,36px)", fontWeight: 800, color: C.white, letterSpacing: 1, marginBottom: 14 }}>
             WHERE DOES YOUR BUSINESS STAND?
           </h2>
-          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.4)", fontFamily: F.b, lineHeight: 1.7, marginBottom: 28 }}>
+          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.45)", fontFamily: F.b, lineHeight: 1.7, marginBottom: 28 }}>
             Start with the free diagnostic and find out exactly which of these six things your business is missing — and what it's costing you.
           </p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
