@@ -127,8 +127,8 @@ module.exports = async function handler(req, res) {
                 <div style="font-size:22px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$249</div>
               </div>
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                We run your business through an in-depth 10-category diagnostic. Based on your specific answers, we build a customized 30-day action plan — with only the Fix-It Guides and Process Doc Templates that address <em>your</em> top leaks. Nothing generic. Nothing you don't need.<br><br>
-                You also get check-in emails at day 7 and day 15 to make sure things are moving. At day 28, we'll reach out about your next 30 days.
+                We run your business through an in-depth 10-category diagnostic. The AI identifies your specific leaks, ranks them by dollar impact, and builds a day-by-day 30-day plan around your worst issues first. You get only the guides and process docs for the problems you actually have — customized to your trade and how your operation works. Nothing generic. Nothing you don't need.<br><br>
+                Check-ins at day 7 and 15. At day 28 we ask how it went — if you made progress you move to the 60-day phase, if you need help we get on a call.
               </div>
               <a href="https://compassbizsolutions.com" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $249 →</a>
             </div>
@@ -144,8 +144,8 @@ module.exports = async function handler(req, res) {
                 <div style="font-size:22px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$599</div>
               </div>
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                Everything in the 30-day plan, plus we issue your days 31-60 and days 61-90 plans as you progress — each adjusted for what you've actually done, not what you were supposed to do. Check-ins at day 7, 15, 21, and 28.<br><br>
-                Includes all 22 customized guides and templates across all three phases. One payment, everything included. Saves $147 versus buying each phase separately.
+                The AI ranks all 10 leak categories for your specific business and sequences them across three phases — your biggest issues first in the 30-day, next tier in days 31-60, remaining in days 61-90. Each phase gets its own day-by-day plan.<br><br>
+                You only receive guides and templates for the leaks you actually have, customized to your trade and operation. The 60 and 90-day plans adjust based on your real progress at each check-in. Check-ins at day 7, 15, 21, and 28. Saves $147 vs buying each phase separately.
               </div>
               <a href="https://compassbizsolutions.com" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full 30/60/90 Bundle — $599 →</a>
             </div>

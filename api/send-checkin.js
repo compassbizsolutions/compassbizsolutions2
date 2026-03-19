@@ -36,17 +36,17 @@ const EMAILS = {
     }
   },
   21: {
-    subject: "Your 31-60 day plan is ready when you are",
-    heading: "Nine days left in your first 30.",
+    subject: "Nine days left in your first 30 — quick check",
+    heading: "Nine days left.",
     body: function(firstName, biz, topLeak) {
-      return "You are nine days from the end of your first 30-day window. Whether you have done everything, some things, or nothing yet — the 31-60 day plan picks up where you are, not where you were supposed to be.\n\nWhen you are ready for the next phase, we do a short check-in to see what you actually got done, then build your days 31-60 plan around your real progress — not a generic template.";
+      return "You are nine days from the end of your first 30-day window. How is it going?\n\nAt day 28 we will ask you one simple question about your progress. Based on your answer, we either move you into the 60-day phase — which picks up where you left off and addresses your next tier of leaks — or we get on a quick call to see what you need.\n\nNothing to do right now except keep going. If something is stuck or not making sense, just reply to this email.";
     }
   },
   28: {
-    subject: "Last call — your 30-day plan closes in 3 days",
+    subject: "Your 30-day plan ends in 3 days — how did it go?",
     heading: "Three days left.",
     body: function(firstName, biz, topLeak) {
-      return "Your first 30-day window closes in three days. If you want to keep the momentum going with a days 31-60 plan, now is the time.\n\nThe 31-60 plan ($249) picks up where you are, adjusts for what you have and have not done yet, and gives you the next set of specific actions and docs. If you already bought the full bundle ($599), your next phase is already paid for — just reply to this email and we will kick it off.";
+      return "Your first 30-day window closes in three days. Before we talk about what's next, one question:\n\nDid you feel like you made progress? Even partial progress counts — one thing implemented, one habit changed, one process that now runs without you thinking about it. Reply to this email and tell us what happened. A sentence or two is enough.\n\nBased on what you share, we'll either set you up with your 60-day plan or get on a quick call to figure out what got in the way. Either is fine — this isn't a test.";
     }
   }
 };
