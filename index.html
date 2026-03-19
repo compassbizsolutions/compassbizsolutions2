@@ -1424,8 +1424,8 @@ function DocCard({ doc, isCustomized }) {
     <div
       onMouseEnter={function() { setHov(true); }}
       onMouseLeave={function() { setHov(false); }}
-      style={{ background: hov ? "#FDFCFA" : C.white, border: "1px solid " + (hov ? C.amber : C.warm3), borderTop: "3px solid " + borderColor, borderRadius: 10, padding: "14px", transition: "all 0.2s", cursor: "default" }}>
-      <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 6 }}>
+      style={{ background: hov ? "#FDFCFA" : C.white, border: "1px solid " + (hov ? C.amber : C.warm3), borderTop: "3px solid " + borderColor, borderRadius: 10, padding: "14px", transition: "border-color 0.2s", cursor: "default", position: "relative" }}>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
         <span style={{ fontSize: 20, flexShrink: 0 }}>{doc.icon}</span>
         <div>
           <div style={{ fontFamily: F.b, fontSize: 12, fontWeight: 700, color: C.ink, lineHeight: 1.3 }}>{doc.title}</div>
@@ -1433,7 +1433,14 @@ function DocCard({ doc, isCustomized }) {
         </div>
       </div>
       {hov && (
-        <div style={{ borderTop: "1px solid " + C.warm2, paddingTop: 8, marginTop: 4 }}>
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, background: C.white, border: "2px solid " + C.amber, borderTop: "3px solid " + borderColor, borderRadius: 10, padding: "14px", zIndex: 50, boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 8 }}>
+            <span style={{ fontSize: 20, flexShrink: 0 }}>{doc.icon}</span>
+            <div>
+              <div style={{ fontFamily: F.b, fontSize: 12, fontWeight: 700, color: C.ink, lineHeight: 1.3 }}>{doc.title}</div>
+              <div style={{ fontSize: 10, color: borderColor, fontFamily: F.b, fontWeight: 700, letterSpacing: 0.5, marginTop: 2 }}>{doc.type === "guide" ? "FIX-IT GUIDE" : "TEMPLATE"}</div>
+            </div>
+          </div>
           <p style={{ fontSize: 11, color: C.muted, fontFamily: F.b, lineHeight: 1.6, margin: "0 0 6px" }}>{doc.desc}</p>
           {doc.bullets.map(function(b, i) {
             return (
@@ -1480,12 +1487,12 @@ function PackageModal({ onClose, initialTab, calcRef, setPage, paddle }) {
 
         <div style={{ padding: "24px 28px" }}>
           <div style={{ fontFamily: F.d, fontSize: 13, fontWeight: 700, color: C.slate, letterSpacing: 1.5, marginBottom: 12 }}>10 FIX-IT GUIDES</div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10, marginBottom: 28 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10, marginBottom: 28, position: "relative" }}>
             {guides.map(function(doc, i) { return <DocCard key={i} doc={doc} isCustomized={isCustomized} />; })}
           </div>
 
           <div style={{ fontFamily: F.d, fontSize: 13, fontWeight: 700, color: C.amber, letterSpacing: 1.5, marginBottom: 12 }}>12 PROCESS DOC TEMPLATES</div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10, marginBottom: 28 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10, marginBottom: 28, position: "relative" }}>
             {templates.map(function(doc, i) { return <DocCard key={i} doc={doc} isCustomized={isCustomized} />; })}
           </div>
 
@@ -1628,88 +1635,150 @@ function App() {
               </div>
             </section>
 
-            {/* 3 — WHAT COMPASS DOES (plain text) + PRODUCT FLOW */}
+            {/* 3 — WHAT COMPASS DOES */}
             <section style={{ background: C.warm1, padding: "72px 24px" }}>
-              <div style={{ maxWidth: 860, margin: "0 auto" }}>
+              <div style={{ maxWidth: 960, margin: "0 auto" }}>
 
-                {/* Plain text intro */}
-                <div style={{ textAlign: "center", marginBottom: 56 }}>
-                  <h2 style={{ fontFamily: F.d, fontSize: "clamp(26px, 5vw, 46px)", fontWeight: 800, color: C.ink, letterSpacing: 1, lineHeight: 1.1, marginBottom: 20 }}>
+                {/* Headline */}
+                <div style={{ textAlign: "center", marginBottom: 48 }}>
+                  <h2 style={{ fontFamily: F.d, fontSize: "clamp(26px, 5vw, 46px)", fontWeight: 800, color: C.ink, letterSpacing: 1, lineHeight: 1.1, marginBottom: 16 }}>
                     HERE'S WHAT <span style={{ color: C.amber }}>COMPASS</span> DOES.
                   </h2>
-                  <p style={{ fontFamily: F.b, fontSize: 17, color: C.muted, lineHeight: 1.9, maxWidth: 600, margin: "0 auto" }}>
-                    We start by finding your leaks — a free scan that puts a real dollar number on what you're losing and where. From there, you choose how far you want to go. Fix it yourself with our plain-language guides and ready-to-use process docs. Go deeper with a full diagnostic and a prioritized action plan built around your numbers. Or let us build the systems for you. No fluff. No retainers.
+                  <p style={{ fontFamily: F.b, fontSize: 16, color: C.muted, lineHeight: 1.8, maxWidth: 560, margin: "0 auto" }}>
+                    Start free. See your leaks. Then choose how deep you want to go.
                   </p>
                 </div>
 
-                {/* Product comparison table */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }} className="flow-grid">
+                {/* Side-by-side comparison */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 40 }} className="flow-grid">
 
-                  {/* GENERIC column */}
-                  <div style={{ background: C.white, border: `2px solid ${C.warm3}`, borderRadius: 16, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-                    <div style={{ background: "#B84C2E", padding: "18px 24px", textAlign: "center" }}>
-                      <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.65)", letterSpacing: 2, marginBottom: 4 }}>BASED ON FREE QUICK SCAN</div>
-                      <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.white }}>GENERIC DIY</div>
-                      <div style={{ fontFamily: F.b, fontSize: 12, color: "rgba(255,255,255,0.75)", marginTop: 4 }}>You customize to your business</div>
+                  {/* GENERIC */}
+                  <div style={{ background: C.white, borderRadius: 16, overflow: "hidden", border: "2px solid " + C.warm3, display: "flex", flexDirection: "column" }}>
+                    <div style={{ background: "#B84C2E", padding: "20px 24px" }}>
+                      <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.6)", letterSpacing: 2, marginBottom: 4 }}>BASED ON FREE QUICK SCAN</div>
+                      <div style={{ fontFamily: F.d, fontSize: 24, fontWeight: 800, color: C.white, marginBottom: 2 }}>GENERIC DIY</div>
+                      <div style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.7)" }}>$349 — you customize everything yourself</div>
                     </div>
-                    <div style={{ padding: "20px 24px", flex: 1, display: "flex", flexDirection: "column" }}>
-                      {[["10 Fix-It Guides", true], ["12 Process Doc Templates", true], ["30/60/90-Day Action Plan", false], ["In-Depth 10-Category Diagnostic", false], ["Customized to your business details", false]].map(([item, inc], i) => (
-                        <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: i < 4 ? `1px solid ${C.warm2}` : "none" }}>
-                          <div style={{ width: 20, height: 20, borderRadius: "50%", background: inc ? C.green : C.warm2, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                            <span style={{ color: inc ? C.white : C.ghost, fontSize: 11, fontWeight: 800 }}>{inc ? "✓" : "✗"}</span>
+
+                    {/* Doc preview mock */}
+                    <div style={{ background: C.warm0, borderBottom: "1px solid " + C.warm2, padding: "16px 20px" }}>
+                      <div style={{ background: C.white, borderRadius: 8, border: "1px solid " + C.warm3, padding: "14px 16px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10, paddingBottom: 8, borderBottom: "2px solid #B84C2E" }}>
+                          <div style={{ width: 28, height: 28, borderRadius: 6, background: "#B84C2E22", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>📄</div>
+                          <div>
+                            <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 800, color: C.ink, letterSpacing: 0.5 }}>APPOINTMENT CONFIRMATION PROCESS</div>
+                            <div style={{ fontSize: 9, color: C.muted, fontFamily: F.b }}>Generic Template — Fill in your details</div>
                           </div>
-                          <span style={{ fontFamily: F.b, fontSize: 13, color: inc ? C.body : C.ghost }}>{item}</span>
                         </div>
-                      ))}
-                      <div style={{ marginTop: "auto", paddingTop: 20, textAlign: "center" }}>
-                        <div style={{ fontFamily: F.d, fontSize: 36, fontWeight: 800, color: C.ink, lineHeight: 1 }}>$349</div>
-                        <div style={{ fontSize: 11, color: C.muted, fontFamily: F.b, marginBottom: 4 }}>guides + templates bundle</div>
-                        <div style={{ fontSize: 11, color: C.muted, fontFamily: F.b, marginBottom: 16 }}>or $199 each separately</div>
-                        <button onClick={() => calcRef?.current?.scrollIntoView({ behavior: "smooth" })}
-                          style={{ width: "100%", background: "#B84C2E", border: "none", color: C.white, padding: "11px", borderRadius: 9, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer", marginBottom: 8 }}>
-                          Start Free Scan →
-                        </button>
-                        <button onClick={() => setModal("generic")}
-                          style={{ width: "100%", background: "none", border: `1.5px solid ${C.warm3}`, color: C.muted, padding: "9px", borderRadius: 9, fontSize: 12, fontWeight: 600, fontFamily: F.b, cursor: "pointer" }}>
-                          See What's Included →
-                        </button>
+                        {[["Company Name:", "[YOUR BUSINESS NAME]"], ["Tech Name:", "[TECH NAME]"], ["Confirmation Script:", "[CUSTOMIZE FOR YOUR TRADE]"], ["Follow-up Timing:", "[SET YOUR PREFERENCE]"]].map(function(r, i) {
+                          return (
+                            <div key={i} style={{ display: "flex", gap: 8, padding: "4px 0", borderBottom: i < 3 ? "1px solid " + C.warm2 : "none" }}>
+                              <div style={{ fontFamily: F.b, fontSize: 10, fontWeight: 700, color: C.muted, width: 100, flexShrink: 0 }}>{r[0]}</div>
+                              <div style={{ fontFamily: F.b, fontSize: 10, color: "#B84C2E", fontStyle: "italic" }}>{r[1]}</div>
+                            </div>
+                          );
+                        })}
+                        <div style={{ marginTop: 8, padding: "6px 8px", background: C.warm1, borderRadius: 5, fontSize: 9, color: C.muted, fontFamily: F.b, textAlign: "center" }}>You fill in the blanks and adapt it to your operation</div>
                       </div>
+                    </div>
+
+                    {/* Steps */}
+                    <div style={{ padding: "18px 24px", flex: 1 }}>
+                      {[
+                        ["1", "Run the free 5-of-10 scan — see your estimated leak", C.slate],
+                        ["2", "Purchase the $349 bundle — guides and templates delivered to your inbox", "#B84C2E"],
+                        ["3", "Fill in the blanks — customize each doc to your operation yourself", "#B84C2E"],
+                        ["4", "Implement on your own timeline — no deadline, no pressure", "#B84C2E"],
+                      ].map(function(s, i) {
+                        return (
+                          <div key={i} style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "flex-start" }}>
+                            <div style={{ width: 22, height: 22, borderRadius: "50%", background: s[2], color: C.white, fontFamily: F.d, fontSize: 11, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>{s[0]}</div>
+                            <div style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.5 }}>{s[1]}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* CTA */}
+                    <div style={{ padding: "0 24px 24px", display: "flex", flexDirection: "column", gap: 8 }}>
+                      <button onClick={() => calcRef?.current?.scrollIntoView({ behavior: "smooth" })}
+                        style={{ width: "100%", background: "#B84C2E", border: "none", color: C.white, padding: "12px", borderRadius: 9, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>
+                        Start Free Scan →
+                      </button>
+                      <button onClick={() => setModal("generic")}
+                        style={{ width: "100%", background: "none", border: "1.5px solid " + C.warm3, color: C.muted, padding: "9px", borderRadius: 9, fontSize: 12, fontWeight: 600, fontFamily: F.b, cursor: "pointer" }}>
+                        See All 22 Documents →
+                      </button>
                     </div>
                   </div>
 
-                  {/* CUSTOMIZED column */}
-                  <div style={{ background: C.white, border: `2px solid ${C.amber}`, borderRadius: 16, overflow: "hidden", display: "flex", flexDirection: "column", position: "relative" }}>
+                  {/* CUSTOMIZED */}
+                  <div style={{ background: C.white, borderRadius: 16, overflow: "hidden", border: "2px solid " + C.amber, display: "flex", flexDirection: "column", position: "relative" }}>
                     <div style={{ position: "absolute", top: 0, right: 16, background: C.amber, color: C.white, fontSize: 9, fontWeight: 800, letterSpacing: 1.5, padding: "3px 12px", borderRadius: "0 0 8px 8px", fontFamily: F.b }}>MOST POPULAR</div>
-                    <div style={{ background: C.amber, padding: "18px 24px", textAlign: "center" }}>
-                      <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.75)", letterSpacing: 2, marginBottom: 4 }}>BASED ON IN-DEPTH CALCULATOR</div>
-                      <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.white }}>FULL DIY PACKAGE</div>
-                      <div style={{ fontFamily: F.b, fontSize: 12, color: "rgba(255,255,255,0.9)", marginTop: 4 }}>Customized to your business details</div>
+                    <div style={{ background: C.amber, padding: "20px 24px" }}>
+                      <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.7)", letterSpacing: 2, marginBottom: 4 }}>BASED ON IN-DEPTH CALCULATOR</div>
+                      <div style={{ fontFamily: F.d, fontSize: 24, fontWeight: 800, color: C.white, marginBottom: 2 }}>FULL DIY PACKAGE</div>
+                      <div style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.85)" }}>$599 — built around your specific numbers</div>
                     </div>
-                    <div style={{ padding: "20px 24px", flex: 1, display: "flex", flexDirection: "column" }}>
-                      {[["10 Fix-It Guides", true], ["12 Process Doc Templates", true], ["30/60/90-Day Action Plan", true], ["In-Depth 10-Category Diagnostic", true], ["Customized to your business details", true]].map(([item, inc], i) => (
-                        <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: i < 4 ? `1px solid ${C.warm2}` : "none" }}>
-                          <div style={{ width: 20, height: 20, borderRadius: "50%", background: C.amber, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                            <span style={{ color: C.white, fontSize: 11, fontWeight: 800 }}>✓</span>
+
+                    {/* Doc preview mock — customized */}
+                    <div style={{ background: C.warm0, borderBottom: "1px solid " + C.warm2, padding: "16px 20px" }}>
+                      <div style={{ background: C.white, borderRadius: 8, border: "1px solid " + C.warm3, padding: "14px 16px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10, paddingBottom: 8, borderBottom: "2px solid " + C.amber }}>
+                          <div style={{ width: 28, height: 28, borderRadius: 6, background: C.amber + "22", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>📄</div>
+                          <div>
+                            <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 800, color: C.ink, letterSpacing: 0.5 }}>APPOINTMENT CONFIRMATION PROCESS</div>
+                            <div style={{ fontSize: 9, color: C.amber, fontFamily: F.b, fontWeight: 700 }}>Customized — HVAC · 4 Techs · Phoenix, AZ</div>
                           </div>
-                          <span style={{ fontFamily: F.b, fontSize: 13, color: C.body, fontWeight: 600 }}>{item}</span>
                         </div>
-                      ))}
-                      <div style={{ marginTop: "auto", paddingTop: 20, textAlign: "center" }}>
-                        <div style={{ fontFamily: F.d, fontSize: 36, fontWeight: 800, color: C.amber, lineHeight: 1 }}>$599</div>
-                        <div style={{ fontSize: 11, color: C.muted, fontFamily: F.b, marginBottom: 16 }}>one time — everything included</div>
-                        <button onClick={() => calcRef?.current?.scrollIntoView({ behavior: "smooth" })}
-                          style={{ width: "100%", background: C.amber, border: "none", color: C.white, padding: "11px", borderRadius: 9, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: `0 4px 20px ${C.amber}44`, marginBottom: 8 }}>
-                          Take the In-Depth Scan →
-                        </button>
-                        <button onClick={() => setModal("customized")}
-                          style={{ width: "100%", background: "none", border: `1.5px solid ${C.amber}44`, color: C.amber, padding: "9px", borderRadius: 9, fontSize: 12, fontWeight: 600, fontFamily: F.b, cursor: "pointer" }}>
-                          See What's Included →
-                        </button>
+                        {[["Company:", "Desert Air HVAC"], ["Tech:", "Uses for all 4 field techs"], ["Script:", "Hi [customer], this is Mike from Desert Air confirming your AC tune-up tomorrow at 2pm..."], ["Timing:", "Day before, 2-4pm — set as daily recurring reminder"]].map(function(r, i) {
+                          return (
+                            <div key={i} style={{ display: "flex", gap: 8, padding: "4px 0", borderBottom: i < 3 ? "1px solid " + C.warm2 : "none" }}>
+                              <div style={{ fontFamily: F.b, fontSize: 10, fontWeight: 700, color: C.muted, width: 60, flexShrink: 0 }}>{r[0]}</div>
+                              <div style={{ fontFamily: F.b, fontSize: 10, color: C.body }}>{r[1]}</div>
+                            </div>
+                          );
+                        })}
+                        <div style={{ marginTop: 8, padding: "6px 8px", background: C.amber + "12", borderRadius: 5, fontSize: 9, color: C.amber, fontFamily: F.b, fontWeight: 700, textAlign: "center" }}>Pre-filled based on your calculator responses</div>
                       </div>
+                    </div>
+
+                    {/* Steps */}
+                    <div style={{ padding: "18px 24px", flex: 1 }}>
+                      {[
+                        ["1", "Complete the in-depth 10-of-10 calculator — all categories, your real numbers", C.amber],
+                        ["2", "Receive your 30/60/90-day action plan — priorities ranked by dollar impact for your business", C.amber],
+                        ["3", "Get all 10 Fix-It Guides written for your trade and situation", C.amber],
+                        ["4", "Receive all 12 templates pre-filled with your company details, trade, and operational specifics", C.amber],
+                      ].map(function(s, i) {
+                        return (
+                          <div key={i} style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "flex-start" }}>
+                            <div style={{ width: 22, height: 22, borderRadius: "50%", background: s[2], color: C.white, fontFamily: F.d, fontSize: 11, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>{s[0]}</div>
+                            <div style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.5 }}>{s[1]}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* CTA */}
+                    <div style={{ padding: "0 24px 24px", display: "flex", flexDirection: "column", gap: 8 }}>
+                      <button onClick={() => calcRef?.current?.scrollIntoView({ behavior: "smooth" })}
+                        style={{ width: "100%", background: C.amber, border: "none", color: C.white, padding: "12px", borderRadius: 9, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 20px rgba(200,112,26,0.35)" }}>
+                        Take the In-Depth Scan →
+                      </button>
+                      <button onClick={() => setModal("customized")}
+                        style={{ width: "100%", background: "none", border: "1.5px solid rgba(200,112,26,0.35)", color: C.amber, padding: "9px", borderRadius: 9, fontSize: 12, fontWeight: 600, fontFamily: F.b, cursor: "pointer" }}>
+                        See All 22 Documents →
+                      </button>
                     </div>
                   </div>
 
                 </div>
+
+                {/* Bottom note */}
+                <p style={{ textAlign: "center", fontFamily: F.b, fontSize: 13, color: C.muted, lineHeight: 1.7 }}>
+                  Not sure which is right for you? <button onClick={() => window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank")} style={{ background: "none", border: "none", color: C.amber, fontWeight: 700, fontFamily: F.b, fontSize: 13, cursor: "pointer", textDecoration: "underline" }}>Book a free 20-minute call</button> — we will tell you honestly.
+                </p>
 
               </div>
             </section>
