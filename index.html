@@ -630,53 +630,76 @@ Use EXACTLY these tags:
 // ─── DIAGNOSTIC TOOL ─────────────────────────────────────────────────────────
 function DiagnosticTool({ setPage, paddle }) {
   const QUESTIONS = [
-    { id:"trade",     q:"What trade are you in?",                                                          type:"text",  ph:"e.g. HVAC, Plumbing, Electrical, Landscaping..." },
-    { id:"services",  q:"Describe your services — what do you actually do day to day?",                    type:"area",  ph:"e.g. We do residential HVAC installs, service calls, and maintenance agreements..." },
-    { id:"years",     q:"How long have you been in business?",                                             type:"text",  ph:"e.g. 7 years" },
-    { id:"crew",      q:"How many guys do you have in the field?",                                         type:"text",  ph:"e.g. 4 techs" },
-    { id:"trucks",    q:"How many trucks?",                                                                type:"text",  ph:"e.g. 3 trucks" },
-    { id:"jobs",      q:"How many jobs do you complete per week?",                                         type:"text",  ph:"e.g. 20-25 jobs" },
-    { id:"invoice",   q:"What is your average invoice amount?",                                            type:"text",  ph:"e.g. $350" },
-    { id:"rate",      q:"What is your billable labor rate — or do you charge a flat fee?",                 type:"text",  ph:"e.g. $95/hr or flat fee per job" },
-    { id:"tracking",  q:"Do you have a system that tracks jobs from estimate to invoice?",                  type:"text",  ph:"e.g. We use ServiceTitan / just QuickBooks / nothing formal" },
-    { id:"partsruns", q:"How often do your guys make unplanned parts runs?",                               type:"text",  ph:"e.g. 2-3 times a week per truck" },
-    { id:"invoicetiming", q:"When does the invoice go out after a job closes?",                            type:"text",  ph:"e.g. Same day / end of week / when I get to it" },
-    { id:"repeat",    q:"Do customers come back to you, or mostly new customers each time?",               type:"text",  ph:"e.g. Maybe 40% repeat, rest are new" },
-    { id:"rates",     q:"When did you last raise your rates?",                                             type:"text",  ph:"e.g. Two years ago / never / just did" },
-    { id:"noshows",   q:"How many no-shows or last-minute cancellations/reschedules do you get per week?", type:"text",  ph:"e.g. 2-3 per week" },
-    { id:"timewaste", q:"What's eating your time that isn't billable work?",                               type:"area",  ph:"e.g. Chasing invoices, ordering parts, answering calls while on a job..." },
-    { id:"concerns",  q:"Tell me all of the concerns you have about your business — don't hold back.",     type:"area",  ph:"This is just between us. The more you share, the more specific we can be..." },
+    { id:"trade", q:"What trade are you in?", type:"buttons",
+      opts:["HVAC","Plumbing","Electrical","Landscaping","Pool and Spa","Pest Control","General Contracting","Cleaning Services","Other"] },
+    { id:"services", q:"What do you do day to day? Pick all that apply.", type:"multi",
+      opts:["Residential service calls","Commercial service calls","New installs","Maintenance agreements","Emergency calls","Estimates and bids","Inspections","Other"] },
+    { id:"years", q:"How long have you been in business?", type:"buttons",
+      opts:["Under 2 years","2-5 years","5-10 years","10-20 years","20+ years"] },
+    { id:"crew", q:"How many guys do you have in the field?", type:"buttons",
+      opts:["Just me","2-3","4-6","7-10","11-20","20+"] },
+    { id:"trucks", q:"How many trucks?", type:"buttons",
+      opts:["1","2-3","4-6","7-10","10+"] },
+    { id:"jobs", q:"How many jobs do you complete per week?", type:"buttons",
+      opts:["Under 10","10-20","20-40","40-60","60+"] },
+    { id:"invoice", q:"What is your average invoice amount?", type:"buttons",
+      opts:["Under $200","$200-$400","$400-$800","$800-$1,500","$1,500-$3,000","$3,000+"] },
+    { id:"rate", q:"How do you charge for labor?", type:"buttons",
+      opts:["Hourly rate","Flat fee per job","Mix of both","Not sure how to price it"] },
+    { id:"tracking", q:"How do you track jobs from estimate to invoice?", type:"buttons",
+      opts:["Software (ServiceTitan, Jobber etc)","QuickBooks only","Spreadsheets","Paper or memory","We do not track it"] },
+    { id:"partsruns", q:"How often do your guys make unplanned parts runs?", type:"buttons",
+      opts:["Almost never","1-2 per week","3-5 per week","Daily","Multiple times a day"] },
+    { id:"invoicetiming", q:"When does the invoice go out after a job closes?", type:"buttons",
+      opts:["Same day","Within 2-3 days","End of the week","Whenever I get to it","Often weeks later"] },
+    { id:"repeat", q:"How much of your work is repeat vs new customers?", type:"buttons",
+      opts:["Mostly new","About 50/50","Mostly repeat","We have maintenance agreements"] },
+    { id:"rates", q:"When did you last raise your rates?", type:"buttons",
+      opts:["Last 6 months","1-2 years ago","3-5 years ago","5+ years ago","Never"] },
+    { id:"noshows", q:"How many no-shows or last-minute cancellations do you get per week?", type:"buttons",
+      opts:["Almost none","1-2","3-5","More than 5","Way too many"] },
+    { id:"timewaste", q:"What is eating your time that is not billable? Pick all that apply.", type:"multi",
+      opts:["Chasing unpaid invoices","Parts runs","Phone calls while on jobs","Scheduling and rescheduling","Training new hires","Paperwork and admin","Estimating and quoting","Customer complaints"] },
+    { id:"concerns", q:"Tell us what is really going on. What keeps you up at night about this business?", type:"area",
+      ph:"The more specific you are the better we can help. No one else will see this." },
   ];
 
-  const [step, setStep] = useState(0); // 0=intro, 1-16=questions, 17=capture, 18=results
-  const [answers, setAnswers] = useState({});
-  const [current, setCurrent] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [biz, setBiz] = useState("");
-  const [phone, setPhone] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
-  const [err, setErr] = useState("");
+  const [step, setStep]         = useState(0);
+  const [answers, setAnswers]   = useState({});
+  const [current, setCurrent]   = useState("");
+  const [multiSel, setMultiSel] = useState([]);
+  const [name, setName]         = useState("");
+  const [email, setEmail]       = useState("");
+  const [biz, setBiz]           = useState("");
+  const [phone, setPhone]       = useState("");
+  const [result, setResult]     = useState(null);
+  const [err, setErr]           = useState("");
 
   const totalQ = QUESTIONS.length;
-  const qIndex = step - 1; // 0-based index into QUESTIONS when step 1-16
-  const q = step >= 1 && step <= totalQ ? QUESTIONS[qIndex] : null;
-  const pct = step === 0 ? 0 : step > totalQ ? 100 : Math.round((step / (totalQ + 1)) * 100);
+  const q      = (step >= 1 && step <= totalQ) ? QUESTIONS[step - 1] : null;
+  const pct    = step === 0 ? 0 : Math.round((step / (totalQ + 2)) * 100);
 
-  function saveAndNext() {
-    if (q && current.trim()) {
-      setAnswers(prev => ({ ...prev, [q.id]: current.trim() }));
+  function saveAndNext(val) {
+    const value = val !== undefined ? val : (q && q.type === "multi" ? multiSel.join(", ") : current.trim());
+    if (q && value) {
+      const id = q.id;
+      setAnswers(function(prev) {
+        const next = {};
+        Object.keys(prev).forEach(function(k) { next[k] = prev[k]; });
+        next[id] = value;
+        return next;
+      });
     }
     setCurrent("");
-    setStep(s => s + 1);
+    setMultiSel([]);
+    setStep(function(s) { return s + 1; });
   }
 
-  function handleKey(e) {
-    if (e.key === "Enter" && !e.shiftKey && q && q.type === "text") {
-      e.preventDefault();
-      if (current.trim()) saveAndNext();
-    }
+  function toggleMulti(opt) {
+    setMultiSel(function(prev) {
+      if (prev.indexOf(opt) >= 0) return prev.filter(function(x) { return x !== opt; });
+      return prev.concat([opt]);
+    });
   }
 
   async function submit() {
@@ -685,212 +708,192 @@ function DiagnosticTool({ setPage, paddle }) {
       return;
     }
     setErr("");
-    setLoading(true);
-    setStep(19); // loading state
-
-    const allAnswers = { ...answers };
-    if (current.trim() && q) allAnswers[q.id] = current.trim();
-
-    const summaryLines = QUESTIONS.map(function(qq) {
-      return qq.q + "\nAnswer: " + (allAnswers[qq.id] || "(skipped)");
-    }).join("\n\n");
-
+    setStep(19);
     try {
+      const a = answers;
+      const sys = "You are a straight-talking business consultant with 23 years fixing operations inside Fortune-level companies, now working exclusively with blue-collar service businesses. You know the 10 profit leaks cold: 1-Pricing, 2-Scheduling/no-shows, 3-Employee cost, 4-Recurring revenue, 5-Estimate-to-invoice gaps, 6-Cash flow, 7-Customer churn, 8-Materials markup, 9-Admin time drain, 10-Vehicles and parts.\n\nThis owner answered:\nTrade: " + (a.trade||"service") + "\nServices: " + (a.services||"") + "\nYears: " + (a.years||"") + "\nCrew: " + (a.crew||"") + "\nTrucks: " + (a.trucks||"") + "\nJobs/week: " + (a.jobs||"") + "\nAvg invoice: " + (a.invoice||"") + "\nLabor pricing: " + (a.rate||"") + "\nTracking: " + (a.tracking||"") + "\nParts runs: " + (a.partsruns||"") + "\nInvoice timing: " + (a.invoicetiming||"") + "\nRepeat vs new: " + (a.repeat||"") + "\nLast rate increase: " + (a.rates||"") + "\nNo-shows/week: " + (a.noshows||"") + "\nTime wasters: " + (a.timewaste||"") + "\nConcerns: " + (a.concerns||"") + "\n\nRespond ONLY with these exact tags, no other text:\n\n[HEADLINE]\nOne punchy sentence naming the single biggest problem in plain language.\n\n[WHAT_WE_SEE]\n3-4 sentences referencing their actual answers. Be specific. No generic fluff.\n\n[TOP_LEAK]\nBiggest leak. Name it, explain why given their answers, estimate annual dollar impact if numbers allow.\n\n[SECOND_LEAK]\nSame format.\n\n[THIRD_LEAK]\nSame format.\n\n[30_DAY]\nNumbered list. 3 specific free actions for first 30 days. One sentence each. Specific to their trade.\n\n[60_DAY]\nNumbered list. 3 actions days 31-60.\n\n[90_DAY]\nNumbered list. 3 bigger-picture moves days 61-90.\n\n[HOW_WE_HELP]\n2-3 sentences. Mention Compass Business Solutions by name. Reference the specific Fix-It Guides and Process Doc Templates that address their top leaks by name. Mention done-for-you consulting. No prices.";
       const res = await fetch("/api/generate-report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          systemPrompt: buildDiagnosticSystem(allAnswers),
-          userPrompt: "Based on everything this business owner shared, generate their diagnostic report now.",
-          maxTokens: 1800
-        })
+        body: JSON.stringify({ system: sys, prompt: "Generate the diagnostic report now.", max_tokens: 1800 })
       });
       const data = await res.json();
-      const text = data.content?.[0]?.text || "";
+      const text = data.text || "";
+      if (!text) throw new Error("empty");
       setResult(text);
-      setStep(20); // results
-
-      // Send email
+      setStep(20);
       fetch("/api/send-diagnostic", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, biz, phone, trade: allAnswers.trade || "", answers: allAnswers, report: text })
+        body: JSON.stringify({ name: name, email: email, biz: biz, phone: phone, trade: answers.trade || "", answers: answers, report: text })
       }).catch(function() {});
-
     } catch(e) {
       setErr("Something went wrong. Please try again.");
       setStep(17);
     }
-    setLoading(false);
-  }
-
-  function buildDiagnosticSystem(a) {
-    return "You are a straight-talking business consultant who spent 23 years fixing operations inside Fortune-level companies. Now you work exclusively with blue-collar service businesses. You know the 10 profit leaks that drain service businesses: 1-Pricing, 2-Scheduling/no-shows, 3-Employee cost/productivity, 4-Recurring revenue, 5-Estimate-to-invoice gaps, 6-Cash flow, 7-Customer churn, 8-Materials markup, 9-Admin time drain, 10-Vehicles & parts.\n\nHere is what this business owner shared:\n\nTrade: " + (a.trade||"service business") + "\nServices: " + (a.services||"") + "\nYears in business: " + (a.years||"") + "\nCrew: " + (a.crew||"") + "\nTrucks: " + (a.trucks||"") + "\nJobs per week: " + (a.jobs||"") + "\nAverage invoice: " + (a.invoice||"") + "\nLabor rate: " + (a.rate||"") + "\nJob tracking system: " + (a.tracking||"") + "\nUnplanned parts runs: " + (a.partsruns||"") + "\nInvoice timing: " + (a.invoicetiming||"") + "\nRepeat customers: " + (a.repeat||"") + "\nLast rate increase: " + (a.rates||"") + "\nNo-shows per week: " + (a.noshows||"") + "\nTime wasters: " + (a.timewaste||"") + "\nMain concerns: " + (a.concerns||"") + "\n\nWrite their diagnostic report using EXACTLY these tags. No other text outside the tags:\n\n[HEADLINE]\nOne punchy sentence. What is this business's biggest problem in plain language.\n\n[WHAT_WE_SEE]\n3-4 sentences. What stands out from what they shared. Be specific to their answers — reference their actual numbers and situations. No generic fluff.\n\n[TOP_LEAK]\nTheir single biggest profit leak based on what they shared. Name it, explain why it's the top issue for THEIR specific situation, estimate a rough annual dollar impact if you can based on their numbers.\n\n[SECOND_LEAK]\nSame format — second biggest leak.\n\n[THIRD_LEAK]\nSame format — third biggest leak.\n\n[30_DAY]\n3 specific actions they can take in the next 30 days. Free to implement. Numbered. Each one sentence. Specific to their trade and situation.\n\n[60_DAY]\n3 actions for days 31-60. These may require a small investment of time or money. Numbered.\n\n[90_DAY]\n3 actions for days 61-90. Bigger picture moves. Numbered.\n\n[HOW_WE_HELP]\n2-3 sentences. Mention Compass by name. Softly reference the specific Fix-It Guides and/or Process Doc Templates that address their top leaks — name them specifically. Also mention that if they want it all done for them, we can do that too. Do NOT use dollar amounts or prices here.";
   }
 
   function getTag(text, tag) {
-    const m = text.match(new RegExp("\\[" + tag + "\\]([\\s\\S]*?)(?=\\[|$)"));
+    const pattern = "\\[" + tag + "\\]([\\s\\S]*?)(?=\\[|$)";
+    const m = text.match(new RegExp(pattern));
     return m ? m[1].trim() : "";
   }
 
-  const inputStyle = { width: "100%", padding: "14px 16px", border: "2px solid " + C.warm3, borderRadius: 10, fontSize: 15, color: C.ink, outline: "none", fontFamily: F.b, background: C.white, boxSizing: "border-box", lineHeight: 1.6 };
+  const bBase = { border: "2px solid " + C.warm3, borderRadius: 8, padding: "10px 14px", fontSize: 13, fontFamily: F.b, cursor: "pointer", fontWeight: 600, background: C.white, color: C.body };
+  const bSel  = { border: "2px solid " + C.navy, borderRadius: 8, padding: "10px 14px", fontSize: 13, fontFamily: F.b, cursor: "pointer", fontWeight: 700, background: C.navy, color: C.white };
 
-  // INTRO
   if (step === 0) return (
-    <div style={{ background: C.navyDark, borderRadius: 16, padding: "36px 32px", textAlign: "center", border: "1px solid rgba(61,107,158,0.2)" }}>
-      <div style={{ fontSize: 40, marginBottom: 16 }}>🔍</div>
-      <div style={{ fontFamily: F.d, fontSize: "clamp(20px,4vw,30px)", fontWeight: 800, color: C.white, marginBottom: 12, letterSpacing: 0.5 }}>FREE BUSINESS DIAGNOSTIC</div>
-      <p style={{ fontFamily: F.b, fontSize: 15, color: "rgba(255,255,255,0.55)", lineHeight: 1.75, maxWidth: 480, margin: "0 auto 28px" }}>16 questions about your business. We'll tell you exactly where your money is going, rank your leaks by dollar impact, and give you a 30/60/90-day plan to fix them. No purchase required.</p>
-      <button onClick={function() { setStep(1); }} style={{ background: C.amber, border: "none", color: C.white, padding: "16px 40px", borderRadius: 10, fontSize: 16, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 24px rgba(200,112,26,0.4)" }}>Start Free Diagnostic →</button>
-      <p style={{ fontFamily: F.b, fontSize: 12, color: "rgba(255,255,255,0.25)", marginTop: 16 }}>Takes about 5 minutes. No credit card. No commitment.</p>
+    <div style={{ background: C.navyDark, borderRadius: 16, padding: "40px 32px", textAlign: "center", border: "1px solid rgba(61,107,158,0.2)" }}>
+      <div style={{ fontSize: 44, marginBottom: 16 }}>🔍</div>
+      <div style={{ fontFamily: F.d, fontSize: "clamp(22px,4vw,32px)", fontWeight: 800, color: C.white, marginBottom: 12 }}>FREE BUSINESS DIAGNOSTIC</div>
+      <p style={{ fontFamily: F.b, fontSize: 15, color: "rgba(255,255,255,0.5)", lineHeight: 1.8, maxWidth: 460, margin: "0 auto 28px" }}>A few quick questions about your business. We will tell you where the money is going and give you a 30/60/90-day plan to fix it. Free.</p>
+      <button onClick={function() { setStep(1); }} style={{ background: C.amber, border: "none", color: C.white, padding: "16px 44px", borderRadius: 10, fontSize: 16, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 24px rgba(200,112,26,0.4)" }}>Start Free Diagnostic</button>
+      <p style={{ fontFamily: F.b, fontSize: 12, color: "rgba(255,255,255,0.2)", marginTop: 16 }}>3 minutes. No credit card. No commitment.</p>
     </div>
   );
 
-  // QUESTIONS
   if (step >= 1 && step <= totalQ) return (
-    <div style={{ background: C.white, borderRadius: 16, padding: "32px 28px", border: "1px solid " + C.warm3, textAlign: "left" }}>
-      {/* Progress */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
+    <div style={{ background: C.white, borderRadius: 16, padding: "28px 24px", border: "1px solid " + C.warm3, textAlign: "left" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
         <div style={{ flex: 1, height: 4, background: C.warm2, borderRadius: 99 }}>
           <div style={{ width: pct + "%", height: "100%", background: C.amber, borderRadius: 99, transition: "width 0.4s" }} />
         </div>
-        <div style={{ fontFamily: F.b, fontSize: 12, color: C.muted, flexShrink: 0 }}>{step} of {totalQ}</div>
+        <div style={{ fontFamily: F.b, fontSize: 12, color: C.muted }}>{step} of {totalQ}</div>
       </div>
+      <div style={{ fontFamily: F.d, fontSize: "clamp(16px,3vw,21px)", fontWeight: 700, color: C.ink, marginBottom: 20, lineHeight: 1.35 }}>{q.q}</div>
 
-      {/* Question */}
-      <div style={{ fontFamily: F.d, fontSize: "clamp(16px,3vw,22px)", fontWeight: 700, color: C.ink, marginBottom: 20, lineHeight: 1.35 }}>{q.q}</div>
-
-      {/* Input */}
-      {q.type === "text" ? (
-        <input autoFocus value={current} onChange={function(e) { setCurrent(e.target.value); }} onKeyDown={handleKey}
-          placeholder={q.ph} style={inputStyle} />
-      ) : (
-        <textarea autoFocus value={current} onChange={function(e) { setCurrent(e.target.value); }}
-          placeholder={q.ph} rows={4} style={{ ...inputStyle, resize: "vertical" }} />
+      {q.type === "buttons" && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+          {q.opts.map(function(opt) {
+            return (
+              <button key={opt} onClick={function() { saveAndNext(opt); }} style={bBase}>{opt}</button>
+            );
+          })}
+        </div>
       )}
 
-      {/* Navigation */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 20 }}>
-        <button onClick={function() { setCurrent(""); setStep(s => Math.max(1, s-1)); }}
-          style={{ background: "none", border: "none", color: C.muted, fontSize: 13, fontFamily: F.b, cursor: "pointer" }}>← Back</button>
-        <div style={{ display: "flex", gap: 10 }}>
-          {current.trim() === "" && (
-            <button onClick={function() { setCurrent(""); setStep(s => s + 1); }}
-              style={{ background: "none", border: "1px solid " + C.warm3, color: C.muted, padding: "10px 20px", borderRadius: 8, fontSize: 13, fontFamily: F.b, cursor: "pointer" }}>Skip</button>
-          )}
-          <button onClick={saveAndNext} disabled={current.trim() === ""}
-            style={{ background: current.trim() ? C.amber : C.warm2, border: "none", color: current.trim() ? C.white : C.ghost, padding: "10px 28px", borderRadius: 8, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: current.trim() ? "pointer" : "default", transition: "all 0.2s" }}>
-            {step === totalQ ? "Almost done →" : "Next →"}
+      {q.type === "multi" && (
+        <div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 16 }}>
+            {q.opts.map(function(opt) {
+              const sel = multiSel.indexOf(opt) >= 0;
+              return (
+                <button key={opt} onClick={function() { toggleMulti(opt); }} style={sel ? bSel : bBase}>
+                  {sel ? "✓ " : ""}{opt}
+                </button>
+              );
+            })}
+          </div>
+          <button onClick={function() { saveAndNext(multiSel.join(", ")); }} disabled={multiSel.length === 0}
+            style={{ background: multiSel.length ? C.amber : C.warm2, border: "none", color: multiSel.length ? C.white : C.ghost, padding: "11px 28px", borderRadius: 8, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: multiSel.length ? "pointer" : "default" }}>
+            Continue
           </button>
         </div>
-      </div>
+      )}
+
+      {q.type === "area" && (
+        <div>
+          <textarea autoFocus value={current} onChange={function(e) { setCurrent(e.target.value); }} placeholder={q.ph} rows={5}
+            style={{ width: "100%", padding: "13px 15px", border: "2px solid " + C.warm3, borderRadius: 9, fontSize: 14, color: C.ink, outline: "none", fontFamily: F.b, background: C.white, boxSizing: "border-box", resize: "vertical", lineHeight: 1.65 }} />
+          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12 }}>
+            <button onClick={function() { saveAndNext("skipped"); }} style={{ background: "none", border: "none", color: C.muted, fontSize: 13, fontFamily: F.b, cursor: "pointer" }}>Skip</button>
+            <button onClick={function() { saveAndNext(); }} disabled={!current.trim()}
+              style={{ background: current.trim() ? C.amber : C.warm2, border: "none", color: current.trim() ? C.white : C.ghost, padding: "11px 28px", borderRadius: 8, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: current.trim() ? "pointer" : "default" }}>
+              {step === totalQ ? "Almost done" : "Next"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {q.type !== "buttons" && (
+        <button onClick={function() { setCurrent(""); setMultiSel([]); setStep(function(s) { return Math.max(1, s - 1); }); }}
+          style={{ background: "none", border: "none", color: C.ghost, fontSize: 12, fontFamily: F.b, cursor: "pointer", marginTop: 16 }}>Back</button>
+      )}
     </div>
   );
 
-  // CAPTURE FORM
   if (step === 17 || step === 18) return (
     <div style={{ background: C.white, borderRadius: 16, padding: "32px 28px", border: "1px solid " + C.warm3 }}>
-      <div style={{ fontFamily: F.d, fontSize: "clamp(18px,3vw,26px)", fontWeight: 800, color: C.ink, marginBottom: 8 }}>Almost there.</div>
-      <p style={{ fontFamily: F.b, fontSize: 14, color: C.muted, lineHeight: 1.7, marginBottom: 24 }}>We will analyze everything you shared and build your personalized 30/60/90-day diagnostic. Enter your info below and we will get it to you.</p>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }} className="calc-grid">
-        <input value={name} onChange={function(e) { setName(e.target.value); }} placeholder="First name" style={inputStyle} />
-        <input value={biz} onChange={function(e) { setBiz(e.target.value); }} placeholder="Business name" style={inputStyle} />
-        <input value={email} onChange={function(e) { setEmail(e.target.value); }} placeholder="Email address" type="email" style={inputStyle} />
-        <input value={phone} onChange={function(e) { setPhone(e.target.value); }} placeholder="Phone number" type="tel" style={inputStyle} />
+      <div style={{ fontFamily: F.d, fontSize: "clamp(18px,3vw,26px)", fontWeight: 800, color: C.ink, marginBottom: 8 }}>One last thing.</div>
+      <p style={{ fontFamily: F.b, fontSize: 14, color: C.muted, lineHeight: 1.7, marginBottom: 24 }}>Where should we send your diagnostic report?</p>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="calc-grid">
+        <input value={name} onChange={function(e) { setName(e.target.value); }} placeholder="First name"
+          style={{ padding: "13px 14px", border: "2px solid " + C.warm3, borderRadius: 9, fontSize: 14, color: C.ink, outline: "none", fontFamily: F.b }} />
+        <input value={biz} onChange={function(e) { setBiz(e.target.value); }} placeholder="Business name"
+          style={{ padding: "13px 14px", border: "2px solid " + C.warm3, borderRadius: 9, fontSize: 14, color: C.ink, outline: "none", fontFamily: F.b }} />
+        <input value={email} onChange={function(e) { setEmail(e.target.value); }} placeholder="Email address" type="email"
+          style={{ padding: "13px 14px", border: "2px solid " + C.warm3, borderRadius: 9, fontSize: 14, color: C.ink, outline: "none", fontFamily: F.b }} />
+        <input value={phone} onChange={function(e) { setPhone(e.target.value); }} placeholder="Phone number" type="tel"
+          style={{ padding: "13px 14px", border: "2px solid " + C.warm3, borderRadius: 9, fontSize: 14, color: C.ink, outline: "none", fontFamily: F.b }} />
       </div>
-      {err && <div style={{ color: C.red, fontSize: 13, fontFamily: F.b, marginTop: 12 }}>{err}</div>}
-      <button onClick={submit} style={{ width: "100%", background: C.amber, border: "none", color: C.white, padding: "15px", borderRadius: 10, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", marginTop: 20, boxShadow: "0 4px 20px rgba(200,112,26,0.35)" }}>
-        Build My Diagnostic Report →
-      </button>
-      <p style={{ fontFamily: F.b, fontSize: 11, color: C.muted, textAlign: "center", marginTop: 12 }}>We will also email you a copy. No spam — ever.</p>
+      {err && <div style={{ color: C.red, fontSize: 13, fontFamily: F.b, marginTop: 10 }}>{err}</div>}
+      <button onClick={submit} style={{ width: "100%", background: C.amber, border: "none", color: C.white, padding: "15px", borderRadius: 10, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", marginTop: 20, boxShadow: "0 4px 20px rgba(200,112,26,0.35)" }}>Build My Diagnostic Report</button>
+      <p style={{ fontFamily: F.b, fontSize: 11, color: C.muted, textAlign: "center", marginTop: 10 }}>We will email you a copy. No spam ever.</p>
     </div>
   );
 
-  // LOADING
   if (step === 19) return (
     <div style={{ background: C.navyDark, borderRadius: 16, padding: "56px 32px", textAlign: "center", border: "1px solid rgba(61,107,158,0.2)" }}>
       <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 20 }}>
-        {[0,1,2].map(function(i) { return <div key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: C.amber, animation: "dot 1.2s ease-in-out " + (i*0.2) + "s infinite" }} />; })}
+        {[0,1,2].map(function(i) { return <div key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: C.amber, animation: "dot 1.2s ease-in-out " + (i * 0.2) + "s infinite" }} />; })}
       </div>
       <div style={{ fontFamily: F.d, fontSize: 20, fontWeight: 700, color: C.white, marginBottom: 8 }}>BUILDING YOUR DIAGNOSTIC</div>
-      <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.7 }}>Analyzing your answers across all 10 profit leak categories.<br />This takes about 15 seconds.</p>
+      <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.7 }}>Analyzing everything across all 10 profit leak categories.<br />About 15 seconds.</p>
     </div>
   );
 
-  // RESULTS
   if (step === 20 && result) {
     const g = function(tag) { return getTag(result, tag); };
     return (
       <div style={{ textAlign: "left" }}>
-        {/* Header */}
-        <div style={{ background: C.navyDark, borderRadius: "14px 14px 0 0", padding: "24px 28px", marginBottom: 0 }}>
-          <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.35)", letterSpacing: 3, marginBottom: 8 }}>YOUR FREE DIAGNOSTIC REPORT</div>
-          {g("HEADLINE") && <div style={{ fontFamily: F.d, fontSize: "clamp(18px,3vw,26px)", fontWeight: 800, color: C.amber, lineHeight: 1.3 }}>{g("HEADLINE")}</div>}
-          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", fontFamily: F.b, marginTop: 8 }}>Report sent to {email} — check your inbox</div>
+        <div style={{ background: C.navyDark, borderRadius: "14px 14px 0 0", padding: "24px 28px" }}>
+          <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.35)", letterSpacing: 3, marginBottom: 8 }}>YOUR FREE DIAGNOSTIC</div>
+          {g("HEADLINE") && <div style={{ fontFamily: F.d, fontSize: "clamp(17px,3vw,24px)", fontWeight: 800, color: C.amber, lineHeight: 1.3 }}>{g("HEADLINE")}</div>}
+          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", fontFamily: F.b, marginTop: 8 }}>Sent to {email}</div>
         </div>
-
         <div style={{ background: C.warm0, border: "1px solid " + C.warm3, borderTop: "none", borderRadius: "0 0 14px 14px", padding: "24px 28px" }}>
-
           {g("WHAT_WE_SEE") && (
-            <div style={{ background: C.white, borderRadius: 10, padding: "16px 18px", marginBottom: 16, border: "1px solid " + C.warm3 }}>
-              <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 700, color: C.slate, letterSpacing: 2, marginBottom: 8 }}>WHAT WE SEE</div>
+            <div style={{ background: C.white, borderRadius: 10, padding: "16px 18px", marginBottom: 14, border: "1px solid " + C.warm3 }}>
+              <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: C.slate, letterSpacing: 2, marginBottom: 8 }}>WHAT WE SEE</div>
               <p style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.8, margin: 0 }}>{g("WHAT_WE_SEE")}</p>
             </div>
           )}
-
-          {/* Top 3 leaks */}
-          {[["TOP_LEAK","#1 BIGGEST LEAK",C.red],["SECOND_LEAK","#2 LEAK",C.amber],["THIRD_LEAK","#3 LEAK",C.gold]].map(function(leak, i) {
-            const content = g(leak[0]);
+          {[["TOP_LEAK","#1 BIGGEST LEAK",C.red],["SECOND_LEAK","#2 LEAK",C.amber],["THIRD_LEAK","#3 LEAK",C.gold]].map(function(lk, i) {
+            const content = g(lk[0]);
             if (!content) return null;
             return (
-              <div key={i} style={{ background: C.white, borderLeft: "4px solid " + leak[2], borderRadius: "0 10px 10px 0", padding: "14px 16px", marginBottom: 10, border: "1px solid " + C.warm3, borderLeft: "4px solid " + leak[2] }}>
-                <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 700, color: leak[2], letterSpacing: 2, marginBottom: 6 }}>{leak[1]}</div>
+              <div key={i} style={{ background: C.white, borderLeft: "4px solid " + lk[2], borderRadius: "0 10px 10px 0", padding: "14px 16px", marginBottom: 10, border: "1px solid " + C.warm3, borderLeft: "4px solid " + lk[2] }}>
+                <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: lk[2], letterSpacing: 2, marginBottom: 6 }}>{lk[1]}</div>
                 <p style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.75, margin: 0, whiteSpace: "pre-line" }}>{content}</p>
               </div>
             );
           })}
-
-          {/* 30/60/90 plan */}
-          <div style={{ margin: "20px 0 16px" }}>
-            <div style={{ fontFamily: F.d, fontSize: 13, fontWeight: 800, color: C.ink, letterSpacing: 1, marginBottom: 12 }}>YOUR 30/60/90-DAY PLAN</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
-              {[["30_DAY","Days 1-30","Quick Wins",C.green],["60_DAY","Days 31-60","Build Systems",C.slate],["90_DAY","Days 61-90","Growth Moves",C.amber]].map(function(p, i) {
-                const content = g(p[0]);
-                if (!content) return null;
-                return (
-                  <div key={i} style={{ background: C.white, borderRadius: 10, padding: "14px 16px", border: "1px solid " + C.warm3, borderTop: "3px solid " + p[3] }}>
-                    <div style={{ fontFamily: F.d, fontSize: 13, fontWeight: 800, color: p[3], marginBottom: 2 }}>{p[1]}</div>
-                    <div style={{ fontFamily: F.b, fontSize: 11, color: C.muted, marginBottom: 8 }}>{p[2]}</div>
-                    <div style={{ fontFamily: F.b, fontSize: 12, color: C.body, lineHeight: 1.7, whiteSpace: "pre-line" }}>{content}</div>
-                  </div>
-                );
-              })}
-            </div>
+          <div style={{ fontFamily: F.d, fontSize: 12, fontWeight: 800, color: C.ink, letterSpacing: 1, margin: "20px 0 12px" }}>YOUR 30/60/90-DAY PLAN</div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10, marginBottom: 20 }}>
+            {[["30_DAY","Days 1-30","Quick Wins",C.green],["60_DAY","Days 31-60","Build Systems",C.slate],["90_DAY","Days 61-90","Growth Moves",C.amber]].map(function(p, i) {
+              const content = g(p[0]);
+              if (!content) return null;
+              return (
+                <div key={i} style={{ background: C.white, borderRadius: 10, padding: "14px 16px", border: "1px solid " + C.warm3, borderTop: "3px solid " + p[3] }}>
+                  <div style={{ fontFamily: F.d, fontSize: 13, fontWeight: 800, color: p[3], marginBottom: 2 }}>{p[1]}</div>
+                  <div style={{ fontFamily: F.b, fontSize: 11, color: C.muted, marginBottom: 8 }}>{p[2]}</div>
+                  <div style={{ fontFamily: F.b, fontSize: 12, color: C.body, lineHeight: 1.7, whiteSpace: "pre-line" }}>{content}</div>
+                </div>
+              );
+            })}
           </div>
-
           {g("HOW_WE_HELP") && (
-            <div style={{ background: C.navyDark, borderRadius: 10, padding: "16px 18px", marginBottom: 20, border: "1px solid rgba(61,107,158,0.2)" }}>
-              <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 700, color: C.amber, letterSpacing: 2, marginBottom: 8 }}>HOW COMPASS CAN HELP</div>
+            <div style={{ background: C.navyDark, borderRadius: 10, padding: "16px 18px", marginBottom: 20 }}>
+              <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: C.amber, letterSpacing: 2, marginBottom: 8 }}>HOW COMPASS CAN HELP</div>
               <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.65)", lineHeight: 1.8, margin: 0 }}>{g("HOW_WE_HELP")}</p>
             </div>
           )}
-
-          {/* CTA */}
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <button onClick={function() { setPage("guides"); window.scrollTo(0,0); }}
-              style={{ width: "100%", background: C.amber, border: "none", color: C.white, padding: "14px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 20px rgba(200,112,26,0.3)" }}>
-              See the Fix-It Guides and Templates →
-            </button>
-            <button onClick={function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }}
-              style={{ width: "100%", background: "none", border: "1.5px solid " + C.warm3, color: C.muted, padding: "12px", borderRadius: 10, fontSize: 13, fontWeight: 600, fontFamily: F.b, cursor: "pointer" }}>
-              Talk to Jen — Free 30-Minute Call
-            </button>
+            <button onClick={function() { setPage("guides"); window.scrollTo(0, 0); }} style={{ width: "100%", background: C.amber, border: "none", color: C.white, padding: "14px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 20px rgba(200,112,26,0.3)" }}>See the Fix-It Guides and Templates</button>
+            <button onClick={function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }} style={{ width: "100%", background: "none", border: "1.5px solid " + C.warm3, color: C.muted, padding: "12px", borderRadius: 10, fontSize: 13, fontWeight: 600, fontFamily: F.b, cursor: "pointer" }}>Talk to Jen - Free 30-Minute Call</button>
           </div>
-
-          <button onClick={function() { setStep(0); setAnswers({}); setCurrent(""); setResult(null); setName(""); setEmail(""); setBiz(""); setPhone(""); }}
-            style={{ background: "none", border: "none", color: C.ghost, fontSize: 11, fontFamily: F.b, cursor: "pointer", marginTop: 16, display: "block", width: "100%", textAlign: "center" }}>
-            Start over
-          </button>
+          <button onClick={function() { setStep(0); setAnswers({}); setCurrent(""); setMultiSel([]); setResult(null); setName(""); setEmail(""); setBiz(""); setPhone(""); }}
+            style={{ background: "none", border: "none", color: C.ghost, fontSize: 11, fontFamily: F.b, cursor: "pointer", marginTop: 16, display: "block", width: "100%", textAlign: "center" }}>Start over</button>
         </div>
       </div>
     );
@@ -1904,154 +1907,6 @@ function App() {
                     allowFullScreen
                   /> */}
                 </div>
-              </div>
-            </section>
-
-            {/* 3 — WHAT COMPASS DOES */}
-            <section style={{ background: C.warm1, padding: "72px 24px" }}>
-              <div style={{ maxWidth: 960, margin: "0 auto" }}>
-
-                {/* Headline */}
-                <div style={{ textAlign: "center", marginBottom: 48 }}>
-                  <h2 style={{ fontFamily: F.d, fontSize: "clamp(26px, 5vw, 46px)", fontWeight: 800, color: C.ink, letterSpacing: 1, lineHeight: 1.1, marginBottom: 16 }}>
-                    HERE'S WHAT <span style={{ color: C.amber }}>COMPASS</span> DOES.
-                  </h2>
-                  <p style={{ fontFamily: F.b, fontSize: 16, color: C.muted, lineHeight: 1.8, maxWidth: 560, margin: "0 auto" }}>
-                    Start free. See your leaks. Then choose how deep you want to go.
-                  </p>
-                </div>
-
-                {/* Side-by-side comparison */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 40, alignItems: "stretch", maxWidth: 860, margin: "0 auto 40px" }} className="flow-grid">
-
-                  {/* GENERIC */}
-                  <div style={{ background: C.white, borderRadius: 16, overflow: "hidden", border: "2px solid " + C.warm3, display: "flex", flexDirection: "column" }}>
-                    <div style={{ background: "#B84C2E", padding: "20px 24px" }}>
-                      <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.6)", letterSpacing: 2, marginBottom: 4 }}>BASED ON FREE QUICK SCAN</div>
-                      <div style={{ fontFamily: F.d, fontSize: 24, fontWeight: 800, color: C.white, marginBottom: 2 }}>GENERIC DIY</div>
-                      <div style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.7)" }}>$349 — you customize everything yourself</div>
-                    </div>
-
-                    {/* Doc preview mock */}
-                    <div style={{ background: C.warm0, borderBottom: "1px solid " + C.warm2, padding: "16px 20px" }}>
-                      <div style={{ background: C.white, borderRadius: 8, border: "1px solid " + C.warm3, padding: "14px 16px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10, paddingBottom: 8, borderBottom: "2px solid #B84C2E" }}>
-                          <div style={{ width: 28, height: 28, borderRadius: 6, background: "#B84C2E22", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>📄</div>
-                          <div>
-                            <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 800, color: C.ink, letterSpacing: 0.5 }}>APPOINTMENT CONFIRMATION PROCESS</div>
-                            <div style={{ fontSize: 9, color: C.muted, fontFamily: F.b }}>Generic Template — Fill in your details</div>
-                          </div>
-                        </div>
-                        {[["Company Name:", "[YOUR BUSINESS NAME]"], ["Tech Name:", "[TECH NAME]"], ["Confirmation Script:", "[CUSTOMIZE FOR YOUR TRADE]"], ["Follow-up Timing:", "[SET YOUR PREFERENCE]"]].map(function(r, i) {
-                          return (
-                            <div key={i} style={{ display: "flex", gap: 8, padding: "4px 0", borderBottom: i < 3 ? "1px solid " + C.warm2 : "none" }}>
-                              <div style={{ fontFamily: F.b, fontSize: 10, fontWeight: 700, color: C.muted, width: 100, flexShrink: 0 }}>{r[0]}</div>
-                              <div style={{ fontFamily: F.b, fontSize: 10, color: "#B84C2E", fontStyle: "italic" }}>{r[1]}</div>
-                            </div>
-                          );
-                        })}
-                        <div style={{ marginTop: 8, padding: "6px 8px", background: C.warm1, borderRadius: 5, fontSize: 9, color: C.muted, fontFamily: F.b, textAlign: "center" }}>You fill in the blanks and adapt it to your operation</div>
-                      </div>
-                    </div>
-
-                    {/* Steps */}
-                    <div style={{ padding: "18px 24px", flex: 1 }}>
-                      {[
-                        ["1", "Run the free 5-of-10 scan — see your estimated leak", C.slate],
-                        ["2", "Purchase the $349 bundle — guides and templates delivered to your inbox", "#B84C2E"],
-                        ["3", "Fill in the blanks — customize each doc to your operation yourself", "#B84C2E"],
-                        ["4", "Implement on your own timeline — no deadline, no pressure", "#B84C2E"],
-                      ].map(function(s, i) {
-                        return (
-                          <div key={i} style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "flex-start" }}>
-                            <div style={{ width: 22, height: 22, borderRadius: "50%", background: s[2], color: C.white, fontFamily: F.d, fontSize: 11, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>{s[0]}</div>
-                            <div style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.5 }}>{s[1]}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* CTA */}
-                    <div style={{ padding: "0 24px 24px", display: "flex", flexDirection: "column", gap: 8 }}>
-                      <button onClick={() => calcRef?.current?.scrollIntoView({ behavior: "smooth" })}
-                        style={{ width: "100%", background: "#B84C2E", border: "none", color: C.white, padding: "12px", borderRadius: 9, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>
-                        Start Free Scan →
-                      </button>
-                      <button onClick={() => setModal("generic")}
-                        style={{ width: "100%", background: "none", border: "1.5px solid " + C.warm3, color: C.muted, padding: "9px", borderRadius: 9, fontSize: 12, fontWeight: 600, fontFamily: F.b, cursor: "pointer" }}>
-                        See All 22 Documents →
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* CUSTOMIZED */}
-                  <div style={{ background: C.white, borderRadius: 16, overflow: "hidden", border: "2px solid " + C.amber, display: "flex", flexDirection: "column", position: "relative" }}>
-                    <div style={{ position: "absolute", top: 0, right: 16, background: C.amber, color: C.white, fontSize: 9, fontWeight: 800, letterSpacing: 1.5, padding: "3px 12px", borderRadius: "0 0 8px 8px", fontFamily: F.b }}>MOST POPULAR</div>
-                    <div style={{ background: C.amber, padding: "20px 24px" }}>
-                      <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.7)", letterSpacing: 2, marginBottom: 4 }}>BASED ON IN-DEPTH CALCULATOR</div>
-                      <div style={{ fontFamily: F.d, fontSize: 24, fontWeight: 800, color: C.white, marginBottom: 2 }}>FULL DIY PACKAGE</div>
-                      <div style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.85)" }}>$599 — built around your specific numbers</div>
-                    </div>
-
-                    {/* Doc preview mock — customized */}
-                    <div style={{ background: C.warm0, borderBottom: "1px solid " + C.warm2, padding: "16px 20px" }}>
-                      <div style={{ background: C.white, borderRadius: 8, border: "1px solid " + C.warm3, padding: "14px 16px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10, paddingBottom: 8, borderBottom: "2px solid " + C.amber }}>
-                          <div style={{ width: 28, height: 28, borderRadius: 6, background: C.amber + "22", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>📄</div>
-                          <div>
-                            <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 800, color: C.ink, letterSpacing: 0.5 }}>APPOINTMENT CONFIRMATION PROCESS</div>
-                            <div style={{ fontSize: 9, color: C.amber, fontFamily: F.b, fontWeight: 700 }}>Customized — HVAC · 4 Techs · Phoenix, AZ</div>
-                          </div>
-                        </div>
-                        {[["Company:", "Desert Air HVAC"], ["Tech:", "Uses for all 4 field techs"], ["Script:", "Hi [customer], this is Mike from Desert Air confirming your AC tune-up tomorrow at 2pm..."], ["Timing:", "Day before, 2-4pm — set as daily recurring reminder"]].map(function(r, i) {
-                          return (
-                            <div key={i} style={{ display: "flex", gap: 8, padding: "4px 0", borderBottom: i < 3 ? "1px solid " + C.warm2 : "none" }}>
-                              <div style={{ fontFamily: F.b, fontSize: 10, fontWeight: 700, color: C.muted, width: 60, flexShrink: 0 }}>{r[0]}</div>
-                              <div style={{ fontFamily: F.b, fontSize: 10, color: C.body }}>{r[1]}</div>
-                            </div>
-                          );
-                        })}
-                        <div style={{ marginTop: 8, padding: "6px 8px", background: C.amber + "12", borderRadius: 5, fontSize: 9, color: C.amber, fontFamily: F.b, fontWeight: 700, textAlign: "center" }}>Pre-filled based on your calculator responses</div>
-                      </div>
-                    </div>
-
-                    {/* Steps */}
-                    <div style={{ padding: "18px 24px", flex: 1 }}>
-                      {[
-                        ["1", "Complete the in-depth 10-of-10 calculator — all categories, your real numbers", C.amber],
-                        ["2", "Receive your 30/60/90-day action plan — priorities ranked by dollar impact for your business", C.amber],
-                        ["3", "Get all 10 Fix-It Guides written for your trade and situation", C.amber],
-                        ["4", "Receive all 12 templates pre-filled with your company details, trade, and operational specifics", C.amber],
-                      ].map(function(s, i) {
-                        return (
-                          <div key={i} style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "flex-start" }}>
-                            <div style={{ width: 22, height: 22, borderRadius: "50%", background: s[2], color: C.white, fontFamily: F.d, fontSize: 11, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>{s[0]}</div>
-                            <div style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.5 }}>{s[1]}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* CTA */}
-                    <div style={{ padding: "0 24px 24px", display: "flex", flexDirection: "column", gap: 8 }}>
-                      <button onClick={() => calcRef?.current?.scrollIntoView({ behavior: "smooth" })}
-                        style={{ width: "100%", background: C.amber, border: "none", color: C.white, padding: "12px", borderRadius: 9, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 20px rgba(200,112,26,0.35)" }}>
-                        Take the In-Depth Scan →
-                      </button>
-                      <button onClick={() => setModal("customized")}
-                        style={{ width: "100%", background: "none", border: "1.5px solid rgba(200,112,26,0.35)", color: C.amber, padding: "9px", borderRadius: 9, fontSize: 12, fontWeight: 600, fontFamily: F.b, cursor: "pointer" }}>
-                        See All 22 Documents →
-                      </button>
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* Bottom note */}
-                <p style={{ textAlign: "center", fontFamily: F.b, fontSize: 13, color: C.muted, lineHeight: 1.7 }}>
-                  Not sure which is right for you? <button onClick={() => window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank")} style={{ background: "none", border: "none", color: C.amber, fontWeight: 700, fontFamily: F.b, fontSize: 13, cursor: "pointer", textDecoration: "underline" }}>Book a free 20-minute call</button> — we will tell you honestly.
-                </p>
-
               </div>
             </section>
 
