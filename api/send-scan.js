@@ -86,15 +86,38 @@ module.exports = async function handler(req, res) {
     const tradeName   = trade || "Service Business";
     const leakAmount  = total ? `$${Math.round(total).toLocaleString()}` : "a significant amount";
 
-    // Parse teaser tags
     const headline    = getTag(teaser, "HEADLINE");
     const whatFound   = getTag(teaser, "WHAT_WE_FOUND");
     const topLeak     = getTag(teaser, "TOP_LEAK");
     const secondLeak  = getTag(teaser, "SECOND_LEAK");
-    const quickWin    = getTag(teaser, "QUICK_WIN");
+    const leakTotal   = getTag(teaser, "LEAK_TOTAL");
     const whatMissing = getTag(teaser, "WHATS_MISSING");
     const upgradeHook = getTag(teaser, "UPGRADE_HOOK");
     const docsHook    = getTag(teaser, "DOCS_HOOK");
+
+    // Bullet rendering
+    const bulletLines = (text) => text.split("\n").filter(l => l.trim()).map(line =>
+      `<div style="display:flex;gap:8px;margin-bottom:6px;align-items:flex-start;">
+        <span style="color:#3D6B9E;font-weight:bold;flex-shrink:0;">•</span>
+        <span style="font-size:13px;color:#3E4E63;line-height:1.6;">${line.replace(/^•\s*/,"")}</span>
+      </div>`
+    ).join("");
+
+    // Structured leak block
+    const leakBlock = (label, content, color) => {
+      if (!content) return "";
+      const lines = content.split("\n").filter(l => l.trim());
+      const title = lines[0] || "";
+      const why   = lines[1] || "";
+      const fix   = lines.find(l => l.startsWith("→")) || "";
+      return `
+        <div style="background:white;border-left:4px solid ${color};border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:10px;border:1px solid #D8D4CD;border-left:4px solid ${color};">
+          <div style="font-size:10px;font-weight:bold;color:${color};letter-spacing:2px;margin-bottom:8px;">${label}</div>
+          ${title ? `<div style="font-size:13px;font-weight:bold;color:#1A2332;margin-bottom:4px;">${title}</div>` : ""}
+          ${why   ? `<div style="font-size:12px;color:#3E4E63;line-height:1.65;margin-bottom:6px;">${why}</div>` : ""}
+          ${fix   ? `<div style="font-size:12px;color:${color};font-weight:700;padding-top:6px;border-top:1px solid #D8D4CD;">${fix}</div>` : ""}
+        </div>`;
+    };
 
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #3E4E63;">
@@ -118,26 +141,18 @@ module.exports = async function handler(req, res) {
 
           ${whatFound ? `
           <div style="background: white; border-radius: 8px; padding: 18px 20px; margin-bottom: 16px; border: 1px solid #D8D4CD;">
-            <div style="font-size: 10px; font-weight: bold; color: #3D6B9E; letter-spacing: 2px; margin-bottom: 8px;">WHAT WE FOUND</div>
-            <p style="font-size: 13px; color: #3E4E63; line-height: 1.75; margin: 0;">${whatFound}</p>
+            <div style="font-size: 10px; font-weight: bold; color: #3D6B9E; letter-spacing: 2px; margin-bottom: 10px;">WHAT WE FOUND</div>
+            ${bulletLines(whatFound)}
           </div>` : ""}
 
-          ${topLeak ? `
-          <div style="background: white; border-left: 4px solid #B84C2E; border-radius: 0 8px 8px 0; padding: 16px 18px; margin-bottom: 12px; border-top: 1px solid #D8D4CD; border-right: 1px solid #D8D4CD; border-bottom: 1px solid #D8D4CD;">
-            <div style="font-size: 10px; font-weight: bold; color: #B84C2E; letter-spacing: 2px; margin-bottom: 6px;">#1 BIGGEST LEAK</div>
-            <p style="font-size: 13px; color: #3E4E63; line-height: 1.75; margin: 0;">${topLeak}</p>
-          </div>` : ""}
+          ${leakBlock("#1 BIGGEST LEAK", topLeak, "#B84C2E")}
+          ${leakBlock("#2 BIGGEST LEAK", secondLeak, "#C8701A")}
 
-          ${secondLeak ? `
-          <div style="background: white; border-left: 4px solid #C8701A; border-radius: 0 8px 8px 0; padding: 16px 18px; margin-bottom: 16px; border-top: 1px solid #D8D4CD; border-right: 1px solid #D8D4CD; border-bottom: 1px solid #D8D4CD;">
-            <div style="font-size: 10px; font-weight: bold; color: #C8701A; letter-spacing: 2px; margin-bottom: 6px;">#2 BIGGEST LEAK</div>
-            <p style="font-size: 13px; color: #3E4E63; line-height: 1.75; margin: 0;">${secondLeak}</p>
-          </div>` : ""}
-
-          ${whatMissing ? `
-          <div style="background: white; border-radius: 8px; padding: 16px 18px; margin-bottom: 16px; border: 1px solid #D8D4CD;">
-            <div style="font-size: 10px; font-weight: bold; color: #6B7A90; letter-spacing: 2px; margin-bottom: 6px;">WHAT THIS SCAN DIDN'T COVER</div>
-            <p style="font-size: 12px; color: #6B7A90; line-height: 1.7; margin: 0;">${whatMissing}</p>
+          ${leakTotal ? `
+          <div style="background:#B84C2E;border-radius:8px;padding:14px 18px;margin-bottom:16px;text-align:center;">
+            <div style="font-size:10px;font-weight:bold;color:rgba(255,255,255,0.7);letter-spacing:2px;margin-bottom:4px;">BOTTOM LINE</div>
+            <div style="font-size:16px;font-weight:bold;color:white;">${leakTotal}</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px;">Based on 5 of 10 leak categories — the real number is likely higher.</div>
           </div>` : ""}
 
           <!-- CTA — Full DIY Package -->

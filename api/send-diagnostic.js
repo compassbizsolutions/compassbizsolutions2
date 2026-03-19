@@ -63,13 +63,32 @@ module.exports = async function handler(req, res) {
     const topLeak    = getTag(report, "TOP_LEAK");
     const secondLeak = getTag(report, "SECOND_LEAK");
     const thirdLeak  = getTag(report, "THIRD_LEAK");
+    const leakTotal  = getTag(report, "LEAK_TOTAL");
     const howWeHelp  = getTag(report, "HOW_WE_HELP");
 
-    const leakBlock = (label, content, color) => !content ? "" : `
-      <div style="background:white;border-left:4px solid ${color};border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:10px;border:1px solid #D8D4CD;border-left:4px solid ${color};">
-        <div style="font-size:10px;font-weight:bold;color:${color};letter-spacing:2px;margin-bottom:6px;">${label}</div>
-        <p style="font-size:13px;color:#3E4E63;line-height:1.75;margin:0;white-space:pre-line;">${content}</p>
-      </div>`;
+    // Render bullet lines from WHAT_WE_SEE
+    const bulletLines = (text) => text.split("\n").filter(l => l.trim()).map(line =>
+      `<div style="display:flex;gap:8px;margin-bottom:6px;align-items:flex-start;">
+        <span style="color:#3D6B9E;font-weight:bold;flex-shrink:0;">•</span>
+        <span style="font-size:13px;color:#3E4E63;line-height:1.6;">${line.replace(/^•\s*/,"")}</span>
+      </div>`
+    ).join("");
+
+    // Render structured leak block
+    const leakBlock = (label, content, color) => {
+      if (!content) return "";
+      const lines = content.split("\n").filter(l => l.trim());
+      const title = lines[0] || "";
+      const why   = lines[1] || "";
+      const fix   = lines.find(l => l.startsWith("→")) || "";
+      return `
+        <div style="background:white;border-left:4px solid ${color};border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:10px;border:1px solid #D8D4CD;border-left:4px solid ${color};">
+          <div style="font-size:10px;font-weight:bold;color:${color};letter-spacing:2px;margin-bottom:8px;">${label}</div>
+          ${title ? `<div style="font-size:13px;font-weight:bold;color:#1A2332;margin-bottom:4px;">${title}</div>` : ""}
+          ${why   ? `<div style="font-size:12px;color:#3E4E63;line-height:1.65;margin-bottom:6px;">${why}</div>` : ""}
+          ${fix   ? `<div style="font-size:12px;color:${color};font-weight:700;padding-top:6px;border-top:1px solid #D8D4CD;">${fix}</div>` : ""}
+        </div>`;
+    };
 
     const html = `
       <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;color:#3E4E63;">
@@ -82,13 +101,17 @@ module.exports = async function handler(req, res) {
           <p style="font-size:15px;color:#1A2332;font-weight:600;margin-top:0;">Hi ${firstName},</p>
           <p style="color:#3E4E63;line-height:1.7;margin-top:0;">Here is your free diagnostic for <strong>${biz}</strong>${trade ? " — " + trade : ""}.</p>
           ${whatWeSee ? `<div style="background:white;border-radius:8px;padding:16px 18px;margin-bottom:16px;border:1px solid #D8D4CD;">
-            <div style="font-size:10px;font-weight:bold;color:#3D6B9E;letter-spacing:2px;margin-bottom:8px;">WHAT WE SEE</div>
-            <p style="font-size:13px;color:#3E4E63;line-height:1.8;margin:0;">${whatWeSee}</p>
+            <div style="font-size:10px;font-weight:bold;color:#3D6B9E;letter-spacing:2px;margin-bottom:10px;">WHAT WE SEE</div>
+            ${bulletLines(whatWeSee)}
           </div>` : ""}
           ${leakBlock("#1 BIGGEST LEAK", topLeak, "#B84C2E")}
           ${leakBlock("#2 LEAK", secondLeak, "#C8701A")}
           ${leakBlock("#3 LEAK", thirdLeak, "#A8782A")}
-          ${howWeHelp ? `<p style="font-size:13px;color:#3E4E63;line-height:1.8;margin:20px 0 0;">${howWeHelp}</p>` : ""}
+          ${leakTotal ? `
+          <div style="background:#B84C2E;border-radius:8px;padding:14px 18px;margin-bottom:20px;text-align:center;">
+            <div style="font-size:10px;font-weight:bold;color:rgba(255,255,255,0.7);letter-spacing:2px;margin-bottom:4px;">BOTTOM LINE</div>
+            <div style="font-size:16px;font-weight:bold;color:white;">${leakTotal}</div>
+          </div>` : ""}
 
           <!-- What to do next -->
           <div style="margin:20px 0;">
