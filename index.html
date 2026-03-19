@@ -719,7 +719,7 @@ function DiagnosticTool({ setPage, paddle }) {
     <div style={{ background: C.navyDark, borderRadius: 16, padding: "40px 32px", textAlign: "center", border: "1px solid rgba(61,107,158,0.2)" }}>
       <div style={{ fontSize: 44, marginBottom: 16 }}>🔍</div>
       <div style={{ fontFamily: F.d, fontSize: "clamp(22px,4vw,32px)", fontWeight: 800, color: C.white, marginBottom: 12 }}>FREE BUSINESS DIAGNOSTIC</div>
-      <p style={{ fontFamily: F.b, fontSize: 15, color: "rgba(255,255,255,0.5)", lineHeight: 1.8, maxWidth: 460, margin: "0 auto 28px" }}>A few quick questions about your business. We will tell you where the money is going and give you a 30/60/90-day plan to fix it. Free.</p>
+      <p style={{ fontFamily: F.b, fontSize: 15, color: "rgba(255,255,255,0.5)", lineHeight: 1.8, maxWidth: 460, margin: "0 auto 28px" }}>A few quick questions about your business. We will identify your top profit leaks and tell you exactly where the money is going. Free.</p>
       <button onClick={function() { setStep(1); }} style={{ background: C.amber, border: "none", color: C.white, padding: "16px 44px", borderRadius: 10, fontSize: 16, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 24px rgba(200,112,26,0.4)" }}>Start Free Diagnostic</button>
       <p style={{ fontFamily: F.b, fontSize: 12, color: "rgba(255,255,255,0.2)", marginTop: 16 }}>3 minutes. No credit card. No commitment.</p>
     </div>
@@ -1886,7 +1886,7 @@ function App() {
                 <h2 style={{ fontFamily: F.d, fontSize: "clamp(26px, 5vw, 46px)", fontWeight: 800, color: C.ink, letterSpacing: 1, marginBottom: 8 }}>
                   LET'S FIND OUT <span style={{ color: C.amber }}>WHAT'S GOING ON.</span>
                 </h2>
-                <p style={{ fontFamily: F.b, fontSize: 15, color: C.muted, marginBottom: 40, lineHeight: 1.7 }}>Answer a few questions about your business. We'll tell you exactly where the money is going — and what to do about it. Free.</p>
+                <p style={{ fontFamily: F.b, fontSize: 15, color: C.muted, marginBottom: 40, lineHeight: 1.7 }}>Answer a few questions about your business. We will identify your top profit leaks — free. Then we can help you fix them.</p>
                 <div ref={calcRef}>
                   <DiagnosticTool setPage={setPage} paddle={paddle} />
                 </div>
