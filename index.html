@@ -16,7 +16,7 @@
     window.addEventListener('load', function() {
       if (window.Paddle) {
         Paddle.Environment.set("sandbox");
-        Paddle.Initialize({ token: "PADDLE_CLIENT_TOKEN_SANDBOX" });
+        Paddle.Initialize({ token: "test_9cf513f1047dfffe322952bc2fe" });
       }
     });
   </script>
@@ -80,20 +80,20 @@ const n = v => parseFloat(v) || 0;
 
 // ─── COMPASS LOGO SVG ─────────────────────────────────────────────────────────
 function CompassLogo({ size = 40, onDark = true }) {
-  const s = onDark ? C.white : C.navy;
+  const s = onDark ? C.navy : C.navy;
   return (
-    <div style={{ background: onDark ? "rgba(255,255,255,0.12)" : "rgba(27,46,75,0.08)", borderRadius: "50%", width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-      <svg width={size * 0.8} height={size * 0.8} viewBox="0 0 80 80" fill="none">
-        <circle cx="40" cy="40" r="36" stroke={s} strokeWidth="4" fill="none" opacity="0.25"/>
-        <circle cx="40" cy="40" r="28" stroke={C.slate} strokeWidth="1.5" fill="none" strokeDasharray="5 4" opacity="0.8"/>
-        <circle cx="40" cy="40" r="20" stroke={C.amber} strokeWidth="1.5" fill="none" strokeDasharray="4 4" opacity="0.8"/>
-        <circle cx="40" cy="40" r="12" stroke={C.red} strokeWidth="1.5" fill="none" strokeDasharray="3 4" opacity="0.7"/>
-        <polygon points="40,4 43,36 40,40 37,36" fill={s} opacity="0.95"/>
-        <polygon points="40,76 37,44 40,40 43,44" fill={s} opacity="0.6"/>
-        <polygon points="4,40 36,37 40,40 36,43" fill={s} opacity="0.6"/>
-        <polygon points="76,40 44,43 40,40 44,37" fill={s} opacity="0.95"/>
-        <circle cx="40" cy="40" r="4" fill={s}/>
-        <circle cx="40" cy="4" r="3" fill={s} opacity="0.7"/>
+    <div style={{ background: C.white, borderRadius: "50%", width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}>
+      <svg width={size * 0.72} height={size * 0.72} viewBox="0 0 80 80" fill="none">
+        <circle cx="40" cy="40" r="36" stroke={C.navy} strokeWidth="4" fill="none" opacity="0.2"/>
+        <circle cx="40" cy="40" r="28" stroke={C.slate} strokeWidth="1.5" fill="none" strokeDasharray="5 4" opacity="0.9"/>
+        <circle cx="40" cy="40" r="20" stroke={C.amber} strokeWidth="1.5" fill="none" strokeDasharray="4 4" opacity="0.9"/>
+        <circle cx="40" cy="40" r="12" stroke={C.red} strokeWidth="1.5" fill="none" strokeDasharray="3 4" opacity="0.8"/>
+        <polygon points="40,4 43,36 40,40 37,36" fill={C.navy} opacity="0.95"/>
+        <polygon points="40,76 37,44 40,40 43,44" fill={C.navy} opacity="0.5"/>
+        <polygon points="4,40 36,37 40,40 36,43" fill={C.navy} opacity="0.5"/>
+        <polygon points="76,40 44,43 40,40 44,37" fill={C.navy} opacity="0.95"/>
+        <circle cx="40" cy="40" r="4" fill={C.navy}/>
+        <circle cx="40" cy="4" r="3" fill={C.amber} opacity="0.9"/>
       </svg>
     </div>
   );
@@ -211,11 +211,11 @@ function Nav({ page, setPage, calcRef, setIntakePlan }) {
       <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64, padding: "0 24px" }}>
 
         {/* Logo */}
-        <button onClick={() => go("home")} style={{ display: "flex", alignItems: "center", gap: 10, background: "none", border: "none", cursor: "pointer", flexShrink: 0 }}>
-          <CompassLogo size={34} />
+        <button onClick={() => go("home")} style={{ display: "flex", alignItems: "center", gap: 12, background: "none", border: "none", cursor: "pointer", flexShrink: 0 }}>
+          <CompassLogo size={44} />
           <div style={{ textAlign: "left" }}>
-            <div style={{ fontFamily: F.d, fontSize: 17, fontWeight: 700, color: C.white, letterSpacing: 2, lineHeight: 1 }}>COMPASS</div>
-            <div style={{ fontFamily: F.b, fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: 1 }}>BUSINESS SOLUTIONS</div>
+            <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.white, letterSpacing: 2.5, lineHeight: 1 }}>COMPASS</div>
+            <div style={{ fontFamily: F.b, fontSize: 12, color: "rgba(255,255,255,0.6)", letterSpacing: 1.5, marginTop: 3 }}>BUSINESS SOLUTIONS</div>
           </div>
         </button>
 
