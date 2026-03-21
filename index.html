@@ -11,15 +11,22 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
   <script>
+    window.paddleReady = false;
     function initPaddle() {
       if (window.Paddle) {
         Paddle.Environment.set("sandbox");
-        Paddle.Initialize({ token: "test_9cf513f1047dfffe322952bc2fe" });
+        Paddle.Initialize({
+          token: "test_9cf513f1047dfffe322952bc2fe",
+          eventCallback: function(event) {
+            // optional: handle events
+          }
+        });
+        window.paddleReady = true;
       } else {
-        setTimeout(initPaddle, 200);
+        setTimeout(initPaddle, 100);
       }
     }
-    initPaddle();
+    document.addEventListener("DOMContentLoaded", initPaddle);
   </script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -2655,12 +2662,21 @@ function App() {
       setToast((label || "Purchase") + " — Paddle checkout is being set up. Email hello@compassbizsolutions.com to purchase.");
       return;
     }
-    if (window.Paddle && window.Paddle.Checkout) {
-      window.Paddle.Checkout.open({ items: [{ priceId: priceId, quantity: 1 }] });
-    } else {
-      // Paddle.js not loaded yet — open direct sandbox checkout link
-      window.open("https://sandbox-checkout.paddle.com/checkout?items[0][priceId]=" + priceId + "&items[0][quantity]=1", "_blank");
+    function openCheckout(attempts) {
+      if (window.Paddle && window.paddleReady) {
+        try {
+          window.Paddle.Checkout.open({ items: [{ priceId: priceId, quantity: 1 }] });
+        } catch(e) {
+          console.error("Paddle checkout error:", e);
+          window.open("https://sandbox-checkout.paddle.com/checkout?items[0][priceId]=" + priceId + "&items[0][quantity]=1", "_blank");
+        }
+      } else if (attempts > 0) {
+        setTimeout(function() { openCheckout(attempts - 1); }, 200);
+      } else {
+        window.open("https://sandbox-checkout.paddle.com/checkout?items[0][priceId]=" + priceId + "&items[0][quantity]=1", "_blank");
+      }
     }
+    openCheckout(10);
   };
 
   useEffect(() => {
