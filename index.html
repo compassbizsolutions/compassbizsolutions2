@@ -603,8 +603,8 @@ Use EXACTLY these tags:
                 {/* $249 — 30-Day Plan */}
                 <div style={{background:"rgba(200,112,26,0.08)",border:"1px solid rgba(200,112,26,0.25)",borderRadius:10,padding:"12px 16px",marginBottom:6,display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,flexWrap:"wrap"}}>
                   <div>
-                    <div style={{fontFamily:F.d,fontSize:13,fontWeight:700,color:C.amber,marginBottom:2}}>30-DAY QUICK WIN PLAN — $249</div>
-                    <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",fontFamily:F.b}}>In-depth diagnostic + customized 30-day plan + guides and process docs for your top leaks.</div>
+                    <div style={{fontFamily:F.d,fontSize:13,fontWeight:700,color:C.amber,marginBottom:2}}>30-DAY QUICK WIN PLAN — $249 PER PHASE</div>
+                    <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",fontFamily:F.b}}>In-depth diagnostic + customized 30-day plan + guides and process docs for your top leaks. Continue to 60 and 90-day phases at $249 each, or get all three for $599.</div>
                   </div>
                   <button onClick={()=>paddle("PADDLE_LINK_249_30DAY","30-Day Plan — $249")} style={{background:C.amber,border:"none",color:C.white,padding:"8px 14px",borderRadius:7,fontSize:12,fontWeight:700,fontFamily:F.b,flexShrink:0,cursor:"pointer"}}>Start Here →</button>
                 </div>
@@ -936,7 +936,7 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
           </div>
           <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 16 }}>
             <div style={{ fontFamily: F.d, fontSize: 32, fontWeight: 800, color: planConfig.color, lineHeight: 1 }}>{planConfig.price}</div>
-            <div style={{ fontFamily: F.b, fontSize: 10, color: "rgba(255,255,255,0.3)", marginTop: 3 }}>one time</div>
+            <div style={{ fontFamily: F.b, fontSize: 10, color: "rgba(255,255,255,0.3)", marginTop: 3 }}>{is30day ? "per phase" : "one time · all three phases"}</div>
           </div>
         </div>
 
@@ -1423,7 +1423,7 @@ function DiagnosticTool({ setPage, paddle }) {
                   "Every doc written for your trade and how your operation runs",
                   "Incremental check-ins for accountability",
                 ]}
-                footer="$249 one time · Continue to 60-day phase at any time"
+                footer="$249 per phase · Continue to 60-day for another $249 · Or save $147 with the bundle"
               />
               <PlanCard
                 price="$599"
@@ -1614,7 +1614,7 @@ function WhatProfitableLooksLike({ calcRef, setPage }) {
 function HowItWorks() {
   const steps = [
     { num: "01", color: C.slate,  title: "FREE DIAGNOSTIC", price: "Free", desc: "Answer a few questions. We identify your top leaks and tell you exactly what is costing you money. No purchase required." },
-    { num: "02", color: C.amber,  title: "30-DAY QUICK WIN PLAN", price: "$249", desc: "In-depth diagnostic + a customized 30-day action plan + the specific guides and process docs for your top leaks. Check-ins at day 7 and 15 to keep you on track." },
+    { num: "02", color: C.amber,  title: "30-DAY QUICK WIN PLAN", price: "$249/phase", desc: "In-depth diagnostic + a customized 30-day action plan + the specific guides and process docs for your top leaks. Check-ins at day 7 and 15 to keep you on track. Continue to 60 and 90-day phases at $249 each." },
     { num: "03", color: C.gold,   title: "60-DAY PLAN", price: "$249", desc: "We check in at day 21 and 28, assess your progress, and issue your customized days 31-60 plan adjusted for what you have and have not done yet." },
     { num: "04", color: C.green,  title: "90-DAY PLAN", price: "$249", desc: "Same pattern. Progress check, updated priorities, days 61-90 plan. By this point most leaks are closed or actively being worked." },
     { num: "05", color: C.red,    title: "COMPLETE BUNDLE", price: "$599", desc: "All three plans upfront. Saves $147. Everything customized to your business, all docs included, full check-in schedule. Best value." },
@@ -2211,7 +2211,7 @@ function WhatWeDoPage({ setPage, calcRef }) {
     {
       icon: "📋",
       title: "30-DAY QUICK WIN PLAN",
-      tag: "$249",
+      tag: "$249 per phase",
       tagColor: C.amber,
       short: "Your worst leaks addressed first. Day-by-day. Only what you need.",
       intro: "We take a deep look at your operation across all 10 profit leak categories, rank your issues by dollar impact, and build a plan around the ones that matter most to your business:",
