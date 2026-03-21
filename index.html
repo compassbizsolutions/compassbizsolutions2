@@ -71,18 +71,20 @@ const n = v => parseFloat(v) || 0;
 function CompassLogo({ size = 40, onDark = true }) {
   const s = onDark ? C.white : C.navy;
   return (
-    <svg width={size} height={size} viewBox="0 0 80 80" fill="none">
-      <circle cx="40" cy="40" r="36" stroke={s} strokeWidth="4" fill="none" opacity="0.15"/>
-      <circle cx="40" cy="40" r="28" stroke={C.slate} strokeWidth="1.5" fill="none" strokeDasharray="5 4" opacity="0.7"/>
-      <circle cx="40" cy="40" r="20" stroke={C.amber} strokeWidth="1.5" fill="none" strokeDasharray="4 4" opacity="0.6"/>
-      <circle cx="40" cy="40" r="12" stroke={C.red} strokeWidth="1.5" fill="none" strokeDasharray="3 4" opacity="0.5"/>
-      <polygon points="40,4 43,36 40,40 37,36" fill={s} opacity="0.9"/>
-      <polygon points="40,76 37,44 40,40 43,44" fill={s} opacity="0.5"/>
-      <polygon points="4,40 36,37 40,40 36,43" fill={s} opacity="0.5"/>
-      <polygon points="76,40 44,43 40,40 44,37" fill={s} opacity="0.9"/>
-      <circle cx="40" cy="40" r="4" fill={s}/>
-      <circle cx="40" cy="4" r="3" fill={s} opacity="0.6"/>
-    </svg>
+    <div style={{ background: onDark ? "rgba(255,255,255,0.12)" : "rgba(27,46,75,0.08)", borderRadius: "50%", width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+      <svg width={size * 0.8} height={size * 0.8} viewBox="0 0 80 80" fill="none">
+        <circle cx="40" cy="40" r="36" stroke={s} strokeWidth="4" fill="none" opacity="0.25"/>
+        <circle cx="40" cy="40" r="28" stroke={C.slate} strokeWidth="1.5" fill="none" strokeDasharray="5 4" opacity="0.8"/>
+        <circle cx="40" cy="40" r="20" stroke={C.amber} strokeWidth="1.5" fill="none" strokeDasharray="4 4" opacity="0.8"/>
+        <circle cx="40" cy="40" r="12" stroke={C.red} strokeWidth="1.5" fill="none" strokeDasharray="3 4" opacity="0.7"/>
+        <polygon points="40,4 43,36 40,40 37,36" fill={s} opacity="0.95"/>
+        <polygon points="40,76 37,44 40,40 43,44" fill={s} opacity="0.6"/>
+        <polygon points="4,40 36,37 40,40 36,43" fill={s} opacity="0.6"/>
+        <polygon points="76,40 44,43 40,40 44,37" fill={s} opacity="0.95"/>
+        <circle cx="40" cy="40" r="4" fill={s}/>
+        <circle cx="40" cy="4" r="3" fill={s} opacity="0.7"/>
+      </svg>
+    </div>
   );
 }
 
@@ -151,6 +153,23 @@ function SectionHead({ num, title }) {
 }
 
 // ─── NAV ──────────────────────────────────────────────────────────────────────
+function NavIntakeDropdown({ goIntake30, goIntakeBundle }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ position: "relative" }} onMouseEnter={function() { setOpen(true); }} onMouseLeave={function() { setOpen(false); }}>
+      <button style={{ background: "none", border: "none", color: "rgba(255,255,255,0.45)", padding: "7px 14px", borderRadius: 7, fontSize: 13, fontWeight: 600, fontFamily: F.b, cursor: "pointer", whiteSpace: "nowrap" }}>
+        In-Depth Intake ›
+      </button>
+      {open && (
+        <div style={{ position: "absolute", top: "100%", left: 0, background: C.navyDark, border: "1px solid rgba(61,107,158,0.3)", borderRadius: 10, padding: "8px", minWidth: 200, zIndex: 100, boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}>
+          <button onClick={goIntake30} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>30-Day Plan Intake</button>
+          <button onClick={goIntakeBundle} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>30/60/90 Bundle Intake</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Nav({ page, setPage, calcRef }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -170,6 +189,9 @@ function Nav({ page, setPage, calcRef }) {
     ["profitable", "What Profitable Looks Like"],
     ["services",   "What We Do"],
   ];
+
+  const goIntake30 = () => { setPage("intake"); window.history.replaceState({}, "", "?page=intake&plan=249"); setOpen(false); window.scrollTo(0,0); };
+  const goIntakeBundle = () => { setPage("intake"); window.history.replaceState({}, "", "?page=intake&plan=599"); setOpen(false); window.scrollTo(0,0); };
 
   return (
     <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: (scrolled || open) ? `${C.navyDark}FA` : "rgba(27,46,75,0.7)", backdropFilter: "blur(12px)", borderBottom: (scrolled || open) ? `1px solid rgba(61,107,158,0.2)` : "none", transition: "all 0.3s" }}>
@@ -194,8 +216,9 @@ function Nav({ page, setPage, calcRef }) {
               {label}
             </button>
           ))}
+          <NavIntakeDropdown goIntake30={goIntake30} goIntakeBundle={goIntakeBundle} />
           <button onClick={goScan}
-            style={{ marginLeft: 8, background: C.amber, border: "none", color: C.white, padding: "9px 18px", borderRadius: 8, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: `0 3px 14px ${C.amber}44`, whiteSpace: "nowrap" }}>
+            style={{ marginLeft: 4, background: C.amber, border: "none", color: C.white, padding: "9px 18px", borderRadius: 8, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: `0 3px 14px ${C.amber}44`, whiteSpace: "nowrap" }}>
             Run Free Diagnostic →
           </button>
         </div>
@@ -212,7 +235,7 @@ function Nav({ page, setPage, calcRef }) {
       </div>
 
       {/* Mobile dropdown */}
-      <div style={{ maxHeight: open ? 380 : 0, overflow: "hidden", transition: "max-height 0.35s ease" }} className="nav-mobile">
+      <div style={{ maxHeight: open ? 480 : 0, overflow: "hidden", transition: "max-height 0.35s ease" }} className="nav-mobile">
         <div style={{ padding: "8px 16px 20px", display: "flex", flexDirection: "column", gap: 2, borderTop: "1px solid rgba(61,107,158,0.2)" }}>
           {navLinks.map(([p, label]) => (
             <button key={p} onClick={() => go(p)}
@@ -220,8 +243,19 @@ function Nav({ page, setPage, calcRef }) {
               {label}
             </button>
           ))}
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "8px 0 4px", paddingTop: 8 }}>
+            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 2, fontFamily: F.b, padding: "4px 16px 8px" }}>IN-DEPTH INTAKE</div>
+            <button onClick={goIntake30}
+              style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%" }}>
+              30-Day Plan Intake →
+            </button>
+            <button onClick={goIntakeBundle}
+              style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%" }}>
+              30/60/90 Bundle Intake →
+            </button>
+          </div>
           <button onClick={goScan}
-            style={{ background: C.amber, border: "none", color: C.white, padding: "12px 16px", borderRadius: 8, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", marginTop: 8, boxShadow: `0 3px 14px ${C.amber}44` }}>
+            style={{ background: C.amber, border: "none", color: C.white, padding: "12px 16px", borderRadius: 8, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", marginTop: 4, boxShadow: `0 3px 14px ${C.amber}44` }}>
             Run Free Diagnostic →
           </button>
         </div>
@@ -428,7 +462,7 @@ Use EXACTLY these tags:
             <div style={{marginBottom:6}}>
               <div style={{fontSize:13,fontWeight:600,color:C.body,fontFamily:F.b,marginBottom:10}}>What type of service business are you?</div>
               <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:8}}>
-                {["Electrical","Plumbing","HVAC","Landscaping","Pool & Spa","General Contracting","Pest Control","Cleaning Services","Other"].map(t=>(
+                {["Electrical","Plumbing","HVAC","Landscaping","Pool & Spa","General Contracting","Pest Control","Cleaning Services","Roofing","Painting","Flooring","Tile and Stone","Carpet Cleaning","Air Duct Cleaning","Chimney and Fireplace","Garage Door","Gutters","Handyman","Irrigation","Locksmith","Appliance Repair","Tree Service","Pressure Washing","Restoration and Remediation","Security Systems","Solar","Other"].map(t=>(
                   <button key={t} onClick={()=>setTrade(t)}
                     style={{padding:"10px 12px",borderRadius:9,border:`2px solid ${trade===t?C.slate:C.warm3}`,background:trade===t?C.navyLight:C.white,color:trade===t?C.navy:C.body,fontSize:13,fontWeight:trade===t?700:500,fontFamily:F.b,cursor:"pointer",transition:"all 0.15s",textAlign:"center"}}>
                     {t}
@@ -475,6 +509,18 @@ Use EXACTLY these tags:
             {s("tardy")>0&&<div style={{background:C.redLight,borderRadius:8,padding:"9px 12px",marginBottom:14,fontSize:12,color:C.red,fontFamily:F.b,fontWeight:600,lineHeight:1.5}}>⚠️ {s("tardy")} hrs/week × 50 weeks × ${(s("bill")||75).toFixed(0)}/hr = ${Math.round(s("tardy")*(s("bill")||75)*50).toLocaleString()}/yr in unbilled crew time</div>}
             <div style={{borderTop:`1px solid ${C.warm2}`,margin:"4px 0 14px"}}/>
             {err&&<div style={{background:C.redLight,borderRadius:8,padding:"10px 12px",marginBottom:12,fontSize:13,color:C.red,fontFamily:F.b}}>{err}</div>}
+            {total > 0 && (
+              <div style={{background:`linear-gradient(135deg,${C.navyDark},${C.navyMid})`,borderRadius:10,padding:"14px 16px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",border:`1px solid ${sev.c}33`}}>
+                <div>
+                  <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",fontWeight:700,letterSpacing:2.5,fontFamily:F.b,marginBottom:3}}>RUNNING ESTIMATE</div>
+                  <div style={{fontFamily:F.d,fontSize:28,fontWeight:800,color:sev.c,lineHeight:1}}>${Math.round(total).toLocaleString()}</div>
+                  <div style={{fontSize:9,color:"rgba(255,255,255,0.25)",fontFamily:F.b,marginTop:3}}>Updates as you answer · 5 of 10 categories</div>
+                </div>
+                <div style={{textAlign:"right"}}>
+                  {bdown.filter(b=>b.v>0).map(b=><div key={b.l} style={{fontSize:10,color:b.c,fontFamily:F.b,fontWeight:600,marginBottom:2}}>{b.l}: ${Math.round(b.v).toLocaleString()}</div>)}
+                </div>
+              </div>
+            )}
             <PBtn onClick={()=>hasEnough&&setStage(2)} disabled={!hasEnough}>{hasEnough?"Show Me My Leak Number →":"Answer the questions above to continue"}</PBtn>
             <p style={{textAlign:"center",fontSize:11,color:"rgba(255,255,255,0.2)",marginTop:8,fontFamily:F.b}}>Free. No account. 3 minutes.</p>
           </div>
@@ -489,7 +535,11 @@ Use EXACTLY these tags:
               <div style={{width:7,height:7,borderRadius:"50%",background:sev.c,boxShadow:`0 0 10px ${sev.c}`}}/><span style={{fontSize:11,fontWeight:700,color:sev.c,letterSpacing:2,fontFamily:F.d}}>{sev.l}</span></div>
             <div style={{textAlign:"left",marginBottom:18}}>{bdown.filter(b=>b.v>0).map(b=><div key={b.l} style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}><div style={{width:80,fontSize:11,color:"rgba(255,255,255,0.4)",fontFamily:F.b,flexShrink:0}}>{b.l}</div><div style={{flex:1,height:7,background:"rgba(255,255,255,0.05)",borderRadius:99,overflow:"hidden"}}><div style={{height:"100%",width:`${total>0?Math.min((b.v/total)*100,100):0}%`,background:b.c,borderRadius:99,transition:"width 1.2s ease"}}/></div><div style={{width:68,fontSize:11,fontWeight:700,color:b.c,fontFamily:F.d,textAlign:"right"}}>${Math.round(b.v).toLocaleString()}</div></div>)}</div>
             <p style={{fontSize:12,color:"rgba(255,255,255,0.25)",lineHeight:1.65,maxWidth:360,margin:"0 auto 8px",fontFamily:F.b}}>These are conservative estimates — admin and labor costs calculated at technician rate.</p>
-            <p style={{fontSize:13,color:"rgba(255,255,255,0.35)",lineHeight:1.65,maxWidth:360,margin:"0 auto",fontFamily:F.b}}>This covers <strong style={{color:"rgba(255,255,255,0.55)"}}>5 of 10 leak categories.</strong> The real number is likely higher.</p>
+            <p style={{fontSize:12,color:"rgba(255,255,255,0.3)",lineHeight:1.65,maxWidth:380,margin:"0 auto 8px",fontFamily:F.b}}>This covers <strong style={{color:"rgba(255,255,255,0.45)"}}>5 of 10 leak categories.</strong> The real number is likely higher.</p>
+            <p style={{fontSize:10,color:"rgba(255,255,255,0.18)",lineHeight:1.6,maxWidth:400,margin:"0 auto",fontFamily:F.b,fontStyle:"italic"}}>This is an approximate estimate of profit not currently being captured. Compass does not guarantee this amount will be recovered — consistent process improvements will positively impact profitability, but results vary by business.</p>
+          </div>
+          <div style={{textAlign:"center",marginBottom:8}}>
+            <button onClick={()=>setStage(1)} style={{background:"none",border:"none",color:"rgba(255,255,255,0.25)",fontSize:12,fontFamily:F.b,cursor:"pointer",padding:"6px 12px"}}>← Edit my answers</button>
           </div>
           <div style={{...card,marginBottom:10}}>
             <div style={{fontFamily:F.d,fontSize:20,fontWeight:700,color:C.ink,marginBottom:4,letterSpacing:0.5}}>GET YOUR FREE PERSONALIZED BREAKDOWN</div>
@@ -554,7 +604,7 @@ Use EXACTLY these tags:
                 <div style={{background:"rgba(200,112,26,0.08)",border:"1px solid rgba(200,112,26,0.25)",borderRadius:10,padding:"12px 16px",marginBottom:6,display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,flexWrap:"wrap"}}>
                   <div>
                     <div style={{fontFamily:F.d,fontSize:13,fontWeight:700,color:C.amber,marginBottom:2}}>30-DAY QUICK WIN PLAN — $249</div>
-                    <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",fontFamily:F.b}}>In-depth diagnostic + customized 30-day plan + guides and docs for your top leaks.</div>
+                    <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",fontFamily:F.b}}>In-depth diagnostic + customized 30-day plan + guides and process docs for your top leaks.</div>
                   </div>
                   <button onClick={()=>paddle("PADDLE_LINK_249_30DAY","30-Day Plan — $249")} style={{background:C.amber,border:"none",color:C.white,padding:"8px 14px",borderRadius:7,fontSize:12,fontWeight:700,fontFamily:F.b,flexShrink:0,cursor:"pointer"}}>Start Here →</button>
                 </div>
@@ -852,6 +902,11 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
       <div style={{ fontFamily: F.d, fontSize: "clamp(20px,4vw,28px)", fontWeight: 800, color: C.white, marginBottom: 12 }}>YOUR IN-DEPTH BUSINESS INTAKE</div>
       <p style={{ fontFamily: F.b, fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.8, maxWidth: 500, margin: "0 auto 12px" }}>This intake covers all 10 profit leak categories across 11 sections. The more specific your answers, the more precise your plan and documents will be.</p>
       <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.7, maxWidth: 480, margin: "0 auto 28px" }}>Most questions are tap-to-answer. A few ask for specific numbers — those are the ones that drive the dollar estimates in your plan. Takes about 15-20 minutes.</p>
+      {planType !== "249" && planType !== "30day" && (
+        <div style={{ background: "rgba(200,112,26,0.15)", border: "1px solid rgba(200,112,26,0.3)", borderRadius: 10, padding: "14px 18px", marginBottom: 20, maxWidth: 460, margin: "0 auto 20px" }}>
+          <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.6, margin: 0 }}>This intake is for the complete 30/60/90-day bundle. If you purchased the 30-day plan first and want to continue to the 60-day phase, please use the email link sent to you at day 28.</p>
+        </div>
+      )}
       <button onClick={function() { setSection(0.5); }} style={{ background: C.amber, border: "none", color: C.white, padding: "16px 44px", borderRadius: 10, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 24px rgba(200,112,26,0.4)" }}>Start Intake →</button>
     </div>
   );
@@ -940,7 +995,7 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
         {[0,1,2].map(function(i) { return <div key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: C.amber, animation: "dot 1.2s ease-in-out " + (i * 0.2) + "s infinite" }} />; })}
       </div>
       <div style={{ fontFamily: F.d, fontSize: 20, fontWeight: 700, color: C.white, marginBottom: 8 }}>BUILDING YOUR PLAN</div>
-      <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.7 }}>Ranking your leaks by dollar impact.<br />Building your day-by-day plan.<br />Selecting your specific guides and docs.<br />This takes about 30 seconds.</p>
+      <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.7 }}>Ranking your leaks by dollar impact.<br />Building your day-by-day plan.<br />Selecting your specific guides and process docs.<br />This takes about 30 seconds.</p>
     </div>
   );
 
@@ -949,7 +1004,7 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
     <div style={{ background: C.navyDark, borderRadius: 16, padding: "48px 32px", textAlign: "center", border: "1px solid rgba(30,107,69,0.4)" }}>
       <div style={{ fontSize: 48, marginBottom: 16 }}>🎯</div>
       <div style={{ fontFamily: F.d, fontSize: 24, fontWeight: 800, color: C.white, marginBottom: 12 }}>YOUR PLAN IS ON ITS WAY</div>
-      <p style={{ fontFamily: F.b, fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.8, maxWidth: 460, margin: "0 auto 8px" }}>Your customized plan has been sent to {leadEmail}. It includes your leak ranking, dollar estimates, day-by-day action plan, and the specific guides and docs for your situation.</p>
+      <p style={{ fontFamily: F.b, fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.8, maxWidth: 460, margin: "0 auto 8px" }}>Your customized plan has been sent to {leadEmail}. It includes your leak ranking, dollar estimates, day-by-day action plan, and the specific guides and process docs for your situation.</p>
       <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.7, maxWidth: 440, margin: "0 auto 0" }}>Check your inbox — and your spam folder just in case. Questions? Reply to the email and Jen reads every one.</p>
     </div>
   );
@@ -991,7 +1046,7 @@ function PlanCard({ price, label, accentColor, bg, border, btnBg, btnLabel, onBu
 function DiagnosticTool({ setPage, paddle }) {
   const QUESTIONS = [
     { id:"trade", q:"What trade are you in?", type:"buttons",
-      opts:["HVAC","Plumbing","Electrical","Landscaping","Pool and Spa","Pest Control","General Contracting","Cleaning Services","Other"] },
+      opts:["HVAC","Plumbing","Electrical","Landscaping","Pool and Spa","Pest Control","General Contracting","Cleaning Services","Roofing","Painting","Flooring","Tile and Stone","Carpet Cleaning","Air Duct Cleaning","Chimney and Fireplace","Garage Door","Gutters","Handyman","Irrigation","Locksmith","Appliance Repair","Tree Service","Pressure Washing","Restoration and Remediation","Security Systems","Solar","Other"] },
     { id:"services", q:"What do you do day to day? Pick all that apply.", type:"multi",
       opts:["Residential service calls","Commercial service calls","New installs","Maintenance agreements","Emergency calls","Estimates and bids","Inspections","Other"] },
     { id:"years", q:"How long have you been in business?", type:"buttons",
@@ -1137,7 +1192,7 @@ function DiagnosticTool({ setPage, paddle }) {
           </div>
           {current === "Other" && (
             <div style={{ marginTop: 14 }}>
-              <input autoFocus placeholder="Please describe your trade..." value={current === "Other" ? "" : current}
+              <input autoFocus placeholder="Please describe your trade..."
                 onChange={function(e) { setCurrent(e.target.value || "Other"); }}
                 onKeyDown={function(e) { if (e.key === "Enter" && current.trim() && current !== "Other") saveAndNext(); }}
                 style={{ width: "100%", padding: "13px 15px", border: "2px solid " + C.amber, borderRadius: 9, fontSize: 14, color: C.ink, outline: "none", fontFamily: F.b, background: C.white, boxSizing: "border-box" }} />
@@ -1149,6 +1204,10 @@ function DiagnosticTool({ setPage, paddle }) {
                 </button>
               </div>
             </div>
+          )}
+          {step > 1 && (
+            <button onClick={function() { setCurrent(""); setMultiSel([]); setStep(function(s) { return Math.max(1, s - 1); }); }}
+              style={{ background: "none", border: "none", color: C.ghost, fontSize: 12, fontFamily: F.b, cursor: "pointer", marginTop: 14 }}>← Back</button>
           )}
         </div>
       )}
@@ -1165,7 +1224,15 @@ function DiagnosticTool({ setPage, paddle }) {
               );
             })}
           </div>
-          <button onClick={function() { saveAndNext(multiSel.join(", ")); }} disabled={multiSel.length === 0}
+          {multiSel.indexOf("Other") >= 0 && (
+            <input value={current} onChange={function(e) { setCurrent(e.target.value); }}
+              placeholder="Please describe..." autoFocus
+              style={{ width: "100%", padding: "11px 14px", border: "2px solid " + C.amber, borderRadius: 8, fontSize: 14, color: C.ink, outline: "none", fontFamily: F.b, background: C.white, boxSizing: "border-box", marginBottom: 12 }} />
+          )}
+          <button onClick={function() {
+            const finalSel = multiSel.map(function(s) { return s === "Other" && current.trim() ? current.trim() : s; });
+            saveAndNext(finalSel.join(", "));
+          }} disabled={multiSel.length === 0}
             style={{ background: multiSel.length ? C.amber : C.warm2, border: "none", color: multiSel.length ? C.white : C.ghost, padding: "11px 28px", borderRadius: 8, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: multiSel.length ? "pointer" : "default" }}>
             Continue
           </button>
@@ -1233,6 +1300,16 @@ function DiagnosticTool({ setPage, paddle }) {
           <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", fontFamily: F.b, marginTop: 8 }}>Sent to {email}</div>
         </div>
         <div style={{ background: C.warm0, border: "1px solid " + C.warm3, borderTop: "none", borderRadius: "0 0 14px 14px", padding: "24px 28px" }}>
+
+          {/* Leak total — TOP */}
+          {g("LEAK_TOTAL") && (
+            <div style={{ background: "#B84C2E", borderRadius: 10, padding: "16px 18px", marginBottom: 16, textAlign: "center" }}>
+              <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.65)", letterSpacing: 2, marginBottom: 4 }}>ESTIMATED ANNUAL PROFIT LEAK</div>
+              <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.white, marginBottom: 4 }}>{g("LEAK_TOTAL").replace(/Estimated total annual profit leak:\s*/i, "")}</div>
+              <div style={{ fontFamily: F.b, fontSize: 10, color: "rgba(255,255,255,0.5)", lineHeight: 1.5 }}>Approximate amount not currently being captured. Consistent process improvements will impact annual profit — results vary by business.</div>
+            </div>
+          )}
+
           {g("WHAT_WE_SEE") && (
             <div style={{ background: C.white, borderRadius: 10, padding: "16px 18px", marginBottom: 14, border: "1px solid " + C.warm3 }}>
               <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: C.slate, letterSpacing: 2, marginBottom: 10 }}>WHAT WE SEE</div>
@@ -1254,21 +1331,13 @@ function DiagnosticTool({ setPage, paddle }) {
               <div key={i} style={{ background: C.white, borderLeft: "4px solid " + lk[2], borderRadius: "0 10px 10px 0", padding: "14px 16px", marginBottom: 10, border: "1px solid " + C.warm3, borderLeft: "4px solid " + lk[2] }}>
                 <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 700, color: lk[2], letterSpacing: 2, marginBottom: 8 }}>{lk[1]}</div>
                 {lines.map(function(line, j) {
-                  if (line.startsWith("→")) return <div key={j} style={{ fontFamily: F.b, fontSize: 12, color: lk[2], fontWeight: 700, marginTop: 8, paddingTop: 8, borderTop: "1px solid " + C.warm2 }}>{line}</div>;
+                  if (line.startsWith("→")) return null; // Remove doc name references
                   if (j === 0) return <div key={j} style={{ fontFamily: F.d, fontSize: 13, fontWeight: 800, color: C.ink, marginBottom: 4 }}>{line}</div>;
                   return <p key={j} style={{ fontFamily: F.b, fontSize: 12, color: C.body, lineHeight: 1.65, margin: "2px 0 0" }}>{line}</p>;
                 })}
               </div>
             );
           })}
-
-          {/* Leak total */}
-          {g("LEAK_TOTAL") && (
-            <div style={{ background: "#B84C2E", borderRadius: 10, padding: "14px 18px", marginBottom: 4, textAlign: "center" }}>
-              <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.65)", letterSpacing: 2, marginBottom: 4 }}>BOTTOM LINE</div>
-              <div style={{ fontFamily: F.d, fontSize: 16, fontWeight: 800, color: C.white }}>{g("LEAK_TOTAL")}</div>
-            </div>
-          )}
 
           {/* Upgrade CTA — replaces free 30/60/90 plan */}
           <div style={{ background: C.navyDark, borderRadius: 12, padding: "20px 20px", marginTop: 20, marginBottom: 16, border: "1px solid rgba(200,112,26,0.2)" }}>
@@ -1344,14 +1413,7 @@ function TraitExpanded({ t, setPage }) {
               <p style={{ fontSize: 14, color: C.body, lineHeight: 1.85, fontFamily: F.b, margin: "0 0 16px" }}>{t.expanded}</p>
               {t.docs && t.docs.length > 0 && (
                 <div style={{ borderTop: `1px solid ${t.color}22`, paddingTop: 12 }}>
-                  <div style={{ fontSize: 10, color: C.muted, fontWeight: 700, letterSpacing: 2, fontFamily: F.b, marginBottom: 8 }}>RELEVANT DOCS</div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                    {t.docs.map(function(doc, i) {
-                      return (
-                        <span key={i} style={{ background: t.color + "14", border: "1px solid " + t.color + "44", borderRadius: 99, padding: "4px 12px", fontSize: 11, color: t.color, fontFamily: F.b, fontWeight: 600 }}>{doc}</span>
-                      );
-                    })}
-                  </div>
+                  <div style={{ fontSize: 11, color: C.muted, fontFamily: F.b, fontStyle: "italic" }}>Compass has specific guides and process doc templates that address this directly.</div>
                 </div>
               )}
             </div>
@@ -1490,7 +1552,7 @@ function WhatProfitableLooksLike({ calcRef, setPage }) {
 function HowItWorks() {
   const steps = [
     { num: "01", color: C.slate,  title: "FREE DIAGNOSTIC", price: "Free", desc: "Answer a few questions. We identify your top leaks and tell you exactly what is costing you money. No purchase required." },
-    { num: "02", color: C.amber,  title: "30-DAY QUICK WIN PLAN", price: "$249", desc: "In-depth diagnostic + a customized 30-day action plan + the specific guides and docs for your top leaks. Check-ins at day 7 and 15 to keep you on track." },
+    { num: "02", color: C.amber,  title: "30-DAY QUICK WIN PLAN", price: "$249", desc: "In-depth diagnostic + a customized 30-day action plan + the specific guides and process docs for your top leaks. Check-ins at day 7 and 15 to keep you on track." },
     { num: "03", color: C.gold,   title: "60-DAY PLAN", price: "$249", desc: "We check in at day 21 and 28, assess your progress, and issue your customized days 31-60 plan adjusted for what you have and have not done yet." },
     { num: "04", color: C.green,  title: "90-DAY PLAN", price: "$249", desc: "Same pattern. Progress check, updated priorities, days 61-90 plan. By this point most leaks are closed or actively being worked." },
     { num: "05", color: C.red,    title: "COMPLETE BUNDLE", price: "$599", desc: "All three plans upfront. Saves $147. Everything customized to your business, all docs included, full check-in schedule. Best value." },
@@ -2109,7 +2171,7 @@ function WhatWeDoPage({ setPage, calcRef }) {
       short: "All three phases. Fully sequenced. Only your docs. Saves $147.",
       intro: "We rank all 10 leak categories for your specific business and sequence them across three phases — your biggest issues first, next tier second, remaining third:",
       bullets: [
-        "Days 1-30 — your top leaks, day-by-day plan, relevant guides and docs",
+        "Days 1-30 — your top leaks, day-by-day plan, relevant guides and process docs",
         "Days 31-60 — next tier of leaks with their own day-by-day plan",
         "Days 61-90 — remaining leaks closed out with a final set of docs",
         "Only guides and templates for leaks you actually have",
