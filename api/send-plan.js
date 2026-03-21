@@ -259,11 +259,28 @@ module.exports = async function handler(req, res) {
       + '<div style="text-align:center;padding:16px;font-size:11px;color:#A0ABBE;">Compass Business Solutions \u00b7 compassbizsolutions.com</div>'
       + '</div>';
 
+    // Generate the checklist .docx
+    let checklistAttachment = null;
+    try {
+      const checklistRes = await fetch((process.env.VERCEL_URL ? "https://" + process.env.VERCEL_URL : "http://localhost:3000") + "/api/generate-checklist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ biz, name, planType, report })
+      });
+      const checklistData = await checklistRes.json();
+      if (checklistData.base64) {
+        checklistAttachment = { filename: checklistData.filename, content: checklistData.base64 };
+      }
+    } catch(e) {
+      console.warn("Checklist generation failed, sending without attachment:", e.message);
+    }
+
     await resend.emails.send({
       from: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
       to: email,
       subject: isBundle ? "Your Complete 30/60/90-Day Plan \u2014 " + (biz || "Your Business") : "Your 30-Day Quick Win Plan \u2014 " + (biz || "Your Business"),
-      html
+      html,
+      attachments: checklistAttachment ? [checklistAttachment] : undefined
     });
 
     // Copy to Jen
