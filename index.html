@@ -895,19 +895,77 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
 
   const pct = section === 0 ? 0 : section >= 12 ? 100 : Math.round((section / 11) * 100);
 
+  // Build plan config based on planType
+  const is30day  = planType === "249" || planType === "30day";
+  const isBundle = planType === "599" || planType === "bundle";
+  const planConfig = is30day ? {
+    label:    "30-DAY QUICK WIN PLAN",
+    price:    "$249",
+    color:    C.amber,
+    tagline:  "Your worst leaks addressed first. Day-by-day. Only what you need.",
+    phases: [
+      { days: "Days 1–30", label: "Quick Wins", desc: "Your top leaks ranked by impact, addressed first", active: true },
+      { days: "Days 31–60", label: "Build Systems", desc: "Purchase separately when you're ready — $249", active: false },
+      { days: "Days 61–90", label: "Growth Moves", desc: "Purchase separately when you're ready — $249", active: false },
+    ],
+    note: "Your plan covers days 1-30 only. At day 28 we'll check in — if you want to continue to days 31-60, you can purchase the next phase at that time."
+  } : {
+    label:    "COMPLETE 30/60/90-DAY PLAN",
+    price:    "$599",
+    color:    C.amber,
+    tagline:  "All three phases. Fully sequenced. Only your process docs. Saves $147.",
+    phases: [
+      { days: "Days 1–30",  label: "Quick Wins",    desc: "Your top leaks — biggest impact first",    active: true },
+      { days: "Days 31–60", label: "Build Systems",  desc: "Next tier of leaks with new day-by-day plan", active: true },
+      { days: "Days 61–90", label: "Growth Moves",   desc: "Remaining leaks closed out",               active: true },
+    ],
+    note: "All three phases are included. Each phase plan is delivered as you progress — your days 31-60 plan arrives after your day 28 check-in."
+  };
+
   // INTRO
   if (section === 0) return (
-    <div style={{ background: C.navyDark, borderRadius: 16, padding: "40px 32px", textAlign: "center", border: "1px solid rgba(200,112,26,0.25)" }}>
-      <div style={{ fontSize: 44, marginBottom: 16 }}>📋</div>
-      <div style={{ fontFamily: F.d, fontSize: "clamp(20px,4vw,28px)", fontWeight: 800, color: C.white, marginBottom: 12 }}>YOUR IN-DEPTH BUSINESS INTAKE</div>
-      <p style={{ fontFamily: F.b, fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.8, maxWidth: 500, margin: "0 auto 12px" }}>This intake covers all 10 profit leak categories across 11 sections. The more specific your answers, the more precise your plan and documents will be.</p>
-      <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.7, maxWidth: 480, margin: "0 auto 28px" }}>Most questions are tap-to-answer. A few ask for specific numbers — those are the ones that drive the dollar estimates in your plan. Takes about 15-20 minutes.</p>
-      {planType !== "249" && planType !== "30day" && (
-        <div style={{ background: "rgba(200,112,26,0.15)", border: "1px solid rgba(200,112,26,0.3)", borderRadius: 10, padding: "14px 18px", marginBottom: 20, maxWidth: 460, margin: "0 auto 20px" }}>
-          <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.6, margin: 0 }}>This intake is for the complete 30/60/90-day bundle. If you purchased the 30-day plan first and want to continue to the 60-day phase, please use the email link sent to you at day 28.</p>
+    <div style={{ borderRadius: 16, overflow: "hidden", border: "2px solid " + planConfig.color + "44" }}>
+
+      {/* Plan header */}
+      <div style={{ background: "linear-gradient(135deg," + C.navyDark + "," + C.navy + ")", padding: "28px 28px 24px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+          <div>
+            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", fontWeight: 700, letterSpacing: 3, fontFamily: F.b, marginBottom: 6 }}>YOU PURCHASED</div>
+            <div style={{ fontFamily: F.d, fontSize: "clamp(18px,3vw,24px)", fontWeight: 800, color: C.white, letterSpacing: 0.5 }}>{planConfig.label}</div>
+            <div style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.45)", marginTop: 4 }}>{planConfig.tagline}</div>
+          </div>
+          <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 16 }}>
+            <div style={{ fontFamily: F.d, fontSize: 32, fontWeight: 800, color: planConfig.color, lineHeight: 1 }}>{planConfig.price}</div>
+            <div style={{ fontFamily: F.b, fontSize: 10, color: "rgba(255,255,255,0.3)", marginTop: 3 }}>one time</div>
+          </div>
         </div>
-      )}
-      <button onClick={function() { setSection(0.5); }} style={{ background: C.amber, border: "none", color: C.white, padding: "16px 44px", borderRadius: 10, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 24px rgba(200,112,26,0.4)" }}>Start Intake →</button>
+
+        {/* Phase timeline */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginTop: 16 }}>
+          {planConfig.phases.map(function(ph, i) {
+            return (
+              <div key={i} style={{ background: ph.active ? "rgba(200,112,26,0.15)" : "rgba(255,255,255,0.03)", border: "1px solid " + (ph.active ? planConfig.color + "44" : "rgba(255,255,255,0.08)"), borderRadius: 8, padding: "10px 12px", opacity: ph.active ? 1 : 0.5 }}>
+                <div style={{ fontFamily: F.d, fontSize: 10, fontWeight: 800, color: ph.active ? planConfig.color : "rgba(255,255,255,0.3)", letterSpacing: 1, marginBottom: 3 }}>{ph.days}</div>
+                <div style={{ fontFamily: F.b, fontSize: 12, fontWeight: 700, color: ph.active ? C.white : "rgba(255,255,255,0.3)", marginBottom: 4 }}>{ph.label}</div>
+                <div style={{ fontFamily: F.b, fontSize: 10, color: ph.active ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.2)", lineHeight: 1.45 }}>{ph.desc}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Intake info */}
+      <div style={{ background: C.warm0, padding: "24px 28px", borderTop: "1px solid " + C.warm3 }}>
+        <div style={{ fontFamily: F.d, fontSize: 16, fontWeight: 800, color: C.ink, marginBottom: 8 }}>IN-DEPTH BUSINESS INTAKE</div>
+        <p style={{ fontFamily: F.b, fontSize: 13, color: C.body, lineHeight: 1.75, margin: "0 0 10px" }}>This intake covers all 10 profit leak categories across 11 sections. The more specific your answers, the more precise your plan and documents will be.</p>
+        <p style={{ fontFamily: F.b, fontSize: 12, color: C.muted, lineHeight: 1.65, margin: "0 0 16px" }}>Most questions are tap-to-answer. A few ask for specific numbers — those are the ones that drive the dollar estimates in your plan. Takes about 15-20 minutes.</p>
+        <div style={{ background: planConfig.color + "12", border: "1px solid " + planConfig.color + "30", borderRadius: 8, padding: "10px 14px", marginBottom: 20 }}>
+          <p style={{ fontFamily: F.b, fontSize: 12, color: C.body, lineHeight: 1.6, margin: 0 }}>{planConfig.note}</p>
+        </div>
+        <button onClick={function() { setSection(0.5); }} style={{ width: "100%", background: planConfig.color, border: "none", color: C.white, padding: "15px", borderRadius: 10, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 20px rgba(200,112,26,0.35)" }}>
+          Start Intake →
+        </button>
+      </div>
     </div>
   );
 
@@ -945,11 +1003,14 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
     return (
       <div style={{ background: C.white, borderRadius: 16, padding: "28px 24px", border: "1px solid " + C.warm3 }}>
         {/* Progress */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
-          <div style={{ flex: 1, height: 5, background: C.warm2, borderRadius: 99 }}>
+        <div style={{ marginBottom: 24 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+            <div style={{ fontFamily: F.b, fontSize: 10, color: sec.color, fontWeight: 700, letterSpacing: 1 }}>{is30day ? "30-DAY PLAN — $249" : "30/60/90 BUNDLE — $599"}</div>
+            <div style={{ fontFamily: F.b, fontSize: 12, color: C.muted }}>Section {section} of 11</div>
+          </div>
+          <div style={{ height: 5, background: C.warm2, borderRadius: 99 }}>
             <div style={{ width: pct + "%", height: "100%", background: sec.color, borderRadius: 99, transition: "width 0.4s" }} />
           </div>
-          <div style={{ fontFamily: F.b, fontSize: 12, color: C.muted, flexShrink: 0 }}>Section {section} of 11</div>
         </div>
 
         <IntakeSection label={sec.label} number={sec.number} color={sec.color}>
@@ -973,7 +1034,8 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
     const answered = Object.keys(vals).filter(function(k) { return vals[k]; }).length + Object.keys(multiVals).filter(function(k) { return multiVals[k] && multiVals[k].length; }).length;
     return (
       <div style={{ background: C.white, borderRadius: 16, padding: "32px 28px", border: "1px solid " + C.warm3, textAlign: "center" }}>
-        <div style={{ fontSize: 40, marginBottom: 16 }}>✅</div>
+        <div style={{ background: is30day ? C.amber : C.navy, color: C.white, fontFamily: F.d, fontSize: 11, fontWeight: 700, letterSpacing: 2, padding: "6px 16px", borderRadius: 99, display: "inline-block", marginBottom: 16 }}>{is30day ? "30-DAY PLAN — $249" : "30/60/90 BUNDLE — $599"}</div>
+        <div style={{ fontSize: 40, marginBottom: 12 }}>✅</div>
         <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.ink, marginBottom: 8 }}>INTAKE COMPLETE</div>
         <p style={{ fontFamily: F.b, fontSize: 14, color: C.muted, lineHeight: 1.7, maxWidth: 440, margin: "0 auto 8px" }}>You answered {answered} questions across all 11 sections. We have everything we need to build your customized plan.</p>
         <p style={{ fontFamily: F.b, fontSize: 13, color: C.muted, lineHeight: 1.7, maxWidth: 440, margin: "0 auto 24px" }}>Your plan will be generated now and emailed to {customerEmail}. This takes about 30 seconds.</p>
