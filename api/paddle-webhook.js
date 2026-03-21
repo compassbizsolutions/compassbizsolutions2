@@ -14,10 +14,10 @@ const path = require("path");
 // ─── PRODUCT ID → PLAN TYPE MAP ──────────────────────────────────────────────
 // Fill these in once you create products in Paddle dashboard
 const PRODUCT_MAP = {
-  "PADDLE_PRICE_249_30DAY": "30day",
-  "PADDLE_PRICE_599":       "bundle",
-  "PADDLE_PRICE_249_60DAY": "60day",
-  "PADDLE_PRICE_249_90DAY": "90day",
+  "pri_01km957nv9t0wgnb7rxrpzmrkv": "30day",   // 1-30 Quick Wins — $249
+  "pri_01km95651yv87n7bkktk2fmzna": "bundle",  // 30/60/90 Bundle — $599
+  "pri_01km95mpfwh9q8fq66wy2tjrgx": "60day",   // 31-60 Quick Wins — $249
+  "pri_01km95s0pyqvwkq6x4jtdd0n02": "90day",   // 61-90 Quick Wins — $249
 };
 
 // ─── KV HELPERS ──────────────────────────────────────────────────────────────
