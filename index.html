@@ -201,8 +201,8 @@ function Nav({ page, setPage, calcRef, setIntakePlan }) {
     ["services",   "What We Do"],
   ];
 
-  const goIntake30 = () => { setToast("Your intake link is in your purchase confirmation email. Contact hello@compassbizsolutions.com if you need help."); setOpen(false); };
-  const goIntakeBundle = () => { setToast("Your intake link is in your purchase confirmation email. Contact hello@compassbizsolutions.com if you need help."); setOpen(false); };
+  const goIntake30 = () => { setIntakePlan("249"); setPage("intake"); setOpen(false); window.scrollTo(0,0); };
+  const goIntakeBundle = () => { setIntakePlan("599"); setPage("intake"); setOpen(false); window.scrollTo(0,0); };
 
   return (
     <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: (scrolled || open) ? `${C.navyDark}FA` : "rgba(27,46,75,0.7)", backdropFilter: "blur(12px)", borderBottom: (scrolled || open) ? `1px solid rgba(61,107,158,0.2)` : "none", transition: "all 0.3s" }}>
@@ -674,7 +674,11 @@ function IntakeGate({ token, fallbackEmail, planType }) {
 
   useEffect(function() {
     if (!token) {
-      setStatus("no-token");
+      // No token — allow direct access for testing/admin
+      // In production, remove this and require token
+      setTokenEmail(fallbackEmail || "");
+      setTokenPlan(planType || "249");
+      setStatus("valid");
       return;
     }
     fetch("/api/validate-intake-token", {
