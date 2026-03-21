@@ -173,15 +173,15 @@ function NavIntakeDropdown({ goIntake30, goIntakeBundle }) {
       </button>
       {open && (
         <div style={{ position: "absolute", top: "100%", left: 0, background: C.navyDark, border: "1px solid rgba(61,107,158,0.3)", borderRadius: 10, padding: "8px", minWidth: 200, zIndex: 100, boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}>
-          <button onClick={goIntake30} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>30-Day Plan — $249</button>
-          <button onClick={goIntakeBundle} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>Complete 30/60/90 — $599</button>
+          <button onClick={goIntake30} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>Buy 30-Day Plan — $249</button>
+          <button onClick={goIntakeBundle} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>Buy 30/60/90 Bundle — $599</button>
         </div>
       )}
     </div>
   );
 }
 
-function Nav({ page, setPage, calcRef, setIntakePlan }) {
+function Nav({ page, setPage, calcRef, setIntakePlan, paddle }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -201,8 +201,8 @@ function Nav({ page, setPage, calcRef, setIntakePlan }) {
     ["services",   "What We Do"],
   ];
 
-  const goIntake30 = () => { setIntakePlan("249"); setPage("intake"); setOpen(false); window.scrollTo(0,0); };
-  const goIntakeBundle = () => { setIntakePlan("599"); setPage("intake"); setOpen(false); window.scrollTo(0,0); };
+  const goIntake30 = () => { setOpen(false); paddle("PADDLE_LINK_249_30DAY", "30-Day Quick Win Plan — $249"); };
+  const goIntakeBundle = () => { setOpen(false); paddle("PADDLE_LINK_599", "Complete 30/60/90 Bundle — $599"); };
 
   return (
     <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: (scrolled || open) ? `${C.navyDark}FA` : "rgba(27,46,75,0.7)", backdropFilter: "blur(12px)", borderBottom: (scrolled || open) ? `1px solid rgba(61,107,158,0.2)` : "none", transition: "all 0.3s" }}>
@@ -258,11 +258,11 @@ function Nav({ page, setPage, calcRef, setIntakePlan }) {
             <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 2, fontFamily: F.b, padding: "4px 16px 8px" }}>IN-DEPTH INTAKE</div>
             <button onClick={goIntake30}
               style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%" }}>
-              30-Day Plan — $249
+              Buy 30-Day Plan — $249
             </button>
             <button onClick={goIntakeBundle}
               style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%" }}>
-              Complete 30/60/90 — $599
+              Buy 30/60/90 Bundle — $599
             </button>
           </div>
           <button onClick={goScan}
@@ -674,11 +674,7 @@ function IntakeGate({ token, fallbackEmail, planType }) {
 
   useEffect(function() {
     if (!token) {
-      // No token — allow direct access for testing/admin
-      // In production, remove this and require token
-      setTokenEmail(fallbackEmail || "");
-      setTokenPlan(planType || "249");
-      setStatus("valid");
+      setStatus("no-token");
       return;
     }
     fetch("/api/validate-intake-token", {
@@ -2689,7 +2685,7 @@ function App() {
         .fadein{animation:slideUp 0.4s ease forwards;}
       `}</style>
 
-      <Nav page={page} setPage={setPage} calcRef={calcRef} setIntakePlan={setIntakePlan} />
+      <Nav page={page} setPage={setPage} calcRef={calcRef} setIntakePlan={setIntakePlan} paddle={paddle} />
 
       <main style={{ flex: 1 }}>
         {page === "home" && (
