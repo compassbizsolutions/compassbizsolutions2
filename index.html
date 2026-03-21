@@ -18,7 +18,21 @@
         Paddle.Initialize({
           token: "test_9cf513f1047dfffe322952bc2fe",
           eventCallback: function(event) {
-            // optional: handle events
+            if (event.name === "checkout.completed") {
+              // Payment successful — webhook will send the intake email
+              // Show a success message on the page
+              var email = event.data && event.data.customer && event.data.customer.email ? event.data.customer.email : "";
+              window.paddleCheckoutComplete = { email: email };
+              // Close the overlay after a short delay
+              setTimeout(function() {
+                if (window.Paddle && window.Paddle.Checkout) {
+                  window.Paddle.Checkout.close();
+                }
+                // Show success state — React will pick this up via polling
+                var evt = new CustomEvent("paddle-purchase-complete", { detail: { email: email } });
+                window.dispatchEvent(evt);
+              }, 2000);
+            }
           }
         });
         window.paddleReady = true;
@@ -2646,6 +2660,16 @@ function App() {
     return params.get("plan") || "249";
   });
   const [toast, setToast] = useState("");
+  const [purchaseComplete, setPurchaseComplete] = useState(null); // { email }
+
+  // Listen for Paddle checkout completion
+  useEffect(function() {
+    function handlePurchase(e) {
+      setPurchaseComplete({ email: e.detail.email });
+    }
+    window.addEventListener("paddle-purchase-complete", handlePurchase);
+    return function() { window.removeEventListener("paddle-purchase-complete", handlePurchase); };
+  }, []);
   const [modal, setModal] = useState(null); // "generic" | "customized" | null
   const calcRef = useRef(null);
 
@@ -2687,6 +2711,30 @@ function App() {
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       {toast && <PaddleToast msg={toast} onClose={() => setToast("")} />}
+
+      {/* Post-purchase overlay */}
+      {purchaseComplete && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(27,46,75,0.92)", zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+          <div style={{ background: C.white, borderRadius: 20, padding: "48px 36px", maxWidth: 520, width: "100%", textAlign: "center", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
+            <div style={{ fontSize: 56, marginBottom: 16 }}>🎉</div>
+            <div style={{ fontFamily: F.d, fontSize: 28, fontWeight: 800, color: C.ink, marginBottom: 12 }}>PAYMENT CONFIRMED</div>
+            <p style={{ fontFamily: F.b, fontSize: 15, color: C.body, lineHeight: 1.8, marginBottom: 8 }}>
+              You're in. Check your email{purchaseComplete.email ? " at " + purchaseComplete.email : ""} for your intake link.
+            </p>
+            <p style={{ fontFamily: F.b, fontSize: 13, color: C.muted, lineHeight: 1.7, marginBottom: 28 }}>
+              Your intake link is unique to your account and will arrive within a few minutes. Click it to complete your in-depth intake and get your customized plan.
+            </p>
+            <div style={{ background: C.warm1, border: "1px solid " + C.warm3, borderRadius: 10, padding: "14px 18px", marginBottom: 28 }}>
+              <div style={{ fontFamily: F.b, fontSize: 12, color: C.muted, marginBottom: 4 }}>Didn't get the email?</div>
+              <div style={{ fontFamily: F.b, fontSize: 13, color: C.body }}>Check your spam folder or contact <span style={{ color: C.amber, fontWeight: 600 }}>hello@compassbizsolutions.com</span></div>
+            </div>
+            <button onClick={function() { setPurchaseComplete(null); setPage("home"); }}
+              style={{ background: C.amber, border: "none", color: C.white, padding: "14px 40px", borderRadius: 10, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 20px rgba(200,112,26,0.35)" }}>
+              Back to Home
+            </button>
+          </div>
+        </div>
+      )}
       {modal && <PackageModal initialTab={modal} onClose={() => setModal(null)} calcRef={calcRef} setPage={setPage} paddle={paddle} />}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap');
