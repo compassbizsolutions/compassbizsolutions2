@@ -9,5 +9,8 @@
     "api/send-diagnostic.js": { "maxDuration": 30 },
     "api/send-checkin.js": { "maxDuration": 15 },
     "api/send-plan.js": { "maxDuration": 60 }
+  },
+  "env": {
+    "SITE_URL": "https://compassbizsolutions.com"
   }
 }
