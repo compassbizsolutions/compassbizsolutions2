@@ -2550,11 +2550,19 @@ function App() {
   const [modal, setModal] = useState(null); // "generic" | "customized" | null
   const calcRef = useRef(null);
 
+  const PADDLE_URLS = {
+    "PADDLE_LINK_249_30DAY": "https://sandbox-buy.paddle.com/checkout?items[0][priceId]=pri_01km957nv9t0wgnb7rxrpzmrkv&items[0][quantity]=1",
+    "PADDLE_LINK_599":       "https://sandbox-buy.paddle.com/checkout?items[0][priceId]=pri_01km95651yv87n7bkktk2fmzna&items[0][quantity]=1",
+    "PADDLE_LINK_249_60DAY": "https://sandbox-buy.paddle.com/checkout?items[0][priceId]=pri_01km95mpfwh9q8fq66wy2tjrgx&items[0][quantity]=1",
+    "PADDLE_LINK_249_90DAY": "https://sandbox-buy.paddle.com/checkout?items[0][priceId]=pri_01km95s0pyqvwkq6x4jtdd0n02&items[0][quantity]=1",
+  };
+
   const paddle = (link, label) => {
-    if (!link || link.startsWith("PADDLE_")) {
-      setToast(`${label || "Purchase"} coming soon — Paddle checkout is being set up. Email hello@compassbizsolutions.com to purchase.`);
+    const url = PADDLE_URLS[link] || link;
+    if (!url || url.startsWith("PADDLE_")) {
+      setToast((label || "Purchase") + " — Paddle checkout is being set up. Email hello@compassbizsolutions.com to purchase.");
     } else {
-      window.open(link, "_blank");
+      window.open(url, "_blank");
     }
   };
 
