@@ -9,6 +9,17 @@
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+  <script>
+    // Initialize Paddle sandbox — replace with live client token when going live
+    // Get your client token from Paddle Dashboard > Developer Tools > Authentication
+    window.addEventListener('load', function() {
+      if (window.Paddle) {
+        Paddle.Environment.set("sandbox");
+        Paddle.Initialize({ token: "PADDLE_CLIENT_TOKEN_SANDBOX" });
+      }
+    });
+  </script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
@@ -190,8 +201,8 @@ function Nav({ page, setPage, calcRef, setIntakePlan }) {
     ["services",   "What We Do"],
   ];
 
-  const goIntake30 = () => { setIntakePlan("249"); setPage("intake"); setOpen(false); window.scrollTo(0,0); };
-  const goIntakeBundle = () => { setIntakePlan("599"); setPage("intake"); setOpen(false); window.scrollTo(0,0); };
+  const goIntake30 = () => { setToast("Your intake link is in your purchase confirmation email. Contact hello@compassbizsolutions.com if you need help."); setOpen(false); };
+  const goIntakeBundle = () => { setToast("Your intake link is in your purchase confirmation email. Contact hello@compassbizsolutions.com if you need help."); setOpen(false); };
 
   return (
     <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: (scrolled || open) ? `${C.navyDark}FA` : "rgba(27,46,75,0.7)", backdropFilter: "blur(12px)", borderBottom: (scrolled || open) ? `1px solid rgba(61,107,158,0.2)` : "none", transition: "all 0.3s" }}>
@@ -653,6 +664,86 @@ Use EXACTLY these tags:
       </div>
     </div>
   );
+}
+
+// ─── INTAKE GATE ─────────────────────────────────────────────────────────────
+function IntakeGate({ token, fallbackEmail, planType }) {
+  const [status, setStatus] = useState("checking"); // checking | valid | invalid | no-token
+  const [tokenEmail, setTokenEmail] = useState("");
+  const [tokenPlan, setTokenPlan] = useState(planType || "249");
+
+  useEffect(function() {
+    if (!token) {
+      setStatus("no-token");
+      return;
+    }
+    fetch("/api/validate-intake-token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.valid) {
+        setTokenEmail(data.email || fallbackEmail);
+        setTokenPlan(data.planType || planType || "249");
+        setStatus("valid");
+      } else {
+        setStatus("invalid");
+      }
+    })
+    .catch(function() { setStatus("invalid"); });
+  }, [token]);
+
+  function handleComplete(report) {
+    // Burn token after completion
+    if (token) {
+      fetch("/api/validate-intake-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, burn: true })
+      }).catch(function() {});
+    }
+  }
+
+  if (status === "checking") return (
+    <div style={{ background: C.navyDark, borderRadius: 16, padding: "56px 32px", textAlign: "center", border: "1px solid rgba(61,107,158,0.2)" }}>
+      <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 20 }}>
+        {[0,1,2].map(function(i) { return <div key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: C.amber, animation: "dot 1.2s ease-in-out " + (i * 0.2) + "s infinite" }} />; })}
+      </div>
+      <div style={{ fontFamily: F.d, fontSize: 18, fontWeight: 700, color: C.white }}>Verifying your access...</div>
+    </div>
+  );
+
+  if (status === "no-token" || status === "invalid") return (
+    <div style={{ background: C.navyDark, borderRadius: 16, padding: "48px 32px", textAlign: "center", border: "1px solid rgba(184,76,46,0.3)" }}>
+      <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
+      <div style={{ fontFamily: F.d, fontSize: 24, fontWeight: 800, color: C.white, marginBottom: 12 }}>
+        {status === "invalid" ? "ACCESS LINK EXPIRED OR ALREADY USED" : "PURCHASE REQUIRED"}
+      </div>
+      <p style={{ fontFamily: F.b, fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.8, maxWidth: 460, margin: "0 auto 24px" }}>
+        {status === "invalid"
+          ? "This intake link has expired or has already been used. Check your purchase confirmation email for your link, or contact us if you need a new one."
+          : "The in-depth intake is available after purchasing a plan. Start with the free diagnostic to see your top leaks, then choose the plan that's right for you."
+        }
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 360, margin: "0 auto" }}>
+        {status === "no-token" && (
+          <button onClick={function() { window.location.href = "/"; }}
+            style={{ background: C.amber, border: "none", color: C.white, padding: "14px 32px", borderRadius: 10, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 4px 20px rgba(200,112,26,0.35)" }}>
+            Start Free Diagnostic →
+          </button>
+        )}
+        <button onClick={function() { window.open("mailto:hello@compassbizsolutions.com?subject=Intake Link Request", "_blank"); }}
+          style={{ background: "none", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.6)", padding: "12px 32px", borderRadius: 10, fontSize: 13, fontFamily: F.b, cursor: "pointer" }}>
+          Contact Us for Help
+        </button>
+      </div>
+    </div>
+  );
+
+  // Valid token — show the intake
+  return <InDepthIntake customerEmail={tokenEmail} planType={tokenPlan} onComplete={handleComplete} />;
 }
 
 // ─── IN-DEPTH INTAKE TOOL ────────────────────────────────────────────────────
@@ -2550,19 +2641,24 @@ function App() {
   const [modal, setModal] = useState(null); // "generic" | "customized" | null
   const calcRef = useRef(null);
 
-  const PADDLE_URLS = {
-    "PADDLE_LINK_249_30DAY": "https://sandbox-buy.paddle.com/checkout?items[0][priceId]=pri_01km957nv9t0wgnb7rxrpzmrkv&items[0][quantity]=1",
-    "PADDLE_LINK_599":       "https://sandbox-buy.paddle.com/checkout?items[0][priceId]=pri_01km95651yv87n7bkktk2fmzna&items[0][quantity]=1",
-    "PADDLE_LINK_249_60DAY": "https://sandbox-buy.paddle.com/checkout?items[0][priceId]=pri_01km95mpfwh9q8fq66wy2tjrgx&items[0][quantity]=1",
-    "PADDLE_LINK_249_90DAY": "https://sandbox-buy.paddle.com/checkout?items[0][priceId]=pri_01km95s0pyqvwkq6x4jtdd0n02&items[0][quantity]=1",
+  const PADDLE_PRICE_IDS = {
+    "PADDLE_LINK_249_30DAY": "pri_01km957nv9t0wgnb7rxrpzmrkv",
+    "PADDLE_LINK_599":       "pri_01km95651yv87n7bkktk2fmzna",
+    "PADDLE_LINK_249_60DAY": "pri_01km95mpfwh9q8fq66wy2tjrgx",
+    "PADDLE_LINK_249_90DAY": "pri_01km95s0pyqvwkq6x4jtdd0n02",
   };
 
   const paddle = (link, label) => {
-    const url = PADDLE_URLS[link] || link;
-    if (!url || url.startsWith("PADDLE_")) {
+    const priceId = PADDLE_PRICE_IDS[link] || link;
+    if (!priceId || priceId.startsWith("PADDLE_")) {
       setToast((label || "Purchase") + " — Paddle checkout is being set up. Email hello@compassbizsolutions.com to purchase.");
+      return;
+    }
+    // Use Paddle.js overlay checkout if available, otherwise open checkout URL
+    if (window.Paddle) {
+      window.Paddle.Checkout.open({ items: [{ priceId: priceId, quantity: 1 }] });
     } else {
-      window.open(url, "_blank");
+      window.open("https://sandbox-buy.paddle.com/" + priceId, "_blank");
     }
   };
 
@@ -2670,8 +2766,13 @@ function App() {
         {page === "services"   && <WhatWeDoPage setPage={setPage} calcRef={calcRef} />}
         {page === "intake"     && (function() {
           const params = new URLSearchParams(window.location.search);
+          const intakeToken = params.get("token") || "";
           const intakeEmail = params.get("email") || "";
-          return <div style={{ background: C.warm0, minHeight: "100vh", paddingTop: 80 }}><div style={{ maxWidth: 760, margin: "0 auto", padding: "0 24px 80px" }}><InDepthIntake customerEmail={intakeEmail} planType={intakePlan} onComplete={function() {}} /></div></div>;
+          return <div style={{ background: C.warm0, minHeight: "100vh", paddingTop: 80 }}>
+            <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 24px 80px" }}>
+              <IntakeGate token={intakeToken} fallbackEmail={intakeEmail} planType={intakePlan} />
+            </div>
+          </div>;
         })()}
         {page === "guides"     && <GuidesPage paddle={paddle} />}
         {page === "docs"       && <DocsPage setPage={setPage} paddle={paddle} />}
