@@ -11,14 +11,15 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
   <script>
-    // Initialize Paddle sandbox — replace with live client token when going live
-    // Get your client token from Paddle Dashboard > Developer Tools > Authentication
-    window.addEventListener('load', function() {
+    function initPaddle() {
       if (window.Paddle) {
         Paddle.Environment.set("sandbox");
         Paddle.Initialize({ token: "test_9cf513f1047dfffe322952bc2fe" });
+      } else {
+        setTimeout(initPaddle, 200);
       }
-    });
+    }
+    initPaddle();
   </script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -2654,11 +2655,11 @@ function App() {
       setToast((label || "Purchase") + " — Paddle checkout is being set up. Email hello@compassbizsolutions.com to purchase.");
       return;
     }
-    // Use Paddle.js overlay checkout if available, otherwise open checkout URL
-    if (window.Paddle) {
+    if (window.Paddle && window.Paddle.Checkout) {
       window.Paddle.Checkout.open({ items: [{ priceId: priceId, quantity: 1 }] });
     } else {
-      window.open("https://sandbox-buy.paddle.com/" + priceId, "_blank");
+      // Paddle.js not loaded yet — open direct sandbox checkout link
+      window.open("https://sandbox-checkout.paddle.com/checkout?items[0][priceId]=" + priceId + "&items[0][quantity]=1", "_blank");
     }
   };
 
