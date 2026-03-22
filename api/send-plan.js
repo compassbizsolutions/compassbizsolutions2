@@ -7,7 +7,7 @@
  */
 const { Resend } = require("resend");
 
-const SITE_URL = process.env.SITE_URL || "https://compassbizsolutions.com";
+const SITE_URL = process.env.SITE_URL || "https://www.compassbizsolutions.com";
 
 // ─── DOC FILENAME LOOKUP ─────────────────────────────────────────────────────
 const DOC_MAP = {

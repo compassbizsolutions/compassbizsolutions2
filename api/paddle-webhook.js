@@ -257,20 +257,43 @@ module.exports = async function handler(req, res) {
     const now = new Date().toISOString();
 
     if (planType === "30day" || planType === "bundle") {
-      // New purchase — send intake access link
-      const record = await getFromKV(customerEmail) || {};
-      const updated = Object.assign({}, record, {
+      // Generate secure intake token
+      const intakeToken = crypto.randomBytes(32).toString("hex");
+      const tokenKey = "intake_token:" + intakeToken;
+      const now = new Date().toISOString();
+
+      // Store token in KV with 7-day TTL
+      const kvUrl = process.env.KV_REST_API_URL;
+      const kvToken = process.env.KV_REST_API_TOKEN;
+      if (kvUrl && kvToken) {
+        await fetch(kvUrl + "/set/" + encodeURIComponent(tokenKey), {
+          method: "POST",
+          headers: { Authorization: "Bearer " + kvToken, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            token: intakeToken,
+            email: customerEmail,
+            name: customerName,
+            planType,
+            used: false,
+            createdAt: now
+          })
+        }).catch(function() {});
+      }
+
+      // Save partial customer record to KV
+      const existing = {};
+      const record = Object.assign({}, existing, {
         email: customerEmail,
-        name: customerName || record.name,
+        name: customerName || "",
         plan_type: planType,
         phase_current: 1,
         phase_1_date: now,
         updated: now
       });
-      await saveToKV(customerEmail, updated);
+      await saveToKV(customerEmail, record);
 
-      // Send intake link email
-      const intakeUrl = "https://compassbizsolutions.com?page=intake&email=" + encodeURIComponent(customerEmail) + "&plan=" + planType;
+      // Send intake link email with token
+      const intakeUrl = "https://www.compassbizsolutions.com?page=intake&token=" + intakeToken;
       await resend.emails.send({
         from: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
         to: customerEmail,
