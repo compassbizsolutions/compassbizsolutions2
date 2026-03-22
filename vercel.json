@@ -4,14 +4,15 @@
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "functions": {
-    "api/paddle-webhook.js":       { "maxDuration": 60 },
-    "api/send-full-report.js":     { "maxDuration": 60 },
-    "api/send-diagnostic.js":      { "maxDuration": 30 },
-    "api/send-checkin.js":         { "maxDuration": 15 },
-    "api/send-plan.js":            { "maxDuration": 60 },
-    "api/generate-checklist.js":   { "maxDuration": 30 }
+    "api/paddle-webhook.js":          { "maxDuration": 60 },
+    "api/send-full-report.js":        { "maxDuration": 60 },
+    "api/send-diagnostic.js":         { "maxDuration": 30 },
+    "api/send-checkin.js":            { "maxDuration": 15 },
+    "api/send-plan.js":               { "maxDuration": 60 },
+    "api/generate-checklist.js":      { "maxDuration": 30 },
+    "api/validate-intake-token.js":   { "maxDuration": 10 }
   },
   "env": {
-    "SITE_URL": "https://compassbizsolutions.com"
+    "SITE_URL": "https://www.compassbizsolutions.com"
   }
 }
