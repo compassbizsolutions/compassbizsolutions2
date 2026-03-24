@@ -120,51 +120,60 @@ module.exports = async function handler(req, res) {
       const tokenKey = "intake_token:" + intakeToken;
       const customerKey = "customer:" + customerEmail.toLowerCase().replace(/[^a-z0-9@._-]/g, "");
 
-      // Store token in KV
-      await saveToKV(tokenKey, {
-        token: intakeToken,
-        email: customerEmail,
-        name: customerName,
-        planType: planType,
-        used: false,
-        createdAt: now
-      });
+      // Store token in KV — wrapped so email sends even if KV fails
+      try {
+        await saveToKV(tokenKey, {
+          token: intakeToken,
+          email: customerEmail,
+          name: customerName,
+          planType: planType,
+          used: false,
+          createdAt: now
+        });
 
-      // Store customer record
-      await saveToKV(customerKey, {
-        email: customerEmail,
-        name: customerName,
-        plan_type: planType,
-        phase_current: 1,
-        phase_1_date: now,
-        updated: now
-      });
+        await saveToKV(customerKey, {
+          email: customerEmail,
+          name: customerName,
+          plan_type: planType,
+          phase_current: 1,
+          phase_1_date: now,
+          updated: now
+        });
+        console.log("KV saved successfully for:", customerEmail);
+      } catch(kvErr) {
+        console.error("KV save failed but continuing:", kvErr.message);
+      }
 
       const intakeUrl = "https://www.compassbizsolutions.com?page=intake&token=" + intakeToken;
       const firstName = customerName.split(" ")[0] || "there";
 
       // Send intake link to customer
-      await resend.emails.send({
-        from: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
-        to: customerEmail,
-        subject: "You\u2019re in \u2014 complete your intake to get your plan",
-        html: '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">'
-          + '<div style="background:#1B2E4B;padding:28px 32px;border-radius:8px 8px 0 0;">'
-          + '<div style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:3px;margin-bottom:8px;">COMPASS BUSINESS SOLUTIONS</div>'
-          + '<div style="font-size:20px;font-weight:bold;color:#C8701A;">Payment confirmed. Let\u2019s build your plan.</div>'
-          + '</div>'
-          + '<div style="background:#F7F5F2;padding:28px 32px;border-radius:0 0 8px 8px;border:1px solid #D8D4CD;">'
-          + '<p style="font-size:14px;color:#1A2332;font-weight:600;margin-top:0;">Hi ' + firstName + ',</p>'
-          + '<p style="font-size:13px;color:#3E4E63;line-height:1.75;margin-bottom:20px;">Your payment is confirmed. Click below to complete your intake \u2014 it takes about 15 minutes and is how we build your customized plan. The more specific your answers, the more precise your plan.</p>'
-          + '<div style="text-align:center;margin:28px 0;">'
-          + '<a href="' + intakeUrl + '" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:16px;padding:18px 44px;border-radius:10px;text-decoration:none;letter-spacing:0.5px;">Complete Your Intake \u2192</a>'
-          + '</div>'
-          + '<p style="font-size:12px;color:#6B7A90;line-height:1.7;margin-bottom:16px;">This link is unique to your account. It expires in 7 days. Questions? Just reply to this email.</p>'
-          + '<p style="margin:0;color:#3E4E63;font-size:13px;">\u2014 Jen, Compass Business Solutions</p>'
-          + '</div>'
-          + '<div style="text-align:center;padding:16px;font-size:11px;color:#A0ABBE;">compassbizsolutions.com</div>'
-          + '</div>'
-      });
+      try {
+        const sendResult = await resend.emails.send({
+          from: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
+          to: customerEmail,
+          subject: "You\u2019re in \u2014 complete your intake to get your plan",
+          html: '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">'
+            + '<div style="background:#1B2E4B;padding:28px 32px;border-radius:8px 8px 0 0;">'
+            + '<div style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:3px;margin-bottom:8px;">COMPASS BUSINESS SOLUTIONS</div>'
+            + '<div style="font-size:20px;font-weight:bold;color:#C8701A;">Payment confirmed. Let\u2019s build your plan.</div>'
+            + '</div>'
+            + '<div style="background:#F7F5F2;padding:28px 32px;border-radius:0 0 8px 8px;border:1px solid #D8D4CD;">'
+            + '<p style="font-size:14px;color:#1A2332;font-weight:600;margin-top:0;">Hi ' + firstName + ',</p>'
+            + '<p style="font-size:13px;color:#3E4E63;line-height:1.75;margin-bottom:20px;">Your payment is confirmed. Click below to complete your intake \u2014 it takes about 15 minutes and is how we build your customized plan. The more specific your answers, the more precise your plan.</p>'
+            + '<div style="text-align:center;margin:28px 0;">'
+            + '<a href="' + intakeUrl + '" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:16px;padding:18px 44px;border-radius:10px;text-decoration:none;letter-spacing:0.5px;">Complete Your Intake \u2192</a>'
+            + '</div>'
+            + '<p style="font-size:12px;color:#6B7A90;line-height:1.7;margin-bottom:16px;">This link is unique to your account. It expires in 7 days. Questions? Just reply to this email.</p>'
+            + '<p style="margin:0;color:#3E4E63;font-size:13px;">\u2014 Jen, Compass Business Solutions</p>'
+            + '</div>'
+            + '<div style="text-align:center;padding:16px;font-size:11px;color:#A0ABBE;">compassbizsolutions.com</div>'
+            + '</div>'
+        });
+        console.log("Intake email result:", JSON.stringify(sendResult));
+      } catch(emailErr) {
+        console.error("Intake email FAILED:", emailErr.message);
+      }
 
       console.log("Intake email sent to:", customerEmail, "token:", intakeToken);
 
