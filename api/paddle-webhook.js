@@ -30,18 +30,33 @@ module.exports = async function handler(req, res) {
   try {
     const event = req.body;
     console.log("Event type:", event && event.event_type);
-    console.log("Full event:", JSON.stringify(event).substring(0, 500));
+    console.log("Full event:", JSON.stringify(event));
 
     if (!event || event.event_type !== "transaction.completed") {
       return res.status(200).json({ received: true });
     }
 
-    const customerEmail = event.data && event.data.customer && event.data.customer.email;
-    const customerName  = (event.data && event.data.customer && event.data.customer.name) || "";
-    const priceId = event.data && event.data.items && event.data.items[0] && event.data.items[0].price && event.data.items[0].price.id || "";
+    const data = event.data || {};
+    const customer = data.customer || {};
+    const address = data.address || {};
+    const items = data.items || [];
+
+    // Paddle Billing nests email in different places depending on checkout type
+    const customerEmail = customer.email
+      || (data.billing_details && data.billing_details.email)
+      || (address && address.first_line)  // sometimes address has it
+      || "";
+    const customerName = customer.name
+      || (data.billing_details && data.billing_details.name)
+      || "";
+    const priceId = items[0] && items[0].price && items[0].price.id || "";
     const planType = PRODUCT_MAP[priceId] || "";
 
-    console.log("Customer:", customerEmail, "Price:", priceId, "Plan:", planType);
+    console.log("Customer email:", customerEmail);
+    console.log("Customer name:", customerName);
+    console.log("Price ID:", priceId);
+    console.log("Plan type:", planType);
+    console.log("Full data keys:", Object.keys(data).join(", "));
 
     if (!customerEmail) {
       console.error("No customer email found");
