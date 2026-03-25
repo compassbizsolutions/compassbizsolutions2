@@ -2681,22 +2681,35 @@ function App() {
     "PADDLE_LINK_249_90DAY": "pri_01km95s0pyqvwkq6x4jtdd0n02",
   };
 
+  const [preCheckout, setPreCheckout] = useState(null); // { priceId, label }
+  const [preEmail, setPreEmail] = useState("");
+  const [preEmailErr, setPreEmailErr] = useState("");
+
   const paddle = (link, label) => {
     const priceId = PADDLE_PRICE_IDS[link] || link;
     if (!priceId || priceId.startsWith("PADDLE_")) {
       setToast((label || "Purchase") + " — Paddle checkout is being set up. Email hello@compassbizsolutions.com to purchase.");
       return;
     }
+    // Show email capture modal first
+    setPreEmail("");
+    setPreEmailErr("");
+    setPreCheckout({ priceId, label });
+  };
+
+  function launchPaddle(priceId, email) {
     function openCheckout(attempts) {
       if (window.Paddle && window.paddleReady) {
         try {
+          window.paddleCustomerEmail = email;
           window.Paddle.Checkout.open({
             items: [{ priceId: priceId, quantity: 1 }],
-            customData: { customer_email: window.paddleCustomerEmail || "" }
+            customer: { email: email },
+            customData: { customer_email: email }
           });
         } catch(e) {
           console.error("Paddle checkout error:", e);
-          window.open("https://sandbox-checkout.paddle.com/checkout?items[0][priceId]=" + priceId + "&items[0][quantity]=1", "_blank");
+          window.open("https://sandbox-checkout.paddle.com/checkout?items[0][priceId]=" + priceId + "&items[0][quantity]=1&customer[email]=" + encodeURIComponent(email), "_blank");
         }
       } else if (attempts > 0) {
         setTimeout(function() { openCheckout(attempts - 1); }, 200);
@@ -2705,7 +2718,7 @@ function App() {
       }
     }
     openCheckout(10);
-  };
+  }
 
   useEffect(() => {
     if (page === "home") return;
@@ -2715,6 +2728,48 @@ function App() {
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       {toast && <PaddleToast msg={toast} onClose={() => setToast("")} />}
+
+      {/* Pre-checkout email capture */}
+      {preCheckout && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(27,46,75,0.85)", zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+          <div style={{ background: C.white, borderRadius: 16, padding: "36px 32px", maxWidth: 420, width: "100%", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
+            <div style={{ fontFamily: F.d, fontSize: 20, fontWeight: 800, color: C.ink, marginBottom: 8 }}>ONE QUICK THING</div>
+            <p style={{ fontFamily: F.b, fontSize: 13, color: C.muted, lineHeight: 1.7, marginBottom: 20 }}>Enter your email so we can send you your intake link after payment.</p>
+            <input
+              type="email"
+              value={preEmail}
+              onChange={function(e) { setPreEmail(e.target.value); setPreEmailErr(""); }}
+              onKeyDown={function(e) {
+                if (e.key === "Enter" && preEmail.trim()) {
+                  if (!preEmail.includes("@")) { setPreEmailErr("Please enter a valid email."); return; }
+                  const p = preCheckout;
+                  setPreCheckout(null);
+                  launchPaddle(p.priceId, preEmail.trim());
+                }
+              }}
+              placeholder="your@email.com"
+              autoFocus
+              style={{ width: "100%", padding: "13px 14px", border: "2px solid " + (preEmailErr ? C.red : C.warm3), borderRadius: 9, fontSize: 15, color: C.ink, outline: "none", fontFamily: F.b, boxSizing: "border-box", marginBottom: 6 }}
+            />
+            {preEmailErr && <div style={{ color: C.red, fontSize: 12, fontFamily: F.b, marginBottom: 8 }}>{preEmailErr}</div>}
+            <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
+              <button onClick={function() { setPreCheckout(null); }}
+                style={{ flex: 1, background: C.warm1, border: "1px solid " + C.warm3, color: C.muted, padding: "12px", borderRadius: 9, fontSize: 14, fontFamily: F.b, cursor: "pointer" }}>
+                Cancel
+              </button>
+              <button onClick={function() {
+                if (!preEmail.trim() || !preEmail.includes("@")) { setPreEmailErr("Please enter a valid email."); return; }
+                const p = preCheckout;
+                setPreCheckout(null);
+                launchPaddle(p.priceId, preEmail.trim());
+              }}
+                style={{ flex: 2, background: C.amber, border: "none", color: C.white, padding: "12px", borderRadius: 9, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: "0 3px 14px rgba(200,112,26,0.35)" }}>
+                Continue to Payment →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Post-purchase overlay */}
       {purchaseComplete && (
