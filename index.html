@@ -12,23 +12,24 @@
   <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
   <script>
     window.paddleReady = false;
+    window.paddleCustomerEmail = "";
     function initPaddle() {
       if (window.Paddle) {
         Paddle.Environment.set("sandbox");
         Paddle.Initialize({
           token: "test_9cf513f1047dfffe322952bc2fe",
           eventCallback: function(event) {
+            console.log("Paddle event:", event.name);
+            // Capture email as soon as customer enters it
+            if (event.data && event.data.customer && event.data.customer.email) {
+              window.paddleCustomerEmail = event.data.customer.email;
+              console.log("Captured email:", window.paddleCustomerEmail);
+            }
             if (event.name === "checkout.completed") {
-              // Payment successful — webhook will send the intake email
-              // Show a success message on the page
-              var email = event.data && event.data.customer && event.data.customer.email ? event.data.customer.email : "";
+              var email = (event.data && event.data.customer && event.data.customer.email) || window.paddleCustomerEmail || "";
               window.paddleCheckoutComplete = { email: email };
-              // Close the overlay after a short delay
               setTimeout(function() {
-                if (window.Paddle && window.Paddle.Checkout) {
-                  window.Paddle.Checkout.close();
-                }
-                // Show success state — React will pick this up via polling
+                if (window.Paddle && window.Paddle.Checkout) window.Paddle.Checkout.close();
                 var evt = new CustomEvent("paddle-purchase-complete", { detail: { email: email } });
                 window.dispatchEvent(evt);
               }, 2000);
@@ -2689,7 +2690,10 @@ function App() {
     function openCheckout(attempts) {
       if (window.Paddle && window.paddleReady) {
         try {
-          window.Paddle.Checkout.open({ items: [{ priceId: priceId, quantity: 1 }] });
+          window.Paddle.Checkout.open({
+            items: [{ priceId: priceId, quantity: 1 }],
+            customData: { customer_email: window.paddleCustomerEmail || "" }
+          });
         } catch(e) {
           console.error("Paddle checkout error:", e);
           window.open("https://sandbox-checkout.paddle.com/checkout?items[0][priceId]=" + priceId + "&items[0][quantity]=1", "_blank");
