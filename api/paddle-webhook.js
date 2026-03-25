@@ -26,8 +26,6 @@ module.exports = async function handler(req, res) {
 
   try {
     const event = req.body;
-    console.log("Event type:", event && event.event_type);
-
     if (!event || event.event_type !== "transaction.completed") {
       return res.status(200).json({ received: true });
     }
@@ -36,62 +34,40 @@ module.exports = async function handler(req, res) {
     const items = data.items || [];
     const priceId = items[0] && items[0].price && items[0].price.id || "";
     const planType = PRODUCT_MAP[priceId] || "";
-
-    // Get email from payments array — cardholder details
+    const customerId = data.customer_id || "";
+    const transactionId = data.id || "";
     const payments = data.payments || [];
-    const payment = payments[0] || {};
-    const methodDetails = payment.method_details || {};
-
-    // Try every possible location in the payload
+    const cardholderName = payments[0] && payments[0].method_details && payments[0].method_details.card && payments[0].method_details.card.cardholder_name || "";
     const customData = data.custom_data || {};
-    let customerEmail = customData.email || customData.customer_email || "";
-    let customerName = customData.name || customData.customer_name || "";
 
-    // Try billing details
-    if (!customerEmail && data.billing_details) {
-      customerEmail = data.billing_details.email || "";
-      customerName = data.billing_details.name || customerName;
-    }
+    // Email comes through custom_data when passed via Paddle.Checkout.open customer param
+    let customerEmail = customData.customer_email || customData.email || "";
+    let customerName = cardholderName || customData.name || "";
 
-    // Try cardholder name from payment method as name fallback
-    if (!customerName && methodDetails.card) {
-      customerName = methodDetails.card.cardholder_name || "";
-    }
+    console.log("Plan:", planType, "Email:", customerEmail || "NONE", "Name:", customerName, "CustomData:", JSON.stringify(customData));
 
-    console.log("Price ID:", priceId, "Plan:", planType);
-    console.log("Email found:", customerEmail || "NONE");
-    console.log("Name found:", customerName || "NONE");
-    console.log("Customer ID:", data.customer_id || "NONE");
-
-    if (!planType) {
-      console.error("Unknown price ID:", priceId);
-      return res.status(200).json({ received: true });
-    }
-
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const now = new Date().toISOString();
-
-    // If we still have no email, send Jen a manual action alert
+    // If still no email — send Jen a manual alert with all details
     if (!customerEmail) {
-      console.error("No email found — sending manual alert to Jen");
       await resend.emails.send({
         from: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
         to: "jen@compassbizsolutions.com",
-        subject: "ACTION NEEDED — Purchase with no email — " + planType,
-        html: "<p><b>A customer purchased " + planType + " but we could not retrieve their email.</b></p>"
-          + "<p>Customer ID: " + (data.customer_id || "unknown") + "</p>"
-          + "<p>Transaction ID: " + (data.id || "unknown") + "</p>"
-          + "<p>Cardholder: " + (customerName || "unknown") + "</p>"
-          + "<p>Look up the customer in Paddle sandbox by their Customer ID and send them their intake link manually.</p>"
+        subject: "ACTION NEEDED — New " + planType + " purchase — no email retrieved",
+        html: "<p><b>New " + planType + " purchase but could not retrieve customer email.</b></p>"
+          + "<p>Customer ID: <b>" + customerId + "</b></p>"
+          + "<p>Transaction ID: <b>" + transactionId + "</b></p>"
+          + "<p>Cardholder name: <b>" + cardholderName + "</b></p>"
+          + "<p>Look up customer in <a href='https://sandbox-vendors.paddle.com/customers'>Paddle sandbox customers</a> and send them their intake link manually.</p>"
+          + "<p>To generate their intake link manually, go to:<br>https://www.compassbizsolutions.com?page=intake&token=MANUAL</p>"
       });
       return res.status(200).json({ received: true });
     }
 
+    // We have the email — proceed
+    const now = new Date().toISOString();
     const firstName = customerName.split(" ")[0] || "there";
     const intakeToken = crypto.randomBytes(32).toString("hex");
     const intakeUrl = "https://www.compassbizsolutions.com?page=intake&token=" + intakeToken;
 
-    // Save to KV
     saveToKV("intake_token:" + intakeToken, {
       token: intakeToken, email: customerEmail, name: customerName,
       planType: planType, used: false, createdAt: now
@@ -101,7 +77,6 @@ module.exports = async function handler(req, res) {
       phase_current: 1, phase_1_date: now, updated: now
     });
 
-    // Send intake link email
     console.log("Sending intake email to:", customerEmail);
     await resend.emails.send({
       from: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
@@ -113,23 +88,22 @@ module.exports = async function handler(req, res) {
         + "</div>"
         + "<div style='background:#F7F5F2;padding:28px 32px;border-radius:0 0 8px 8px;border:1px solid #D8D4CD;'>"
         + "<p style='font-size:14px;color:#1A2332;font-weight:600;'>Hi " + firstName + ",</p>"
-        + "<p style='font-size:13px;color:#3E4E63;line-height:1.75;'>Your payment is confirmed. Click below to complete your intake — takes about 15 minutes. The more specific your answers, the more precise your plan.</p>"
+        + "<p style='font-size:13px;color:#3E4E63;line-height:1.75;'>Your payment is confirmed. Click below to complete your intake — takes about 15 minutes.</p>"
         + "<div style='text-align:center;margin:28px 0;'>"
         + "<a href='" + intakeUrl + "' style='display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:16px;padding:18px 44px;border-radius:10px;text-decoration:none;'>Complete Your Intake &rarr;</a>"
         + "</div>"
-        + "<p style='font-size:12px;color:#6B7A90;'>This link is unique to your account and expires in 7 days. Questions? Just reply to this email.</p>"
+        + "<p style='font-size:12px;color:#6B7A90;'>This link expires in 7 days. Questions? Just reply to this email.</p>"
         + "<p style='margin:0;color:#3E4E63;font-size:13px;'>— Jen, Compass Business Solutions</p>"
         + "</div></div>"
     });
-    console.log("Intake email sent successfully to:", customerEmail);
+    console.log("Intake email sent to:", customerEmail);
 
-    // Copy to Jen
     resend.emails.send({
       from: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
       to: "jen@compassbizsolutions.com",
-      subject: "New purchase — " + planType + " — " + customerEmail,
-      html: "<p>New <b>" + planType + "</b> purchase from " + customerEmail + " (" + customerName + ")</p><p><a href='" + intakeUrl + "'>Intake URL</a></p>"
-    }).catch(function(e) { console.error("Jen copy failed:", e.message); });
+      subject: "New " + planType + " purchase — " + customerEmail,
+      html: "<p>New <b>" + planType + "</b> from " + customerEmail + " (" + customerName + ")</p><p><a href='" + intakeUrl + "'>Intake link</a></p>"
+    }).catch(function(e) { console.error("Jen copy:", e.message); });
 
     return res.status(200).json({ received: true });
 
