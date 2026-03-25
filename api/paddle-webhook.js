@@ -46,6 +46,8 @@ module.exports = async function handler(req, res) {
 
     console.log("Plan:", planType, "Email:", customerEmail || "NONE", "Name:", customerName, "CustomData:", JSON.stringify(customData));
 
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
     // If still no email — send Jen a manual alert with all details
     if (!customerEmail) {
       await resend.emails.send({
