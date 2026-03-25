@@ -2468,18 +2468,11 @@ function ServiceCard({ svc, setPage, calcRef }) {
 // ─── FOOTER ───────────────────────────────────────────────────────────────────
 function Footer({ setPage }) {
   return (
-    <footer style={{ background: C.navyDark, borderTop: "1px solid rgba(61,107,158,0.15)", padding: "32px 24px", fontFamily: F.b }}>
-      <div style={{ maxWidth: 1060, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 20 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <CompassLogo size={28} />
-          <div>
-            <div style={{ fontFamily: F.d, fontSize: 14, fontWeight: 700, color: C.white, letterSpacing: 2 }}>COMPASS BUSINESS SOLUTIONS</div>
-            <div style={{ fontSize: 11, color: C.ghost, fontFamily: F.b }}>Business systems for service companies</div>
-          </div>
-        </div>
-        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center" }}>
+    <footer style={{ background: C.navyDark, borderTop: "1px solid rgba(61,107,158,0.15)", padding: "28px 24px 20px", fontFamily: F.b }}>
+      <div style={{ maxWidth: 1060, margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
+        <div style={{ display: "flex", gap: 4, flexWrap: "wrap", justifyContent: "center" }}>
           {[["home","Home"], ["about","Our Story"], ["profitable","What Profitable Looks Like"], ["services","What We Do"]].map(([p, l]) => (
-            <button key={p} onClick={() => { setPage(p); window.scrollTo(0,0); }} style={{ background: "none", border: "none", color: C.muted, fontSize: 13, fontFamily: F.b, cursor: "pointer", padding: "6px 10px" }}>{l}</button>
+            <button key={p} onClick={() => { setPage(p); window.scrollTo(0,0); }} style={{ background: "none", border: "none", color: C.muted, fontSize: 13, fontFamily: F.b, cursor: "pointer", padding: "6px 12px" }}>{l}</button>
           ))}
         </div>
         <div style={{ fontSize: 11, color: C.ghost, fontFamily: F.b }}>© {new Date().getFullYear()} Compass Business Solutions</div>
