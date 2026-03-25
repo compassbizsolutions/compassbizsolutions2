@@ -63,32 +63,13 @@ module.exports = async function handler(req, res) {
     const topLeak    = getTag(report, "TOP_LEAK");
     const secondLeak = getTag(report, "SECOND_LEAK");
     const thirdLeak  = getTag(report, "THIRD_LEAK");
-    const leakTotal  = getTag(report, "LEAK_TOTAL");
     const howWeHelp  = getTag(report, "HOW_WE_HELP");
 
-    // Render bullet lines from WHAT_WE_SEE
-    const bulletLines = (text) => text.split("\n").filter(l => l.trim()).map(line =>
-      `<div style="display:flex;gap:8px;margin-bottom:6px;align-items:flex-start;">
-        <span style="color:#3D6B9E;font-weight:bold;flex-shrink:0;">•</span>
-        <span style="font-size:13px;color:#3E4E63;line-height:1.6;">${line.replace(/^•\s*/,"")}</span>
-      </div>`
-    ).join("");
-
-    // Render structured leak block
-    const leakBlock = (label, content, color) => {
-      if (!content) return "";
-      const lines = content.split("\n").filter(l => l.trim());
-      const title = lines[0] || "";
-      const why   = lines[1] || "";
-      const fix   = lines.find(l => l.startsWith("→")) || "";
-      return `
-        <div style="background:white;border-left:4px solid ${color};border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:10px;border:1px solid #D8D4CD;border-left:4px solid ${color};">
-          <div style="font-size:10px;font-weight:bold;color:${color};letter-spacing:2px;margin-bottom:8px;">${label}</div>
-          ${title ? `<div style="font-size:13px;font-weight:bold;color:#1A2332;margin-bottom:4px;">${title}</div>` : ""}
-          ${why   ? `<div style="font-size:12px;color:#3E4E63;line-height:1.65;margin-bottom:6px;">${why}</div>` : ""}
-          ${fix   ? `<div style="font-size:12px;color:${color};font-weight:700;padding-top:6px;border-top:1px solid #D8D4CD;">${fix}</div>` : ""}
-        </div>`;
-    };
+    const leakBlock = (label, content, color) => !content ? "" : `
+      <div style="background:white;border-left:4px solid ${color};border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:10px;border:1px solid #D8D4CD;border-left:4px solid ${color};">
+        <div style="font-size:10px;font-weight:bold;color:${color};letter-spacing:2px;margin-bottom:6px;">${label}</div>
+        <p style="font-size:13px;color:#3E4E63;line-height:1.75;margin:0;white-space:pre-line;">${content}</p>
+      </div>`;
 
     const html = `
       <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;color:#3E4E63;">
@@ -101,17 +82,13 @@ module.exports = async function handler(req, res) {
           <p style="font-size:15px;color:#1A2332;font-weight:600;margin-top:0;">Hi ${firstName},</p>
           <p style="color:#3E4E63;line-height:1.7;margin-top:0;">Here is your free diagnostic for <strong>${biz}</strong>${trade ? " — " + trade : ""}.</p>
           ${whatWeSee ? `<div style="background:white;border-radius:8px;padding:16px 18px;margin-bottom:16px;border:1px solid #D8D4CD;">
-            <div style="font-size:10px;font-weight:bold;color:#3D6B9E;letter-spacing:2px;margin-bottom:10px;">WHAT WE SEE</div>
-            ${bulletLines(whatWeSee)}
+            <div style="font-size:10px;font-weight:bold;color:#3D6B9E;letter-spacing:2px;margin-bottom:8px;">WHAT WE SEE</div>
+            <p style="font-size:13px;color:#3E4E63;line-height:1.8;margin:0;">${whatWeSee}</p>
           </div>` : ""}
           ${leakBlock("#1 BIGGEST LEAK", topLeak, "#B84C2E")}
           ${leakBlock("#2 LEAK", secondLeak, "#C8701A")}
           ${leakBlock("#3 LEAK", thirdLeak, "#A8782A")}
-          ${leakTotal ? `
-          <div style="background:#B84C2E;border-radius:8px;padding:14px 18px;margin-bottom:20px;text-align:center;">
-            <div style="font-size:10px;font-weight:bold;color:rgba(255,255,255,0.7);letter-spacing:2px;margin-bottom:4px;">BOTTOM LINE</div>
-            <div style="font-size:16px;font-weight:bold;color:white;">${leakTotal}</div>
-          </div>` : ""}
+          ${howWeHelp ? `<p style="font-size:13px;color:#3E4E63;line-height:1.8;margin:20px 0 0;">${howWeHelp}</p>` : ""}
 
           <!-- What to do next -->
           <div style="margin:20px 0;">
@@ -127,9 +104,10 @@ module.exports = async function handler(req, res) {
                 <div style="font-size:22px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$249</div>
               </div>
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                We take a deep look at your operation across all 10 profit leak categories, rank your issues by dollar impact, and build a day-by-day plan around the ones that matter most. You get only the Fix-It Guides and Process Docs for the issues you actually have — written for your trade and how your operation runs. Incremental check-ins for accountability along the way.
+                We run your business through an in-depth 10-category diagnostic. Based on your specific answers, we build a customized 30-day action plan — with only the Fix-It Guides and Process Doc Templates that address <em>your</em> top leaks. Nothing generic. Nothing you don't need.<br><br>
+                You also get check-in emails at day 7 and day 15 to make sure things are moving. At day 28, we'll reach out about your next 30 days.
               </div>
-              <a href="https://compassbizsolutions.com" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $249 →</a>
+              <a href="https://buy.paddle.com/product/pri_01km957nv9t0wgnb7rxrpzmrkv" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $249 →</a>
             </div>
 
             <!-- Full Bundle -->
@@ -138,14 +116,15 @@ module.exports = async function handler(req, res) {
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
                 <div>
                   <div style="font-size:13px;font-weight:bold;color:#1A2332;">Complete 30/60/90-Day Plan</div>
-                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">All three phases. Fully sequenced. Only your docs.</div>
+                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">All three phases. All 22 docs. Full check-in schedule.</div>
                 </div>
                 <div style="font-size:22px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$599</div>
               </div>
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                We rank all 10 leak categories for your business and sequence them across three phases — your biggest issues first, next tier second, remaining third. Each phase gets its own day-by-day plan. You get only the Fix-It Guides and Process Docs for the issues you actually have — written for your trade and how your operation runs. Incremental check-ins throughout. Saves $147 vs buying each phase separately.
+                Everything in the 30-day plan, plus we issue your days 31-60 and days 61-90 plans as you progress — each adjusted for what you've actually done, not what you were supposed to do. Check-ins at day 7, 15, 21, and 28.<br><br>
+                Includes all 22 customized guides and templates across all three phases. One payment, everything included. Saves $147 versus buying each phase separately.
               </div>
-              <a href="https://compassbizsolutions.com" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full 30/60/90 Bundle — $599 →</a>
+              <a href="https://buy.paddle.com/product/pri_01km95651yv87n7bkktk2fmzna" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full 30/60/90 Bundle — $599 →</a>
             </div>
 
             <!-- Done For You -->
