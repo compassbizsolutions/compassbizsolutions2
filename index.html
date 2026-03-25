@@ -830,6 +830,7 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
   const [leadPhone, setLeadPhone]     = useState("");
   const [leadAddress, setLeadAddress] = useState("");
   const [leadTrade, setLeadTrade]     = useState("");
+  const [leadTradeOther, setLeadTradeOther] = useState("");
   const [captureErr, setCaptureErr]   = useState("");
 
   const sections = [
@@ -969,7 +970,7 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          system: buildIntakeSystem(vals, multiVals, planType, leadName, leadBiz, leadAddress, leadTrade),
+          system: buildIntakeSystem(vals, multiVals, planType, leadName, leadBiz, leadAddress, leadTrade === "Other" ? leadTradeOther : leadTrade),
           prompt: "Generate the full customized plan now based on all intake answers.",
           max_tokens: 8000
         })
@@ -983,7 +984,7 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: leadEmail, name: leadName, biz: leadBiz, phone: leadPhone, address: leadAddress,
-          planType: planType, trade: leadTrade, answers: vals, multiAnswers: multiVals, report: text
+          planType: planType, trade: leadTrade === "Other" ? leadTradeOther : leadTrade, answers: vals, multiAnswers: multiVals, report: text
         })
       });
 
@@ -1103,13 +1104,22 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(130px,1fr))", gap: 7 }}>
             {["Electrical","Plumbing","HVAC","Landscaping","Pool & Spa","General Contracting","Pest Control","Cleaning Services","Roofing","Painting","Flooring","Handyman","Irrigation","Appliance Repair","Tree Service","Pressure Washing","Garage Door","Security Systems","Other"].map(function(t) {
               return (
-                <button key={t} onClick={function() { setLeadTrade(t); }}
+                <button key={t} onClick={function() { setLeadTrade(t); if (t !== "Other") setLeadTradeOther(""); }}
                   style={{ padding: "9px 10px", borderRadius: 8, border: "2px solid " + (leadTrade === t ? C.slate : C.warm3), background: leadTrade === t ? C.navyLight : C.white, color: leadTrade === t ? C.navy : C.body, fontSize: 12, fontWeight: leadTrade === t ? 700 : 500, fontFamily: F.b, cursor: "pointer", textAlign: "center" }}>
                   {t}
                 </button>
               );
             })}
           </div>
+          {leadTrade === "Other" && (
+            <input
+              value={leadTradeOther}
+              onChange={function(e) { setLeadTradeOther(e.target.value); }}
+              placeholder="Please describe your trade (e.g. Septic Service, Window Cleaning...)"
+              autoFocus
+              style={{ width: "100%", marginTop: 10, padding: "12px 14px", border: "2px solid " + C.slate, borderRadius: 9, fontSize: 14, color: C.ink, outline: "none", fontFamily: F.b, background: C.white, boxSizing: "border-box" }}
+            />
+          )}
         </div>
         {captureErr && <div style={{ color: C.red, fontSize: 13, fontFamily: F.b, marginTop: 8, marginBottom: 4 }}>{captureErr}</div>}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 20 }}>
@@ -1117,6 +1127,7 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
           <button onClick={function() {
             if (!leadName.trim() || !leadEmail.trim() || !leadBiz.trim() || !leadPhone.trim()) { setCaptureErr("Please fill in all fields."); return; }
             if (!leadTrade) { setCaptureErr("Please select your trade."); return; }
+            if (leadTrade === "Other" && !leadTradeOther.trim()) { setCaptureErr("Please describe your trade."); return; }
             setCaptureErr(""); setSection(1);
           }} style={{ background: C.amber, border: "none", color: C.white, padding: "13px 32px", borderRadius: 9, fontSize: 14, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>
             Let's Go →
