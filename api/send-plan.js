@@ -82,7 +82,7 @@ function extractDocs(docsText) {
 function docLinksHtml(docs, color) {
   if (!docs || !docs.length) return "";
   return docs.map(function(doc) {
-    const url = SITE_URL + "/" + encodeURIComponent(doc.file);
+    const url = SITE_URL + "/public/downloads/" + encodeURIComponent(doc.file);
     return '<div style="display:flex;gap:10px;margin-bottom:8px;align-items:center;">'
       + '<span style="color:' + color + ';font-weight:bold;flex-shrink:0;">→</span>'
       + '<a href="' + url + '" style="font-size:13px;color:' + color + ';font-family:Arial,sans-serif;font-weight:600;text-decoration:none;">' + doc.label + ' ↓</a>'
@@ -262,7 +262,7 @@ module.exports = async function handler(req, res) {
     // Generate the checklist .docx
     let checklistAttachment = null;
     try {
-      const checklistRes = await fetch((process.env.VERCEL_URL ? "https://" + process.env.VERCEL_URL : "http://localhost:3000") + "/api/generate-checklist", {
+      const checklistRes = await fetch((process.env.SITE_URL || "https://www.compassbizsolutions.com") + "/api/generate-checklist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ biz, name, planType, report })
