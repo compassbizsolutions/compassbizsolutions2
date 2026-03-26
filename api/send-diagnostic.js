@@ -104,10 +104,10 @@ module.exports = async function handler(req, res) {
                 <div style="font-size:22px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$249</div>
               </div>
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                We run your business through an in-depth 10-category diagnostic. Based on your specific answers, we build a customized 30-day action plan — with only the Fix-It Guides and Process Doc Templates that address <em>your</em> top leaks. Nothing generic. Nothing you don't need.<br><br>
-                You also get check-in emails at day 7 and day 15 to make sure things are moving. At day 28, we'll reach out about your next 30 days.
+                Tell us about your operation — we build a customized 30-day action plan targeting your specific leaks. Your plan, daily tasks, guides, and progress tracker all live in <strong>FixKit</strong>, your personal business portal. Log in from your phone, check off tasks as you go, and ask questions anytime.<br><br>
+                No email chains. No PDFs to hunt through. Everything in one place.
               </div>
-              <a href="https://buy.paddle.com/product/pri_01km957nv9t0wgnb7rxrpzmrkv" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $249 →</a>
+              <a href="https://www.compassbizsolutions.com/checkout/30day" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $249 →</a>
             </div>
 
             <!-- Full Bundle -->
@@ -116,21 +116,21 @@ module.exports = async function handler(req, res) {
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
                 <div>
                   <div style="font-size:13px;font-weight:bold;color:#1A2332;">Complete 30/60/90-Day Plan</div>
-                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">All three phases. All 22 docs. Full check-in schedule.</div>
+                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">All three phases. One portal. Full roadmap.</div>
                 </div>
                 <div style="font-size:22px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$599</div>
               </div>
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                Everything in the 30-day plan, plus we issue your days 31-60 and days 61-90 plans as you progress — each adjusted for what you've actually done, not what you were supposed to do. Check-ins at day 7, 15, 21, and 28.<br><br>
-                Includes all 22 customized guides and templates across all three phases. One payment, everything included. Saves $147 versus buying each phase separately.
+                Everything in the 30-day plan, plus your full 60 and 90-day roadmap — all three phases customized to your business and loaded into FixKit from day one. Your biggest leaks first, next tier second, remaining third. One payment, all 90 days, saves $147.<br><br>
+                Your portal, your plan, your progress. All in one place from start to finish.
               </div>
-              <a href="https://buy.paddle.com/product/pri_01km95651yv87n7bkktk2fmzna" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full 30/60/90 Bundle — $599 →</a>
+              <a href="https://www.compassbizsolutions.com/checkout/bundle" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full 30/60/90 Bundle — $599 →</a>
             </div>
 
             <!-- Done For You -->
             <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-radius:8px;padding:14px 18px;text-align:center;">
               <div style="font-size:12px;color:#6B7A90;margin-bottom:8px;">Rather have us handle it? We scope, build, and implement the systems for you.</div>
-              <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:12px;padding:9px 20px;border-radius:8px;text-decoration:none;">Book a Free Scoping Call →</a>
+              <a href="https://www.compassbizsolutions.com/scoping-call" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:12px;padding:9px 20px;border-radius:8px;text-decoration:none;">Book a Free Scoping Call →</a>
             </div>
           </div>
           <p style="font-size:13px;color:#6B7A90;margin-bottom:4px;">Questions? Reply to this email — I read every one.</p>
