@@ -143,16 +143,14 @@ module.exports = async function handler(req, res) {
 
     // Send to user
     await resend.emails.send({
-      from: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
-      to: email,
-      subject: "Your Free Business Diagnostic — " + (biz || "Your Business"),
+      from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">", — " + (biz || "Your Business"),
       html
     });
 
     // Copy to Jen with full answers
     const answerDump = Object.keys(answers).map(k => k + ": " + answers[k]).join("\n");
     resend.emails.send({
-      from: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
+      from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
       to: "jen@compassbizsolutions.com",
       subject: "New Diagnostic — " + (biz || "Unknown") + " (" + (trade || "Unknown trade") + ") — " + phone,
       html: "<pre style='font-family:monospace;font-size:13px;line-height:1.6;'>NEW DIAGNOSTIC SUBMISSION\n\nName: " + name + "\nEmail: " + email + "\nBusiness: " + biz + "\nPhone: " + phone + "\nTrade: " + trade + "\n\n--- ANSWERS ---\n" + answerDump + "\n\n--- REPORT ---\n" + report + "</pre>"
@@ -165,6 +163,16 @@ module.exports = async function handler(req, res) {
       report,
       diagnosticDate: new Date().toISOString(),
       planPurchased: null
+    }).catch(function() {});
+
+    // Store lead record for admin dashboard
+    const emailKey = email.toLowerCase().replace(/[^a-z0-9@._-]/g, "");
+    const topLeakMatch = report.match(/\[LEAK_RANKING\]\s*1\.\s*([^\n—]+)/);
+    const topLeak = topLeakMatch ? topLeakMatch[1].trim() : "";
+    storeInKV("lead:" + emailKey, {
+      email, name, biz, phone, trade,
+      top_leak: topLeak,
+      created_at: new Date().toISOString(),
     }).catch(function() {});
 
     // Tag in Mailchimp

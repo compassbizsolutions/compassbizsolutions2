@@ -65,7 +65,7 @@ module.exports = async function handler(req, res) {
     // No email — alert Jen manually
     if (!customerEmail) {
       await resend.emails.send({
-        from: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
+        from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
         to: "jen@compassbizsolutions.com",
         subject: "ACTION NEEDED — New " + planType + " purchase — no email retrieved",
         html: "<p><b>New " + planType + " purchase but could not retrieve customer email.</b></p>"
@@ -95,7 +95,7 @@ module.exports = async function handler(req, res) {
 
     // Send FixKit welcome email
     await resend.emails.send({
-      from: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
+      from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
       to: customerEmail,
       subject: "You're in — set up your FixKit account",
       html: `
@@ -139,7 +139,7 @@ module.exports = async function handler(req, res) {
 
     // Copy to Jen
     resend.emails.send({
-      from: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
+      from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
       to: "jen@compassbizsolutions.com",
       subject: "New " + planType + " purchase — " + customerEmail,
       html: "<p>New <b>" + planLabel + "</b> from <b>" + customerEmail + "</b> (" + customerName + ")</p>"
