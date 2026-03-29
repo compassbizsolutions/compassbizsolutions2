@@ -107,7 +107,7 @@ module.exports = async function handler(req, res) {
                 Tell us about your operation — we build a customized 30-day action plan targeting your specific leaks. Your plan, daily tasks, guides, and progress tracker all live in <strong>FixKit</strong>, your personal business portal. Log in from your phone, check off tasks as you go, and ask questions anytime.<br><br>
                 No email chains. No PDFs to hunt through. Everything in one place.
               </div>
-              <a href="https://www.compassbizsolutions.com/checkout/30day" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $249 →</a>
+              <a href="https://www.compassbizsolutions.com/?buy=30day" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $249 →</a>
             </div>
 
             <!-- Full Bundle -->
@@ -124,7 +124,7 @@ module.exports = async function handler(req, res) {
                 Everything in the 30-day plan, plus your full 60 and 90-day roadmap — all three phases customized to your business and loaded into FixKit from day one. Your biggest leaks first, next tier second, remaining third. One payment, all 90 days, saves $147.<br><br>
                 Your portal, your plan, your progress. All in one place from start to finish.
               </div>
-              <a href="https://www.compassbizsolutions.com/checkout/bundle" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full 30/60/90 Bundle — $599 →</a>
+              <a href="https://www.compassbizsolutions.com/?buy=bundle" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full 30/60/90 Bundle — $599 →</a>
             </div>
 
             <!-- Done For You -->
@@ -143,7 +143,9 @@ module.exports = async function handler(req, res) {
 
     // Send to user
     await resend.emails.send({
-      from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">", — " + (biz || "Your Business"),
+      from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
+      to: email,
+      subject: "Your Free Business Diagnostic — " + (biz || "Your Business"),
       html
     });
 
