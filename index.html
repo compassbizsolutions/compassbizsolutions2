@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script>
+    // Always start at top of page — prevent browser scroll restoration
+    if (history.scrollRestoration) history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Compass Business Solutions — Stop Leaking Profit</title>
   <meta name="description" content="Free Quick Scan reveals what your service business is probably leaking every year." />
@@ -2685,6 +2690,21 @@ function App() {
   const [preEmail, setPreEmail] = useState("");
   const [preEmailErr, setPreEmailErr] = useState("");
 
+  // Auto-open email capture modal if coming from diagnostic email buy button
+  useEffect(function() {
+    const params = new URLSearchParams(window.location.search);
+    const buy = params.get("buy");
+    if (buy === "30day") {
+      window.history.replaceState({}, "", "/");
+      setPreEmail(""); setPreEmailErr("");
+      setPreCheckout({ priceId: "pri_01km957nv9t0wgnb7rxrpzmrkv", label: "30-Day Quick Win Plan — $249" });
+    } else if (buy === "bundle") {
+      window.history.replaceState({}, "", "/");
+      setPreEmail(""); setPreEmailErr("");
+      setPreCheckout({ priceId: "pri_01km95651yv87n7bkktk2fmzna", label: "Complete 30/60/90 Bundle — $599" });
+    }
+  }, []);
+
   const paddle = (link, label) => {
     const priceId = PADDLE_PRICE_IDS[link] || link;
     if (!priceId || priceId.startsWith("PADDLE_")) {
@@ -2734,7 +2754,7 @@ function App() {
         <div style={{ position: "fixed", inset: 0, background: "rgba(27,46,75,0.85)", zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
           <div style={{ background: C.white, borderRadius: 16, padding: "36px 32px", maxWidth: 420, width: "100%", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
             <div style={{ fontFamily: F.d, fontSize: 20, fontWeight: 800, color: C.ink, marginBottom: 8 }}>ONE QUICK THING</div>
-            <p style={{ fontFamily: F.b, fontSize: 13, color: C.muted, lineHeight: 1.7, marginBottom: 20 }}>Enter your email so we can send you your intake link after payment.</p>
+            <p style={{ fontFamily: F.b, fontSize: 13, color: C.muted, lineHeight: 1.7, marginBottom: 20 }}>Enter your email so we can set up your Profit Leak FixKit account after payment.</p>
             <input
               type="email"
               value={preEmail}
