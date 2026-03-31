@@ -6,7 +6,7 @@
  *
  * SETUP:
  *   Environment variables required in Vercel dashboard:
- *     ANTHROPIC_API_KEY  — from console.anthropic.com
+ *     ANTHROPIC_API_KEY  â€” from console.anthropic.com
  */
 
 module.exports = async function handler(req, res) {
@@ -32,7 +32,7 @@ module.exports = async function handler(req, res) {
         "anthropic-version":    "2023-06-01",
       },
       body: JSON.stringify({
-        model:      "claude-sonnet-4-6",
+        model:      "claude-sonnet-4-20250514",
         max_tokens: max_tokens || 1000,
         system,
         messages: [{ role: "user", content: prompt }],
