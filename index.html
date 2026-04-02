@@ -2686,7 +2686,13 @@ function App() {
     "PADDLE_LINK_249_90DAY": "pri_01km95s0pyqvwkq6x4jtdd0n02",
   };
 
-  const [preCheckout, setPreCheckout] = useState(null); // { priceId, label }
+  const [preCheckout, setPreCheckout] = useState(function() {
+    const params = new URLSearchParams(window.location.search);
+    const buy = params.get("buy");
+    if (buy === "30day") return { priceId: "pri_01km957nv9t0wgnb7rxrpzmrkv", label: "30-Day Quick Win Plan — $249" };
+    if (buy === "bundle") return { priceId: "pri_01km95651yv87n7bkktk2fmzna", label: "Complete 30/60/90 Bundle — $599" };
+    return null;
+  });
   const [preEmail, setPreEmail] = useState("");
   const [preEmailErr, setPreEmailErr] = useState("");
 
@@ -2694,14 +2700,8 @@ function App() {
   useEffect(function() {
     const params = new URLSearchParams(window.location.search);
     const buy = params.get("buy");
-    if (buy === "30day") {
+    if (buy === "30day" || buy === "bundle") {
       window.history.replaceState({}, "", "/");
-      setPreEmail(""); setPreEmailErr("");
-      setPreCheckout({ priceId: "pri_01km957nv9t0wgnb7rxrpzmrkv", label: "30-Day Quick Win Plan — $249" });
-    } else if (buy === "bundle") {
-      window.history.replaceState({}, "", "/");
-      setPreEmail(""); setPreEmailErr("");
-      setPreCheckout({ priceId: "pri_01km95651yv87n7bkktk2fmzna", label: "Complete 30/60/90 Bundle — $599" });
     }
   }, []);
 
