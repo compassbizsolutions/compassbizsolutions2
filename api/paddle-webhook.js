@@ -109,8 +109,7 @@ module.exports = async function handler(req, res) {
             <p style="font-size:13px;color:#3E4E63;line-height:1.75;">Your <strong>${planLabel}</strong> is confirmed. Everything — your personalized plan, your documents, your daily tasks, and your progress tracker — lives in one place:</p>
 
             <div style="background:#1B2E4B;border-radius:10px;padding:20px 24px;margin:24px 0;text-align:center;">
-              <div style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:3px;margin-bottom:8px;">YOUR PORTAL</div>
-              <div style="font-size:20px;font-weight:bold;color:#C8701A;margin-bottom:16px;">fixkit.compassbizsolutions.com</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:3px;margin-bottom:16px;">YOUR PORTAL</div>
               <a href="${FIXKIT_URL}" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:15px;padding:14px 36px;border-radius:10px;text-decoration:none;">Set Up My FixKit Account →</a>
             </div>
 
