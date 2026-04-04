@@ -130,7 +130,7 @@ module.exports = async function handler(req, res) {
             <!-- Done For You -->
             <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-radius:8px;padding:14px 18px;text-align:center;">
               <div style="font-size:12px;color:#6B7A90;margin-bottom:8px;">Rather have us handle it? We scope, build, and implement the systems for you.</div>
-              <a href="https://www.compassbizsolutions.com/scoping-call" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:12px;padding:9px 20px;border-radius:8px;text-decoration:none;">Book a Free Scoping Call →</a>
+              <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:12px;padding:9px 20px;border-radius:8px;text-decoration:none;">Book a Free Scoping Call →</a>
             </div>
           </div>
           <p style="font-size:13px;color:#6B7A90;margin-bottom:4px;">Questions? Reply to this email — I read every one.</p>
