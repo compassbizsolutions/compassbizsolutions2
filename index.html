@@ -501,7 +501,7 @@ Use EXACTLY these tags:
             <div style={{marginBottom:6}}>
               <div style={{fontSize:13,fontWeight:600,color:C.body,fontFamily:F.b,marginBottom:10}}>What type of service business are you?</div>
               <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:8}}>
-                {["Electrical","Plumbing","HVAC","Landscaping","Pool & Spa","General Contracting","Pest Control","Cleaning Services","Roofing","Painting","Flooring","Tile and Stone","Carpet Cleaning","Air Duct Cleaning","Chimney and Fireplace","Garage Door","Gutters","Handyman","Irrigation","Locksmith","Appliance Repair","Tree Service","Pressure Washing","Restoration and Remediation","Security Systems","Solar","Other"].map(t=>(
+                {["Air Duct Cleaning","Appliance Repair","Carpet Cleaning","Chimney and Fireplace","Cleaning Services","Electrical","Flooring","Garage Door","General Contracting","Gutters","HVAC","Handyman","Irrigation","Landscaping","Locksmith","Painting","Pest Control","Plumbing","Pool & Spa","Pressure Washing","Restoration and Remediation","Roofing","Security Systems","Solar","Tile and Stone","Tree Service","Other"].map(t=>(
                   <button key={t} onClick={()=>setTrade(t)}
                     style={{padding:"10px 12px",borderRadius:9,border:`2px solid ${trade===t?C.slate:C.warm3}`,background:trade===t?C.navyLight:C.white,color:trade===t?C.navy:C.body,fontSize:13,fontWeight:trade===t?700:500,fontFamily:F.b,cursor:"pointer",transition:"all 0.15s",textAlign:"center"}}>
                     {t}
@@ -1227,7 +1227,7 @@ function PlanCard({ price, label, accentColor, bg, border, btnBg, btnLabel, onBu
 function DiagnosticTool({ setPage, paddle }) {
   const QUESTIONS = [
     { id:"trade", q:"What trade are you in?", type:"buttons",
-      opts:["HVAC","Plumbing","Electrical","Landscaping","Pool and Spa","Pest Control","General Contracting","Cleaning Services","Roofing","Painting","Flooring","Tile and Stone","Carpet Cleaning","Air Duct Cleaning","Chimney and Fireplace","Garage Door","Gutters","Handyman","Irrigation","Locksmith","Appliance Repair","Tree Service","Pressure Washing","Restoration and Remediation","Security Systems","Solar","Other"] },
+      opts:["Air Duct Cleaning","Appliance Repair","Carpet Cleaning","Chimney and Fireplace","Cleaning Services","Electrical","Flooring","Garage Door","General Contracting","Gutters","HVAC","Handyman","Irrigation","Landscaping","Locksmith","Painting","Pest Control","Plumbing","Pool and Spa","Pressure Washing","Restoration and Remediation","Roofing","Security Systems","Solar","Tile and Stone","Tree Service","Other"] },
     { id:"services", q:"What do you do day to day? Pick all that apply.", type:"multi",
       opts:["Residential service calls","Commercial service calls","New installs","Maintenance agreements","Emergency calls","Estimates and bids","Inspections","Other"] },
     { id:"years", q:"How long have you been in business?", type:"buttons",
