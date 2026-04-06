@@ -14,6 +14,11 @@ const PRODUCT_MAP = {
   "pri_01km95651yv87n7bkktk2fmzna": "bundle",
   "pri_01km95mpfwh9q8fq66wy2tjrgx": "60day",
   "pri_01km95s0pyqvwkq6x4jtdd0n02": "90day",
+  // Snapshot price ID — add when created in Paddle
+  [process.env.PADDLE_PRICE_SNAPSHOT || "SNAPSHOT_PRICE_TBD"]: "snapshot",
+  // Upgrade discounted price IDs
+  [process.env.PADDLE_PRICE_SNAPSHOT_UPGRADE_30 || "UPGRADE_30_TBD"]: "30day",
+  [process.env.PADDLE_PRICE_SNAPSHOT_UPGRADE_BUNDLE || "UPGRADE_BUNDLE_TBD"]: "bundle",
 };
 
 const PLAN_LABELS = {
@@ -78,11 +83,89 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ received: true });
     }
 
-    // Save customer record to KV
     const now = new Date().toISOString();
     const firstName = customerName.split(" ")[0] || "there";
     const emailKey = customerEmail.toLowerCase().replace(/[^a-z0-9@._-]/g, "");
 
+    // Handle Snapshot purchase differently — save lead + send snapshot link
+    if (planType === "snapshot") {
+      const snapshotToken = crypto.randomBytes(32).toString("hex");
+      const emailKey = customerEmail.toLowerCase().replace(/[^a-z0-9@._-]/g, "");
+
+      // Save snapshot session (7-day TTL)
+      await saveToKV("snapshot_session:" + snapshotToken, {
+        email: customerEmail,
+        name: customerName,
+        createdAt: now,
+      });
+
+      // Save lead with snapshot purchased flag
+      const existingLead = await (async () => {
+        try {
+          const r = await fetch(process.env.KV_REST_API_URL + "/get/" + encodeURIComponent("lead:" + emailKey), {
+            headers: { Authorization: "Bearer " + process.env.KV_REST_API_TOKEN }
+          });
+          const d = await r.json();
+          return d.result ? JSON.parse(d.result) : null;
+        } catch(e) { return null; }
+      })();
+
+      await saveToKV("lead:" + emailKey, Object.assign({}, existingLead || {}, {
+        email: customerEmail,
+        name: customerName,
+        snapshot_purchased: true,
+        snapshot_date: now,
+        updated: now,
+      }));
+
+      const snapshotUrl = "https://www.compassbizsolutions.com/snapshot?token=" + snapshotToken;
+
+      // Send snapshot welcome email
+      await resend.emails.send({
+        from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
+        to: customerEmail,
+        subject: "Your Profit Leak Snapshot is ready to build",
+        html: `
+          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+            <div style="background:#1B2E4B;padding:28px 32px;border-radius:8px 8px 0 0;">
+              <div style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:3px;margin-bottom:10px;">COMPASS BUSINESS SOLUTIONS</div>
+              <div style="font-size:22px;font-weight:bold;color:#C8701A;">Payment confirmed. Let's build your Snapshot.</div>
+            </div>
+            <div style="background:#F7F5F2;padding:28px 32px;border-radius:0 0 8px 8px;border:1px solid #D8D4CD;">
+              <p style="font-size:14px;color:#1A2332;font-weight:600;margin-top:0;">Hi ${firstName},</p>
+              <p style="font-size:13px;color:#3E4E63;line-height:1.75;">Your <strong>Profit Leak Snapshot</strong> is ready to generate. Answer a few questions about your business and we'll identify your top 3 leaks with specific dollar estimates and exactly how to fix them.</p>
+              <p style="font-size:13px;color:#3E4E63;line-height:1.75;">Takes about 10 minutes. The more specific your answers, the more accurate your numbers.</p>
+
+              <div style="background:#1B2E4B;border-radius:10px;padding:20px 24px;margin:24px 0;text-align:center;">
+                <div style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:3px;margin-bottom:16px;">BUILD YOUR SNAPSHOT</div>
+                <a href="${snapshotUrl}" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:15px;padding:14px 36px;border-radius:10px;text-decoration:none;">Start My Snapshot →</a>
+                <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:12px;">This link is valid for 7 days</div>
+              </div>
+
+              <div style="background:white;border:1px solid #D8D4CD;border-radius:8px;padding:14px 18px;margin-top:16px;">
+                <p style="font-size:12px;color:#6B7A90;margin:0;line-height:1.7;"><strong>Once you download your Snapshot</strong>, it includes an upgrade code worth $100 off FixKit — if you decide you want the full daily plan and portal experience.</p>
+              </div>
+
+              <p style="margin:20px 0 0;color:#3E4E63;font-size:13px;">— Jen, Compass Business Solutions</p>
+            </div>
+            <div style="text-align:center;padding:16px;font-size:11px;color:#A0ABBE;">
+              Compass Business Solutions · compassbizsolutions.com
+            </div>
+          </div>`
+      });
+
+      // Alert Jen
+      resend.emails.send({
+        from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
+        to: "jen@compassbizsolutions.com",
+        subject: "New Snapshot purchase — " + customerEmail,
+        html: "<p>New <b>Profit Leak Snapshot ($99)</b> from <b>" + customerEmail + "</b> (" + customerName + ")</p><p>Snapshot link sent. Token: " + snapshotToken + "</p>"
+      }).catch(() => {});
+
+      return res.status(200).json({ received: true });
+    }
+
+    // Handle FixKit purchases (30day, bundle, etc.)
     await saveToKV("customer:" + emailKey, {
       email: customerEmail,
       name: customerName,

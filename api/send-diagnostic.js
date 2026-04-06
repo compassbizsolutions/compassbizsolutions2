@@ -94,7 +94,20 @@ module.exports = async function handler(req, res) {
           <div style="margin:20px 0;">
             <div style="font-size:11px;font-weight:bold;color:#1A2332;letter-spacing:2px;margin-bottom:16px;">YOUR NEXT STEP — TWO OPTIONS:</div>
 
-            <!-- 30-Day Plan -->
+            <!-- Snapshot tier -->
+            <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-radius:8px;padding:18px 20px;margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+                <div>
+                  <div style="font-size:13px;font-weight:bold;color:#1A2332;">DIY Profit Leak Snapshot</div>
+                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">Your leaks, the math, and how to fix them — PDF.</div>
+                </div>
+                <div style="font-size:22px;font-weight:bold;color:#1A2332;flex-shrink:0;margin-left:12px;">$99</div>
+              </div>
+              <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
+                A personalized PDF report identifying your top 3 profit leaks with specific dollar estimates and step-by-step fixes. No portal, no daily tasks — just your numbers, your leaks, and exactly what to do about them. Includes a $100 upgrade credit toward FixKit if you decide you want the full experience.
+              </div>
+              <a href="https://www.compassbizsolutions.com/?buy=snapshot" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My Snapshot — $99 →</a>
+            </div>
             <div style="background:white;border:1px solid #D8D4CD;border-top:3px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;">
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
                 <div>
@@ -107,7 +120,7 @@ module.exports = async function handler(req, res) {
                 Tell us about your operation — we build a customized 30-day action plan targeting your specific leaks. Your plan, daily tasks, guides, and progress tracker all live in <strong>FixKit</strong>, your personal business portal. Log in from your phone, check off tasks as you go, and ask questions anytime.<br><br>
                 No email chains. No PDFs to hunt through. Everything in one place.
               </div>
-              <a href="https://www.compassbizsolutions.com/?buy=30day" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $249 →</a>
+              <a href="https://www.compassbizsolutions.com/?buy=30day" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $299 →</a>
             </div>
 
             <!-- Full Bundle -->
