@@ -92,50 +92,50 @@ module.exports = async function handler(req, res) {
 
           <!-- What to do next -->
           <div style="margin:20px 0;">
-            <div style="font-size:11px;font-weight:bold;color:#1A2332;letter-spacing:2px;margin-bottom:16px;">YOUR NEXT STEP — TWO OPTIONS:</div>
+            <div style="font-size:11px;font-weight:bold;color:#1A2332;letter-spacing:2px;margin-bottom:16px;">YOUR NEXT STEP — THREE OPTIONS:</div>
 
             <!-- Snapshot tier -->
-            <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-radius:8px;padding:18px 20px;margin-bottom:12px;">
+            <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-top:3px solid #1B2E4B;border-radius:8px;padding:18px 20px;margin-bottom:12px;">
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
                 <div>
                   <div style="font-size:13px;font-weight:bold;color:#1A2332;">DIY Profit Leak Snapshot</div>
-                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">Your leaks, the math, and how to fix them — PDF.</div>
+                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">Your leaks, the math, how to fix them — PDF you keep.</div>
                 </div>
-                <div style="font-size:22px;font-weight:bold;color:#1A2332;flex-shrink:0;margin-left:12px;">$99</div>
+                <div style="font-size:22px;font-weight:bold;color:#1B2E4B;flex-shrink:0;margin-left:12px;">$99</div>
               </div>
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                A personalized PDF report identifying your top 3 profit leaks with specific dollar estimates and step-by-step fixes. No portal, no daily tasks — just your numbers, your leaks, and exactly what to do about them. Includes a $100 upgrade credit toward FixKit if you decide you want the full experience.
+                Answer our in-depth intake and get a personalized PDF report with your top 3 leaks, the specific dollar math, and step-by-step fixes for each one. No portal, no daily tasks — just your numbers and what to do about them. Includes a <strong>$100 upgrade credit</strong> toward FixKit if you want the full experience later.
               </div>
               <a href="https://www.compassbizsolutions.com/?buy=snapshot" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My Snapshot — $99 →</a>
             </div>
+
+            <!-- 30-Day Plan -->
             <div style="background:white;border:1px solid #D8D4CD;border-top:3px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;">
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
                 <div>
-                  <div style="font-size:13px;font-weight:bold;color:#1A2332;">30-Day Quick Win Plan</div>
-                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">Start here. See results fast.</div>
+                  <div style="font-size:13px;font-weight:bold;color:#1A2332;">FixKit — 30-Day Quick Win Plan</div>
+                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">Daily tasks. Built-in tracking. AI support. Start here.</div>
                 </div>
-                <div style="font-size:22px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$249</div>
+                <div style="font-size:22px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$299</div>
               </div>
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                Tell us about your operation — we build a customized 30-day action plan targeting your specific leaks. Your plan, daily tasks, guides, and progress tracker all live in <strong>FixKit</strong>, your personal business portal. Log in from your phone, check off tasks as you go, and ask questions anytime.<br><br>
-                No email chains. No PDFs to hunt through. Everything in one place.
+                A personalized 30-day plan targeting your specific leaks — daily 15-20 minute tasks, built-in calculators, Fix-It Guides, process templates, and a progress dashboard. Everything lives in <strong>FixKit</strong>, your personal portal. Log in from your phone, track your numbers, ask questions anytime. <strong>$199 if upgrading from the Snapshot.</strong>
               </div>
               <a href="https://www.compassbizsolutions.com/?buy=30day" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $299 →</a>
             </div>
 
             <!-- Full Bundle -->
             <div style="background:white;border:1px solid #C8701A;border-top:3px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;position:relative;">
-              <div style="display:inline-block;background:#C8701A;color:white;font-size:9px;font-weight:bold;letter-spacing:1.5px;padding:2px 10px;border-radius:99px;margin-bottom:10px;">BEST VALUE — SAVES $147</div>
+              <div style="display:inline-block;background:#C8701A;color:white;font-size:9px;font-weight:bold;letter-spacing:1.5px;padding:2px 10px;border-radius:99px;margin-bottom:10px;">BEST VALUE — SAVES $298</div>
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
                 <div>
-                  <div style="font-size:13px;font-weight:bold;color:#1A2332;">Complete 30/60/90-Day Plan</div>
-                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">All three phases. One portal. Full roadmap.</div>
+                  <div style="font-size:13px;font-weight:bold;color:#1A2332;">FixKit — Complete 30/60/90-Day Plan</div>
+                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">All three phases. One portal. Full 90-day roadmap.</div>
                 </div>
                 <div style="font-size:22px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$599</div>
               </div>
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                Everything in the 30-day plan, plus your full 60 and 90-day roadmap — all three phases customized to your business and loaded into FixKit from day one. Your biggest leaks first, next tier second, remaining third. One payment, all 90 days, saves $147.<br><br>
-                Your portal, your plan, your progress. All in one place from start to finish.
+                Everything in the 30-day plan plus your full 60 and 90-day roadmap — all three phases loaded into FixKit from day one. Biggest leaks first, next tier second, remaining third. One payment, all 90 days, saves $298. <strong>$499 if upgrading from the Snapshot.</strong>
               </div>
               <a href="https://www.compassbizsolutions.com/?buy=bundle" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full 30/60/90 Bundle — $599 →</a>
             </div>
