@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    if (history.scrollRestoration) history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Profit Leak Snapshot — Compass Business Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #F7F5F2; color: #3E4E63; }
+
+    /* Print styles */
+    @media print {
+      body { background: white; }
+      .no-print { display: none !important; }
+      .print-page { page-break-after: always; }
+      @page { margin: 0.75in; size: letter; }
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+
+const { useState, useEffect, useRef } = React;
+
+const C = {
+  navy:"#1B2E4B", navyDark:"#111E31", amber:"#C8701A", amberLight:"#FDF3E7",
+  red:"#B84C2E", green:"#1E6B45", greenLight:"#E8F5EE",
+  slate:"#3D6B9E", slateLight:"#E8EFF7",
+  ink:"#1A2332", body:"#3E4E63", muted:"#6B7A90",
+  white:"#FFFFFF", warm0:"#F7F5F2", warm1:"#F0EFED", warm2:"#E8E4DC", warm3:"#D8D4CD",
+};
+const F = { d:"'Barlow Condensed', sans-serif", b:"'DM Sans', sans-serif" };
+
+// ── INTAKE (reused from FixKit) ───────────────────────────────────────────────
+function IntakeBtn({ id, v, multi, vals, multiVals, setVal, toggleMulti }) {
+  const active = multi ? (multiVals[id]||[]).includes(v) : vals[id]===v;
+  return (
+    <button onClick={()=>multi?toggleMulti(id,v):setVal(id,v)}
+      style={{ padding:"9px 14px", borderRadius:8, border:"2px solid "+(active?C.amber:C.warm3), background:active?C.amberLight:C.white, color:active?C.amber:C.body, fontSize:13, fontWeight:active?700:500, fontFamily:F.b, cursor:"pointer", margin:"0 6px 6px 0", transition:"all 0.15s" }}>
+      {v}
+    </button>
+  );
+}
+
+function IntakeTextField({ id, label, ph, vals, setVal, help }) {
+  return (
+    <div style={{ marginBottom:20 }}>
+      <div style={{ fontFamily:F.b, fontSize:14, fontWeight:600, color:C.ink, marginBottom:10 }}>{label}{help&&<span style={{fontFamily:F.b,fontSize:11,color:C.muted,fontWeight:400,marginLeft:8}}>({help})</span>}</div>
+      <input value={vals[id]||""} onChange={e=>setVal(id,e.target.value)} placeholder={ph||""}
+        style={{ width:"100%", padding:"11px 14px", border:"2px solid "+C.warm3, borderRadius:8, fontSize:14, fontFamily:F.b, color:C.ink, outline:"none", boxSizing:"border-box" }} />
+    </div>
+  );
+}
+
+function IntakeTextArea({ id, label, ph, vals, setVal }) {
+  return (
+    <div style={{ marginBottom:20 }}>
+      <div style={{ fontFamily:F.b, fontSize:14, fontWeight:600, color:C.ink, marginBottom:10 }}>{label}</div>
+      <textarea value={vals[id]||""} onChange={e=>setVal(id,e.target.value)} placeholder={ph||""} rows={3}
+        style={{ width:"100%", padding:"11px 14px", border:"2px solid "+C.warm3, borderRadius:8, fontSize:14, fontFamily:F.b, color:C.ink, outline:"none", boxSizing:"border-box", resize:"vertical" }} />
+    </div>
+  );
+}
+
+function Q({ id, label, type, opts, ph, help, vals, multiVals, setVal, toggleMulti }) {
+  if (type==="text") return <IntakeTextField id={id} label={label} ph={ph} help={help} vals={vals} setVal={setVal} />;
+  if (type==="textarea") return <IntakeTextArea id={id} label={label} ph={ph} vals={vals} setVal={setVal} />;
+  return (
+    <div style={{ marginBottom:20 }}>
+      <div style={{ fontFamily:F.b, fontSize:14, fontWeight:600, color:C.ink, marginBottom:10, lineHeight:1.4 }}>{label}</div>
+      <div style={{ display:"flex", flexWrap:"wrap" }}>
+        {(opts||[]).map(o=><IntakeBtn key={o} id={id} v={o} multi={type==="multi"} vals={vals} multiVals={multiVals} setVal={setVal} toggleMulti={toggleMulti} />)}
+      </div>
+    </div>
+  );
+}
+
+const TRADES = ["Air Duct Cleaning","Appliance Repair","Carpet Cleaning","Chimney and Fireplace","Cleaning Services","Electrical","Flooring","Garage Door","General Contracting","Gutters","HVAC","Handyman","Irrigation","Landscaping","Locksmith","Painting","Pest Control","Plumbing","Pool & Spa","Pressure Washing","Restoration and Remediation","Roofing","Security Systems","Solar","Tile and Stone","Tree Service","Other"];
+
+const SECTIONS = [
+  { label:"PRICING", color:C.red, questions:[
+    { id:"p1_rate", label:"What is your current hourly labor rate or flat fee per job?", type:"text", ph:"e.g. $95/hr or $250 flat fee", help:"labor only, not parts" },
+    { id:"p2_basis", label:"What did you base that number on?", type:"buttons", opts:["Gut feel","What competitors charge","Actual cost calculation","Always been that number","Not sure"] },
+    { id:"p3_loaded", label:"Do you know your true loaded cost per hour?", type:"buttons", opts:["Yes exactly","Rough idea","Not really","No"], help:"wages + taxes + benefits + insurance" },
+    { id:"p4_rates_increase", label:"When did you last raise your rates?", type:"buttons", opts:["Last 6 months","1-2 years ago","3-5 years ago","5+ years ago","Never"] },
+    { id:"e2_loaded_cost", label:"What is your approximate loaded cost per tech per hour?", type:"text", ph:"e.g. $42/hr", help:"rough estimate is fine" },
+  ]},
+  { label:"SCHEDULING", color:C.amber, questions:[
+    { id:"s1_lead_time", label:"What is your average booking lead time right now?", type:"buttons", opts:["Same day","1-3 days","4-7 days","1-2 weeks","2+ weeks"] },
+    { id:"s5_noshows", label:"How many no-shows or cancellations per week on average?", type:"text", ph:"e.g. 2-3 per week" },
+    { id:"jobs", label:"How many jobs do you complete per week on average?", type:"text", ph:"e.g. 12 jobs/week" },
+    { id:"invoice", label:"What is your average job value (labor + parts)?", type:"text", ph:"e.g. $285" },
+  ]},
+  { label:"EMPLOYEE COST", color:"#A8782A", questions:[
+    { id:"crew", label:"How many field techs do you have (including yourself)?", type:"text", ph:"e.g. 3" },
+    { id:"e3_time_track", label:"How do you track billable vs non-billable time?", type:"buttons", opts:["Software","Timesheets","Informal","We don't"] },
+    { id:"e7_attendance", label:"How often are techs late, idle, or not where they should be?", type:"buttons", opts:["Rarely","Once or twice a week","Several times a week","Daily issue"] },
+  ]},
+  { label:"RECURRING REVENUE", color:C.green, questions:[
+    { id:"r1_agreements", label:"Do you currently offer maintenance agreements or service plans?", type:"buttons", opts:["Yes active","Tried it — didn't stick","No — never tried","Planning to"] },
+    { id:"r2_agreement_detail", label:"If yes — how many active agreements at what average monthly value?", type:"text", ph:"e.g. 12 agreements at $75/month" },
+    { id:"r3_predictable", label:"What percentage of your revenue is predictable month to month?", type:"buttons", opts:["Under 10%","10-25%","25-50%","Over 50%"] },
+  ]},
+  { label:"ESTIMATE TO INVOICE", color:C.slate, questions:[
+    { id:"i1_close", label:"What is your close rate on estimates?", type:"buttons", opts:["Under 50%","50-65%","65-80%","Over 80%","We don't track it"] },
+    { id:"i3_change_order", label:"Do you have a change order process?", type:"buttons", opts:["Yes written","Verbal only","We just absorb it","What is a change order"] },
+    { id:"i4_invoice", label:"Who writes the invoice and when does it go out?", type:"buttons", opts:["Me same day","Me end of week","Office staff same day","Office staff when they get to it","Varies"] },
+  ]},
+  { label:"CASH FLOW", color:C.slate, questions:[
+    { id:"c1_breakeven_know", label:"Do you know your monthly break-even number?", type:"buttons", opts:["Yes exactly","Rough idea","Not really","No"] },
+    { id:"c2_breakeven", label:"What is your approximate monthly break-even?", type:"text", ph:"e.g. $28,000/month", help:"all fixed costs combined" },
+    { id:"c3_ar", label:"Average days outstanding on receivables?", type:"buttons", opts:["Under 15 days","15-30 days","30-45 days","45-60 days","60+ days","We don't track"] },
+  ]},
+  { label:"CUSTOMER CHURN", color:"#9B59B6", questions:[
+    { id:"ch1_followup", label:"Do you have a post-job follow-up process?", type:"buttons", opts:["Yes automated","Yes manual","Informal","No"] },
+    { id:"ch4_reviews", label:"How many Google reviews do you currently have?", type:"text", ph:"e.g. 47 reviews" },
+    { id:"ch6_referral", label:"Do you have a referral program?", type:"buttons", opts:["Informal — word of mouth","Never thought about it","No","Yes formal"] },
+  ]},
+  { label:"MATERIALS MARKUP", color:C.navy, questions:[
+    { id:"m1_markup", label:"What markup do you apply to parts and materials?", type:"text", ph:"e.g. 25% or 2x cost" },
+    { id:"m2_consistency", label:"Is that markup consistent or does it vary?", type:"buttons", opts:["Consistent","Not sure","Varies by job","Varies by supplier","We don't mark up materials"] },
+    { id:"mat_weekly_spend", label:"Approximate weekly spend on parts and materials?", type:"text", ph:"e.g. $800/week" },
+  ]},
+  { label:"ADMIN TIME DRAIN", color:"#E67E22", questions:[
+    { id:"a1_hours", label:"How many hours per week do YOU personally spend on non-billable admin?", type:"text", ph:"e.g. 15 hours/week" },
+    { id:"a6_drain", label:"What is the single biggest admin time drain each week?", type:"textarea", ph:"e.g. chasing invoices, rescheduling, parts runs..." },
+  ]},
+  { label:"VEHICLES & PARTS", color:C.red, questions:[
+    { id:"v1_runs", label:"How many unplanned parts runs per truck per week?", type:"buttons", opts:["0","1-2","3-5","More than 5","Daily"] },
+    { id:"trucks", label:"How many trucks/vehicles do you run?", type:"text", ph:"e.g. 3" },
+    { id:"v5_monthly_cost", label:"Approximate monthly cost per truck (payments + insurance + fuel + maintenance)?", type:"text", ph:"e.g. $1,800/month" },
+  ]},
+  { label:"SAFETY", color:C.green, questions:[
+    { id:"sf1_written", label:"Do you have written safety procedures for job sites?", type:"buttons", opts:["Yes current","Informal","No","Outdated"] },
+    { id:"sf2_hazards", label:"What trade-specific hazards do your techs encounter?", type:"multi", opts:["Asbestos or lead","Chemical exposure","Confined spaces","Electrical","Gas lines","Heavy lifting","Power tools","Refrigerant handling","Trenching or excavation","Working at heights"] },
+  ]},
+];
+
+// ── TAG PARSER ────────────────────────────────────────────────────────────────
+function getTag(text, tag) {
+  const m = text.match(new RegExp("\\[" + tag + "\\]([\\s\\S]*?)(?=\\[|$)"));
+  return m ? m[1].trim() : "";
+}
+
+// ── SNAPSHOT PDF VIEW ─────────────────────────────────────────────────────────
+function SnapshotPDF({ result, name, biz, trade, email }) {
+  const headline = getTag(result, "SNAPSHOT_HEADLINE");
+  const intro = getTag(result, "SNAPSHOT_INTRO");
+  const total = getTag(result, "SNAPSHOT_TOTAL");
+  const closing = getTag(result, "SNAPSHOT_CLOSING");
+
+  const leaks = [1,2,3].map(n => ({
+    name: getTag(result, `LEAK_${n}_NAME`),
+    range: getTag(result, `LEAK_${n}_RANGE`),
+    why: getTag(result, `LEAK_${n}_WHY`),
+    cost: getTag(result, `LEAK_${n}_COST`),
+    fix: getTag(result, `LEAK_${n}_FIX`),
+    thisWeek: getTag(result, `LEAK_${n}_THIS_WEEK`),
+  })).filter(l => l.name);
+
+  const leakColors = [C.red, C.amber, C.slate];
+  const date = new Date().toLocaleDateString("en-US", { month:"long", day:"numeric", year:"numeric" });
+
+  return (
+    <div style={{ maxWidth:780, margin:"0 auto", fontFamily:F.b }}>
+      {/* Download button */}
+      <div className="no-print" style={{ textAlign:"center", padding:"24px 20px 0" }}>
+        <button onClick={()=>window.print()}
+          style={{ background:C.amber, border:"none", color:"white", padding:"14px 32px", borderRadius:10, fontSize:15, fontWeight:700, fontFamily:F.b, cursor:"pointer", boxShadow:"0 4px 16px rgba(200,112,26,0.35)", marginRight:12 }}>
+          ↓ Download PDF
+        </button>
+        <a href="https://www.compassbizsolutions.com" style={{ fontFamily:F.b, fontSize:13, color:C.muted, textDecoration:"none" }}>← Back to site</a>
+      </div>
+
+      {/* PDF Content */}
+      <div style={{ background:"white", margin:"24px 20px", borderRadius:12, overflow:"hidden", boxShadow:"0 4px 32px rgba(0,0,0,0.1)" }}>
+
+        {/* Header */}
+        <div style={{ background:C.navy, padding:"36px 40px" }}>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:20 }}>
+            <div>
+              <div style={{ fontFamily:F.d, fontSize:11, fontWeight:700, color:"rgba(255,255,255,0.4)", letterSpacing:3, marginBottom:8 }}>COMPASS BUSINESS SOLUTIONS</div>
+              <div style={{ fontFamily:F.d, fontSize:36, fontWeight:800, color:"white", letterSpacing:1, lineHeight:1.1 }}>PROFIT LEAK<br/>SNAPSHOT</div>
+            </div>
+            <div style={{ textAlign:"right" }}>
+              <div style={{ fontFamily:F.b, fontSize:13, color:"rgba(255,255,255,0.6)", marginBottom:4 }}>{biz}</div>
+              <div style={{ fontFamily:F.b, fontSize:12, color:"rgba(255,255,255,0.4)" }}>{trade}</div>
+              <div style={{ fontFamily:F.b, fontSize:11, color:"rgba(255,255,255,0.3)", marginTop:4 }}>{date}</div>
+            </div>
+          </div>
+          {headline && <div style={{ fontFamily:F.d, fontSize:22, fontWeight:700, color:C.amber, lineHeight:1.3 }}>{headline}</div>}
+        </div>
+
+        <div style={{ padding:"32px 40px" }}>
+          {/* Intro */}
+          {intro && (
+            <div style={{ background:C.warm1, borderRadius:10, padding:"18px 20px", marginBottom:28 }}>
+              <p style={{ fontFamily:F.b, fontSize:14, color:C.body, lineHeight:1.75, margin:0 }}>{intro}</p>
+            </div>
+          )}
+
+          {/* Total */}
+          {total && (
+            <div style={{ background:C.navy, borderRadius:10, padding:"16px 20px", marginBottom:28, textAlign:"center" }}>
+              <div style={{ fontFamily:F.b, fontSize:11, fontWeight:700, color:"rgba(255,255,255,0.5)", letterSpacing:2, marginBottom:6 }}>ESTIMATED ANNUAL PROFIT LEAK</div>
+              <div style={{ fontFamily:F.d, fontSize:32, fontWeight:800, color:C.amber }}>
+                {total.replace(/Estimated total annual profit leak:\s*/i, "")}
+              </div>
+              <div style={{ fontFamily:F.b, fontSize:11, color:"rgba(255,255,255,0.35)", marginTop:4 }}>Based on your intake answers — before any fixes</div>
+            </div>
+          )}
+
+          {/* Leaks */}
+          {leaks.map((leak, i) => (
+            <div key={i} style={{ border:"1px solid "+C.warm3, borderTop:"4px solid "+leakColors[i], borderRadius:10, marginBottom:20, overflow:"hidden" }}>
+              <div style={{ background:leakColors[i]+"11", padding:"16px 20px", borderBottom:"1px solid "+C.warm3 }}>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:8 }}>
+                  <div>
+                    <div style={{ fontFamily:F.b, fontSize:10, fontWeight:700, color:leakColors[i], letterSpacing:2, marginBottom:4 }}>#{i+1} TOP LEAK</div>
+                    <div style={{ fontFamily:F.d, fontSize:22, fontWeight:800, color:C.ink }}>{leak.name}</div>
+                  </div>
+                  <div style={{ background:leakColors[i], borderRadius:8, padding:"8px 16px", textAlign:"center" }}>
+                    <div style={{ fontFamily:F.d, fontSize:18, fontWeight:800, color:"white" }}>{leak.range}</div>
+                    <div style={{ fontFamily:F.b, fontSize:9, color:"rgba(255,255,255,0.7)", letterSpacing:1 }}>ESTIMATED/YEAR</div>
+                  </div>
+                </div>
+              </div>
+              <div style={{ padding:"18px 20px" }}>
+                <div style={{ marginBottom:14 }}>
+                  <div style={{ fontFamily:F.b, fontSize:10, fontWeight:700, color:C.muted, letterSpacing:1.5, marginBottom:6 }}>WHY IT'S HAPPENING</div>
+                  <p style={{ fontFamily:F.b, fontSize:13, color:C.body, lineHeight:1.7, margin:0 }}>{leak.why}</p>
+                </div>
+                {leak.cost && (
+                  <div style={{ background:leakColors[i]+"11", borderLeft:"3px solid "+leakColors[i], padding:"10px 14px", borderRadius:"0 6px 6px 0", marginBottom:14 }}>
+                    <div style={{ fontFamily:F.b, fontSize:10, fontWeight:700, color:leakColors[i], letterSpacing:1.5, marginBottom:4 }}>THE MATH</div>
+                    <p style={{ fontFamily:F.b, fontSize:13, color:C.body, lineHeight:1.65, margin:0 }}>{leak.cost}</p>
+                  </div>
+                )}
+                <div style={{ marginBottom:14 }}>
+                  <div style={{ fontFamily:F.b, fontSize:10, fontWeight:700, color:C.muted, letterSpacing:1.5, marginBottom:8 }}>HOW TO FIX IT</div>
+                  {leak.fix.split("\n").filter(l=>l.trim()).map((line, j) => (
+                    <div key={j} style={{ display:"flex", gap:10, marginBottom:6 }}>
+                      <div style={{ width:20, height:20, borderRadius:"50%", background:leakColors[i], color:"white", display:"flex", alignItems:"center", justifyContent:"center", fontSize:10, fontWeight:700, fontFamily:F.b, flexShrink:0, marginTop:1 }}>{j+1}</div>
+                      <p style={{ fontFamily:F.b, fontSize:13, color:C.body, lineHeight:1.65, margin:0 }}>{line.replace(/^\d+\.\s*/, "")}</p>
+                    </div>
+                  ))}
+                </div>
+                {leak.thisWeek && (
+                  <div style={{ background:C.amber+"15", border:"1px solid "+C.amber+"44", borderRadius:8, padding:"10px 14px" }}>
+                    <span style={{ fontFamily:F.b, fontSize:10, fontWeight:700, color:C.amber, letterSpacing:1.5 }}>DO THIS WEEK: </span>
+                    <span style={{ fontFamily:F.b, fontSize:13, color:C.body, lineHeight:1.65 }}>{leak.thisWeek}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+
+          {/* Closing */}
+          {closing && (
+            <div style={{ background:C.warm1, borderRadius:10, padding:"18px 20px", marginBottom:28 }}>
+              <p style={{ fontFamily:F.b, fontSize:13, color:C.body, lineHeight:1.75, margin:0 }}>{closing}</p>
+            </div>
+          )}
+
+          {/* Upgrade CTA */}
+          <div style={{ background:C.navy, borderRadius:12, padding:"28px 32px", textAlign:"center" }}>
+            <div style={{ fontFamily:F.d, fontSize:11, fontWeight:700, color:"rgba(255,255,255,0.4)", letterSpacing:3, marginBottom:8 }}>READY TO ACTUALLY FIX IT?</div>
+            <div style={{ fontFamily:F.d, fontSize:24, fontWeight:800, color:"white", marginBottom:12 }}>UPGRADE TO FIXKIT</div>
+            <p style={{ fontFamily:F.b, fontSize:13, color:"rgba(255,255,255,0.6)", lineHeight:1.7, marginBottom:20, maxWidth:480, margin:"0 auto 20px" }}>
+              Your Snapshot told you what's leaking. FixKit gives you a personalized daily plan to fix it — with built-in tracking, calculators, and AI support. 30-minute tasks, 30 days, real results.
+            </p>
+            <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap", marginBottom:16 }}>
+              <div style={{ background:"rgba(255,255,255,0.08)", borderRadius:10, padding:"14px 20px", textAlign:"center" }}>
+                <div style={{ fontFamily:F.d, fontSize:22, fontWeight:800, color:C.amber }}>$199</div>
+                <div style={{ fontFamily:F.b, fontSize:11, color:"rgba(255,255,255,0.5)", marginTop:2 }}>FixKit 30-Day</div>
+                <div style={{ fontFamily:F.b, fontSize:10, color:"rgba(255,255,255,0.3)" }}>($100 off with your Snapshot)</div>
+              </div>
+              <div style={{ background:"rgba(255,255,255,0.08)", borderRadius:10, padding:"14px 20px", textAlign:"center" }}>
+                <div style={{ fontFamily:F.d, fontSize:22, fontWeight:800, color:C.amber }}>$499</div>
+                <div style={{ fontFamily:F.b, fontSize:11, color:"rgba(255,255,255,0.5)", marginTop:2 }}>FixKit 30/60/90</div>
+                <div style={{ fontFamily:F.b, fontSize:10, color:"rgba(255,255,255,0.3)" }}>($100 off with your Snapshot)</div>
+              </div>
+            </div>
+            <div style={{ background:"rgba(200,112,26,0.15)", border:"1px solid "+C.amber+"44", borderRadius:8, padding:"12px 16px", display:"inline-block", marginBottom:16 }}>
+              <div style={{ fontFamily:F.b, fontSize:11, color:"rgba(255,255,255,0.5)", marginBottom:4 }}>YOUR UPGRADE CODE</div>
+              <div style={{ fontFamily:F.d, fontSize:20, fontWeight:800, color:C.amber, letterSpacing:2 }}>SNAPSHOT-UPGRADE</div>
+              <div style={{ fontFamily:F.b, fontSize:10, color:"rgba(255,255,255,0.35)", marginTop:4 }}>Enter this + your email at checkout to apply your discount</div>
+            </div>
+            <div>
+              <a href={"https://www.compassbizsolutions.com?buy=snapshot-upgrade&email="+encodeURIComponent(email)}
+                style={{ display:"inline-block", background:C.amber, color:"white", padding:"13px 28px", borderRadius:9, fontFamily:F.b, fontSize:14, fontWeight:700, textDecoration:"none", boxShadow:"0 4px 16px rgba(200,112,26,0.4)" }}>
+                Upgrade to FixKit →
+              </a>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div style={{ textAlign:"center", marginTop:24, paddingTop:20, borderTop:"1px solid "+C.warm3 }}>
+            <div style={{ fontFamily:F.b, fontSize:11, color:C.muted }}>
+              Compass Business Solutions · compassbizsolutions.com · Prepared for {name} · {date}
+            </div>
+            <div style={{ fontFamily:F.b, fontSize:10, color:C.warm3, marginTop:4 }}>
+              This report is personalized to {biz} and based on answers provided during intake.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── MAIN SNAPSHOT APP ─────────────────────────────────────────────────────────
+function SnapshotApp() {
+  const [step, setStep] = useState("loading"); // loading | invalid | intake | section | generating | result | error
+  const [token, setToken] = useState("");
+  const [name, setName] = useState("");
+  const [biz, setBiz] = useState("");
+  const [trade, setTrade] = useState("");
+  const [phone, setPhone] = useState("");
+  const [section, setSection] = useState(0);
+  const [vals, setVals] = useState({});
+  const [multiVals, setMultiVals] = useState({});
+  const [err, setErr] = useState("");
+  const [result, setResult] = useState(null);
+  const [email, setEmail] = useState("");
+
+  const needsName = !name;
+  const needsBiz = !biz;
+  const needsTrade = !trade;
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const t = params.get("token");
+    if (!t) { setStep("invalid"); return; }
+    setToken(t);
+
+    // Validate token
+    fetch("/api/validate-snapshot-token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: t })
+    }).then(r => r.json()).then(d => {
+      if (d.valid) {
+        setName(d.name || "");
+        setBiz(d.biz || "");
+        setEmail(d.email || "");
+        setStep("intake");
+      } else {
+        setStep("invalid");
+      }
+    }).catch(() => setStep("invalid"));
+  }, []);
+
+  function setVal(id, v) { setVals(p=>({...p,[id]:v})); }
+  function toggleMulti(id, v) {
+    setMultiVals(p => {
+      const cur = p[id]||[];
+      return {...p,[id]:cur.includes(v)?cur.filter(x=>x!==v):[...cur,v]};
+    });
+  }
+
+  async function generate() {
+    setStep("generating");
+    setErr("");
+    try {
+      const r = await fetch("/api/generate-snapshot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, vals, multiVals, name, biz, trade, phone })
+      });
+      const d = await r.json();
+      if (d.success) {
+        setResult(d.content);
+        setStep("result");
+        window.scrollTo(0,0);
+      } else {
+        setErr(d.error || "Something went wrong");
+        setStep("error");
+      }
+    } catch(e) {
+      setErr("Connection error. Please try again.");
+      setStep("error");
+    }
+  }
+
+  if (step === "loading") return (
+    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", background:C.navy }}>
+      <div style={{ textAlign:"center", color:"white", fontFamily:F.b }}>
+        <div style={{ fontSize:32, marginBottom:12 }}>⏳</div>
+        <div>Loading your Snapshot...</div>
+      </div>
+    </div>
+  );
+
+  if (step === "invalid") return (
+    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", background:C.navy, padding:24 }}>
+      <div style={{ background:"white", borderRadius:16, padding:"36px 32px", maxWidth:480, textAlign:"center" }}>
+        <div style={{ fontSize:40, marginBottom:16 }}>🔒</div>
+        <div style={{ fontFamily:F.d, fontSize:24, fontWeight:800, color:C.ink, marginBottom:12 }}>LINK EXPIRED OR INVALID</div>
+        <p style={{ fontFamily:F.b, fontSize:14, color:C.body, lineHeight:1.7, marginBottom:20 }}>
+          This link has expired or isn't valid. Check your email for the correct link, or contact us at hello@compassbizsolutions.com.
+        </p>
+        <a href="https://www.compassbizsolutions.com" style={{ fontFamily:F.b, fontSize:13, color:C.amber }}>← Back to site</a>
+      </div>
+    </div>
+  );
+
+  if (step === "generating") return (
+    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", background:C.navy, padding:24 }}>
+      <div style={{ textAlign:"center", maxWidth:480 }}>
+        <img src="/logo.png" alt="Compass" style={{ width:70, height:70, borderRadius:"50%", background:"white", padding:6, objectFit:"contain", marginBottom:20 }} />
+        <div style={{ fontFamily:F.d, fontSize:32, fontWeight:800, color:"white", letterSpacing:2, marginBottom:12 }}>BUILDING YOUR SNAPSHOT</div>
+        <p style={{ fontFamily:F.b, fontSize:14, color:"rgba(255,255,255,0.55)", lineHeight:1.7, marginBottom:24 }}>
+          Analyzing your answers across all 10 profit leak categories. This takes about 20 seconds.
+        </p>
+        <div style={{ display:"flex", justifyContent:"center", gap:8 }}>
+          {[0,1,2].map(i => (
+            <div key={i} style={{ width:10, height:10, borderRadius:"50%", background:C.amber, animation:`pulse${i} 1.2s ease-in-out infinite`, animationDelay:`${i*0.2}s` }} />
+          ))}
+        </div>
+      </div>
+      <style>{`
+        @keyframes pulse0{0%,100%{opacity:.3}50%{opacity:1}}
+        @keyframes pulse1{0%,100%{opacity:.3}50%{opacity:1}}
+        @keyframes pulse2{0%,100%{opacity:.3}50%{opacity:1}}
+      `}</style>
+    </div>
+  );
+
+  if (step === "result") return <SnapshotPDF result={result} name={name} biz={biz} trade={trade} email={email} />;
+
+  if (step === "error") return (
+    <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", background:C.navy, padding:24 }}>
+      <div style={{ background:"white", borderRadius:16, padding:"36px 32px", maxWidth:480, textAlign:"center" }}>
+        <div style={{ fontFamily:F.d, fontSize:20, fontWeight:800, color:C.red, marginBottom:12 }}>GENERATION FAILED</div>
+        <p style={{ fontFamily:F.b, fontSize:14, color:C.body, marginBottom:20 }}>{err}</p>
+        <button onClick={generate} style={{ background:C.amber, border:"none", color:"white", padding:"12px 24px", borderRadius:9, fontFamily:F.b, fontSize:14, fontWeight:700, cursor:"pointer" }}>Try Again</button>
+      </div>
+    </div>
+  );
+
+  // Intake
+  const sec = SECTIONS[section];
+  const pct = Math.round(((section) / SECTIONS.length) * 100);
+  const firstName = name.split(" ")[0] || "there";
+
+  return (
+    <div style={{ minHeight:"100vh", background:C.navy }}>
+      {/* Nav */}
+      <div style={{ background:C.navyDark, padding:"0 20px" }}>
+        <div style={{ maxWidth:600, margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"space-between", height:52 }}>
+          <div style={{ fontFamily:F.d, fontSize:13, fontWeight:800, color:"white", letterSpacing:1 }}>PROFIT LEAK SNAPSHOT</div>
+          <div style={{ fontFamily:F.b, fontSize:11, color:"rgba(255,255,255,0.4)" }}>Section {section+1} of {SECTIONS.length}</div>
+        </div>
+      </div>
+
+      {/* Progress */}
+      <div style={{ background:"rgba(255,255,255,0.08)", height:4 }}>
+        <div style={{ width:pct+"%", height:"100%", background:C.amber, transition:"width 0.4s" }} />
+      </div>
+
+      <div style={{ maxWidth:600, margin:"0 auto", padding:"24px 20px 80px" }}>
+        {/* Welcome screen */}
+        {section === 0 && (
+          <div style={{ background:"rgba(255,255,255,0.06)", borderRadius:12, padding:"20px", marginBottom:20 }}>
+            <div style={{ fontFamily:F.d, fontSize:22, fontWeight:800, color:"white", marginBottom:8 }}>LET'S BUILD YOUR SNAPSHOT</div>
+            <p style={{ fontFamily:F.b, fontSize:13, color:"rgba(255,255,255,0.55)", lineHeight:1.65, margin:0 }}>
+              Hi {firstName} — answer these questions about how your business runs. The more specific you are, the more accurate your leak estimates. Takes about 10 minutes.
+            </p>
+            {(needsName || needsBiz || needsTrade) && (
+              <div style={{ marginTop:16 }}>
+                {needsName && <input value={name} onChange={e=>setName(e.target.value)} placeholder="Your full name"
+                  style={{ width:"100%", padding:"11px 14px", border:"2px solid rgba(255,255,255,0.2)", borderRadius:8, fontSize:14, fontFamily:F.b, color:"white", outline:"none", boxSizing:"border-box", marginBottom:10, background:"rgba(255,255,255,0.08)" }} />}
+                {needsBiz && <input value={biz} onChange={e=>setBiz(e.target.value)} placeholder="Business name"
+                  style={{ width:"100%", padding:"11px 14px", border:"2px solid rgba(255,255,255,0.2)", borderRadius:8, fontSize:14, fontFamily:F.b, color:"white", outline:"none", boxSizing:"border-box", marginBottom:10, background:"rgba(255,255,255,0.08)" }} />}
+                {needsTrade && (
+                  <div>
+                    <div style={{ fontFamily:F.b, fontSize:13, fontWeight:600, color:"rgba(255,255,255,0.6)", marginBottom:8 }}>What trade are you in?</div>
+                    <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+                      {TRADES.map(t=>(
+                        <button key={t} onClick={()=>setTrade(t)}
+                          style={{ padding:"8px 12px", borderRadius:8, border:"2px solid "+(trade===t?C.amber:"rgba(255,255,255,0.2)"), background:trade===t?C.amberLight:"transparent", color:trade===t?C.amber:"rgba(255,255,255,0.6)", fontSize:12, fontFamily:F.b, cursor:"pointer" }}>
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Section card */}
+        <div style={{ background:"white", borderRadius:16, padding:"24px 20px", boxShadow:"0 8px 40px rgba(0,0,0,0.3)" }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:20 }}>
+            <div style={{ width:8, height:32, borderRadius:4, background:sec.color, flexShrink:0 }} />
+            <div style={{ fontFamily:F.d, fontSize:18, fontWeight:800, color:C.ink, letterSpacing:1 }}>{sec.label}</div>
+          </div>
+          {sec.questions.map(q => (
+            <Q key={q.id} {...q} vals={vals} multiVals={multiVals} setVal={setVal} toggleMulti={toggleMulti} />
+          ))}
+        </div>
+
+        {/* Navigation */}
+        <div style={{ display:"flex", gap:12, marginTop:16 }}>
+          {section > 0 && (
+            <button onClick={()=>{ setSection(s=>s-1); window.scrollTo(0,0); }}
+              style={{ flex:1, background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.2)", color:"rgba(255,255,255,0.7)", padding:"14px", borderRadius:10, fontSize:14, fontFamily:F.b, cursor:"pointer" }}>
+              ← Back
+            </button>
+          )}
+          {section < SECTIONS.length - 1 ? (
+            <button onClick={()=>{ setSection(s=>s+1); window.scrollTo(0,0); }}
+              style={{ flex:2, background:C.amber, border:"none", color:"white", padding:"14px", borderRadius:10, fontSize:15, fontWeight:700, fontFamily:F.b, cursor:"pointer", boxShadow:"0 4px 16px rgba(200,112,26,0.35)" }}>
+              Next: {SECTIONS[section+1].label} →
+            </button>
+          ) : (
+            <button onClick={generate}
+              style={{ flex:2, background:C.green, border:"none", color:"white", padding:"14px", borderRadius:10, fontSize:15, fontWeight:700, fontFamily:F.b, cursor:"pointer", boxShadow:"0 4px 16px rgba(30,107,69,0.35)" }}>
+              Build My Snapshot →
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<SnapshotApp />);
+</script>
+</body>
+</html>
