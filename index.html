@@ -201,7 +201,7 @@ function NavIntakeDropdown({ goIntake30, goIntakeBundle }) {
       </button>
       {open && (
         <div style={{ position: "absolute", top: "100%", left: 0, background: C.navyDark, border: "1px solid rgba(61,107,158,0.3)", borderRadius: 10, padding: "8px", minWidth: 200, zIndex: 100, boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}>
-          <button onClick={goIntake30} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>Buy 30-Day Plan — $249</button>
+          <button onClick={goIntake30} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>Buy 30-Day Plan — $299</button>
           <button onClick={goIntakeBundle} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>Buy 30/60/90 Bundle — $599</button>
         </div>
       )}
@@ -229,7 +229,7 @@ function Nav({ page, setPage, calcRef, setIntakePlan, paddle }) {
     ["services",   "What We Do"],
   ];
 
-  const goIntake30 = () => { setOpen(false); paddle("PADDLE_LINK_249_30DAY", "30-Day Quick Win Plan — $249"); };
+  const goIntake30 = () => { setOpen(false); paddle("PADDLE_LINK_249_30DAY", "30-Day Quick Win Plan — $299"); };
   const goIntakeBundle = () => { setOpen(false); paddle("PADDLE_LINK_599", "Complete 30/60/90 Bundle — $599"); };
 
   return (
@@ -286,7 +286,7 @@ function Nav({ page, setPage, calcRef, setIntakePlan, paddle }) {
             <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 2, fontFamily: F.b, padding: "4px 16px 8px" }}>IN-DEPTH INTAKE</div>
             <button onClick={goIntake30}
               style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%" }}>
-              Buy 30-Day Plan — $249
+              Buy 30-Day Plan — $299
             </button>
             <button onClick={goIntakeBundle}
               style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%" }}>
@@ -425,7 +425,7 @@ Use EXACTLY these tags:
 [SECOND_LEAK] Same 3-line format.
 [LEAK_TOTAL] One line only: combined estimated annual profit leak across both leaks. Format exactly: Estimated total annual profit leak: $XX,000–$XX,000
 [WHATS_MISSING] 2-3 sentences. Name the 5 uncovered categories and the Fix-It Guide for each.
-[UPGRADE_HOOK] 2 sentences max. Reference their leak total. Mention the 30-day plan starts at $249 and covers all 10 categories.
+[UPGRADE_HOOK] 2 sentences max. Reference their leak total. Mention the 30-day plan starts at $299 and covers all 10 categories.
 [DOCS_HOOK] Only if their answers show parts runs, scheduling issues, or invoicing problems: name the SPECIFIC template that fixes it. Skip if not relevant.`;
 
   const genTeaser = async () => {
@@ -639,13 +639,13 @@ Use EXACTLY these tags:
                   <PBtn onClick={()=>paddle("PADDLE_LINK_599","Complete 30/60/90 Plan — $599")} bg={C.amber}>Get the Complete Plan — $599 →</PBtn>
                 </div>
 
-                {/* $249 — 30-Day Plan */}
+                {/* $299 — 30-Day Plan */}
                 <div style={{background:"rgba(200,112,26,0.08)",border:"1px solid rgba(200,112,26,0.25)",borderRadius:10,padding:"12px 16px",marginBottom:6,display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,flexWrap:"wrap"}}>
                   <div>
                     <div style={{fontFamily:F.d,fontSize:13,fontWeight:700,color:C.amber,marginBottom:2}}>30-DAY QUICK WIN PLAN — $249 PER PHASE</div>
                     <div style={{fontSize:11,color:"rgba(255,255,255,0.35)",fontFamily:F.b}}>In-depth diagnostic + customized 30-day plan + guides and process docs for your top leaks. Continue to 60 and 90-day phases at $249 each, or get all three for $599.</div>
                   </div>
-                  <button onClick={()=>paddle("PADDLE_LINK_249_30DAY","30-Day Plan — $249")} style={{background:C.amber,border:"none",color:C.white,padding:"8px 14px",borderRadius:7,fontSize:12,fontWeight:700,fontFamily:F.b,flexShrink:0,cursor:"pointer"}}>Start Here →</button>
+                  <button onClick={()=>paddle("PADDLE_LINK_249_30DAY","30-Day Plan — $299")} style={{background:C.amber,border:"none",color:C.white,padding:"8px 14px",borderRadius:7,fontSize:12,fontWeight:700,fontFamily:F.b,flexShrink:0,cursor:"pointer"}}>Start Here →</button>
                 </div>
 
                 {/* Free Scoping Call */}
@@ -1019,13 +1019,13 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
   const isBundle = planType === "599" || planType === "bundle";
   const planConfig = is30day ? {
     label:    "30-DAY QUICK WIN PLAN",
-    price:    "$249",
+    price:    "$299",
     color:    C.amber,
     tagline:  "Your worst leaks addressed first. Day-by-day. Only what you need.",
     phases: [
       { days: "Days 1–30", label: "Quick Wins", desc: "Your top leaks ranked by impact, addressed first", active: true },
-      { days: "Days 31–60", label: "Build Systems", desc: "Purchase separately when you're ready — $249", active: false },
-      { days: "Days 61–90", label: "Growth Moves", desc: "Purchase separately when you're ready — $249", active: false },
+      { days: "Days 31–60", label: "Build Systems", desc: "Purchase separately when you're ready — $299", active: false },
+      { days: "Days 61–90", label: "Growth Moves", desc: "Purchase separately when you're ready — $299", active: false },
     ],
     note: "Your plan covers days 1-30 only. At day 28 we'll check in — if you want to continue to days 31-60, you can purchase the next phase at that time."
   } : {
@@ -1526,14 +1526,14 @@ function DiagnosticTool({ setPage, paddle }) {
             <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 16px" }}>{g("HOW_WE_HELP") || "We can build you a customized 30-day action plan with only the guides and templates that fix your specific leaks — nothing you do not need. Then check in at day 7 and 15 to make sure you are on track."}</p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }} className="calc-grid">
               <PlanCard
-                price="$249"
+                price="$299"
                 label="30-Day Quick Win Plan"
                 accentColor={C.amber}
                 bg="rgba(200,112,26,0.12)"
                 border="1px solid rgba(200,112,26,0.3)"
                 btnBg={C.amber}
                 btnLabel="Get Started"
-                onBuy={function() { paddle("PADDLE_LINK_249_30DAY", "30-Day Plan — $249"); }}
+                onBuy={function() { paddle("PADDLE_LINK_249_30DAY", "30-Day Plan — $299"); }}
                 items={[
                   "Deep-dive diagnostic across all 10 profit leak categories",
                   "Your leaks ranked by dollar impact — biggest ones addressed first",
@@ -1542,7 +1542,7 @@ function DiagnosticTool({ setPage, paddle }) {
                   "Every doc written for your trade and how your operation runs",
                   "Incremental check-ins for accountability",
                 ]}
-                footer="$249 per phase · Continue to 60-day for another $249 · Or save $147 with the bundle"
+                footer="$299 per phase · Or save $199 with the bundle"
               />
               <PlanCard
                 price="$599"
@@ -2328,39 +2328,59 @@ function WhatWeDoPage({ setPage, calcRef }) {
       action: function(setPage, calcRef) { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }
     },
     {
-      icon: "📋",
-      title: "30-DAY QUICK WIN PLAN",
-      tag: "$249 per phase",
-      tagColor: C.amber,
-      short: "Your worst leaks addressed first. Day-by-day. Only what you need.",
-      intro: "We take a deep look at your operation across all 10 profit leak categories, rank your issues by dollar impact, and build a plan around the ones that matter most to your business:",
+      icon: "📄",
+      title: "DIY PROFIT LEAK SNAPSHOT",
+      tag: "$99",
+      tagColor: C.navy,
+      short: "Your top 3 leaks, the math, and exactly how to fix them — in a PDF you keep.",
+      intro: "Answer the same in-depth questions as FixKit. We identify your three biggest profit leaks and build you a personalized PDF report with:",
       bullets: [
-        "Your leaks ranked by dollar impact — biggest ones addressed first",
-        "A day-by-day 30-day action plan with specific tasks in order",
-        "Only the Fix-It Guides and Process Docs for issues you actually have",
-        "Every doc written for your trade and how your operation runs",
-        "Incremental check-ins for accountability if you need it",
+        "Your top 3 leaks ranked by dollar impact — specific to your trade and your numbers",
+        "The exact math showing what each leak costs you annually",
+        "Step-by-step fix instructions for each one — not generic advice",
+        "A 'do this first' action for each leak you can start this week",
+        "Includes a $100 upgrade credit toward FixKit if you want the full experience later",
       ],
-      cta: "Get the 30-Day Plan",
+      closing: "No portal, no daily tasks, no subscription. Just your numbers, your leaks, and what to do about them — in a printable PDF you keep forever.",
+      cta: "Get My Snapshot — $99",
+      action: function() { window.location.href = "/?buy=snapshot"; }
+    },
+    {
+      icon: "📋",
+      title: "FIXKIT — 30-DAY QUICK WIN PLAN",
+      tag: "$299",
+      tagColor: C.amber,
+      short: "Your worst leaks addressed first. Daily tasks. Built-in tracking. AI support.",
+      intro: "We take a deep look at your operation, rank your leaks by dollar impact, and build everything into your personal FixKit portal:",
+      bullets: [
+        "Personalized 30-day plan — daily 15-20 minute tasks in order of impact",
+        "Built-in number tracking, weekly log tables, and progress dashboard",
+        "5 full profit calculators — pricing, materials, cash flow, scheduling, employee cost",
+        "10 Fix-It Guides and 9 process templates personalized to your trade",
+        "Before/after comparison showing what your fixes are worth annually",
+        "Ask Jen — AI chat with full context on your business, available 24/7",
+        "$100 off if upgrading from the DIY Snapshot",
+      ],
+      cta: "Get the 30-Day Plan — $299",
       action: function(setPage, calcRef) { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }
     },
     {
       icon: "📈",
-      title: "COMPLETE 30/60/90-DAY PLAN",
-      tag: "$599 — saves $147",
+      title: "FIXKIT — COMPLETE 30/60/90-DAY PLAN",
+      tag: "$599 — saves $298",
       tagColor: C.amber,
-      short: "All three phases. Fully sequenced. Only your docs. Saves $147.",
+      short: "All three phases. Fully sequenced. Everything in one portal. Best value.",
       intro: "We rank all 10 leak categories for your specific business and sequence them across three phases — your biggest issues first, next tier second, remaining third:",
       bullets: [
-        "Days 1-30 — your top leaks, day-by-day plan, relevant guides and process docs",
+        "Days 1-30 — top leaks, daily plan, calculators, guides, and process docs",
         "Days 31-60 — next tier of leaks with their own day-by-day plan",
         "Days 61-90 — remaining leaks closed out with a final set of docs",
-        "Only guides and templates for leaks you actually have",
-        "Every doc written for your trade and how your operation runs",
-        "Incremental check-ins for accountability throughout all three phases",
-        "Saves $147 vs buying each phase separately",
+        "Everything in one portal from day one — no waiting for phases to unlock",
+        "Full before/after dashboard across all 90 days",
+        "Saves $298 vs buying each phase separately",
+        "$100 off if upgrading from the DIY Snapshot",
       ],
-      cta: "Get the Full Bundle",
+      cta: "Get the Full Bundle — $599",
       action: function(setPage, calcRef) { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }
     },
     {
