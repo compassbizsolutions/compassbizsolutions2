@@ -200,9 +200,13 @@ function NavIntakeDropdown({ goIntake30, goIntakeBundle }) {
         In-Depth Intake ›
       </button>
       {open && (
-        <div style={{ position: "absolute", top: "100%", left: 0, background: C.navyDark, border: "1px solid rgba(61,107,158,0.3)", borderRadius: 10, padding: "8px", minWidth: 200, zIndex: 100, boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}>
-          <button onClick={goIntake30} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>Buy 30-Day Plan — $299</button>
-          <button onClick={goIntakeBundle} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>Buy 30/60/90 Bundle — $599</button>
+        <div style={{ position: "absolute", top: "100%", left: 0, background: C.navyDark, border: "1px solid rgba(61,107,158,0.3)", borderRadius: 10, padding: "8px", minWidth: 220, zIndex: 100, boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}>
+          <div style={{ fontFamily: F.b, fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: 2, padding: "6px 14px 4px", fontWeight: 700 }}>DIY</div>
+          <button onClick={() => { setOpen(false); window.location.href = "/?buy=snapshot"; }} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>Profit Leak Snapshot — $99</button>
+          <div style={{ height: 1, background: "rgba(255,255,255,0.08)", margin: "4px 8px" }} />
+          <div style={{ fontFamily: F.b, fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: 2, padding: "6px 14px 4px", fontWeight: 700 }}>FIXKIT PORTAL</div>
+          <button onClick={goIntake30} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>30-Day Plan — $299</button>
+          <button onClick={goIntakeBundle} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>30/60/90 Bundle — $599</button>
         </div>
       )}
     </div>
@@ -2859,9 +2863,9 @@ function App() {
     "PADDLE_LINK_249_30DAY": "pri_01km957nv9t0wgnb7rxrpzmrkv",
     "PADDLE_LINK_599":       "pri_01km95651yv87n7bkktk2fmzna",
     "PADDLE_LINK_249_60DAY": "pri_01km95mpfwh9q8fq66wy2tjrgx",
-    "PADDLE_LINK_SNAPSHOT":  "SNAPSHOT_PRICE_TBD",   // add Paddle price ID when created
-    "PADDLE_LINK_UPGRADE_30":    "UPGRADE_30_TBD",   // $199 upgrade price ID
-    "PADDLE_LINK_UPGRADE_BUNDLE": "UPGRADE_BUNDLE_TBD", // $499 upgrade price ID
+    "PADDLE_LINK_SNAPSHOT":  "pri_01knjhs5ve0q3gxn8th0g3br9c",   // add Paddle price ID when created
+    "PADDLE_LINK_UPGRADE_30":    "pri_01knjhxqg290q6q1h9m56j8tkc",   // $199 upgrade price ID
+    "PADDLE_LINK_UPGRADE_BUNDLE": "pri_01knjj1nr64jy967rgg4d8z49s", // $499 upgrade price ID
     "PADDLE_LINK_249_90DAY": "pri_01km95s0pyqvwkq6x4jtdd0n02",
   };
 
