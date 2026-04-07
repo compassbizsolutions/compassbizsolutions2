@@ -49,8 +49,8 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // Check if they've already upgraded (don't want double discounts)
-    const hasFixKit = !!customer;
+    // Check if they've already upgraded (block double discounts — but snapshot plan is fine)
+    const hasFixKit = customer && customer.plan_type !== "snapshot";
     if (hasFixKit) {
       return res.status(200).json({
         valid: false,
@@ -65,8 +65,8 @@ module.exports = async function handler(req, res) {
       discount: 100, // $100 off
       thirtyDayPrice: 199,  // $299 - $100
       bundlePrice: 499,     // $599 - $100
-      thirtyDayPriceId: process.env.PADDLE_PRICE_SNAPSHOT_UPGRADE_30 || "",
-      bundlePriceId: process.env.PADDLE_PRICE_SNAPSHOT_UPGRADE_BUNDLE || "",
+      thirtyDayPriceId: "pri_01knjhxqg290q6q1h9m56j8tkc",
+      bundlePriceId: "pri_01knjj1nr64jy967rgg4d8z49s",
       message: "Snapshot purchase confirmed — your $100 discount is applied."
     });
 
