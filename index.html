@@ -1527,11 +1527,29 @@ function DiagnosticTool({ setPage, paddle }) {
           {/* Upgrade CTA — replaces free 30/60/90 plan */}
           <div style={{ background: C.navyDark, borderRadius: 12, padding: "20px 20px", marginTop: 20, marginBottom: 16, border: "1px solid rgba(200,112,26,0.2)" }}>
             <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 700, color: C.amber, letterSpacing: 2, marginBottom: 8 }}>WHAT HAPPENS NEXT</div>
-            <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 16px" }}>{g("HOW_WE_HELP") || "We can build you a customized 30-day action plan with only the guides and templates that fix your specific leaks — nothing you do not need. Then check in at day 7 and 15 to make sure you are on track."}</p>
+            <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 16px" }}>{g("HOW_WE_HELP") || "We can build you a customized action plan with only the guides and templates that fix your specific leaks — nothing you don't need."}</p>
+
+            {/* $99 Snapshot — full width above the two FixKit options */}
+            <div style={{ background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:10, padding:"14px 16px", marginBottom:10, display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:12 }}>
+              <div style={{ flex:1, minWidth:200 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:6 }}>
+                  <span style={{ fontFamily:F.d, fontSize:22, fontWeight:800, color:"white" }}>$99</span>
+                  <span style={{ fontFamily:F.b, fontSize:13, fontWeight:700, color:"rgba(255,255,255,0.7)" }}>DIY Profit Leak Snapshot</span>
+                </div>
+                <p style={{ fontFamily:F.b, fontSize:12, color:"rgba(255,255,255,0.45)", lineHeight:1.65, margin:0 }}>
+                  Your top 3 leaks, the math, and step-by-step fixes — in a personalized PDF you keep. Includes <strong style={{color:C.amber}}>$100 upgrade credit</strong> toward FixKit.
+                </p>
+              </div>
+              <button onClick={function() { paddle("PADDLE_LINK_SNAPSHOT", "DIY Profit Leak Snapshot — $99"); }}
+                style={{ background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.2)", color:"white", padding:"10px 20px", borderRadius:8, fontSize:13, fontWeight:700, fontFamily:F.b, cursor:"pointer", whiteSpace:"nowrap" }}>
+                Get My Snapshot — $99
+              </button>
+            </div>
+
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }} className="calc-grid">
               <PlanCard
                 price="$299"
-                label="30-Day Quick Win Plan"
+                label="FixKit 30-Day Plan"
                 accentColor={C.amber}
                 bg="rgba(200,112,26,0.12)"
                 border="1px solid rgba(200,112,26,0.3)"
@@ -1539,18 +1557,17 @@ function DiagnosticTool({ setPage, paddle }) {
                 btnLabel="Get Started"
                 onBuy={function() { paddle("PADDLE_LINK_249_30DAY", "30-Day Plan — $299"); }}
                 items={[
-                  "Deep-dive diagnostic across all 10 profit leak categories",
-                  "Your leaks ranked by dollar impact — biggest ones addressed first",
-                  "Day-by-day 30-day action plan with specific tasks in order",
-                  "Only the Fix-It Guides and Process Docs for issues you actually have",
-                  "Every doc written for your trade and how your operation runs",
-                  "Incremental check-ins for accountability",
+                  "Personalized 30-day plan — daily 15-20 min tasks",
+                  "Built-in trackers, calculators, and progress dashboard",
+                  "10 Fix-It Guides + 9 process templates for your trade",
+                  "Ask Jen AI chat — 24/7 support with your context",
+                  "$199 if upgrading from the Snapshot",
                 ]}
-                footer="$299 per phase · Or save $199 with the bundle"
+                footer="$299 · Or save $298 with the bundle"
               />
               <PlanCard
                 price="$599"
-                label="Full 30/60/90-Day Plan — saves $147"
+                label="FixKit 30/60/90 Bundle"
                 accentColor={C.amber}
                 bg="rgba(200,112,26,0.06)"
                 border="1px solid rgba(200,112,26,0.2)"
@@ -1558,15 +1575,13 @@ function DiagnosticTool({ setPage, paddle }) {
                 btnLabel="Best Value"
                 onBuy={function() { paddle("PADDLE_LINK_599", "Complete 30/60/90 Plan — $599"); }}
                 items={[
-                  "All three phases — 30, 60, and 90 days",
-                  "Your leaks sequenced across three phases — worst issues first",
-                  "Each phase gets its own day-by-day plan",
-                  "Only the Fix-It Guides and Process Docs for issues you actually have",
-                  "Every doc written for your trade and how your operation runs",
-                  "Incremental check-ins for accountability throughout",
-                  "Saves $147 vs buying each phase separately",
+                  "All three phases — 90 days fully planned",
+                  "Everything in the 30-day plan × 3",
+                  "Biggest leaks first, next tier second, rest third",
+                  "One portal, one payment, all 90 days",
+                  "$499 if upgrading from the Snapshot",
                 ]}
-                footer="$599 one time · All three phases · Best value"
+                footer="$599 one time · Saves $298 · Best value"
               />
             </div>
             <button onClick={function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }} style={{ width: "100%", background: "none", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.4)", padding: "10px", borderRadius: 7, fontSize: 12, fontFamily: F.b, cursor: "pointer" }}>Want us to do it for you? Book a free call</button>
