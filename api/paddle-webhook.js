@@ -15,10 +15,10 @@ const PRODUCT_MAP = {
   "pri_01km95mpfwh9q8fq66wy2tjrgx": "60day",
   "pri_01km95s0pyqvwkq6x4jtdd0n02": "90day",
   // Snapshot price ID — add when created in Paddle
-  [process.env.PADDLE_PRICE_SNAPSHOT || "SNAPSHOT_PRICE_TBD"]: "snapshot",
+  "pri_01knjhs5ve0q3gxn8th0g3br9c": "snapshot",
   // Upgrade discounted price IDs
-  [process.env.PADDLE_PRICE_SNAPSHOT_UPGRADE_30 || "UPGRADE_30_TBD"]: "30day",
-  [process.env.PADDLE_PRICE_SNAPSHOT_UPGRADE_BUNDLE || "UPGRADE_BUNDLE_TBD"]: "bundle",
+  "pri_01knjhxqg290q6q1h9m56j8tkc": "30day",
+  "pri_01knjj1nr64jy967rgg4d8z49s": "bundle",
 };
 
 const PLAN_LABELS = {
@@ -142,8 +142,13 @@ module.exports = async function handler(req, res) {
                 <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:12px;">This link is valid for 7 days</div>
               </div>
 
-              <div style="background:white;border:1px solid #D8D4CD;border-radius:8px;padding:14px 18px;margin-top:16px;">
-                <p style="font-size:12px;color:#6B7A90;margin:0;line-height:1.7;"><strong>Once you download your Snapshot</strong>, it includes an upgrade code worth $100 off FixKit — if you decide you want the full daily plan and portal experience.</p>
+              <div style="background:white;border:1px solid #D8D4CD;border-radius:8px;padding:18px 20px;margin-top:16px;">
+                <div style="font-size:11px;font-weight:bold;color:#1A2332;letter-spacing:2px;margin-bottom:12px;">WANT THE FULL EXPERIENCE?</div>
+                <p style="font-size:12px;color:#6B7A90;margin:0 0 14px;line-height:1.7;">Your Snapshot includes a <strong>$100 upgrade credit</strong> toward FixKit — the full portal with daily tasks, built-in tracking, calculators, and AI support. Use code <strong>SNAPSHOT-UPGRADE</strong> at checkout.</p>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                  <a href="https://www.compassbizsolutions.com/?buy=snapshot-upgrade" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:12px;padding:9px 18px;border-radius:7px;text-decoration:none;">FixKit 30-Day — $199 →</a>
+                  <a href="https://www.compassbizsolutions.com/?buy=snapshot-upgrade" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:12px;padding:9px 18px;border-radius:7px;text-decoration:none;">Full Bundle — $499 →</a>
+                </div>
               </div>
 
               <p style="margin:20px 0 0;color:#3E4E63;font-size:13px;">— Jen, Compass Business Solutions</p>
