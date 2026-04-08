@@ -2334,6 +2334,7 @@ function DocsPage({ setPage, paddle }) {
 
 // ─── WHAT WE DO PAGE ─────────────────────────────────────────────────────────
 function WhatWeDoPage({ setPage, calcRef }) {
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
 
   const services = [
     {
@@ -2427,26 +2428,30 @@ function WhatWeDoPage({ setPage, calcRef }) {
     },
     {
       icon: "📱",
-      title: "THE APP — COMING SOON",
-      tag: "Coming soon",
-      tagColor: C.muted,
-      short: "Field service management built for small service businesses.",
-      intro: "Everything a small service business needs — without enterprise pricing or a learning curve designed for 500-person companies:",
+      title: "THE COMPASS APP — IN DEVELOPMENT",
+      tag: "Early access opening soon",
+      tagColor: C.slate,
+      short: "Run your whole operation — quoting, dispatch, invoicing, inventory, payroll — with the Compass profit methodology built in.",
+      intro: "Most field service apps are just scheduling and invoicing tools with no business intelligence. The Compass App is built differently — every workflow is designed around protecting your margins:",
       bullets: [
-        "Job tracking from estimate to invoice",
-        "Tech scheduling and dispatch",
-        "Same-day invoicing built in",
-        "Back office management without the overhead",
-        "Built specifically for trades and field service",
+        "AI-assisted quoting using your actual loaded cost, markup, and overhead — not guesswork",
+        "Quote-to-job-to-invoice in one workflow with no dropped handoffs",
+        "Technician dispatch, time clock, parts used, and job signoff from their phone",
+        "Inventory, restock planning, and purchase orders tied directly to jobs",
+        "Customer portal — service requests, job history, invoice access, maintenance plans",
+        "CompassChat AI guidance — profit, pricing, marketing, and operations help built in",
+        "FixKit integration — if you did FixKit, your numbers carry over automatically",
+        "Built for trades, not enterprise — mobile-first, no 6-month onboarding",
       ],
-      closing: "Join the waitlist to be notified first.",
-      cta: "Join the Waitlist",
-      action: function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }
+      closing: "Early access opening soon. FixKit customers get priority access and discounted first year.",
+      cta: "Join the Early Access List",
+      action: function(setPage, calcRef, openWaitlist) { openWaitlist && openWaitlist(); }
     },
   ];
 
   return (
     <div style={{ background: C.warm0, minHeight: "100vh", paddingTop: 64 }}>
+      {waitlistOpen && <WaitlistModal onClose={()=>setWaitlistOpen(false)} />}
       <div style={{ background: "linear-gradient(160deg," + C.navyDark + "," + C.navy + ")", padding: "64px 24px 52px", textAlign: "center" }}>
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
           <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 4, marginBottom: 10, fontFamily: F.b }}>COMPASS BUSINESS SOLUTIONS</div>
@@ -2459,7 +2464,7 @@ function WhatWeDoPage({ setPage, calcRef }) {
 
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "48px 24px" }}>
         {services.map(function(svc, i) {
-          return <ServiceCard key={i} svc={svc} setPage={setPage} calcRef={calcRef} />;
+          return <ServiceCard key={i} svc={svc} setPage={setPage} calcRef={calcRef} openWaitlist={()=>setWaitlistOpen(true)} />;
         })}
 
         <div style={{ background: C.navyDark, borderRadius: 14, padding: "28px 28px", marginTop: 8, textAlign: "center", border: "1px solid rgba(61,107,158,0.2)" }}>
@@ -2475,7 +2480,71 @@ function WhatWeDoPage({ setPage, calcRef }) {
   );
 }
 
-function ServiceCard({ svc, setPage, calcRef }) {
+function WaitlistModal({ onClose }) {
+  const [email, setEmail] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [trade, setTrade] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [done, setDone] = React.useState(false);
+  const [err, setErr] = React.useState("");
+
+  async function submit() {
+    if (!email.trim() || !email.includes("@")) { setErr("Enter a valid email."); return; }
+    setLoading(true); setErr("");
+    try {
+      const r = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), name: name.trim(), trade: trade.trim(), source: "what-we-do" })
+      });
+      const d = await r.json();
+      if (d.success) setDone(true);
+      else setErr("Something went wrong. Try again.");
+    } catch(e) { setErr("Connection error. Try again."); }
+    setLoading(false);
+  }
+
+  return (
+    <div style={{ position:"fixed", inset:0, background:"rgba(27,46,75,0.88)", zIndex:200, display:"flex", alignItems:"center", justifyContent:"center", padding:24 }}>
+      <div style={{ background:C.white, borderRadius:16, padding:"36px 32px", maxWidth:440, width:"100%", boxShadow:"0 24px 80px rgba(0,0,0,0.4)" }}>
+        {done ? (
+          <div style={{ textAlign:"center" }}>
+            <div style={{ fontSize:48, marginBottom:16 }}>🎉</div>
+            <div style={{ fontFamily:F.d, fontSize:24, fontWeight:800, color:C.ink, marginBottom:10 }}>YOU'RE ON THE LIST</div>
+            <p style={{ fontFamily:F.b, fontSize:13, color:C.muted, lineHeight:1.7, marginBottom:20 }}>
+              We'll email you when early access opens. FixKit customers get priority access and a discounted first year.
+            </p>
+            <button onClick={onClose} style={{ background:C.amber, border:"none", color:"white", padding:"12px 28px", borderRadius:9, fontFamily:F.b, fontSize:14, fontWeight:700, cursor:"pointer" }}>Done</button>
+          </div>
+        ) : (
+          <>
+            <div style={{ fontFamily:F.d, fontSize:22, fontWeight:800, color:C.ink, marginBottom:6 }}>JOIN THE EARLY ACCESS LIST</div>
+            <p style={{ fontFamily:F.b, fontSize:13, color:C.muted, lineHeight:1.7, marginBottom:20 }}>
+              The Compass App is in active development. Get notified first when early access opens — FixKit customers get priority and a discounted first year.
+            </p>
+            <input value={name} onChange={e=>setName(e.target.value)} placeholder="Your name (optional)"
+              style={{ width:"100%", padding:"11px 14px", border:"1px solid "+C.warm3, borderRadius:8, fontSize:14, fontFamily:F.b, color:C.ink, outline:"none", boxSizing:"border-box", marginBottom:10 }} />
+            <input value={trade} onChange={e=>setTrade(e.target.value)} placeholder="Your trade (e.g. HVAC, Plumbing)"
+              style={{ width:"100%", padding:"11px 14px", border:"1px solid "+C.warm3, borderRadius:8, fontSize:14, fontFamily:F.b, color:C.ink, outline:"none", boxSizing:"border-box", marginBottom:10 }} />
+            <input value={email} onChange={e=>{ setEmail(e.target.value); setErr(""); }} placeholder="your@email.com" type="email"
+              onKeyDown={e=>e.key==="Enter"&&submit()}
+              style={{ width:"100%", padding:"11px 14px", border:"2px solid "+(err?C.red:C.warm3), borderRadius:8, fontSize:14, fontFamily:F.b, color:C.ink, outline:"none", boxSizing:"border-box", marginBottom:6 }} />
+            {err && <div style={{ color:C.red, fontSize:12, fontFamily:F.b, marginBottom:8 }}>{err}</div>}
+            <div style={{ display:"flex", gap:10, marginTop:14 }}>
+              <button onClick={onClose} style={{ flex:1, background:C.warm1, border:"1px solid "+C.warm3, color:C.muted, padding:"11px", borderRadius:9, fontSize:13, fontFamily:F.b, cursor:"pointer" }}>Cancel</button>
+              <button onClick={submit} disabled={loading}
+                style={{ flex:2, background:C.amber, border:"none", color:"white", padding:"11px", borderRadius:9, fontSize:14, fontWeight:700, fontFamily:F.b, cursor:loading?"wait":"pointer", opacity:loading?.7:1 }}>
+                {loading ? "Saving..." : "Count Me In →"}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ServiceCard({ svc, setPage, calcRef, openWaitlist }) {
   const [open, setOpen] = useState(false);
   return (
     <div style={{ background: C.white, borderRadius: 14, border: "1px solid " + C.warm3, marginBottom: 12, overflow: "hidden", boxShadow: open ? "0 4px 24px rgba(26,35,50,0.08)" : "none", transition: "box-shadow 0.2s" }}>
@@ -2505,8 +2574,8 @@ function ServiceCard({ svc, setPage, calcRef }) {
             })}
           </div>
           {svc.closing && <p style={{ fontFamily: F.b, fontSize: 13, color: C.muted, lineHeight: 1.7, margin: "0 0 16px", fontStyle: "italic" }}>{svc.closing}</p>}
-          <button onClick={function() { svc.action(setPage, calcRef); }}
-            style={{ background: svc.tagColor === C.muted ? C.navy : svc.tagColor, border: "none", color: C.white, padding: "11px 24px", borderRadius: 8, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>
+          <button onClick={function() { svc.action(setPage, calcRef, openWaitlist); }}
+            style={{ background: svc.tagColor === C.muted ? C.navy : svc.tagColor === C.slate ? C.slate : svc.tagColor, border: "none", color: C.white, padding: "11px 24px", borderRadius: 8, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer" }}>
             {svc.cta} →
           </button>
         </div>
