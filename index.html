@@ -288,14 +288,19 @@ function Nav({ page, setPage, calcRef, setIntakePlan, paddle }) {
             </button>
           ))}
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "8px 0 4px", paddingTop: 8 }}>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 2, fontFamily: F.b, padding: "4px 16px 8px" }}>IN-DEPTH INTAKE</div>
+            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 2, fontFamily: F.b, padding: "4px 16px 8px" }}>GET STARTED</div>
+            <button onClick={() => { setOpen(false); window.location.href = "/?buy=snapshot"; }}
+              style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%", marginBottom: 4 }}>
+              📄 DIY Profit Leak Snapshot — $99
+            </button>
+            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 2, fontFamily: F.b, padding: "4px 16px 8px" }}>FIXKIT PORTAL</div>
             <button onClick={goIntake30}
-              style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%" }}>
-              Buy 30-Day Plan — $299
+              style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%", marginBottom: 4 }}>
+              📋 FixKit 30-Day Plan — $299
             </button>
             <button onClick={goIntakeBundle}
               style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%" }}>
-              Buy 30/60/90 Bundle — $599
+              📈 FixKit 30/60/90 Bundle — $599
             </button>
           </div>
           <button onClick={goScan}
