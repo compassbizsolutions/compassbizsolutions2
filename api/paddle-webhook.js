@@ -98,6 +98,10 @@ module.exports = async function handler(req, res) {
         intake_complete: false,
         snapshot_purchased: true,
         updated: now,
+        utm_source: customData.utm_source || "",
+        utm_campaign: customData.utm_campaign || "",
+        utm_medium: customData.utm_medium || "",
+        source: customData.utm_source || "direct",
       });
 
       await resend.emails.send({
@@ -162,14 +166,16 @@ module.exports = async function handler(req, res) {
       plan_type: planType,
       phase_current: 1,
       phase_1_date: isUpgrade ? existingCustomer.phase_1_date : now,
-      // Preserve intake_complete if upgrading — they already did intake
       intake_complete: isUpgrade ? (existingCustomer.intake_complete || false) : false,
-      // If upgrading and intake was complete, keep the snapshot report but clear it so new plan generates
       phase_1_report: isUpgrade && existingCustomer.intake_complete ? null : existingCustomer?.phase_1_report,
       snapshot_purchased: true,
       upgraded_from_snapshot: isUpgrade,
       upgraded_at: isUpgrade ? now : undefined,
       updated: now,
+      utm_source: customData.utm_source || existingCustomer?.utm_source || "",
+      utm_campaign: customData.utm_campaign || existingCustomer?.utm_campaign || "",
+      utm_medium: customData.utm_medium || existingCustomer?.utm_medium || "",
+      source: customData.utm_source || existingCustomer?.source || "direct",
     }));
 
     // Send FixKit welcome email — different message for upgrades

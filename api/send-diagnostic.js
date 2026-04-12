@@ -47,7 +47,7 @@ module.exports = async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   try {
-    const { name, email, biz, phone, trade, answers, report } = req.body;
+    const { name, email, biz, phone, trade, answers, report, utm_source, utm_campaign, utm_medium } = req.body;
     if (!email || !report) return res.status(400).json({ error: "Missing required fields" });
 
     const resend = new Resend(process.env.RESEND_API_KEY);
@@ -188,6 +188,10 @@ module.exports = async function handler(req, res) {
       email, name, biz, phone, trade,
       top_leak: topLeakText,
       created_at: new Date().toISOString(),
+      utm_source: utm_source || "",
+      utm_campaign: utm_campaign || "",
+      utm_medium: utm_medium || "",
+      source: utm_source || "direct",
     }).catch(function() {});
 
     // Tag in Mailchimp
