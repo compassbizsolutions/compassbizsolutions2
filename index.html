@@ -3145,23 +3145,45 @@ function App() {
         {page === "home" && (
           <div style={{ paddingTop: 64 }}>
 
-            {/* 1 — SHOCK STAT */}
+            {/* 1 — SHOCK STATS */}
             <section style={{ background: `linear-gradient(160deg, ${C.navyDark} 0%, ${C.navy} 100%)`, padding: "80px 24px", textAlign: "center" }}>
-              <div style={{ maxWidth: 660, margin: "0 auto" }}>
-                <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(61,107,158,0.2)", border: "1px solid rgba(61,107,158,0.35)", borderRadius: 99, padding: "5px 16px", marginBottom: 24 }}>
+              <div style={{ maxWidth: 680, margin: "0 auto" }}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(61,107,158,0.2)", border: "1px solid rgba(61,107,158,0.35)", borderRadius: 99, padding: "5px 16px", marginBottom: 48 }}>
                   <div style={{ width: 6, height: 6, borderRadius: "50%", background: C.amber }} />
                   <span style={{ fontSize: 11, color: C.slateLight, fontWeight: 600, letterSpacing: 2, fontFamily: F.b }}>FOR SERVICE BUSINESS OWNERS</span>
                 </div>
-                <h1 style={{ fontFamily: F.d, fontSize: "clamp(38px, 7vw, 76px)", fontWeight: 800, color: C.white, letterSpacing: 1, lineHeight: 1.05, marginBottom: 20 }}>
-                  ONLY <span style={{ color: C.amber }}>46%</span> OF SERVICE BUSINESSES<br />ACTUALLY MAKE A PROFIT.
-                </h1>
-                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 16, lineHeight: 1.8, maxWidth: 500, margin: "0 auto 10px", fontFamily: F.b }}>
-                  These are established businesses. With employees. Open for years.
-                </p>
-                <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 13, margin: "0 auto 32px", fontFamily: F.b }}>
-                  <a href="https://www.fedsmallbusiness.org/reports/survey/2024/2024-report-on-employer-firms" target="_blank" rel="noopener noreferrer"
-                    style={{ color: C.slate, textDecoration: "none" }}>Federal Reserve Small Business Credit Survey, 2024 — 2024 Report on Employer Firms →</a>
-                </p>
+
+                {/* Stat 1 */}
+                <div style={{ marginBottom: 16 }}>
+                  <h1 style={{ fontFamily: F.d, fontSize: "clamp(28px, 5.5vw, 58px)", fontWeight: 800, color: C.white, letterSpacing: 1, lineHeight: 1.05, marginBottom: 14 }}>
+                    THE AVERAGE HVAC, PLUMBING, OR<br />ELECTRICAL SHOP NETS <span style={{ color: C.amber }}>2–5% PROFIT.</span>
+                  </h1>
+                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 16, lineHeight: 1.8, maxWidth: 500, margin: "0 auto 10px", fontFamily: F.b }}>
+                    On a million dollars in revenue, that's $20,000–$50,000 in your pocket. We find where the rest went.
+                  </p>
+                  <a href="https://www.servicetitan.com/blog/hvac-profit-margins" target="_blank" rel="noopener noreferrer"
+                    style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", fontFamily: F.b, textDecoration: "none", letterSpacing: 0.5, borderBottom: "1px solid rgba(255,255,255,0.15)", paddingBottom: 1 }}>
+                    Source: ServiceTitan · HVAC Profit Margins: Industry Benchmarks →
+                  </a>
+                </div>
+
+                {/* Divider */}
+                <div style={{ width: 48, height: 2, background: C.amber, margin: "36px auto" }} />
+
+                {/* Stat 2 */}
+                <div style={{ marginBottom: 48 }}>
+                  <h2 style={{ fontFamily: F.d, fontSize: "clamp(28px, 5.5vw, 58px)", fontWeight: 800, color: C.white, letterSpacing: 1, lineHeight: 1.05, marginBottom: 14 }}>
+                    MOST SERVICE SHOPS LEAVE<br /><span style={{ color: C.amber }}>$40,000–$60,000</span> ON THE TABLE EVERY YEAR.
+                  </h2>
+                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 16, lineHeight: 1.8, maxWidth: 500, margin: "0 auto 10px", fontFamily: F.b }}>
+                    Not from bad work. From gaps in how the business runs.
+                  </p>
+                  <a href="https://profitabilitypartners.io/hvac-profit-margins/" target="_blank" rel="noopener noreferrer"
+                    style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", fontFamily: F.b, textDecoration: "none", letterSpacing: 0.5, borderBottom: "1px solid rgba(255,255,255,0.15)", paddingBottom: 1 }}>
+                    Source: Profitability Partners · What a PE Buyer Sees After Reviewing 200+ Contractor P&Ls →
+                  </a>
+                </div>
+
                 <button onClick={() => calcRef.current?.scrollIntoView({ behavior: "smooth" })}
                   style={{ background: C.amber, color: C.white, border: "none", padding: "15px 34px", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: F.b, boxShadow: `0 6px 28px ${C.amber}55` }}>
                   See Where You Stand →
