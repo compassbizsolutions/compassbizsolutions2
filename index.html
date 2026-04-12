@@ -198,16 +198,16 @@ function NavIntakeDropdown({ goIntake30, goIntakeBundle }) {
   return (
     <div style={{ position: "relative" }} onMouseEnter={function() { setOpen(true); }} onMouseLeave={function() { setOpen(false); }}>
       <button style={{ background: "none", border: "none", color: "rgba(255,255,255,0.45)", padding: "7px 14px", borderRadius: 7, fontSize: 13, fontWeight: 600, fontFamily: F.b, cursor: "pointer", whiteSpace: "nowrap" }}>
-        In-Depth Intake ›
+        Get Your Plan ›
       </button>
       {open && (
         <div style={{ position: "absolute", top: "100%", left: 0, background: C.navyDark, border: "1px solid rgba(61,107,158,0.3)", borderRadius: 10, padding: "8px", minWidth: 220, zIndex: 100, boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}>
+          <div style={{ fontFamily: F.b, fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: 2, padding: "6px 14px 4px", fontWeight: 700 }}>FIXKIT PORTAL</div>
+          <button onClick={goIntakeBundle} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>30/60/90 Bundle — $599</button>
+          <button onClick={goIntake30} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>30-Day Plan — $299</button>
+          <div style={{ height: 1, background: "rgba(255,255,255,0.08)", margin: "4px 8px" }} />
           <div style={{ fontFamily: F.b, fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: 2, padding: "6px 14px 4px", fontWeight: 700 }}>DIY</div>
           <button onClick={() => { setOpen(false); window.location.href = "/?buy=snapshot"; }} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>Profit Leak Snapshot — $99</button>
-          <div style={{ height: 1, background: "rgba(255,255,255,0.08)", margin: "4px 8px" }} />
-          <div style={{ fontFamily: F.b, fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: 2, padding: "6px 14px 4px", fontWeight: 700 }}>FIXKIT PORTAL</div>
-          <button onClick={goIntake30} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>30-Day Plan — $299</button>
-          <button onClick={goIntakeBundle} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>30/60/90 Bundle — $599</button>
         </div>
       )}
     </div>
@@ -267,8 +267,12 @@ function Nav({ page, setPage, calcRef, setIntakePlan, paddle }) {
           </button>
         </div>
 
-        {/* Mobile right side — hamburger only, Free Scan is in dropdown */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }} className="nav-mobile">
+        {/* Mobile right side */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }} className="nav-mobile">
+          <a href="https://fixkit.compassbizsolutions.com" target="_blank" rel="noopener noreferrer"
+            style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.8)", padding: "7px 14px", borderRadius: 7, fontSize: 12, fontWeight: 600, fontFamily: F.b, textDecoration: "none", whiteSpace: "nowrap" }}>
+            FixKit Login
+          </a>
           <button onClick={() => setOpen(o => !o)}
             style={{ background: "none", border: "none", cursor: "pointer", padding: "4px", display: "flex", flexDirection: "column", gap: 5, justifyContent: "center" }}>
             <span style={{ display: "block", width: 22, height: 2, background: C.white, borderRadius: 2, transition: "all 0.25s", transform: open ? "rotate(45deg) translate(5px, 5px)" : "none" }} />
@@ -288,19 +292,18 @@ function Nav({ page, setPage, calcRef, setIntakePlan, paddle }) {
             </button>
           ))}
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "8px 0 4px", paddingTop: 8 }}>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 2, fontFamily: F.b, padding: "4px 16px 8px" }}>GET STARTED</div>
-            <button onClick={() => { setOpen(false); window.location.href = "/?buy=snapshot"; }}
+            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 2, fontFamily: F.b, padding: "4px 16px 8px" }}>GET YOUR PLAN</div>
+            <button onClick={goIntakeBundle}
               style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%", marginBottom: 4 }}>
-              📄 DIY Profit Leak Snapshot — $99
+              📈 FixKit 30/60/90 Bundle — $599
             </button>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 2, fontFamily: F.b, padding: "4px 16px 8px" }}>FIXKIT PORTAL</div>
             <button onClick={goIntake30}
               style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%", marginBottom: 4 }}>
               📋 FixKit 30-Day Plan — $299
             </button>
-            <button onClick={goIntakeBundle}
+            <button onClick={() => { setOpen(false); window.location.href = "/?buy=snapshot"; }}
               style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%" }}>
-              📈 FixKit 30/60/90 Bundle — $599
+              📄 Profit Leak Snapshot — $99
             </button>
           </div>
           <button onClick={goScan}
@@ -386,10 +389,10 @@ function Calculator({ setPage, paddle }) {
           // Clean URL so token isn't visible / reusable from browser
           window.history.replaceState({}, "", window.location.pathname);
         } else {
-          setErr("Payment link invalid or expired. Please contact hello@compassbizsolutions.com");
+          setErr("Payment link invalid or expired. Please contact support@compassbizsolutions.com");
         }
       })
-      .catch(() => setErr("Could not verify payment. Please contact hello@compassbizsolutions.com"));
+      .catch(() => setErr("Could not verify payment. Please contact support@compassbizsolutions.com"));
     }
   }, []);
   const [teaser, setTeaser] = useState(""); const [fullRep, setFullRep] = useState("");
@@ -473,7 +476,7 @@ Use EXACTLY these tags:
       setFullRep(data.reportText || "");
       setStage(5);
     } catch(e) {
-      setErr(e.message || "Something went wrong. Try again or contact hello@compassbizsolutions.com");
+      setErr(e.message || "Something went wrong. Try again or contact support@compassbizsolutions.com");
     } finally {
       setLoading(false);
     }
@@ -772,7 +775,7 @@ function IntakeGate({ token, fallbackEmail, planType }) {
             Start Free Diagnostic →
           </button>
         )}
-        <button onClick={function() { window.open("mailto:hello@compassbizsolutions.com?subject=Intake Link Request", "_blank"); }}
+        <button onClick={function() { window.open("mailto:support@compassbizsolutions.com?subject=Intake Link Request", "_blank"); }}
           style={{ background: "none", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.6)", padding: "12px 32px", borderRadius: 10, fontSize: 13, fontFamily: F.b, cursor: "pointer" }}>
           Contact Us for Help
         </button>
@@ -1004,7 +1007,7 @@ function InDepthIntake({ customerEmail, planType, onComplete }) {
       setSection(14);
       if (onComplete) onComplete(text);
     } catch(e) {
-      setErr("Something went wrong generating your plan. Please try again or email hello@compassbizsolutions.com");
+      setErr("Something went wrong generating your plan. Please try again or email support@compassbizsolutions.com");
       setSection(12);
     }
   }
@@ -1571,7 +1574,7 @@ function DiagnosticTool({ setPage, paddle }) {
                 items={[
                   "Personalized 30-day plan — daily 15-20 min tasks",
                   "Built-in trackers, calculators, and progress dashboard",
-                  "10 Fix-It Guides + 9 process templates for your trade",
+                  "Personalized 30-day action plan + 9 process templates for your trade",
                   "Ask Jen AI chat — 24/7 support with your context",
                   "$199 if upgrading from the Snapshot",
                 ]}
@@ -1801,10 +1804,10 @@ function HowItWorks() {
 // ─── ABOUT PAGE ───────────────────────────────────────────────────────────────
 function AboutPage({ setPage, calcRef }) {
   const beats = [
-    { color: C.slate, label: "THE PATTERN I KEPT SEEING", text: "When I moved back to Massachusetts, I reconnected with family and old friends — a lot of them union tradespeople, or guys who had gone out on their own. Contractors, electricians, plumbers, landscapers, pool companies. Almost every conversation had the same shape. They were exhausted. Not from the work — they were built for the work. They were exhausted from everything that came with running the business. Invoicing at 10pm. Calls on weekends. Spouses picking up the slack at home or outright frustrated. Missing soccer games and dinners because there was always something administrative that didn't get done during the week. They'd started their companies because they were good at their trade and figured they could make more running their own shop than being someone else's tech. Most of them weren't — or couldn't tell if they were." },
+    { color: C.slate, label: "THE PATTERN I KEPT SEEING", text: "I kept hearing the same thing from friends who went out on their own in the trades — contractors, electricians, plumbers, landscapers, pool companies. They were exhausted. Not from the work — they were built for the work. They were exhausted from everything that came with running the business. Invoicing at 10pm. Calls on weekends. Spouses picking up the slack at home or outright frustrated. Missing soccer games and dinners because there was always something that didn't get done during the week. They'd gone out on their own because they were good at their trade and figured they'd make more running their own shop. Most of them weren't — or couldn't tell if they were." },
     { color: C.amber, label: "WHAT I SPENT 23 YEARS DOING", text: "My background is in business process analysis and automation. For over two decades, across two Fortune-level organizations, my job was to look at how work actually moved through a system — where the gaps were, where the risk was, where time and money were being lost to manual processes that shouldn't be manual anymore. I built automated workflows, developed databases, wrote Python scripts, built SharePoint systems, created automated reporting and email pipelines. When a process was repeatable and could be documented, I documented it. When it could be automated, I automated it. When it was creating audit risk, I fixed it. That's not a hobby — that's what I did every day for 23 years." },
     { color: C.teal, label: "WHERE THE TWO THINGS MET", text: "The problems I kept hearing from these guys weren't complicated. They were the same kinds of process gaps I'd spent my career solving — just in smaller organizations that had never had anyone with that background in the room. No one had ever sat down with them and mapped out how a job actually flows from booking to invoice. No one had built them a system for confirmations, or parts ordering, or onboarding a new tech, or tracking which jobs were profitable. They were running everything in their head and burning out doing it. I knew exactly what to build. I just needed to build it for them." },
-    { color: C.green, label: "WHAT COMPASS ACTUALLY IS", text: "Compass is the business operations side of a service company — the part most owners never had time to build properly. We start with a diagnostic: a real look at where your money is going, based on your actual numbers. From there, you can work through it yourself with our Fix-It Guides, or we can build the systems for you. No expensive software platforms. No generic advice pulled from a blog post. Just clean, practical systems — workflows, automations, process docs, and tools — built around how your business actually runs." },
+    { color: C.green, label: "WHAT COMPASS ACTUALLY IS", text: "Compass is the business operations side of a service company — the part most owners never had time to build properly. We start with a free diagnostic: a real look at where your money is going, based on your actual numbers. From there, you can work through it yourself with a Profit Leak Snapshot or a full FixKit plan — step-by-step, built around your specific numbers and trade. If you need someone to build the systems for you, that's available too. No expensive platforms. No generic advice. Just clean, practical fixes for how your business actually runs." },
   ];
   return (
     <div style={{ background: C.warm0, minHeight: "100vh", paddingTop: 64 }}>
@@ -2388,7 +2391,7 @@ function WhatWeDoPage({ setPage, calcRef }) {
         "Personalized 30-day plan — daily 15-20 minute tasks in order of impact",
         "Built-in number tracking, weekly log tables, and progress dashboard",
         "5 full profit calculators — pricing, materials, cash flow, scheduling, employee cost",
-        "10 Fix-It Guides and 9 process templates personalized to your trade",
+        "Personalized daily action plan and 9 process templates for your trade",
         "Before/after comparison showing what your fixes are worth annually",
         "Ask Jen — AI chat with full context on your business, available 24/7",
         "$100 off if upgrading from the DIY Snapshot",
@@ -2446,8 +2449,8 @@ function WhatWeDoPage({ setPage, calcRef }) {
         "Inventory, restock planning, and purchase orders tied directly to jobs",
         "Customer portal — service requests, job history, invoice access, maintenance plans",
         "CompassChat AI guidance — profit, pricing, marketing, and operations help built in",
-        "FixKit integration — if you did FixKit, your numbers carry over automatically",
-        "Built for trades, not enterprise — mobile-first, no 6-month onboarding",
+        "FixKit integration — if you did FixKit, your numbers carry over automatically, and your leak-free progress stays on track",
+        "Built for trades, not enterprise — mobile-first, no piecing together tools that weren't made for your operation",
       ],
       closing: "Early access opening soon. FixKit customers get priority access and discounted first year.",
       cta: "Join the Early Access List",
@@ -2595,17 +2598,12 @@ function Footer({ setPage }) {
   return (
     <footer style={{ background: C.navyDark, borderTop: "1px solid rgba(61,107,158,0.15)", padding: "32px 24px", fontFamily: F.b }}>
       <div style={{ maxWidth: 1060, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 20 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }} className="nav-desktop">
-          <CompassLogo size={28} />
-          <div>
-            <div style={{ fontFamily: F.d, fontSize: 14, fontWeight: 700, color: C.white, letterSpacing: 2 }}>COMPASS BUSINESS SOLUTIONS</div>
-            <div style={{ fontSize: 11, color: C.ghost, fontFamily: F.b }}>Business systems for service companies</div>
-          </div>
-        </div>
+
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center" }}>
           {[["home","Home"], ["about","Our Story"], ["profitable","What Profitable Looks Like"], ["services","What We Do"]].map(([p, l]) => (
             <button key={p} onClick={() => { setPage(p); window.scrollTo(0,0); }} style={{ background: "none", border: "none", color: C.muted, fontSize: 13, fontFamily: F.b, cursor: "pointer", padding: "6px 10px" }}>{l}</button>
           ))}
+          <a href="mailto:support@compassbizsolutions.com" style={{ color: C.muted, fontSize: 13, fontFamily: F.b, padding: "6px 10px", textDecoration: "none" }}>Contact</a>
         </div>
         <div style={{ fontSize: 11, color: C.ghost, fontFamily: F.b }}>© {new Date().getFullYear()} Compass Business Solutions</div>
       </div>
@@ -3005,7 +3003,7 @@ function App() {
   const paddle = (link, label) => {
     const priceId = PADDLE_PRICE_IDS[link] || link;
     if (!priceId || priceId.startsWith("PADDLE_")) {
-      setToast((label || "Purchase") + " — Paddle checkout is being set up. Email hello@compassbizsolutions.com to purchase.");
+      setToast((label || "Purchase") + " — Paddle checkout is being set up. Email support@compassbizsolutions.com to purchase.");
       return;
     }
     // Show email capture modal first
@@ -3161,9 +3159,8 @@ function App() {
                   These are established businesses. With employees. Open for years.
                 </p>
                 <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 13, margin: "0 auto 32px", fontFamily: F.b }}>
-                  Federal Reserve Small Business Credit Survey, 2024 &nbsp;·&nbsp;{" "}
                   <a href="https://www.fedsmallbusiness.org/reports/survey/2024/2024-report-on-employer-firms" target="_blank" rel="noopener noreferrer"
-                    style={{ color: C.slate, textDecoration: "none" }}>2024 Report on Employer Firms, p.4 →</a>
+                    style={{ color: C.slate, textDecoration: "none" }}>Federal Reserve Small Business Credit Survey, 2024 — 2024 Report on Employer Firms →</a>
                 </p>
                 <button onClick={() => calcRef.current?.scrollIntoView({ behavior: "smooth" })}
                   style={{ background: C.amber, color: C.white, border: "none", padding: "15px 34px", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: F.b, boxShadow: `0 6px 28px ${C.amber}55` }}>
