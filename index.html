@@ -108,23 +108,26 @@ const WEEKS = 50;
 const n = v => parseFloat(v) || 0;
 
 // ─── COMPASS LOGO SVG ─────────────────────────────────────────────────────────
-function CompassLogo({ size = 40, onDark = true }) {
-  const s = onDark ? C.navy : C.navy;
+function CompassLogo({ size = 40 }) {
+  const scale = size / 80;
   return (
-    <div style={{ background: C.white, borderRadius: "50%", width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}>
-      <svg width={size * 0.72} height={size * 0.72} viewBox="0 0 80 80" fill="none">
-        <circle cx="40" cy="40" r="36" stroke={C.navy} strokeWidth="4" fill="none" opacity="0.2"/>
-        <circle cx="40" cy="40" r="28" stroke={C.slate} strokeWidth="1.5" fill="none" strokeDasharray="5 4" opacity="0.9"/>
-        <circle cx="40" cy="40" r="20" stroke={C.amber} strokeWidth="1.5" fill="none" strokeDasharray="4 4" opacity="0.9"/>
-        <circle cx="40" cy="40" r="12" stroke={C.red} strokeWidth="1.5" fill="none" strokeDasharray="3 4" opacity="0.8"/>
-        <polygon points="40,4 43,36 40,40 37,36" fill={C.navy} opacity="0.95"/>
-        <polygon points="40,76 37,44 40,40 43,44" fill={C.navy} opacity="0.5"/>
-        <polygon points="4,40 36,37 40,40 36,43" fill={C.navy} opacity="0.5"/>
-        <polygon points="76,40 44,43 40,40 44,37" fill={C.navy} opacity="0.95"/>
-        <circle cx="40" cy="40" r="4" fill={C.navy}/>
-        <circle cx="40" cy="4" r="3" fill={C.amber} opacity="0.9"/>
-      </svg>
-    </div>
+    <svg width={size} height={size} viewBox="0 0 80 80" fill="none" style={{ flexShrink: 0 }}>
+      <circle cx="40" cy="40" r="39" fill="none" stroke="white" strokeWidth="2"/>
+      <circle cx="40" cy="40" r="37" fill="#1B2E4B" stroke="#142236" strokeWidth="1"/>
+      <circle cx="40" cy="40" r="27" stroke="#3D6B9E" strokeWidth="1.2" fill="none" strokeDasharray="5 4" opacity="0.7"/>
+      <circle cx="40" cy="40" r="18" stroke="#C8701A" strokeWidth="1.2" fill="none" strokeDasharray="4 4" opacity="0.7"/>
+      <circle cx="40" cy="40" r="10" stroke="#B84C2E" strokeWidth="1.2" fill="none" strokeDasharray="3 4" opacity="0.65"/>
+      <line x1="40" y1="3" x2="40" y2="10" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
+      <line x1="40" y1="70" x2="40" y2="77" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
+      <line x1="3" y1="40" x2="10" y2="40" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
+      <line x1="70" y1="40" x2="77" y2="40" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
+      <polygon points="40,7 42.5,36 40,40 37.5,36" fill="white" opacity="0.95"/>
+      <polygon points="40,73 37.5,44 40,40 42.5,44" fill="white" opacity="0.35"/>
+      <polygon points="73,40 44,42.5 40,40 44,37.5" fill="white" opacity="0.35"/>
+      <polygon points="7,40 36,37.5 40,40 36,42.5" fill="white" opacity="0.95"/>
+      <circle cx="40" cy="40" r="3.5" fill="white" opacity="0.9"/>
+      <circle cx="40" cy="7" r="2.5" fill="#C8701A" opacity="0.95"/>
+    </svg>
   );
 }
 
