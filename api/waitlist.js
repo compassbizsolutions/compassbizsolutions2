@@ -55,6 +55,16 @@ module.exports = async function handler(req, res) {
       created_at: now,
     });
 
+    // Also save as a lead record so it shows in admin People view
+    await saveToKV("lead:" + emailKey, {
+      email,
+      name: name || "",
+      trade: trade || "",
+      source: "app_waitlist",
+      status: "waitlist",
+      created_at: now,
+    });
+
     // Confirm email to user
     const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
