@@ -302,7 +302,7 @@ function Nav({ page, setPage, calcRef, setIntakePlan, paddle }) {
           </div>
 
           {/* Plans — mobile only (desktop has Stop the Leaks dropdown in nav bar) */}
-          <div className="nav-mobile" style={{ borderTop:"1px solid rgba(255,255,255,0.08)", margin:"8px 0 4px", paddingTop:8, flexDirection:"column" }}>
+          <div className="nav-mobile" style={{ borderTop:"1px solid rgba(255,255,255,0.08)", margin:"8px 0 4px", paddingTop:8 }}>
             <div style={{ fontSize:10, color:"rgba(255,255,255,0.3)", fontWeight:700, letterSpacing:2, fontFamily:F.b, padding:"4px 16px 8px" }}>STOP THE LEAKS</div>
             {[
               { label:"FixKit 30/60/90 Bundle — $599", desc:"All 10 leaks, 90-day plan, full portal. Best value.", onClick:goIntakeBundle, tag:"BEST VALUE" },
@@ -341,7 +341,6 @@ function Nav({ page, setPage, calcRef, setIntakePlan, paddle }) {
 
           </div>
 
-        </div>
         </div>
       </div>
     </nav>
