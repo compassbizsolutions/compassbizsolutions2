@@ -1547,7 +1547,46 @@ function DiagnosticTool({ setPage, paddle }) {
             <div style={{ fontFamily: F.d, fontSize: 11, fontWeight: 700, color: C.amber, letterSpacing: 2, marginBottom: 8 }}>WHAT HAPPENS NEXT</div>
             <p style={{ fontFamily: F.b, fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 16px" }}>{g("HOW_WE_HELP") || "We can build you a customized action plan with only the guides and templates that fix your specific leaks — nothing you don't need."}</p>
 
-            {/* $99 Snapshot — full width above the two FixKit options */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }} className="calc-grid">
+              <PlanCard
+                price="$599"
+                label="FixKit 30/60/90 Bundle"
+                accentColor={C.amber}
+                bg="rgba(200,112,26,0.12)"
+                border="1px solid rgba(200,112,26,0.3)"
+                btnBg={C.amber}
+                btnLabel="Best Value"
+                onBuy={function() { paddle("PADDLE_LINK_599", "Complete 30/60/90 Plan — $599"); }}
+                items={[
+                  "All three phases — 90 days fully planned",
+                  "Everything in the 30-day plan × 3",
+                  "Biggest leaks first, next tier second, rest third",
+                  "One portal, one payment, all 90 days",
+                  "$499 if upgrading from the Snapshot",
+                ]}
+                footer="$599 one time · Saves $298 · Best value"
+              />
+              <PlanCard
+                price="$299"
+                label="FixKit 30-Day Plan"
+                accentColor={C.amber}
+                bg="rgba(200,112,26,0.06)"
+                border="1px solid rgba(200,112,26,0.2)"
+                btnBg="rgba(200,112,26,0.45)"
+                btnLabel="Get Started"
+                onBuy={function() { paddle("PADDLE_LINK_249_30DAY", "30-Day Plan — $299"); }}
+                items={[
+                  "Personalized 30-day plan — daily 15-20 min tasks",
+                  "Built-in trackers, calculators, and progress dashboard",
+                  "Personalized 30-day action plan + 9 process templates for your trade",
+                  "Ask Jen AI chat — 24/7 support with your context",
+                  "$199 if upgrading from the Snapshot",
+                ]}
+                footer="$299 · Or save $298 with the bundle"
+              />
+            </div>
+
+            {/* $99 Snapshot — below the two FixKit options */}
             <div style={{ background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:10, padding:"14px 16px", marginBottom:10, display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:12 }}>
               <div style={{ flex:1, minWidth:200 }}>
                 <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:6 }}>
@@ -1562,45 +1601,6 @@ function DiagnosticTool({ setPage, paddle }) {
                 style={{ background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.2)", color:"white", padding:"10px 20px", borderRadius:8, fontSize:13, fontWeight:700, fontFamily:F.b, cursor:"pointer", whiteSpace:"nowrap" }}>
                 Get My Snapshot — $99
               </button>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }} className="calc-grid">
-              <PlanCard
-                price="$299"
-                label="FixKit 30-Day Plan"
-                accentColor={C.amber}
-                bg="rgba(200,112,26,0.12)"
-                border="1px solid rgba(200,112,26,0.3)"
-                btnBg={C.amber}
-                btnLabel="Get Started"
-                onBuy={function() { paddle("PADDLE_LINK_249_30DAY", "30-Day Plan — $299"); }}
-                items={[
-                  "Personalized 30-day plan — daily 15-20 min tasks",
-                  "Built-in trackers, calculators, and progress dashboard",
-                  "Personalized 30-day action plan + 9 process templates for your trade",
-                  "Ask Jen AI chat — 24/7 support with your context",
-                  "$199 if upgrading from the Snapshot",
-                ]}
-                footer="$299 · Or save $298 with the bundle"
-              />
-              <PlanCard
-                price="$599"
-                label="FixKit 30/60/90 Bundle"
-                accentColor={C.amber}
-                bg="rgba(200,112,26,0.06)"
-                border="1px solid rgba(200,112,26,0.2)"
-                btnBg="rgba(200,112,26,0.45)"
-                btnLabel="Best Value"
-                onBuy={function() { paddle("PADDLE_LINK_599", "Complete 30/60/90 Plan — $599"); }}
-                items={[
-                  "All three phases — 90 days fully planned",
-                  "Everything in the 30-day plan × 3",
-                  "Biggest leaks first, next tier second, rest third",
-                  "One portal, one payment, all 90 days",
-                  "$499 if upgrading from the Snapshot",
-                ]}
-                footer="$599 one time · Saves $298 · Best value"
-              />
             </div>
             <button onClick={function() { window.open("https://calendly.com/jvoiselle612-s9gb/free-scoping-call", "_blank"); }} style={{ width: "100%", background: "none", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.4)", padding: "10px", borderRadius: 7, fontSize: 12, fontFamily: F.b, cursor: "pointer" }}>Want us to do it for you? Book a free call</button>
             <button onClick={function() { setPage("services"); window.scrollTo(0,0); }} style={{ width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.25)", padding: "6px", fontSize: 11, fontFamily: F.b, cursor: "pointer", textDecoration: "underline" }}>See all services and pricing →</button>
@@ -2366,22 +2366,23 @@ function WhatWeDoPage({ setPage, calcRef }) {
       action: function(setPage, calcRef) { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }
     },
     {
-      icon: "📄",
-      title: "DIY PROFIT LEAK SNAPSHOT",
-      tag: "$99",
-      tagColor: C.navy,
-      short: "Your top 3 leaks, the math, and exactly how to fix them — in a PDF you keep.",
-      intro: "Answer the same in-depth questions as FixKit. We identify your three biggest profit leaks and build you a personalized PDF report with:",
+      icon: "📈",
+      title: "FIXKIT — COMPLETE 30/60/90-DAY PLAN",
+      tag: "$599 — saves $298",
+      tagColor: C.amber,
+      short: "All three phases. Fully sequenced. Everything in one portal. Best value.",
+      intro: "We rank all 10 leak categories for your specific business and sequence them across three phases — your biggest issues first, next tier second, remaining third:",
       bullets: [
-        "Your top 3 leaks ranked by dollar impact — specific to your trade and your numbers",
-        "The exact math showing what each leak costs you annually",
-        "Step-by-step fix instructions for each one — not generic advice",
-        "A 'do this first' action for each leak you can start this week",
-        "Includes a $100 upgrade credit toward FixKit if you want the full experience later",
+        "Days 1-30 — top leaks, daily plan, calculators, guides, and process docs",
+        "Days 31-60 — next tier of leaks with their own day-by-day plan",
+        "Days 61-90 — remaining leaks closed out with a final set of docs",
+        "Everything in one portal from day one — no waiting for phases to unlock",
+        "Full before/after dashboard across all 90 days",
+        "Saves $298 vs buying each phase separately",
+        "$100 off if upgrading from the DIY Snapshot",
       ],
-      closing: "No portal, no daily tasks, no subscription. Just your numbers, your leaks, and what to do about them — in a printable PDF you keep forever.",
-      cta: "Get My Snapshot — $99",
-      action: function() { window.location.href = "/?buy=snapshot"; }
+      cta: "Get the Full Bundle — $599",
+      action: function(setPage, calcRef) { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }
     },
     {
       icon: "📋",
@@ -2403,23 +2404,22 @@ function WhatWeDoPage({ setPage, calcRef }) {
       action: function(setPage, calcRef) { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }
     },
     {
-      icon: "📈",
-      title: "FIXKIT — COMPLETE 30/60/90-DAY PLAN",
-      tag: "$599 — saves $298",
-      tagColor: C.amber,
-      short: "All three phases. Fully sequenced. Everything in one portal. Best value.",
-      intro: "We rank all 10 leak categories for your specific business and sequence them across three phases — your biggest issues first, next tier second, remaining third:",
+      icon: "📄",
+      title: "DIY PROFIT LEAK SNAPSHOT",
+      tag: "$99",
+      tagColor: C.navy,
+      short: "Your top 3 leaks, the math, and exactly how to fix them — in a PDF you keep.",
+      intro: "Answer the same in-depth questions as FixKit. We identify your three biggest profit leaks and build you a personalized PDF report with:",
       bullets: [
-        "Days 1-30 — top leaks, daily plan, calculators, guides, and process docs",
-        "Days 31-60 — next tier of leaks with their own day-by-day plan",
-        "Days 61-90 — remaining leaks closed out with a final set of docs",
-        "Everything in one portal from day one — no waiting for phases to unlock",
-        "Full before/after dashboard across all 90 days",
-        "Saves $298 vs buying each phase separately",
-        "$100 off if upgrading from the DIY Snapshot",
+        "Your top 3 leaks ranked by dollar impact — specific to your trade and your numbers",
+        "The exact math showing what each leak costs you annually",
+        "Step-by-step fix instructions for each one — not generic advice",
+        "A 'do this first' action for each leak you can start this week",
+        "Includes a $100 upgrade credit toward FixKit if you want the full experience later",
       ],
-      cta: "Get the Full Bundle — $599",
-      action: function(setPage, calcRef) { setPage("home"); setTimeout(function() { calcRef?.current?.scrollIntoView({ behavior: "smooth" }); }, 100); }
+      closing: "No portal, no daily tasks, no subscription. Just your numbers, your leaks, and what to do about them — in a printable PDF you keep forever.",
+      cta: "Get My Snapshot — $99",
+      action: function() { window.location.href = "/?buy=snapshot"; }
     },
     {
       icon: "🛠️",
@@ -2441,7 +2441,7 @@ function WhatWeDoPage({ setPage, calcRef }) {
     {
       icon: "📱",
       title: "THE COMPASS APP — IN DEVELOPMENT",
-      tag: "Early access opening soon",
+      tag: "",
       tagColor: C.slate,
       short: "Run your whole operation — quoting, dispatch, invoicing, inventory, payroll — with the Compass profit methodology built in.",
       intro: "Most field service apps are just scheduling and invoicing tools with no business intelligence. The Compass App is built differently — every workflow is designed around protecting your margins:",
