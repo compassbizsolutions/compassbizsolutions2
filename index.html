@@ -60,9 +60,11 @@
     .flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:860px;align-items:start;}
     .nav-desktop{display:flex;}
     .nav-mobile{display:none;}
+    .nav-dropdown-panel{background:#0d1c2eFA;padding:8px 16px 24px;display:flex;flex-direction:column;gap:2px;width:clamp(280px,25vw,380px);}
     @media(max-width:700px){
       .nav-desktop{display:none!important;}
       .nav-mobile{display:flex!important;}
+      .nav-dropdown-panel{width:50vw!important;min-width:240px;}
       .calc-grid{grid-template-columns:1fr!important;}
       .flow-grid{grid-template-columns:1fr!important;}
       section{padding-left:16px!important;padding-right:16px!important;}
@@ -285,7 +287,9 @@ function Nav({ page, setPage, calcRef, setIntakePlan, paddle }) {
 
       {/* Dropdown — desktop hamburger + mobile full menu */}
       <div style={{ maxHeight:open?640:0, overflow:"hidden", transition:"max-height 0.35s ease" }}>
-        <div style={{ padding:"8px 16px 24px", display:"flex", flexDirection:"column", gap:2, borderTop:"1px solid rgba(61,107,158,0.2)" }}>
+        <div style={{ display:"flex", justifyContent:"flex-end" }}>
+          <div style={{ width:"clamp(280px, 25vw, 380px)", borderTop:"1px solid rgba(61,107,158,0.2)" }}
+            className="nav-dropdown-panel">
 
           {/* Page links — mobile only */}
           <div className="nav-mobile">
@@ -297,8 +301,8 @@ function Nav({ page, setPage, calcRef, setIntakePlan, paddle }) {
             ))}
           </div>
 
-          {/* Plans */}
-          <div style={{ borderTop:"1px solid rgba(255,255,255,0.08)", margin:"8px 0 4px", paddingTop:8 }}>
+          {/* Plans — mobile only (desktop has Stop the Leaks dropdown in nav bar) */}
+          <div className="nav-mobile" style={{ borderTop:"1px solid rgba(255,255,255,0.08)", margin:"8px 0 4px", paddingTop:8, flexDirection:"column" }}>
             <div style={{ fontSize:10, color:"rgba(255,255,255,0.3)", fontWeight:700, letterSpacing:2, fontFamily:F.b, padding:"4px 16px 8px" }}>STOP THE LEAKS</div>
             {[
               { label:"FixKit 30/60/90 Bundle — $599", desc:"All 10 leaks, 90-day plan, full portal. Best value.", onClick:goIntakeBundle, tag:"BEST VALUE" },
@@ -335,6 +339,9 @@ function Nav({ page, setPage, calcRef, setIntakePlan, paddle }) {
             </div>
           </div>
 
+          </div>
+
+        </div>
         </div>
       </div>
     </nav>
