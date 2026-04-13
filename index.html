@@ -2601,10 +2601,10 @@ function HeroSection({ calcRef }) {
   const [lightbox, setLightbox] = React.useState(null);
 
   const imgs = [
-    { src:"/images/snap2.png", top:"4%",  left:"1%",  width:"45%", transform:"rotate(-2.5deg)", zIndex:1, maxHeight:"50%" },
-    { src:"/images/snap1.png", top:"2%",  left:"48%", width:"50%", transform:"rotate(2deg)",    zIndex:2, maxHeight:"54%" },
-    { src:"/images/snap3.png", top:"46%", left:"3%",  width:"42%", transform:"rotate(1.5deg)",  zIndex:1, maxHeight:"45%" },
-    { src:"/images/snap4.png", top:"44%", left:"49%", width:"47%", transform:"rotate(-1.5deg)", zIndex:2, maxHeight:"46%" },
+    { src:"/images/snap2.png", top:"4%",  left:"1%",  width:"45%", transform:"rotate(-2.5deg)", zIndex:1, maxHeight:"50%", clip:false },
+    { src:"/images/snap1.png", top:"2%",  left:"48%", width:"50%", transform:"rotate(2deg)",    zIndex:2, maxHeight:"54%", clip:false },
+    { src:"/images/fix1.png",  top:"46%", left:"3%",  width:"42%", transform:"rotate(1.5deg)",  zIndex:1, maxHeight:"45%", clip:false },
+    { src:"/images/snap3.png", top:"44%", left:"49%", width:"52%", transform:"rotate(-1.5deg)", zIndex:2, maxHeight:"46%", clip:true  },
   ];
 
   return (
@@ -2627,6 +2627,7 @@ function HeroSection({ calcRef }) {
               maxHeight:img.maxHeight, objectFit:"cover", borderRadius:10,
               boxShadow:"0 8px 32px rgba(0,0,0,0.55)", transform:img.transform,
               zIndex:img.zIndex, cursor:"zoom-in", transition:"transform 0.2s, box-shadow 0.2s",
+              clipPath: img.clip ? "inset(0 8% 0 0 round 10px)" : undefined,
             }}
             onMouseEnter={e => { e.currentTarget.style.transform = img.transform + " scale(1.03)"; e.currentTarget.style.boxShadow = "0 16px 48px rgba(0,0,0,0.7)"; e.currentTarget.style.zIndex = 10; }}
             onMouseLeave={e => { e.currentTarget.style.transform = img.transform; e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.55)"; e.currentTarget.style.zIndex = img.zIndex; }}
@@ -2634,8 +2635,8 @@ function HeroSection({ calcRef }) {
         ))}
       </div>
 
-      {/* Gradient overlay — heavier at bottom so text sits clearly in dark zone */}
-      <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(13,28,46,0.99) 0%, rgba(13,28,46,0.95) 28%, rgba(13,28,46,0.65) 52%, rgba(13,28,46,0.15) 75%, transparent 100%)", zIndex:3, pointerEvents:"none" }} />
+      {/* Gradient overlay — lighter so images show through more */}
+      <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(13,28,46,0.96) 0%, rgba(13,28,46,0.88) 25%, rgba(13,28,46,0.5) 50%, rgba(13,28,46,0.1) 72%, transparent 100%)", zIndex:3, pointerEvents:"none" }} />
 
       {/* Text — anchored to bottom */}
       <div style={{ position:"relative", zIndex:4, width:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"0 24px 52px", textAlign:"center" }}>
