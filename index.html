@@ -2981,13 +2981,11 @@ function UpgradeModal({ onClose, preEmail, onProceed }) {
 
 function PreCheckoutModal({ priceId, label, preEmail, setPreEmail, preEmailErr, setPreEmailErr, onCancel, onProceed }) {
   const [checking, setChecking] = React.useState(false);
-  const [existingCustomer, setExistingCustomer] = React.useState(null); // null | { name }
-
+  const [existingCustomer, setExistingCustomer] = React.useState(null);
   async function checkAndProceed(email) {
     if (!email.trim() || !email.includes("@")) { setPreEmailErr("Please enter a valid email."); return; }
     setChecking(true);
     try {
-      // Check if email already has a FixKit account
       const r = await fetch("https://fixkit.compassbizsolutions.com/api/check-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -2999,9 +2997,7 @@ function PreCheckoutModal({ priceId, label, preEmail, setPreEmail, preEmailErr, 
         setChecking(false);
         return;
       }
-    } catch(e) {
-      // If check fails, just proceed — don't block checkout
-    }
+    } catch(e) {}
     setChecking(false);
     onProceed(email.trim());
   }
@@ -3223,7 +3219,7 @@ function App() {
                 <div style={{ fontSize: 56, marginBottom: 16 }}>📄</div>
                 <div style={{ fontFamily: F.d, fontSize: 28, fontWeight: 800, color: C.ink, marginBottom: 12 }}>SNAPSHOT CONFIRMED</div>
                 <p style={{ fontFamily: F.b, fontSize: 15, color: C.body, lineHeight: 1.8, marginBottom: 8 }}>
-                  You're all set{purchaseComplete.email ? ", " + purchaseComplete.email.split("@")[0] : ""}. Head to your Profit Leak Snapshot portal to complete your intake and build your report.
+                  You're all set! Head to your Profit Leak Snapshot portal to complete your intake and build your report.
                 </p>
                 <p style={{ fontFamily: F.b, fontSize: 13, color: C.muted, lineHeight: 1.7, marginBottom: 24 }}>
                   We sent a welcome email with your link. Log into FixKit with this email address — your Snapshot intake is waiting. Takes about 10 minutes and the report generates immediately.
@@ -3241,7 +3237,7 @@ function App() {
                 <div style={{ fontSize: 56, marginBottom: 16 }}>🎉</div>
                 <div style={{ fontFamily: F.d, fontSize: 28, fontWeight: 800, color: C.ink, marginBottom: 12 }}>PAYMENT CONFIRMED</div>
                 <p style={{ fontFamily: F.b, fontSize: 15, color: C.body, lineHeight: 1.8, marginBottom: 8 }}>
-                  You're in{purchaseComplete.email ? ", " + purchaseComplete.email.split("@")[0] : ""}. Your plan is waiting in your Profit Leak FixKit portal.
+                  You're in! Your plan is waiting in your Profit Leak FixKit portal.
                 </p>
                 <p style={{ fontFamily: F.b, fontSize: 13, color: C.muted, lineHeight: 1.7, marginBottom: 24 }}>
                   We sent a welcome email with your link. Head to your FixKit portal now to create your password and build your plan.
