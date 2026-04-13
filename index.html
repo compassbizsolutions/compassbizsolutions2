@@ -2597,84 +2597,49 @@ function ServiceCard({ svc, setPage, calcRef, openWaitlist }) {
 }
 
 // ─── FOOTER ───────────────────────────────────────────────────────────────────
-function HeroCarousel({ calcRef }) {
-  const [slide, setSlide] = React.useState(0);
-  const [fading, setFading] = React.useState(false);
-  const timerRef = React.useRef(null);
+function HeroSection({ calcRef }) {
+  const [lightbox, setLightbox] = React.useState(null);
 
-  const slides = [
-    {
-      imgs: ["/images/snap2.png", "/images/snap1.png", "/images/snap3.png", "/images/snap4.png"],
-      positions: [
-        { top:"5%",  left:"1%",  width:"45%", transform:"rotate(-2.5deg)", zIndex:1, maxHeight:"50%" },
-        { top:"3%",  left:"48%", width:"50%", transform:"rotate(2deg)",    zIndex:2, maxHeight:"54%" },
-        { top:"47%", left:"4%",  width:"42%", transform:"rotate(1.5deg)",  zIndex:1, maxHeight:"45%" },
-        { top:"45%", left:"49%", width:"47%", transform:"rotate(-1.5deg)", zIndex:2, maxHeight:"46%" },
-      ],
-      headline: <span>THE AVERAGE HVAC, PLUMBING, OR ELECTRICAL SHOP NETS <span style={{color:C.amber}}>2–5% PROFIT.</span></span>,
-      sub: "On a million dollars in revenue, that's $20,000–$50,000 in your pocket. We find where the rest went.",
-      sourceLabel: "Source: ServiceTitan · HVAC Profit Margins: Industry Benchmarks →",
-      sourceUrl: "https://www.servicetitan.com/blog/hvac-profit-margins",
-    },
-    {
-      imgs: ["/images/fix1.png", "/images/fix2.png", "/images/fix3.png", "/images/fix4.png"],
-      positions: [
-        { top:"4%",  left:"1%",  width:"48%", transform:"rotate(-2deg)",   zIndex:2, maxHeight:"56%" },
-        { top:"3%",  left:"51%", width:"46%", transform:"rotate(2deg)",    zIndex:1, maxHeight:"50%" },
-        { top:"47%", left:"3%",  width:"44%", transform:"rotate(1.5deg)",  zIndex:1, maxHeight:"44%" },
-        { top:"45%", left:"50%", width:"46%", transform:"rotate(-1.5deg)", zIndex:2, maxHeight:"44%" },
-      ],
-      headline: <span>MOST SERVICE SHOPS LEAVE <span style={{color:C.amber}}>$40,000–$60,000</span> ON THE TABLE EVERY YEAR.</span>,
-      sub: "Not from bad work. From gaps in how the business runs.",
-      sourceLabel: "Source: Profitability Partners · What a PE Buyer Sees After Reviewing 200+ Contractor P&Ls →",
-      sourceUrl: "https://profitabilitypartners.io/hvac-profit-margins/",
-    },
+  const imgs = [
+    { src:"/images/snap2.png", top:"4%",  left:"1%",  width:"45%", transform:"rotate(-2.5deg)", zIndex:1, maxHeight:"50%" },
+    { src:"/images/snap1.png", top:"2%",  left:"48%", width:"50%", transform:"rotate(2deg)",    zIndex:2, maxHeight:"54%" },
+    { src:"/images/snap3.png", top:"46%", left:"3%",  width:"42%", transform:"rotate(1.5deg)",  zIndex:1, maxHeight:"45%" },
+    { src:"/images/snap4.png", top:"44%", left:"49%", width:"47%", transform:"rotate(-1.5deg)", zIndex:2, maxHeight:"46%" },
   ];
 
-  function goTo(n) {
-    if (n === slide) return;
-    setFading(true);
-    setTimeout(() => { setSlide(n); setFading(false); }, 350);
-    clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => goTo((n + 1) % slides.length), 7000);
-  }
-
-  React.useEffect(() => {
-    timerRef.current = setInterval(() => {
-      setSlide(s => (s + 1) % slides.length);
-    }, 7000);
-    return () => clearInterval(timerRef.current);
-  }, []);
-
-  const s = slides[slide];
-
   return (
-    <section style={{ position:"relative", overflow:"hidden", minHeight:520, background:`linear-gradient(160deg, ${C.navyDark} 0%, ${C.navy} 100%)`, display:"flex", alignItems:"stretch" }}>
+    <section style={{ position:"relative", overflow:"hidden", minHeight:560, background:`linear-gradient(160deg, ${C.navyDark} 0%, ${C.navy} 100%)`, display:"flex", alignItems:"stretch" }}>
 
-      {/* Collage background */}
-      <div style={{ position:"absolute", inset:0, opacity: fading ? 0 : 0.5, transition:"opacity 0.35s ease" }}>
-        {s.imgs.map((src, i) => (
-          <img key={i} src={src} alt="" style={{
-            position:"absolute",
-            top: s.positions[i].top,
-            left: s.positions[i].left,
-            width: s.positions[i].width,
-            maxHeight: s.positions[i].maxHeight,
-            objectFit:"cover",
-            borderRadius:10,
-            boxShadow:"0 8px 32px rgba(0,0,0,0.55)",
-            transform: s.positions[i].transform,
-            zIndex: s.positions[i].zIndex,
-          }} />
+      {/* Lightbox */}
+      {lightbox !== null && (
+        <div onClick={() => setLightbox(null)} style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.85)", zIndex:1000, display:"flex", alignItems:"center", justifyContent:"center", cursor:"zoom-out", padding:24 }}>
+          <img src={imgs[lightbox].src} alt="" style={{ maxWidth:"90vw", maxHeight:"90vh", borderRadius:12, boxShadow:"0 24px 80px rgba(0,0,0,0.8)", objectFit:"contain" }} onClick={e => e.stopPropagation()} />
+          <button onClick={() => setLightbox(null)} style={{ position:"absolute", top:20, right:24, background:"none", border:"none", color:"white", fontSize:32, cursor:"pointer", lineHeight:1 }}>×</button>
+        </div>
+      )}
+
+      {/* Collage */}
+      <div style={{ position:"absolute", inset:0, opacity:0.52 }}>
+        {imgs.map((img, i) => (
+          <img key={i} src={img.src} alt="" onClick={() => setLightbox(i)}
+            style={{
+              position:"absolute", top:img.top, left:img.left, width:img.width,
+              maxHeight:img.maxHeight, objectFit:"cover", borderRadius:10,
+              boxShadow:"0 8px 32px rgba(0,0,0,0.55)", transform:img.transform,
+              zIndex:img.zIndex, cursor:"zoom-in", transition:"transform 0.2s, box-shadow 0.2s",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.transform = img.transform + " scale(1.03)"; e.currentTarget.style.boxShadow = "0 16px 48px rgba(0,0,0,0.7)"; e.currentTarget.style.zIndex = 10; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = img.transform; e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.55)"; e.currentTarget.style.zIndex = img.zIndex; }}
+          />
         ))}
       </div>
 
-      {/* Gradient overlay — dark at bottom for text legibility */}
-      <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(13,28,46,0.98) 0%, rgba(13,28,46,0.85) 35%, rgba(13,28,46,0.3) 65%, rgba(13,28,46,0.1) 100%)", zIndex:3, pointerEvents:"none" }} />
+      {/* Gradient overlay — heavier at bottom so text sits clearly in dark zone */}
+      <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(13,28,46,0.99) 0%, rgba(13,28,46,0.95) 28%, rgba(13,28,46,0.65) 52%, rgba(13,28,46,0.15) 75%, transparent 100%)", zIndex:3, pointerEvents:"none" }} />
 
-      {/* Text content */}
-      <div style={{ position:"relative", zIndex:4, width:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"0 24px 48px", textAlign:"center" }}>
-        <div style={{ maxWidth:660, margin:"0 auto", opacity: fading ? 0 : 1, transition:"opacity 0.35s ease" }}>
+      {/* Text — anchored to bottom */}
+      <div style={{ position:"relative", zIndex:4, width:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"0 24px 52px", textAlign:"center" }}>
+        <div style={{ maxWidth:660, margin:"0 auto" }}>
 
           <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(61,107,158,0.2)", border:"1px solid rgba(61,107,158,0.35)", borderRadius:99, padding:"5px 16px", marginBottom:18 }}>
             <div style={{ width:6, height:6, borderRadius:"50%", background:C.amber }} />
@@ -2682,16 +2647,16 @@ function HeroCarousel({ calcRef }) {
           </div>
 
           <h1 style={{ fontFamily:F.d, fontSize:"clamp(26px,5vw,54px)", fontWeight:800, color:C.white, letterSpacing:1, lineHeight:1.05, marginBottom:14 }}>
-            {s.headline}
+            THE AVERAGE HVAC, PLUMBING, OR ELECTRICAL SHOP NETS <span style={{color:C.amber}}>2–5% PROFIT.</span>
           </h1>
 
           <p style={{ color:"rgba(255,255,255,0.5)", fontSize:16, lineHeight:1.8, maxWidth:500, margin:"0 auto 10px", fontFamily:F.b }}>
-            {s.sub}
+            On a million dollars in revenue, that's $20,000–$50,000 in your pocket. We find where the rest went.
           </p>
 
-          <a href={s.sourceUrl} target="_blank" rel="noopener noreferrer"
-            style={{ display:"inline-block", marginBottom:28, fontSize:11, color:"rgba(255,255,255,0.22)", fontFamily:F.b, textDecoration:"none", letterSpacing:0.5, borderBottom:"1px solid rgba(255,255,255,0.12)", paddingBottom:1 }}>
-            {s.sourceLabel}
+          <a href="https://www.servicetitan.com/blog/hvac-profit-margins" target="_blank" rel="noopener noreferrer"
+            style={{ display:"inline-block", marginBottom:30, fontSize:11, color:"rgba(255,255,255,0.22)", fontFamily:F.b, textDecoration:"none", letterSpacing:0.5, borderBottom:"1px solid rgba(255,255,255,0.12)", paddingBottom:1 }}>
+            Source: ServiceTitan · HVAC Profit Margins: Industry Benchmarks →
           </a>
 
           <div>
@@ -2701,26 +2666,8 @@ function HeroCarousel({ calcRef }) {
             </button>
           </div>
 
-          {/* Dots */}
-          <div style={{ display:"flex", justifyContent:"center", gap:8, marginTop:22 }}>
-            {slides.map((_, i) => (
-              <button key={i} onClick={() => goTo(i)} style={{
-                width: i === slide ? 24 : 8, height:8,
-                borderRadius:99, border:"none", cursor:"pointer", padding:0,
-                background: i === slide ? C.amber : "rgba(255,255,255,0.25)",
-                transition:"all 0.3s",
-              }} />
-            ))}
-          </div>
         </div>
       </div>
-
-      {/* Prev / Next arrows */}
-      <button onClick={() => goTo((slide - 1 + slides.length) % slides.length)}
-        style={{ position:"absolute", left:14, top:"50%", transform:"translateY(-50%)", zIndex:5, background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.2)", color:"white", width:36, height:36, borderRadius:"50%", cursor:"pointer", fontSize:18, display:"flex", alignItems:"center", justifyContent:"center" }}>‹</button>
-      <button onClick={() => goTo((slide + 1) % slides.length)}
-        style={{ position:"absolute", right:14, top:"50%", transform:"translateY(-50%)", zIndex:5, background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.2)", color:"white", width:36, height:36, borderRadius:"50%", cursor:"pointer", fontSize:18, display:"flex", alignItems:"center", justifyContent:"center" }}>›</button>
-
     </section>
   );
 }
@@ -3276,8 +3223,8 @@ function App() {
         {page === "home" && (
           <div style={{ paddingTop: 64 }}>
 
-            {/* 1 — HERO CAROUSEL */}
-            <HeroCarousel calcRef={calcRef} />
+            {/* 1 — HERO */}
+            <HeroSection calcRef={calcRef} />
 
             {/* 1b — VIDEO SECTION */}
             <section style={{ background: "#4E6075", padding: "56px 24px 56px" }}>
