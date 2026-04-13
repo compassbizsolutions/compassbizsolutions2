@@ -61,12 +61,14 @@
     .nav-desktop{display:flex;}
     .nav-mobile{display:none;}
     .nav-dropdown-panel{background:#0d1c2eFA;padding:8px 16px 24px;display:flex;flex-direction:column;gap:2px;width:clamp(280px,25vw,380px);}
+    .leak-report-grid{grid-template-columns:1fr 1fr;}
     @media(max-width:700px){
       .nav-desktop{display:none!important;}
       .nav-mobile{display:flex!important;}
       .nav-dropdown-panel{width:50vw!important;min-width:240px;}
       .calc-grid{grid-template-columns:1fr!important;}
       .flow-grid{grid-template-columns:1fr!important;}
+      .leak-report-grid{grid-template-columns:1fr!important;}
       section{padding-left:16px!important;padding-right:16px!important;}
     }
   </style>
@@ -2658,47 +2660,66 @@ function HeroSection({ calcRef }) {
         </div>
       </div>
 
-      {/* 11 Leak Categories */}
-      <div style={{ position:"relative", zIndex:2, padding:"0 24px 0", marginTop:8 }}>
-        {/* Fade top edge into navy */}
+      {/* 11 Leak Categories — report style */}
+      <div style={{ position:"relative", zIndex:2, padding:"0 24px 48px", marginTop:8 }}>
         <div style={{ position:"absolute", top:0, left:0, right:0, height:60, background:`linear-gradient(to bottom, ${C.navy}, transparent)`, zIndex:3, pointerEvents:"none" }} />
-        <div style={{ maxWidth:860, margin:"0 auto" }}>
-          <div style={{ fontFamily:F.b, fontSize:10, fontWeight:700, color:"rgba(255,255,255,0.25)", letterSpacing:3, textAlign:"center", marginBottom:10 }}>
-            ESTIMATED ANNUAL PROFIT LEAK — 4-MAN / 2-TRUCK SHOP / MODERATE ISSUES
+        <div style={{ maxWidth:780, margin:"0 auto" }}>
+
+          {/* Report header */}
+          <div style={{ background:C.navy, borderRadius:"12px 12px 0 0", padding:"18px 28px", borderBottom:"1px solid rgba(200,112,26,0.3)" }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:8 }}>
+              <div>
+                <div style={{ fontFamily:F.b, fontSize:10, fontWeight:700, color:"rgba(255,255,255,0.35)", letterSpacing:3, marginBottom:4 }}>COMPASS BUSINESS SOLUTIONS</div>
+                <div style={{ fontFamily:F.d, fontSize:18, fontWeight:800, color:C.white, letterSpacing:1 }}>PROFIT LEAK REPORT</div>
+              </div>
+              <div style={{ textAlign:"right" }}>
+                <div style={{ fontFamily:F.b, fontSize:11, color:"rgba(255,255,255,0.4)" }}>4-Man / 2-Truck Shop</div>
+                <div style={{ fontFamily:F.b, fontSize:11, color:"rgba(255,255,255,0.3)" }}>Moderate Issues — Est. Annual</div>
+              </div>
+            </div>
           </div>
-          <div style={{ fontFamily:F.b, fontSize:14, color:"rgba(255,255,255,0.5)", textAlign:"center", lineHeight:1.7, maxWidth:580, margin:"0 auto 18px" }}>
-            These aren't your profits. These are the dollars already in your jobs that aren't making it to your pocket.
+
+          {/* Description */}
+          <div style={{ background:"rgba(255,255,255,0.04)", borderLeft:"3px solid "+C.amber, padding:"14px 20px", marginBottom:2 }}>
+            <p style={{ fontFamily:F.b, fontSize:13, color:"rgba(255,255,255,0.55)", lineHeight:1.7, margin:0 }}>
+              These aren't your profits. These are the dollars already in your jobs that aren't making it to your pocket. Every category below is a leak — money you earned that didn't survive the trip to your bank account.
+            </p>
           </div>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(200px, 1fr))", gap:8 }}>
+
+          {/* Two-column leak rows */}
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:2 }} className="leak-report-grid">
             {[
-              { cat:"Pricing",                low:18000, high:32000, icon:"💰" },
-              { cat:"Scheduling",             low:12000, high:22000, icon:"📅" },
-              { cat:"Employee Cost",          low:14000, high:26000, icon:"👷" },
-              { cat:"Recurring Revenue",      low:8000,  high:18000, icon:"🔁" },
-              { cat:"Estimate to Invoice",    low:10000, high:20000, icon:"📋" },
-              { cat:"Cash Flow",              low:6000,  high:14000, icon:"🏦" },
-              { cat:"Customer Churn",         low:9000,  high:18000, icon:"🔄" },
-              { cat:"Materials Markup",       low:7000,  high:16000, icon:"🔧" },
-              { cat:"Admin Time Drain",       low:5000,  high:11000, icon:"⏱️" },
-              { cat:"Vehicles & Parts",       low:4000,  high:9000,  icon:"🚛" },
-              { cat:"Safety",                 low:3000,  high:8000,  icon:"⚠️" },
+              { num:"01", cat:"Pricing",             low:18000, high:32000 },
+              { num:"02", cat:"Scheduling",          low:12000, high:22000 },
+              { num:"03", cat:"Employee Cost",       low:14000, high:26000 },
+              { num:"04", cat:"Recurring Revenue",   low:8000,  high:18000 },
+              { num:"05", cat:"Estimate to Invoice", low:10000, high:20000 },
+              { num:"06", cat:"Cash Flow",           low:6000,  high:14000 },
+              { num:"07", cat:"Customer Churn",      low:9000,  high:18000 },
+              { num:"08", cat:"Materials Markup",    low:7000,  high:16000 },
+              { num:"09", cat:"Admin Time Drain",    low:5000,  high:11000 },
+              { num:"10", cat:"Vehicles & Parts",    low:4000,  high:9000  },
+              { num:"11", cat:"Safety",              low:3000,  high:8000  },
             ].map((leak, i) => (
-              <div key={i} style={{ background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:10, padding:"12px 14px", display:"flex", flexDirection:"column", gap:4 }}>
-                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-                  <span style={{ fontFamily:F.b, fontSize:12, fontWeight:700, color:"rgba(255,255,255,0.75)" }}>{leak.cat}</span>
-                  <span style={{ fontSize:14 }}>{leak.icon}</span>
+              <div key={i} style={{ background:"rgba(255,255,255,0.04)", borderBottom:"1px solid rgba(255,255,255,0.06)", padding:"12px 20px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:12 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                  <span style={{ fontFamily:F.d, fontSize:11, fontWeight:700, color:"rgba(255,255,255,0.2)", minWidth:20 }}>{leak.num}</span>
+                  <span style={{ fontFamily:F.b, fontSize:13, fontWeight:600, color:"rgba(255,255,255,0.7)" }}>{leak.cat}</span>
                 </div>
-                <div style={{ fontFamily:F.d, fontSize:16, fontWeight:800, color:C.amber, letterSpacing:0.5 }}>
+                <span style={{ fontFamily:F.d, fontSize:15, fontWeight:800, color:C.amber, whiteSpace:"nowrap" }}>
                   ${(leak.low/1000).toFixed(0)}K–${(leak.high/1000).toFixed(0)}K
-                </div>
-                {/* Bar */}
-                <div style={{ height:3, background:"rgba(255,255,255,0.08)", borderRadius:99, overflow:"hidden" }}>
-                  <div style={{ height:"100%", width:((leak.high/32000)*100)+"%", background:`linear-gradient(to right, ${C.amber}88, ${C.amber})`, borderRadius:99 }} />
-                </div>
+                </span>
               </div>
             ))}
           </div>
-          <div style={{ textAlign:"center", marginTop:12, marginBottom:0, fontFamily:F.b, fontSize:11, color:"rgba(255,255,255,0.2)" }}>
+
+          {/* Total row */}
+          <div style={{ background:C.navy, borderRadius:"0 0 12px 12px", padding:"16px 20px", display:"flex", justifyContent:"space-between", alignItems:"center", borderTop:"2px solid "+C.amber }}>
+            <div style={{ fontFamily:F.d, fontSize:13, fontWeight:700, color:"rgba(255,255,255,0.5)", letterSpacing:1 }}>ESTIMATED TOTAL ANNUAL LEAK</div>
+            <div style={{ fontFamily:F.d, fontSize:22, fontWeight:800, color:C.amber }}>$96K–$194K</div>
+          </div>
+
+          <div style={{ textAlign:"center", marginTop:12, fontFamily:F.b, fontSize:11, color:"rgba(255,255,255,0.2)" }}>
             Estimates based on industry benchmarks. Your actual numbers depend on your trade, size, and current practices.
           </div>
         </div>
