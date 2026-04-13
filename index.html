@@ -196,21 +196,35 @@ function SectionHead({ num, title }) {
 }
 
 // ─── NAV ──────────────────────────────────────────────────────────────────────
-function NavIntakeDropdown({ goIntake30, goIntakeBundle }) {
+function NavPlanDropdown({ goIntake30, goIntakeBundle, goSnapshot }) {
   const [open, setOpen] = useState(false);
+  const plans = [
+    { label:"30/60/90 Bundle", price:"$599", desc:"All 10 leaks across 3 phases. Full 90-day daily plan, calculators, templates, and AI support. Best value.", onClick:goIntakeBundle, tag:"BEST VALUE" },
+    { label:"30-Day Plan", price:"$299", desc:"Your top leaks fixed first. 30 days of daily tasks, built-in tracking, calculators, and Ask Jen AI — 24/7.", onClick:goIntake30, tag:"" },
+    { label:"Profit Leak Snapshot", price:"$99", desc:"Top 3 leaks, the math, and step-by-step fixes in a PDF you keep. Includes $100 upgrade credit.", onClick:goSnapshot, tag:"DIY" },
+  ];
   return (
-    <div style={{ position: "relative" }} onMouseEnter={function() { setOpen(true); }} onMouseLeave={function() { setOpen(false); }}>
-      <button style={{ background: "none", border: "none", color: "rgba(255,255,255,0.45)", padding: "7px 14px", borderRadius: 7, fontSize: 13, fontWeight: 600, fontFamily: F.b, cursor: "pointer", whiteSpace: "nowrap" }}>
-        Get Your Plan ›
+    <div style={{ position:"relative" }} onMouseEnter={()=>setOpen(true)} onMouseLeave={()=>setOpen(false)}>
+      <button style={{ background:"none", border:"none", color:"rgba(255,255,255,0.45)", padding:"7px 14px", borderRadius:7, fontSize:13, fontWeight:600, fontFamily:F.b, cursor:"pointer", whiteSpace:"nowrap" }}>
+        Stop the Leaks ›
       </button>
       {open && (
-        <div style={{ position: "absolute", top: "100%", left: 0, background: C.navyDark, border: "1px solid rgba(61,107,158,0.3)", borderRadius: 10, padding: "8px", minWidth: 220, zIndex: 100, boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}>
-          <div style={{ fontFamily: F.b, fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: 2, padding: "6px 14px 4px", fontWeight: 700 }}>FIXKIT PORTAL</div>
-          <button onClick={goIntakeBundle} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>30/60/90 Bundle — $599</button>
-          <button onClick={goIntake30} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>30-Day Plan — $299</button>
-          <div style={{ height: 1, background: "rgba(255,255,255,0.08)", margin: "4px 8px" }} />
-          <div style={{ fontFamily: F.b, fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: 2, padding: "6px 14px 4px", fontWeight: 700 }}>DIY</div>
-          <button onClick={() => { setOpen(false); window.location.href = "/?buy=snapshot"; }} style={{ display: "block", width: "100%", background: "none", border: "none", color: "rgba(255,255,255,0.7)", padding: "10px 14px", borderRadius: 7, fontSize: 13, fontFamily: F.b, cursor: "pointer", textAlign: "left" }}>Profit Leak Snapshot — $99</button>
+        <div style={{ position:"absolute", top:"100%", left:0, background:C.navyDark, border:"1px solid rgba(61,107,158,0.3)", borderRadius:12, padding:"8px", minWidth:300, zIndex:100, boxShadow:"0 8px 32px rgba(0,0,0,0.4)" }}>
+          {plans.map((p,i) => (
+            <button key={i} onClick={p.onClick}
+              style={{ display:"block", width:"100%", background:"none", border:"none", padding:"12px 14px", borderRadius:8, cursor:"pointer", textAlign:"left" }}
+              onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.06)"}
+              onMouseLeave={e=>e.currentTarget.style.background="none"}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:4 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                  <span style={{ fontFamily:F.b, fontSize:13, fontWeight:700, color:"rgba(255,255,255,0.85)" }}>{p.label}</span>
+                  {p.tag && <span style={{ background:C.amber+"33", color:C.amber, borderRadius:99, padding:"1px 7px", fontSize:9, fontFamily:F.b, fontWeight:700, letterSpacing:1 }}>{p.tag}</span>}
+                </div>
+                <span style={{ fontFamily:F.d, fontSize:14, fontWeight:800, color:C.amber }}>{p.price}</span>
+              </div>
+              <div style={{ fontFamily:F.b, fontSize:11, color:"rgba(255,255,255,0.4)", lineHeight:1.5 }}>{p.desc}</div>
+            </button>
+          ))}
         </div>
       )}
     </div>
@@ -227,99 +241,105 @@ function Nav({ page, setPage, calcRef, setIntakePlan, paddle }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close menu on page change
   const go = (p) => { setPage(p); setOpen(false); };
-  const goScan = () => { setPage("home"); setOpen(false); setTimeout(() => calcRef?.current?.scrollIntoView({ behavior: "smooth" }), 50); };
-
-  const navLinks = [
-    ["about",      "Our Story"],
-    ["profitable", "What Profitable Looks Like"],
-    ["services",   "What We Do"],
-  ];
-
+  const goScan = () => { setPage("home"); setOpen(false); setTimeout(() => calcRef?.current?.scrollIntoView({ behavior:"smooth" }), 50); };
   const goIntake30 = () => { setOpen(false); paddle("PADDLE_LINK_249_30DAY", "30-Day Quick Win Plan — $299"); };
   const goIntakeBundle = () => { setOpen(false); paddle("PADDLE_LINK_599", "Complete 30/60/90 Bundle — $599"); };
+  const goSnapshot = () => { setOpen(false); window.location.href = "/?buy=snapshot"; };
+
+  const navLinks = [["about","Our Story"],["profitable","What Profitable Looks Like"],["services","What We Do"]];
+
+  const BurgerBtn = () => (
+    <button onClick={() => setOpen(o => !o)}
+      style={{ background:"none", border:"none", cursor:"pointer", padding:"4px", display:"flex", flexDirection:"column", gap:5, justifyContent:"center" }}>
+      <span style={{ display:"block", width:22, height:2, background:C.white, borderRadius:2, transition:"all 0.25s", transform:open?"rotate(45deg) translate(5px, 5px)":"none" }} />
+      <span style={{ display:"block", width:22, height:2, background:C.white, borderRadius:2, transition:"all 0.25s", opacity:open?0:1 }} />
+      <span style={{ display:"block", width:22, height:2, background:C.white, borderRadius:2, transition:"all 0.25s", transform:open?"rotate(-45deg) translate(5px, -5px)":"none" }} />
+    </button>
+  );
 
   return (
-    <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: (scrolled || open) ? `${C.navyDark}FA` : "rgba(27,46,75,0.7)", backdropFilter: "blur(12px)", borderBottom: (scrolled || open) ? `1px solid rgba(61,107,158,0.2)` : "none", transition: "all 0.3s" }}>
-
-      {/* Main bar */}
-      <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64, padding: "0 24px" }}>
-
-        {/* Logo */}
-        <button onClick={() => go("home")} style={{ display: "flex", alignItems: "center", gap: 12, background: "none", border: "none", cursor: "pointer", flexShrink: 0 }}>
+    <nav style={{ position:"fixed", top:0, left:0, right:0, zIndex:100, background:(scrolled||open)?`${C.navyDark}FA`:"rgba(27,46,75,0.7)", backdropFilter:"blur(12px)", borderBottom:(scrolled||open)?`1px solid rgba(61,107,158,0.2)`:"none", transition:"all 0.3s" }}>
+      <div style={{ maxWidth:1100, margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"space-between", height:64, padding:"0 24px" }}>
+        <button onClick={() => go("home")} style={{ display:"flex", alignItems:"center", gap:12, background:"none", border:"none", cursor:"pointer", flexShrink:0 }}>
           <CompassLogo size={44} />
-          <div style={{ textAlign: "left" }}>
-            <div style={{ fontFamily: F.d, fontSize: 22, fontWeight: 800, color: C.white, letterSpacing: 2.5, lineHeight: 1 }}>COMPASS</div>
-            <div style={{ fontFamily: F.b, fontSize: 12, color: "rgba(255,255,255,0.6)", letterSpacing: 1.5, marginTop: 3 }}>BUSINESS SOLUTIONS</div>
+          <div style={{ textAlign:"left" }}>
+            <div style={{ fontFamily:F.d, fontSize:22, fontWeight:800, color:C.white, letterSpacing:2.5, lineHeight:1 }}>COMPASS</div>
+            <div style={{ fontFamily:F.b, fontSize:12, color:"rgba(255,255,255,0.6)", letterSpacing:1.5, marginTop:3 }}>BUSINESS SOLUTIONS</div>
           </div>
         </button>
-
-        {/* Desktop links */}
-        <div style={{ display: "flex", alignItems: "center", gap: 4 }} className="nav-desktop">
-          {navLinks.map(([p, label]) => (
+        {/* Desktop: page links + Stop the Leaks dropdown + hamburger */}
+        <div style={{ display:"flex", alignItems:"center", gap:4 }} className="nav-desktop">
+          {navLinks.map(([p,label]) => (
             <button key={p} onClick={() => go(p)}
-              style={{ background: "none", border: "none", color: page === p ? C.white : "rgba(255,255,255,0.45)", padding: "7px 14px", borderRadius: 7, fontSize: 13, fontWeight: 600, fontFamily: F.b, cursor: "pointer", transition: "color 0.15s", whiteSpace: "nowrap" }}>
+              style={{ background:"none", border:"none", color:page===p?C.white:"rgba(255,255,255,0.45)", padding:"7px 14px", borderRadius:7, fontSize:13, fontWeight:600, fontFamily:F.b, cursor:"pointer", transition:"color 0.15s", whiteSpace:"nowrap" }}>
               {label}
             </button>
           ))}
-          <NavIntakeDropdown goIntake30={goIntake30} goIntakeBundle={goIntakeBundle} />
-          <button onClick={goScan}
-            style={{ marginLeft: 4, background: C.amber, border: "none", color: C.white, padding: "9px 18px", borderRadius: 8, fontSize: 13, fontWeight: 700, fontFamily: F.b, cursor: "pointer", boxShadow: `0 3px 14px ${C.amber}44`, whiteSpace: "nowrap" }}>
-            Run Free Diagnostic →
-          </button>
+          <NavPlanDropdown goIntake30={goIntake30} goIntakeBundle={goIntakeBundle} goSnapshot={goSnapshot} />
+          <BurgerBtn />
         </div>
-
-        {/* Mobile right side */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }} className="nav-mobile">
-          <a href="https://fixkit.compassbizsolutions.com" target="_blank" rel="noopener noreferrer"
-            style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.8)", padding: "7px 14px", borderRadius: 7, fontSize: 12, fontWeight: 600, fontFamily: F.b, textDecoration: "none", whiteSpace: "nowrap" }}>
-            FixKit Login
-          </a>
-          <button onClick={() => setOpen(o => !o)}
-            style={{ background: "none", border: "none", cursor: "pointer", padding: "4px", display: "flex", flexDirection: "column", gap: 5, justifyContent: "center" }}>
-            <span style={{ display: "block", width: 22, height: 2, background: C.white, borderRadius: 2, transition: "all 0.25s", transform: open ? "rotate(45deg) translate(5px, 5px)" : "none" }} />
-            <span style={{ display: "block", width: 22, height: 2, background: C.white, borderRadius: 2, transition: "all 0.25s", opacity: open ? 0 : 1 }} />
-            <span style={{ display: "block", width: 22, height: 2, background: C.white, borderRadius: 2, transition: "all 0.25s", transform: open ? "rotate(-45deg) translate(5px, -5px)" : "none" }} />
-          </button>
-        </div>
+        {/* Mobile: just hamburger */}
+        <div className="nav-mobile"><BurgerBtn /></div>
       </div>
 
-      {/* Mobile dropdown */}
-      <div style={{ maxHeight: open ? 480 : 0, overflow: "hidden", transition: "max-height 0.35s ease" }} className="nav-mobile">
-        <div style={{ padding: "8px 16px 20px", display: "flex", flexDirection: "column", gap: 2, borderTop: "1px solid rgba(61,107,158,0.2)" }}>
-          {navLinks.map(([p, label]) => (
-            <button key={p} onClick={() => go(p)}
-              style={{ background: page === p ? "rgba(255,255,255,0.07)" : "none", border: "none", color: page === p ? C.white : "rgba(255,255,255,0.6)", padding: "12px 16px", borderRadius: 8, fontSize: 15, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", transition: "all 0.15s" }}>
-              {label}
-            </button>
-          ))}
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "8px 0 4px", paddingTop: 8 }}>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 700, letterSpacing: 2, fontFamily: F.b, padding: "4px 16px 8px" }}>GET YOUR PLAN</div>
-            <button onClick={goIntakeBundle}
-              style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%", marginBottom: 4 }}>
-              📈 FixKit 30/60/90 Bundle — $599
-            </button>
-            <button onClick={goIntake30}
-              style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%", marginBottom: 4 }}>
-              📋 FixKit 30-Day Plan — $299
-            </button>
-            <button onClick={() => { setOpen(false); window.location.href = "/?buy=snapshot"; }}
-              style={{ background: "rgba(255,255,255,0.05)", border: "none", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: F.b, cursor: "pointer", textAlign: "left", width: "100%" }}>
-              📄 Profit Leak Snapshot — $99
-            </button>
+      {/* Dropdown — desktop hamburger + mobile full menu */}
+      <div style={{ maxHeight:open?640:0, overflow:"hidden", transition:"max-height 0.35s ease" }}>
+        <div style={{ padding:"8px 16px 24px", display:"flex", flexDirection:"column", gap:2, borderTop:"1px solid rgba(61,107,158,0.2)" }}>
+
+          {/* Page links — mobile only */}
+          <div className="nav-mobile">
+            {navLinks.map(([p,label]) => (
+              <button key={p} onClick={() => go(p)}
+                style={{ background:page===p?"rgba(255,255,255,0.07)":"none", border:"none", color:page===p?C.white:"rgba(255,255,255,0.6)", padding:"12px 16px", borderRadius:8, fontSize:15, fontWeight:600, fontFamily:F.b, cursor:"pointer", textAlign:"left", width:"100%", display:"block" }}>
+                {label}
+              </button>
+            ))}
           </div>
+
+          {/* Plans */}
+          <div style={{ borderTop:"1px solid rgba(255,255,255,0.08)", margin:"8px 0 4px", paddingTop:8 }}>
+            <div style={{ fontSize:10, color:"rgba(255,255,255,0.3)", fontWeight:700, letterSpacing:2, fontFamily:F.b, padding:"4px 16px 8px" }}>STOP THE LEAKS</div>
+            {[
+              { label:"FixKit 30/60/90 Bundle — $599", desc:"All 10 leaks, 90-day plan, full portal. Best value.", onClick:goIntakeBundle, tag:"BEST VALUE" },
+              { label:"FixKit 30-Day Plan — $299", desc:"Top leaks first. Daily tasks, calculators, AI support.", onClick:goIntake30, tag:"" },
+              { label:"Profit Leak Snapshot — $99", desc:"Top 3 leaks, the math, fixes in a PDF you keep.", onClick:goSnapshot, tag:"DIY" },
+            ].map((item,i) => (
+              <button key={i} onClick={item.onClick}
+                style={{ background:"rgba(255,255,255,0.04)", border:"none", color:"rgba(255,255,255,0.7)", padding:"10px 16px", borderRadius:8, fontSize:13, fontFamily:F.b, cursor:"pointer", textAlign:"left", width:"100%", marginBottom:4, display:"block" }}>
+                <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:3 }}>
+                  <span style={{ fontWeight:600 }}>{item.label}</span>
+                  {item.tag && <span style={{ background:C.amber+"33", color:C.amber, borderRadius:99, padding:"1px 6px", fontSize:9, fontFamily:F.b, fontWeight:700 }}>{item.tag}</span>}
+                </div>
+                <div style={{ fontSize:11, color:"rgba(255,255,255,0.35)", lineHeight:1.4 }}>{item.desc}</div>
+              </button>
+            ))}
+          </div>
+
+          {/* Free Diagnostic */}
           <button onClick={goScan}
-            style={{ background: C.amber, border: "none", color: C.white, padding: "12px 16px", borderRadius: 8, fontSize: 15, fontWeight: 700, fontFamily: F.b, cursor: "pointer", marginTop: 4, boxShadow: `0 3px 14px ${C.amber}44` }}>
+            style={{ background:C.amber, border:"none", color:C.white, padding:"12px 16px", borderRadius:8, fontSize:14, fontWeight:700, fontFamily:F.b, cursor:"pointer", marginTop:4, boxShadow:`0 3px 14px ${C.amber}44` }}>
             Run Free Diagnostic →
           </button>
+
+          {/* Tools */}
+          <div style={{ borderTop:"1px solid rgba(255,255,255,0.08)", margin:"12px 0 4px", paddingTop:8 }}>
+            <div style={{ fontSize:10, color:"rgba(255,255,255,0.3)", fontWeight:700, letterSpacing:2, fontFamily:F.b, padding:"4px 16px 8px" }}>TOOLS</div>
+            <a href="https://fixkit.compassbizsolutions.com" target="_blank" rel="noopener noreferrer"
+              style={{ display:"block", background:"rgba(255,255,255,0.04)", color:"rgba(255,255,255,0.7)", padding:"10px 16px", borderRadius:8, fontSize:13, fontFamily:F.b, fontWeight:600, textDecoration:"none", marginBottom:4 }}>
+              FixKit Portal Login →
+            </a>
+            <div style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.06)", color:"rgba(255,255,255,0.3)", padding:"10px 16px", borderRadius:8, fontSize:13, fontFamily:F.b }}>
+              Compass Field Service
+              <span style={{ marginLeft:8, background:"rgba(255,255,255,0.08)", borderRadius:99, padding:"1px 8px", fontSize:9, fontWeight:700, letterSpacing:1 }}>COMING SOON</span>
+            </div>
+          </div>
+
         </div>
       </div>
-
     </nav>
   );
 }
-
 // ─── CALCULATOR STUB (full version in ProfitLeakCalculator_v5.jsx) ──────────
 const card = {background:C.white,borderRadius:14,padding:"20px 18px",boxShadow:"0 2px 18px rgba(17,30,48,0.08)",border:`1px solid ${C.warm3}`};
 function Inp({label,hint,k,pre="$",suf="",ph="0",vals,set}) {
@@ -2440,11 +2460,11 @@ function WhatWeDoPage({ setPage, calcRef }) {
     },
     {
       icon: "📱",
-      title: "THE COMPASS APP — IN DEVELOPMENT",
+      title: "THE COMPASS FIELD SERVICE — IN DEVELOPMENT",
       tag: "",
       tagColor: C.slate,
       short: "Run your whole operation — quoting, dispatch, invoicing, inventory, payroll — with the Compass profit methodology built in.",
-      intro: "Most field service apps are just scheduling and invoicing tools with no business intelligence. The Compass App is built differently — every workflow is designed around protecting your margins:",
+      intro: "Most field service apps are just scheduling and invoicing tools with no business intelligence. The Compass Field Service is built differently — every workflow is designed around protecting your margins:",
       bullets: [
         "AI-assisted quoting using your actual loaded cost, markup, and overhead — not guesswork",
         "Quote-to-job-to-invoice in one workflow with no dropped handoffs",
@@ -2532,7 +2552,7 @@ function WaitlistModal({ onClose }) {
           <>
             <div style={{ fontFamily:F.d, fontSize:22, fontWeight:800, color:C.ink, marginBottom:6 }}>JOIN THE EARLY ACCESS LIST</div>
             <p style={{ fontFamily:F.b, fontSize:13, color:C.muted, lineHeight:1.7, marginBottom:20 }}>
-              The Compass App is in active development. Get notified first when early access opens — FixKit customers get priority and a discounted first year.
+              The Compass Field Service is in active development. Get notified first when early access opens — FixKit customers get priority and a discounted first year.
             </p>
             <input value={name} onChange={e=>setName(e.target.value)} placeholder="Your name (optional)"
               style={{ width:"100%", padding:"11px 14px", border:"1px solid "+C.warm3, borderRadius:8, fontSize:14, fontFamily:F.b, color:C.ink, outline:"none", boxSizing:"border-box", marginBottom:10 }} />
