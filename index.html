@@ -2598,48 +2598,22 @@ function ServiceCard({ svc, setPage, calcRef, openWaitlist }) {
 
 // ─── FOOTER ───────────────────────────────────────────────────────────────────
 function HeroSection({ calcRef }) {
-  const [lightbox, setLightbox] = React.useState(null);
-
-  const imgs = [
-    { src:"/images/fix1.png",  top:"2%",  left:"1%",  width:"43%", transform:"rotate(-2.5deg)", zIndex:1, maxHeight:"55%", clip:false },
-    { src:"/images/snap1.png", top:"2%",  left:"48%", width:"50%", transform:"rotate(2deg)",    zIndex:2, maxHeight:"54%", clip:false },
-    { src:"/images/fix3.png",  top:"40%", left:"3%",  width:"40%", transform:"rotate(1.5deg)",  zIndex:1, maxHeight:"52%", clip:false },
-    { src:"/images/fix4.png",  top:"40%", left:"49%", width:"50%", transform:"rotate(-1.5deg)", zIndex:2, maxHeight:"52%", clip:true  },
-  ];
-
   return (
-    <section style={{ position:"relative", overflow:"hidden", minHeight:680, background:`linear-gradient(160deg, ${C.navyDark} 0%, ${C.navy} 100%)`, display:"flex", alignItems:"stretch" }}>
+    <section style={{ position:"relative", overflow:"hidden", minHeight:580, display:"flex", alignItems:"stretch" }}>
 
-      {/* Lightbox */}
-      {lightbox !== null && (
-        <div onClick={() => setLightbox(null)} style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.85)", zIndex:1000, display:"flex", alignItems:"center", justifyContent:"center", cursor:"zoom-out", padding:24 }}>
-          <img src={imgs[lightbox].src} alt="" style={{ maxWidth:"90vw", maxHeight:"90vh", borderRadius:12, boxShadow:"0 24px 80px rgba(0,0,0,0.8)", objectFit:"contain" }} onClick={e => e.stopPropagation()} />
-          <button onClick={() => setLightbox(null)} style={{ position:"absolute", top:20, right:24, background:"none", border:"none", color:"white", fontSize:32, cursor:"pointer", lineHeight:1 }}>×</button>
-        </div>
-      )}
+      {/* Full-bleed background image */}
+      <div style={{
+        position:"absolute", inset:0,
+        backgroundImage:"url('/images/snap1.png')",
+        backgroundSize:"cover",
+        backgroundPosition:"top center",
+      }} />
 
-      {/* Collage */}
-      <div style={{ position:"absolute", inset:0, opacity:0.52 }}>
-        {imgs.map((img, i) => (
-          <img key={i} src={img.src} alt="" onClick={() => setLightbox(i)}
-            style={{
-              position:"absolute", top:img.top, left:img.left, width:img.width,
-              maxHeight:img.maxHeight, objectFit:"cover", borderRadius:10,
-              boxShadow:"0 8px 32px rgba(0,0,0,0.55)", transform:img.transform,
-              zIndex:img.zIndex, cursor:"zoom-in", transition:"transform 0.2s, box-shadow 0.2s",
-              clipPath: img.clip ? "inset(0 8% 0 0 round 10px)" : undefined,
-            }}
-            onMouseEnter={e => { e.currentTarget.style.transform = img.transform + " scale(1.03)"; e.currentTarget.style.boxShadow = "0 16px 48px rgba(0,0,0,0.7)"; e.currentTarget.style.zIndex = 10; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = img.transform; e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.55)"; e.currentTarget.style.zIndex = img.zIndex; }}
-          />
-        ))}
-      </div>
-
-      {/* Gradient overlay — lighter so images show through more */}
-      <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(13,28,46,0.96) 0%, rgba(13,28,46,0.88) 25%, rgba(13,28,46,0.5) 50%, rgba(13,28,46,0.1) 72%, transparent 100%)", zIndex:3, pointerEvents:"none" }} />
+      {/* Gradient overlay */}
+      <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top, rgba(13,28,46,0.97) 0%, rgba(13,28,46,0.88) 30%, rgba(13,28,46,0.55) 55%, rgba(13,28,46,0.2) 75%, transparent 100%)", zIndex:2 }} />
 
       {/* Text — anchored to bottom */}
-      <div style={{ position:"relative", zIndex:4, width:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"0 24px 52px", textAlign:"center" }}>
+      <div style={{ position:"relative", zIndex:3, width:"100%", display:"flex", flexDirection:"column", justifyContent:"flex-end", padding:"0 24px 52px", textAlign:"center" }}>
         <div style={{ maxWidth:660, margin:"0 auto" }}>
 
           <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(61,107,158,0.2)", border:"1px solid rgba(61,107,158,0.35)", borderRadius:99, padding:"5px 16px", marginBottom:18 }}>
@@ -2651,7 +2625,7 @@ function HeroSection({ calcRef }) {
             THE AVERAGE HVAC, PLUMBING, OR ELECTRICAL SHOP NETS<br /><span style={{color:C.amber}}>2–5% PROFIT.</span>
           </h1>
 
-          <p style={{ color:"rgba(255,255,255,0.5)", fontSize:16, lineHeight:1.8, maxWidth:500, margin:"0 auto 10px", fontFamily:F.b }}>
+          <p style={{ color:"rgba(255,255,255,0.55)", fontSize:16, lineHeight:1.8, maxWidth:500, margin:"0 auto 10px", fontFamily:F.b }}>
             On a million dollars in revenue, that's $20,000–$50,000 in your pocket. We find where the rest went.
           </p>
 
