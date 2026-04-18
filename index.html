@@ -3095,20 +3095,20 @@ function App() {
   const calcRef = useRef(null);
 
   const PADDLE_PRICE_IDS = {
-    "PADDLE_LINK_249_30DAY": "pri_01km957nv9t0wgnb7rxrpzmrkv",
-    "PADDLE_LINK_599":       "pri_01km95651yv87n7bkktk2fmzna",
-    "PADDLE_LINK_249_60DAY": "pri_01km95mpfwh9q8fq66wy2tjrgx",
-    "PADDLE_LINK_SNAPSHOT":  "pri_01knjhs5ve0q3gxn8th0g3br9c",   // add Paddle price ID when created
-    "PADDLE_LINK_UPGRADE_30":    "pri_01knjhxqg290q6q1h9m56j8tkc",   // $199 upgrade price ID
-    "PADDLE_LINK_UPGRADE_BUNDLE": "pri_01knjj1nr64jy967rgg4d8z49s", // $499 upgrade price ID
-    "PADDLE_LINK_249_90DAY": "pri_01km95s0pyqvwkq6x4jtdd0n02",
+    "PADDLE_LINK_249_30DAY":      "pri_01km957nv9t0wgnb7rxrpzmrkv",
+    "PADDLE_LINK_599":            "pri_01km95651yv87n7bkktg2fmzna",
+    "PADDLE_LINK_249_60DAY":      "pri_01km95mpfwh9q8fq66wy2tjrgx",
+    "PADDLE_LINK_SNAPSHOT":       "pri_01knjhs5ve0q3gxn8th0g3br9c",
+    "PADDLE_LINK_UPGRADE_30":     "pri_01km957nv9t0wgnb7rxrpzmrkv",
+    "PADDLE_LINK_UPGRADE_BUNDLE": "pri_01km95651yv87n7bkktg2fmzna",
+    "PADDLE_LINK_249_90DAY":      "pri_01km95s0pyqvwkq6x4jtdd0n02",
   };
 
   const [preCheckout, setPreCheckout] = useState(function() {
     const params = new URLSearchParams(window.location.search);
     const buy = params.get("buy");
     if (buy === "30day") return { priceId: "pri_01km957nv9t0wgnb7rxrpzmrkv", label: "30-Day Quick Win Plan — $299" };
-    if (buy === "bundle") return { priceId: "pri_01km95651yv87n7bkktk2fmzna", label: "Complete 30/60/90 Bundle — $599" };
+    if (buy === "bundle") return { priceId: "pri_01km95651yv87n7bkktg2fmzna", label: "Complete 30/60/90 Bundle — $599" };
     if (buy === "snapshot") return { priceId: "pri_01knjhs5ve0q3gxn8th0g3br9c", label: "DIY Profit Leak Snapshot — $99" };
     return null;
   });
@@ -3130,6 +3130,7 @@ function App() {
     }
   }, []);
 
+  const UPGRADE_LINKS = new Set(["PADDLE_LINK_UPGRADE_30","PADDLE_LINK_UPGRADE_BUNDLE"]);
   const paddle = (link, label) => {
     const priceId = PADDLE_PRICE_IDS[link] || link;
     if (!priceId || priceId.startsWith("PADDLE_")) {
@@ -3139,16 +3140,17 @@ function App() {
     // Show email capture modal first
     setPreEmail("");
     setPreEmailErr("");
-    setPreCheckout({ priceId, label });
+    const discountCode = UPGRADE_LINKS.has(link) ? "SNAPSHOT-UPGRADE" : null;
+    setPreCheckout({ priceId, label, discountCode });
   };
 
-  function launchPaddle(priceId, email) {
+  function launchPaddle(priceId, email, discountCode) {
     function openCheckout(attempts) {
       if (window.Paddle && window.paddleReady) {
         try {
           window.paddleCustomerEmail = email;
           window.paddleCurrentPriceId = priceId;
-          window.Paddle.Checkout.open({
+          var checkoutOpts = {
             items: [{ priceId: priceId, quantity: 1 }],
             customer: { email: email },
             customData: {
@@ -3157,10 +3159,12 @@ function App() {
               utm_campaign: sessionStorage.getItem("utm_campaign") || "",
               utm_medium: sessionStorage.getItem("utm_medium") || "",
             }
-          });
+          };
+          if (discountCode) { checkoutOpts.discountCode = discountCode; }
+          window.Paddle.Checkout.open(checkoutOpts);
         } catch(e) {
           console.error("Paddle checkout error:", e);
-          window.open("https://sandbox-checkout.paddle.com/checkout?items[0][priceId]=" + priceId + "&items[0][quantity]=1&customer[email]=" + encodeURIComponent(email), "_blank");
+          var fallbackUrl = "https://sandbox-checkout.paddle.com/checkout?items[0][priceId]=" + priceId + "&items[0][quantity]=1&customer[email]=" + encodeURIComponent(email) + (discountCode ? "&discount_code=" + discountCode : ""), "_blank");
         }
       } else if (attempts > 0) {
         setTimeout(function() { openCheckout(attempts - 1); }, 200);
@@ -3204,7 +3208,7 @@ function App() {
               preEmailErr={preEmailErr}
               setPreEmailErr={setPreEmailErr}
               onCancel={function() { setPreCheckout(null); }}
-              onProceed={function(email) { setPreCheckout(null); launchPaddle(preCheckout.priceId, email); }}
+              onProceed={function(email) { setPreCheckout(null); launchPaddle(preCheckout.priceId, email, preCheckout.discountCode); }}
             />
           </div>
         </div>
