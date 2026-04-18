@@ -800,59 +800,160 @@ function submitDiagnostic() {
   err.style.display = 'none';
   document.getElementById('diag-email').style.display = 'none';
   document.getElementById('diag-loading').style.display = 'block';
-  
-  var payload = Object.assign({}, diagAnswers, {email: email});
-  
-  fetch('https://fixkit.compassbizsolutions.com/api/send-scan', {
+
+  var trade = diagAnswers.trade || 'service trade';
+  var answerLines = Object.keys(diagAnswers).map(function(k) {
+    var v = diagAnswers[k];
+    return k + ': ' + (Array.isArray(v) ? v.join(', ') : v);
+  }).join('\n');
+
+  var userPrompt = 'A ' + trade + ' owner just answered a diagnostic. Here are their answers:\n\n' + answerLines + '\n\nIdentify their top 3 profit leaks. Use their actual numbers (invoice amount, crew size, job count). Be specific and blunt. Talk like someone who has been in the field, not a consultant. Short sentences. No jargon.\n\nRespond ONLY in this exact format:\n\n[HEADLINE]\nOne blunt sentence naming their biggest problem in plain language.\n\n[WHAT_WE_SEE]\n• bullet 1 (max 15 words, specific to their numbers)\n• bullet 2\n• bullet 3\n\n[TOP_LEAK]\nLEAK NAME IN CAPS — $XX,000-$XX,000/year\nWhy this is happening for them specifically (one sentence).\nFix it this week: one specific action.\n\n[SECOND_LEAK]\nSame 3-line format.\n\n[THIRD_LEAK]\nSame 3-line format.\n\n[HOW_WE_HELP]\nTwo sentences. Tell them Compass built a 30-day fix plan with daily tasks built around their specific trade and numbers.';
+
+  fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(payload)
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: 'You are a straight-talking advisor who has worked with hundreds of trades businesses. You talk like a guy who has been in the field — blunt, plain, no corporate language.',
+      messages: [{role: 'user', content: userPrompt}]
+    })
   })
-  .then(function(r){ return r.json(); })
-  .then(function(data) {
+  .then(function(r) { return r.json(); })
+  .then(function(aiData) {
+    var report = (aiData.content && aiData.content[0] && aiData.content[0].text) ? aiData.content[0].text : '';
+
+    function getTag(text, tag) {
+      var m = text.match(new RegExp('\\[' + tag + '\\]([\\s\\S]*?)(?=\\[|$)'));
+      return m ? m[1].trim() : '';
+    }
+    function parseLeakBlock(text) {
+      if (!text) return {};
+      var lines = text.split('\n').filter(function(l) { return l.trim(); });
+      var first = lines[0] || '';
+      var di = first.indexOf(' — ');
+      return {
+        name: di > 0 ? first.substring(0, di) : first,
+        range: di > 0 ? first.substring(di + 3) : '',
+        why: lines[1] || '',
+        fix: lines[2] || ''
+      };
+    }
+
+    var parsed = {
+      headline: getTag(report, 'HEADLINE'),
+      whatWeSee: getTag(report, 'WHAT_WE_SEE'),
+      leaks: [
+        parseLeakBlock(getTag(report, 'TOP_LEAK')),
+        parseLeakBlock(getTag(report, 'SECOND_LEAK')),
+        parseLeakBlock(getTag(report, 'THIRD_LEAK'))
+      ].filter(function(l) { return l.name; }),
+      howWeHelp: getTag(report, 'HOW_WE_HELP')
+    };
+
     document.getElementById('diag-loading').style.display = 'none';
-    showResults(data, email);
+    showResults(parsed, email);
+
+    // Send email in background - fire and forget
+    fetch('https://fixkit.compassbizsolutions.com/api/send-diagnostic', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        email: email,
+        biz: trade + ' business',
+        trade: trade,
+        answers: answerLines,
+        report: report
+      })
+    }).catch(function() {});
   })
-  .catch(function(e) {
+  .catch(function() {
     document.getElementById('diag-loading').style.display = 'none';
-    showResults(null, email);
+    showResults({leaks: [], headline: 'Something went wrong', whatWeSee: ''}, email);
   });
 }
 
-function showResults(data, email) {
+function parseLeakBlock(text) {
+  if (!text) return {};
+  var lines = text.split('\n').filter(function(l) { return l.trim(); });
+  var first = lines[0] || '';
+  var di = first.indexOf(' — ');
+  return {
+    name: di > 0 ? first.substring(0, di) : first,
+    range: di > 0 ? first.substring(di + 3) : '',
+    why: lines[1] || '',
+    fix: lines[2] || ''
+  };
+}
+
+function showResults(parsed, email) {
   var wrap = document.getElementById('results-content');
-  var leaks = (data && data.leaks) ? data.leaks : [
-    {name:'Pricing Gap',range:'$18,000\u2013$28,000/year',why:'Your rate appears to be below your true loaded cost per hour based on your crew size and job volume.',fix:'\u2192 Guide #1: The Pricing Leak Fix + Pricing Worksheet'},
-    {name:'Scheduling Leak',range:'$12,000\u2013$20,000/year',why:'Based on your no-show frequency, you are losing multiple billable slots per week.',fix:'\u2192 Guide #2: The Scheduling Black Hole + Appointment Confirmation Process'},
-    {name:'Admin Time Drain',range:'$15,000\u2013$25,000/year',why:'The admin tasks you listed are costing significant billable hours at your rate.',fix:'\u2192 Guide #9: The Admin Time Drain'},
+  var leaks = (parsed && parsed.leaks && parsed.leaks.length) ? parsed.leaks : [
+    {name:'PRICING GAP', range:'$18,000-$28,000/year', why:'Your rate is below your real cost per hour based on your crew and job volume.', fix:'Fix it this week: calculate your true loaded hourly cost and raise your rate.'},
+    {name:'SCHEDULING LEAK', range:'$12,000-$20,000/year', why:'You are losing multiple billable slots every week to no-shows.', fix:'Fix it this week: call every customer the day before to confirm.'},
+    {name:'ADMIN TIME DRAIN', range:'$15,000-$25,000/year', why:'The admin work you listed is eating hours you should be billing.', fix:'Fix it this week: write down every admin task and pick one to eliminate or automate.'}
   ];
-  var total = (data && data.total) ? data.total : '$45,000\u2013$73,000/year';
+
+  var headline = (parsed && parsed.headline) ? parsed.headline : 'Your business is losing money in at least three places right now.';
+  var whatWeSee = (parsed && parsed.whatWeSee) ? parsed.whatWeSee : '';
+  var howWeHelp = (parsed && parsed.howWeHelp) ? parsed.howWeHelp : '';
+
+  // Calculate a rough total from ranges
+  var totalLow = 0, totalHigh = 0;
+  leaks.forEach(function(l) {
+    var m = (l.range || '').match(/\$(\d[\d,]*)-\$(\d[\d,]*)/);
+    if (m) {
+      totalLow += parseInt(m[1].replace(/,/g,''));
+      totalHigh += parseInt(m[2].replace(/,/g,''));
+    }
+  });
+  var totalStr = totalLow > 0 ? '$' + Math.round(totalLow/1000) + ',000-$' + Math.round(totalHigh/1000) + ',000/year' : '';
 
   var html = '<div class="results-header">'
-    + '<div class="results-eyebrow">Your Profit Leak Report</div>'
-    + '<div class="results-headline">We Found ' + leaks.length + ' Profit Leaks</div>'
-    + '<div class="results-total">' + total + '</div>'
-    + '<div class="results-total-label">estimated annual profit leak</div>'
-    + '</div>'
-    + '<div class="leak-cards">'
-    + leaks.map(function(l,i) {
-        return '<div class="leak-card">'
-          + '<div class="leak-num">Leak #' + (i+1) + '</div>'
-          + '<div class="leak-name">' + (l.name||'') + '</div>'
-          + '<div class="leak-range">' + (l.range||'') + '</div>'
-          + '<div class="leak-why">' + (l.why||'') + '</div>'
-          + '<div class="leak-fix">' + (l.fix||'') + '</div>'
-          + '</div>';
-      }).join('')
-    + '</div>'
-    + '<div class="results-cta">'
+    + '<div class="results-eyebrow">Your Free Profit Leak Report</div>'
+    + '<div class="results-headline" style="font-size:clamp(18px,3vw,28px);margin-bottom:16px">' + headline + '</div>'
+    + (totalStr ? '<div class="results-total">' + totalStr + '</div><div class="results-total-label">estimated annual profit leak across your top 3 issues</div>' : '')
+    + '</div>';
+
+  if (whatWeSee) {
+    html += '<div style="background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:20px 24px;margin-bottom:16px">'
+      + '<div style="font-size:10px;font-weight:700;color:var(--slate);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px">What We Saw In Your Answers</div>'
+      + whatWeSee.split('\n').filter(function(l){return l.trim();}).map(function(l) {
+          return '<div style="font-size:14px;color:var(--navy);padding:4px 0 4px 20px;position:relative;line-height:1.5">'
+            + '<span style="position:absolute;left:0;color:var(--amber);font-weight:700">•</span>'
+            + l.replace(/^•\s*/,'')
+            + '</div>';
+        }).join('')
+      + '</div>';
+  }
+
+  html += '<div class="leak-cards">';
+  leaks.forEach(function(l, i) {
+    html += '<div class="leak-card">'
+      + '<div class="leak-num">Leak #' + (i+1) + '</div>'
+      + '<div class="leak-name">' + (l.name || '') + '</div>'
+      + (l.range ? '<div class="leak-range">' + l.range + '</div>' : '')
+      + (l.why ? '<div class="leak-why">' + l.why + '</div>' : '')
+      + (l.fix ? '<div class="leak-fix" style="color:var(--green);font-weight:600">' + l.fix + '</div>' : '')
+      + '</div>';
+  });
+  html += '</div>';
+
+  if (howWeHelp) {
+    html += '<div style="background:var(--navy);border-radius:12px;padding:24px;margin-bottom:20px;text-align:center">'
+      + '<p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.7;margin-bottom:0">' + howWeHelp + '</p>'
+      + '</div>';
+  }
+
+  html += '<div class="results-cta">'
     + '<h3>Ready to Fix It?</h3>'
-    + '<p>The Snapshot gives you the exact fix steps for each leak. The FixKit gives you a 30-day daily plan with templates and AI support built around your specific numbers.</p>'
+    + '<p>The Snapshot gives you the exact fix steps for all three leaks in a PDF you keep. The FixKit gives you a 30-day daily plan with templates and AI support built around your numbers and trade.</p>'
     + '<div class="cta-btns">'
-    + '<button class="btn btn-amber" id="results-btn-snapshot">Get the Snapshot &#8212; $99</button>'
-    + '<button class="btn btn-dark" id="results-btn-fixkit">FixKit 30-Day &#8212; $299</button>'
+    + '<button class="btn btn-amber" id="results-btn-snapshot">Get the Snapshot — $99</button>'
+    + '<button class="btn btn-dark" id="results-btn-fixkit">FixKit 30-Day — $299</button>'
     + '</div>'
-    + '<p class="upgrade-note">Already have a Snapshot? Use code SNAPSHOT-UPGRADE for $100 off any FixKit plan.</p>'
+    + '<p class="upgrade-note">Already have a Snapshot? Use code SNAPSHOT-UPGRADE for $100 off FixKit.</p>'
+    + '<p style="font-size:12px;color:var(--muted);margin-top:12px">Your full results were emailed to ' + email + '</p>'
     + '</div>';
 
   wrap.innerHTML = html;
