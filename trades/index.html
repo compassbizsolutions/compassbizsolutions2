@@ -823,12 +823,12 @@ function submitDiagnostic() {
 function showResults(data, email) {
   var wrap = document.getElementById('results-content');
   var leaks = (data && data.leaks) ? data.leaks : [
-    {name:'Pricing Gap',range:'$18,000–$28,000/year',why:'Your rate appears to be below your true loaded cost per hour based on your crew size and job volume.',fix:'→ Guide #1: The Pricing Leak Fix + Pricing Worksheet'},
-    {name:'Scheduling Leak',range:'$12,000–$20,000/year',why:'Based on your no-show frequency, you're losing multiple billable slots per week.',fix:'→ Guide #2: The Scheduling Black Hole + Appointment Confirmation Process'},
-    {name:'Admin Time Drain',range:'$15,000–$25,000/year',why:'The admin tasks you listed are costing significant billable hours at your rate.',fix:'→ Guide #9: The Admin Time Drain'},
+    {name:'Pricing Gap',range:'$18,000\u2013$28,000/year',why:'Your rate appears to be below your true loaded cost per hour based on your crew size and job volume.',fix:'\u2192 Guide #1: The Pricing Leak Fix + Pricing Worksheet'},
+    {name:'Scheduling Leak',range:'$12,000\u2013$20,000/year',why:'Based on your no-show frequency, you are losing multiple billable slots per week.',fix:'\u2192 Guide #2: The Scheduling Black Hole + Appointment Confirmation Process'},
+    {name:'Admin Time Drain',range:'$15,000\u2013$25,000/year',why:'The admin tasks you listed are costing significant billable hours at your rate.',fix:'\u2192 Guide #9: The Admin Time Drain'},
   ];
-  var total = (data && data.total) ? data.total : '$45,000–$73,000/year';
-  
+  var total = (data && data.total) ? data.total : '$45,000\u2013$73,000/year';
+
   var html = '<div class="results-header">'
     + '<div class="results-eyebrow">Your Profit Leak Report</div>'
     + '<div class="results-headline">We Found ' + leaks.length + ' Profit Leaks</div>'
@@ -850,13 +850,19 @@ function showResults(data, email) {
     + '<h3>Ready to Fix It?</h3>'
     + '<p>The Snapshot gives you the exact fix steps for each leak. The FixKit gives you a 30-day daily plan with templates and AI support built around your specific numbers.</p>'
     + '<div class="cta-btns">'
-    + '<button class="btn btn-amber" onclick="openCheckout('pri_01knjhs5ve0q3gxn8th0g3br9c','Profit Leak Snapshot — $99')">Get the Snapshot — $99</button>'
-    + '<button class="btn btn-dark" onclick="openCheckout('pri_01km957nv9t0wgnb7rxrpzmrkv','FixKit 30-Day — $299')">FixKit 30-Day — $299</button>'
+    + '<button class="btn btn-amber" id="results-btn-snapshot">Get the Snapshot &#8212; $99</button>'
+    + '<button class="btn btn-dark" id="results-btn-fixkit">FixKit 30-Day &#8212; $299</button>'
     + '</div>'
     + '<p class="upgrade-note">Already have a Snapshot? Use code SNAPSHOT-UPGRADE for $100 off any FixKit plan.</p>'
     + '</div>';
-  
+
   wrap.innerHTML = html;
+  document.getElementById('results-btn-snapshot').addEventListener('click', function() {
+    openCheckout('pri_01knjhs5ve0q3gxn8th0g3br9c', 'Profit Leak Snapshot — $99');
+  });
+  document.getElementById('results-btn-fixkit').addEventListener('click', function() {
+    openCheckout('pri_01km957nv9t0wgnb7rxrpzmrkv', 'FixKit 30-Day — $299');
+  });
   document.getElementById('diag-results').style.display = 'block';
   document.getElementById('diag-results').scrollIntoView({behavior:'smooth'});
 }
@@ -1003,9 +1009,9 @@ function renderAbout() {
 function renderServices() {
   var el = document.getElementById('services-list');
   if (!el) return;
-  el.innerHTML = '<div style="display:flex;flex-direction:column;gap:20px">'
-    + SERVICES_DATA.map(function(s) {
-        return '<div style="background:#fff;border:1px solid #dce8f5;border-radius:14px;padding:28px">'
+  var html = '<div style="display:flex;flex-direction:column;gap:20px">';
+  SERVICES_DATA.forEach(function(s, i) {
+    html += '<div style="background:#fff;border:1px solid #dce8f5;border-radius:14px;padding:28px">'
           + '<div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap">'
           + '<div style="font-size:36px;flex-shrink:0">' + s.icon + '</div>'
           + '<div style="flex:1;min-width:200px">'
@@ -1014,10 +1020,18 @@ function renderServices() {
           + '<div style="font-size:14px;color:var(--muted);margin-bottom:14px;line-height:1.6">' + s.short + '</div>'
           + '<ul class="product-bullets">' + s.bullets.map(function(b){ return '<li>' + b + '</li>'; }).join('') + '</ul>'
           + (s.closing ? '<div style="font-size:13px;color:var(--muted);margin-bottom:14px;font-style:italic">' + s.closing + '</div>' : '')
-          + '<button class="btn btn-amber" onclick="' + s.onclick + '">' + s.cta + ' →</button>'
+          + '<button class="btn btn-amber" data-svc="' + i + '">' + s.cta + ' →</button>'
           + '</div></div></div>';
-      }).join('')
-    + '</div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+  el.querySelectorAll('[data-svc]').forEach(function(btn) {
+    var idx = parseInt(btn.getAttribute('data-svc'));
+    btn.addEventListener('click', function() {
+      var fn = new Function(SERVICES_DATA[idx].onclick);
+      fn();
+    });
+  });
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────
