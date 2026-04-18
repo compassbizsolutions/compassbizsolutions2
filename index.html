@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Compass Business Solutions — Business Process Consulting</title>
+  <meta name="description" content="Business process consulting, app development, web development, and social media marketing. 25 years turning operational gaps into competitive advantages."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy: #1B2E4B;
+      --navy-dark: #111E31;
+      --amber: #C8701A;
+      --amber-light: #E8902A;
+      --teal: #1E6B45;
+      --slate: #3D6B9E;
+      --light: #F4F7FC;
+      --muted: #5A7291;
+      --border: rgba(61,107,158,0.15);
+      --white: #FFFFFF;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--navy); overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(17,30,49,0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(61,107,158,0.2);
+      transition: all 0.3s;
+    }
+    .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 68px; padding: 0 28px; }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-compass { width: 38px; height: 38px; flex-shrink: 0; }
+    .nav-name { display: flex; flex-direction: column; gap: 1px; }
+    .nav-name-top { font-family: 'Barlow Condensed', sans-serif; font-size: 19px; font-weight: 800; color: white; letter-spacing: 2.5px; line-height: 1; }
+    .nav-name-sub { font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-link { background: none; border: none; color: rgba(255,255,255,0.55); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 7px 14px; border-radius: 7px; cursor: pointer; transition: color 0.15s; text-decoration: none; }
+    .nav-link:hover { color: white; }
+    .nav-cta { background: var(--amber); color: white !important; border-radius: 7px; padding: 8px 18px !important; font-weight: 600 !important; transition: opacity 0.15s !important; }
+    .nav-cta:hover { opacity: 0.88; }
+    .nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; padding: 4px; flex-direction: column; gap: 5px; }
+    .nav-mobile-btn span { display: block; width: 22px; height: 2px; background: white; border-radius: 2px; transition: all 0.25s; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; background: var(--navy-dark);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding: 120px 28px 80px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(61,107,158,0.12) 0%, transparent 70%),
+                  radial-gradient(ellipse 40% 40% at 20% 80%, rgba(200,112,26,0.08) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; opacity: 0.03;
+      background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 420px; gap: 80px; align-items: center; width: 100%; }
+    .hero-label { font-size: 11px; font-weight: 600; letter-spacing: 3px; color: var(--amber); text-transform: uppercase; margin-bottom: 20px; }
+    .hero-headline { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(48px, 6vw, 76px); font-weight: 800; color: white; line-height: 0.95; letter-spacing: -1px; text-transform: uppercase; margin-bottom: 28px; }
+    .hero-headline em { color: var(--amber); font-style: normal; }
+    .hero-sub { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.75; max-width: 480px; margin-bottom: 40px; }
+    .hero-sub strong { color: white; font-weight: 600; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary { background: var(--amber); color: white; padding: 13px 28px; border-radius: 9px; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; letter-spacing: 1px; text-decoration: none; text-transform: uppercase; transition: opacity 0.15s; border: none; cursor: pointer; display: inline-block; }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-ghost { background: none; color: rgba(255,255,255,0.65); padding: 13px 28px; border-radius: 9px; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 1px; text-decoration: none; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: all 0.15s; display: inline-block; }
+    .btn-ghost:hover { color: white; border-color: rgba(255,255,255,0.5); }
+
+    /* HERO CARD */
+    .hero-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(61,107,158,0.25); border-radius: 16px; padding: 32px; }
+    .hero-card-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--amber); text-transform: uppercase; margin-bottom: 20px; }
+    .hero-stat { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(61,107,158,0.15); }
+    .hero-stat:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    .hero-stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 42px; font-weight: 800; color: var(--amber); line-height: 1; flex-shrink: 0; min-width: 72px; }
+    .hero-stat-text { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; padding-top: 4px; }
+    .hero-stat-text strong { color: white; display: block; margin-bottom: 2px; font-size: 14px; }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 88px 28px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: var(--amber); text-transform: uppercase; margin-bottom: 12px; }
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(36px, 4vw, 52px); font-weight: 800; color: var(--navy); letter-spacing: -0.5px; text-transform: uppercase; margin-bottom: 16px; line-height: 0.95; }
+    .section-sub { font-size: 16px; color: var(--muted); line-height: 1.75; max-width: 580px; margin-bottom: 52px; }
+
+    /* ── SERVICES ── */
+    .services-bg { background: var(--light); }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .service-card { background: white; border: 1px solid #DCE8F5; border-radius: 14px; padding: 32px; position: relative; transition: transform 0.2s, box-shadow 0.2s; }
+    .service-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(27,46,75,0.1); }
+    .service-card.featured { border: 2px solid var(--amber); }
+    .service-icon { font-size: 32px; margin-bottom: 16px; }
+    .service-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .service-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+    .service-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill { font-size: 11px; font-weight: 600; color: var(--slate); background: #EBF2FB; padding: 3px 10px; border-radius: 99px; }
+    .service-badge { position: absolute; top: 16px; right: 16px; background: var(--amber); color: white; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 3px 10px; border-radius: 99px; text-transform: uppercase; }
+
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .about-photo-wrap { position: relative; }
+    .about-photo-placeholder { background: var(--navy); border-radius: 16px; aspect-ratio: 3/4; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: rgba(255,255,255,0.3); font-size: 13px; text-align: center; padding: 24px; }
+    .about-photo-placeholder svg { width: 48px; height: 48px; opacity: 0.4; }
+    .about-accent { position: absolute; bottom: -16px; right: -16px; background: var(--amber); border-radius: 12px; padding: 20px 24px; }
+    .about-accent-num { font-family: 'Barlow Condensed', sans-serif; font-size: 40px; font-weight: 800; color: white; line-height: 1; }
+    .about-accent-label { font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 500; margin-top: 2px; }
+    .about-content {}
+    .about-name { font-family: 'DM Serif Display', serif; font-size: 36px; color: var(--navy); margin-bottom: 4px; }
+    .about-title { font-size: 13px; font-weight: 600; color: var(--amber); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 24px; }
+    .about-body { font-size: 15px; color: #3A4F66; line-height: 1.8; margin-bottom: 16px; }
+    .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+    .about-stat { text-align: center; padding: 16px; background: var(--light); border-radius: 10px; }
+    .about-stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 800; color: var(--amber); }
+    .about-stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* ── WORK ── */
+    .work-bg { background: var(--navy-dark); }
+    .work-bg .section-title { color: white; }
+    .work-bg .section-eyebrow { color: var(--amber); }
+    .work-bg .section-sub { color: rgba(255,255,255,0.5); }
+    .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .work-card { border-radius: 14px; padding: 32px; position: relative; overflow: hidden; }
+    .work-card-1 { background: rgba(255,255,255,0.04); border: 1px solid rgba(61,107,158,0.25); }
+    .work-card-2 { background: rgba(200,112,26,0.08); border: 1px solid rgba(200,112,26,0.2); }
+    .work-tag { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--amber); text-transform: uppercase; margin-bottom: 12px; }
+    .work-name { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .work-desc { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 20px; }
+    .work-bullets { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+    .work-bullets li { font-size: 13px; color: rgba(255,255,255,0.5); padding-left: 16px; position: relative; line-height: 1.5; }
+    .work-bullets li::before { content: "→"; color: var(--amber); position: absolute; left: 0; font-size: 11px; top: 1px; }
+    .work-link { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; color: var(--amber); letter-spacing: 1px; text-decoration: none; text-transform: uppercase; border-bottom: 1px solid rgba(200,112,26,0.3); padding-bottom: 2px; }
+    .work-link:hover { border-color: var(--amber); }
+    .work-status { display: inline-block; background: rgba(30,107,69,0.2); color: #4CAF82; border: 1px solid rgba(30,107,69,0.3); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+
+    /* ── TRADES CTA ── */
+    .trades-cta { background: var(--navy); border-radius: 16px; padding: 48px; display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; }
+    .trades-cta-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--amber); text-transform: uppercase; margin-bottom: 10px; }
+    .trades-cta-title { font-family: 'Barlow Condensed', sans-serif; font-size: 34px; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 10px; }
+    .trades-cta-sub { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.65; max-width: 480px; }
+    .trades-cta-btns { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+
+    /* ── CONTACT ── */
+    .contact-bg { background: var(--navy-dark); }
+    .contact-bg .section-title { color: white; }
+    .contact-bg .section-eyebrow { color: var(--amber); }
+    .contact-bg .section-sub { color: rgba(255,255,255,0.5); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .contact-item { display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start; }
+    .contact-icon { width: 44px; height: 44px; background: rgba(200,112,26,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .contact-item-label { font-size: 11px; font-weight: 700; color: var(--amber); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+    .contact-item-value { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+    .contact-item-value a { color: var(--amber); text-decoration: none; }
+    .contact-form { background: rgba(255,255,255,0.04); border: 1px solid rgba(61,107,158,0.2); border-radius: 14px; padding: 32px; }
+    .form-row { margin-bottom: 16px; }
+    .form-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+    .form-input { width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(61,107,158,0.3); color: white; padding: 11px 14px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.15s; }
+    .form-input:focus { border-color: var(--amber); }
+    .form-input::placeholder { color: rgba(255,255,255,0.25); }
+    textarea.form-input { resize: vertical; min-height: 100px; }
+    select.form-input option { background: var(--navy-dark); color: white; }
+
+    /* ── FOOTER ── */
+    footer { background: #0D1622; padding: 32px 28px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-link { font-size: 12px; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.15s; }
+    .footer-link:hover { color: rgba(255,255,255,0.7); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero-card { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .work-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .trades-cta { grid-template-columns: 1fr; }
+      .trades-cta-btns { flex-direction: row; }
+      .nav-links { display: none; }
+      .nav-mobile-btn { display: flex; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 60px 20px; }
+      .hero { padding: 100px 20px 60px; }
+      .about-stats { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* ── MOBILE NAV ── */
+    .mobile-menu { display: none; position: fixed; top: 68px; left: 0; right: 0; bottom: 0; background: var(--navy-dark); z-index: 99; padding: 32px 28px; flex-direction: column; gap: 8px; overflow-y: auto; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu-link { color: rgba(255,255,255,0.65); font-size: 18px; font-weight: 500; padding: 12px 0; border-bottom: 1px solid rgba(61,107,158,0.15); text-decoration: none; font-family: 'DM Sans', sans-serif; }
+    .mobile-menu-link:last-child { border-bottom: none; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-label { animation: fadeUp 0.6s ease both; }
+    .hero-headline { animation: fadeUp 0.6s 0.1s ease both; }
+    .hero-sub { animation: fadeUp 0.6s 0.2s ease both; }
+    .hero-actions { animation: fadeUp 0.6s 0.3s ease both; }
+    .hero-card { animation: fadeUp 0.6s 0.4s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-brand">
+      <svg class="nav-compass" viewBox="0 0 80 80" fill="none">
+        <circle cx="40" cy="40" r="39" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+        <circle cx="40" cy="40" r="36" fill="#1B2E4B"/>
+        <circle cx="40" cy="40" r="26" stroke="#3D6B9E" stroke-width="1" fill="none" stroke-dasharray="5 4" opacity="0.6"/>
+        <circle cx="40" cy="40" r="17" stroke="#C8701A" stroke-width="1" fill="none" stroke-dasharray="4 4" opacity="0.6"/>
+        <polygon points="40,8 42.5,36 40,40 37.5,36" fill="white" opacity="0.95"/>
+        <polygon points="40,72 37.5,44 40,40 42.5,44" fill="white" opacity="0.3"/>
+        <polygon points="72,40 44,42.5 40,40 44,37.5" fill="white" opacity="0.3"/>
+        <polygon points="8,40 36,37.5 40,40 36,42.5" fill="white" opacity="0.95"/>
+        <circle cx="40" cy="40" r="3" fill="white" opacity="0.9"/>
+        <circle cx="40" cy="8" r="2.5" fill="#C8701A"/>
+      </svg>
+      <div class="nav-name">
+        <div class="nav-name-top">COMPASS</div>
+        <div class="nav-name-sub">Business Solutions</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#services" class="nav-link">Services</a>
+      <a href="#work" class="nav-link">Our Work</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="/trades" class="nav-link">Trades FixKit</a>
+      <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="nav-link nav-cta">Book a Call</a>
+    </div>
+    <button class="nav-mobile-btn" id="mobileBtn" aria-label="Menu">
+      <span id="mb1"></span><span id="mb2"></span><span id="mb3"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" class="mobile-menu-link" onclick="closeMobile()">Services</a>
+  <a href="#work" class="mobile-menu-link" onclick="closeMobile()">Our Work</a>
+  <a href="#about" class="mobile-menu-link" onclick="closeMobile()">About</a>
+  <a href="/trades" class="mobile-menu-link">Trades FixKit</a>
+  <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="mobile-menu-link" style="color:var(--amber);font-weight:600">Book a Call →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-label">Compass Business Solutions</div>
+      <h1 class="hero-headline">
+        We Build the<br>
+        Infrastructure<br>
+        <em>Most Businesses</em><br>
+        Never Had.
+      </h1>
+      <p class="hero-sub">
+        <strong>Business process consulting. App development. Web development. Social media marketing.</strong>
+        25 years turning operational gaps into competitive advantages — for Fortune-level organizations and the small businesses that outperform them.
+      </p>
+      <div class="hero-actions">
+        <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="btn-primary">Book a Free Call →</a>
+        <a href="#services" class="btn-ghost">See What We Do</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-label">Why Compass</div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">25</div>
+        <div class="hero-stat-text"><strong>Years in Business Process Analysis</strong>Two Fortune-level organizations. Real systems. Real results.</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">5</div>
+        <div class="hero-stat-text"><strong>Core Service Areas</strong>Consulting, app dev, web dev, social media, vertical products.</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">0</div>
+        <div class="hero-stat-text"><strong>Generic Solutions</strong>Every engagement is built around your specific business, numbers, and goals.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-bg" id="services">
+  <div class="section-inner">
+    <div class="section-eyebrow">What We Do</div>
+    <h2 class="section-title">Five Ways We Move<br>Your Business Forward</h2>
+    <p class="section-sub">Every service connects back to the same goal: finding where your business is leaking time, money, or opportunity — and fixing it.</p>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-icon">⚙️</div>
+        <div class="service-name">Business Process Consulting</div>
+        <div class="service-desc">We map how your business actually runs — where time is lost, where risk is hiding, where manual processes are costing you more than they should. Then we fix it.</div>
+        <div class="service-pills">
+          <span class="pill">Process Mapping</span>
+          <span class="pill">Automation</span>
+          <span class="pill">Workflow Design</span>
+          <span class="pill">Risk Analysis</span>
+        </div>
+      </div>
+
+      <div class="service-card featured">
+        <div class="service-badge">In Development</div>
+        <div class="service-icon">📱</div>
+        <div class="service-name">App Development</div>
+        <div class="service-desc">Custom tools built around how your business actually works — not off-the-shelf software you're forced to adapt to. Mobile-first, practical, and built to scale.</div>
+        <div class="service-pills">
+          <span class="pill">Mobile Apps</span>
+          <span class="pill">Web Apps</span>
+          <span class="pill">Internal Tools</span>
+          <span class="pill">Portals</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🌐</div>
+        <div class="service-name">Web Development</div>
+        <div class="service-desc">Sites and platforms that work as hard as you do — fast, clean, and built to convert. From landing pages to full business portals.</div>
+        <div class="service-pills">
+          <span class="pill">Business Sites</span>
+          <span class="pill">Landing Pages</span>
+          <span class="pill">E-Commerce</span>
+          <span class="pill">Web Portals</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">📣</div>
+        <div class="service-name">Social Media Marketing</div>
+        <div class="service-desc">Strategy, content, and execution for businesses that know they need to show up online but don't have the time or bandwidth to do it right.</div>
+        <div class="service-pills">
+          <span class="pill">Content Strategy</span>
+          <span class="pill">Facebook / Instagram</span>
+          <span class="pill">LinkedIn</span>
+          <span class="pill">Done-For-You</span>
+        </div>
+      </div>
+
+      <div class="service-card" style="grid-column: span 2;">
+        <div class="service-icon">🎯</div>
+        <div class="service-name">Vertical Products</div>
+        <div class="service-desc">We build purpose-built tools for specific industries — diagnosing profit leaks, building operational infrastructure, and giving business owners the systems that were never built for them. Currently serving the service trades. Additional verticals in development.</div>
+        <div class="service-pills">
+          <span class="pill">FixKit — Service Trades</span>
+          <span class="pill">Equine Industry — Coming Soon</span>
+          <span class="pill">More Verticals Planned</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- OUR WORK -->
+<section class="work-bg" id="work">
+  <div class="section-inner">
+    <div class="section-eyebrow">Our Work</div>
+    <h2 class="section-title" style="color:white">Built. Shipped. Real.</h2>
+    <p class="section-sub">We don't talk about what we can do — we show what we've built.</p>
+    <div class="work-grid">
+
+      <div class="work-card work-card-1">
+        <div class="work-status">In Development</div>
+        <div class="work-tag">App Development</div>
+        <div class="work-name">Compass Field Service App</div>
+        <div class="work-desc">Most field service apps are just scheduling and invoicing tools with no business intelligence. The Compass Field Service is built differently — every workflow is designed around protecting your margins.</div>
+        <ul class="work-bullets">
+          <li>AI-assisted quoting using your actual loaded cost, markup, and overhead</li>
+          <li>Quote-to-job-to-invoice in one workflow with no dropped handoffs</li>
+          <li>Technician dispatch, time clock, parts used, and job signoff from their phone</li>
+          <li>Inventory, restock planning, and purchase orders tied directly to jobs</li>
+          <li>Customer portal — service requests, job history, invoice access, maintenance plans</li>
+          <li>FixKit integration — your leak-free progress stays on track automatically</li>
+        </ul>
+        <span style="font-size:13px;color:rgba(255,255,255,0.35)">Early access opening soon — FixKit customers get priority.</span>
+      </div>
+
+      <div class="work-card work-card-2">
+        <div class="work-tag">Vertical Product</div>
+        <div class="work-name">FixKit — Profit Leak Repair</div>
+        <div class="work-desc">A full-stack diagnostic and repair platform for service trades businesses. Built from scratch — intake engine, AI plan generator, task portal, document library, email sequences, and admin dashboard.</div>
+        <ul class="work-bullets">
+          <li>Personalized diagnostic across 11 profit leak categories</li>
+          <li>AI-generated 30/60/90-day action plans with trade-specific guidance</li>
+          <li>22 branded business process documents and guides</li>
+          <li>Automated email sequences and customer lifecycle management</li>
+          <li>Full admin dashboard for customer tracking and engagement</li>
+        </ul>
+        <a href="/trades" class="work-link">See the Trades FixKit →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-photo-wrap">
+        <div class="about-photo-placeholder" id="photoPlaceholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>Photo coming soon</span>
+        </div>
+        <div class="about-accent">
+          <div class="about-accent-num">25</div>
+          <div class="about-accent-label">Years experience</div>
+        </div>
+      </div>
+      <div class="about-content">
+        <div class="section-eyebrow">About</div>
+        <div class="about-name">Jenifer Voiselle</div>
+        <div class="about-title">Founder, Compass Business Solutions</div>
+        <p class="about-body">For almost 25 years I worked in business and technology process analysis for Fortune-level corporations — finding exactly where time and money disappear, how the individual parts of a business run, and how the pieces fit together. Automating the stuff that shouldn't be manual. Fixing the gaps that were quietly costing time, efficiency, and money.</p>
+        <p class="about-body">That whole time I watched friends in the trades — and small business owners across industries — working themselves into the ground with the same operational problems I'd spent my career solving. They just never had anyone with that background in the room.</p>
+        <p class="about-body">Compass is what happens when 25 years of Fortune-level process work gets pointed at the businesses that actually need it.</p>
+        <div class="about-stats">
+          <div class="about-stat">
+            <div class="about-stat-num">25</div>
+            <div class="about-stat-label">Years analysis</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat-num">2</div>
+            <div class="about-stat-label">Fortune orgs</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat-num">0</div>
+            <div class="about-stat-label">Generic advice</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRADES CTA -->
+<section style="background:var(--light);padding:60px 28px;">
+  <div class="section-inner">
+    <div class="trades-cta">
+      <div>
+        <div class="trades-cta-eyebrow">Service Trades Vertical</div>
+        <div class="trades-cta-title">Own a Trades Business?<br>We Built Something for You.</div>
+        <p class="trades-cta-sub">The FixKit is a purpose-built profit leak diagnostic and repair system for plumbers, HVAC, electricians, contractors, and every other trade. 15-minute diagnostic. Real numbers. Fixes that work this week.</p>
+      </div>
+      <div class="trades-cta-btns">
+        <a href="/trades" class="btn-primary">See the FixKit →</a>
+        <a href="/trades#diagnostic" class="btn-ghost" style="color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.2)">Run a Diagnostic</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-bg" id="contact">
+  <div class="section-inner">
+    <div class="section-eyebrow">Get In Touch</div>
+    <h2 class="section-title" style="color:white">Let's Talk About<br>Your Business</h2>
+    <p class="section-sub">Whether you need a full process audit, a custom app, a new website, or someone to run your social media — start with a conversation.</p>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-item-label">Book a Call</div>
+            <div class="contact-item-value">30 minutes. No pitch — just an honest conversation about where your business is and what would actually move the needle.<br><br><a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank">Schedule a 30-Min Strategy Call →</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <div class="contact-item-label">Email</div>
+            <div class="contact-item-value"><a href="mailto:support@compassbizsolutions.com">support@compassbizsolutions.com</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🔧</div>
+          <div>
+            <div class="contact-item-label">Trades FixKit</div>
+            <div class="contact-item-value">Service trades business? <a href="/trades">Start with the free diagnostic →</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:20px;">Send a Message</div>
+        <form onsubmit="handleContact(event)">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-row">
+              <label class="form-label">Name</label>
+              <input class="form-input" type="text" name="name" placeholder="Your name" required/>
+            </div>
+            <div class="form-row">
+              <label class="form-label">Business</label>
+              <input class="form-input" type="text" name="business" placeholder="Business name"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" name="email" placeholder="your@email.com" required/>
+          </div>
+          <div class="form-row">
+            <label class="form-label">I'm interested in</label>
+            <select class="form-input" name="service">
+              <option value="">Select a service...</option>
+              <option>Business Process Consulting</option>
+              <option>App Development</option>
+              <option>Web Development</option>
+              <option>Social Media Marketing</option>
+              <option>Trades FixKit</option>
+              <option>Not sure yet — just exploring</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Tell me about your business</label>
+            <textarea class="form-input" name="message" placeholder="What's the biggest challenge you're trying to solve right now?"></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%;text-align:center;">Send Message →</button>
+          <div id="form-status" style="margin-top:12px;font-size:13px;color:var(--amber);display:none;"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-copy">© 2025 Compass Business Solutions · Jenifer Voiselle</div>
+    <div class="footer-links">
+      <a href="/trades" class="footer-link">Trades FixKit</a>
+      <a href="/pricing" class="footer-link">Pricing</a>
+      <a href="/terms-and-conditions" class="footer-link">Terms</a>
+      <a href="/privacy-policy" class="footer-link">Privacy</a>
+      <a href="/refund-policy" class="footer-link">Refunds</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav
+  var mobileOpen = false;
+  document.getElementById('mobileBtn').addEventListener('click', function() {
+    mobileOpen = !mobileOpen;
+    document.getElementById('mobileMenu').classList.toggle('open', mobileOpen);
+    var b1 = document.getElementById('mb1'), b2 = document.getElementById('mb2'), b3 = document.getElementById('mb3');
+    b1.style.transform = mobileOpen ? 'rotate(45deg) translate(5px,5px)' : '';
+    b2.style.opacity = mobileOpen ? '0' : '1';
+    b3.style.transform = mobileOpen ? 'rotate(-45deg) translate(5px,-5px)' : '';
+  });
+  function closeMobile() { mobileOpen = false; document.getElementById('mobileMenu').classList.remove('open'); }
+
+  // Smooth anchor scrolling
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); closeMobile(); }
+    });
+  });
+
+  // Contact form
+  function handleContact(e) {
+    e.preventDefault();
+    var status = document.getElementById('form-status');
+    var data = new FormData(e.target);
+    var body = {};
+    data.forEach(function(v, k) { body[k] = v; });
+    // Send to support email via mailto fallback
+    var subject = encodeURIComponent('Compass Inquiry: ' + (body.service || 'General'));
+    var msg = encodeURIComponent('Name: ' + body.name + '\nBusiness: ' + (body.business||'') + '\nEmail: ' + body.email + '\nService: ' + (body.service||'') + '\n\n' + (body.message||''));
+    window.location.href = 'mailto:support@compassbizsolutions.com?subject=' + subject + '&body=' + msg;
+    status.style.display = 'block';
+    status.textContent = 'Opening your email client...';
+  }
+</script>
+</body>
+</html>
