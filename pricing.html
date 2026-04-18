@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Pricing — Compass Business Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#F4F7FC;color:#1B2E4B;line-height:1.7}
+    .nav{background:#1B2E4B;padding:16px 40px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;letter-spacing:1px;text-decoration:none}
+    .nav-logo span{color:#C8701A}
+    .nav-link{font-size:13px;color:rgba(255,255,255,0.6);text-decoration:none}
+    .nav-link:hover{color:white}
+    .hero{background:#1B2E4B;padding:56px 40px 48px;border-bottom:4px solid #C8701A;text-align:center}
+    .hero-label{font-size:11px;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:12px}
+    .hero-title{font-family:'Barlow Condensed',sans-serif;font-size:52px;font-weight:800;color:white;letter-spacing:-0.5px;text-transform:uppercase;margin-bottom:16px}
+    .hero-sub{font-size:16px;color:rgba(255,255,255,0.6);max-width:540px;margin:0 auto}
+    .hero-sub strong{color:white}
+    .container{max-width:900px;margin:0 auto;padding:56px 40px}
+    .section-label{font-size:11px;font-weight:700;letter-spacing:3px;color:#5A7291;text-transform:uppercase;margin-bottom:24px;text-align:center}
+
+    /* Cards */
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:56px}
+    .card{background:white;border:1px solid #D8E4F0;border-radius:14px;padding:28px;position:relative;display:flex;flex-direction:column}
+    .card.featured{border:2px solid #C8701A;box-shadow:0 4px 24px rgba(200,112,26,0.12)}
+    .card-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#C8701A;color:white;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:1.5px;padding:4px 16px;border-radius:99px;text-transform:uppercase;white-space:nowrap}
+    .card-icon{font-size:28px;margin-bottom:12px}
+    .card-name{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:#1B2E4B;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px}
+    .card-tagline{font-size:13px;color:#5A7291;margin-bottom:20px;line-height:1.5}
+    .card-price{display:flex;align-items:baseline;gap:4px;margin-bottom:6px}
+    .price-amount{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:#1B2E4B;line-height:1}
+    .price-label{font-size:13px;color:#5A7291;font-weight:500}
+    .price-note{font-size:12px;color:#C8701A;font-weight:600;margin-bottom:20px}
+    .divider{border:none;border-top:1px solid #E8EFF8;margin:20px 0}
+    .feature-list{list-style:none;padding:0;flex:1}
+    .feature-list li{font-size:14px;color:#2E3F55;padding:5px 0 5px 22px;position:relative;line-height:1.5}
+    .feature-list li::before{content:"✓";color:#C8701A;font-weight:700;position:absolute;left:0}
+    .feature-list li.muted{color:#5A7291}
+    .feature-list li.muted::before{content:"·";color:#C8D6E8}
+    .cta-btn{display:block;background:#C8701A;color:white;text-align:center;padding:12px 20px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-decoration:none;text-transform:uppercase;margin-top:20px;transition:opacity 0.15s}
+    .cta-btn:hover{opacity:0.88}
+    .cta-btn.secondary{background:none;color:#1B2E4B;border:2px solid #C8D6E8}
+    .cta-btn.secondary:hover{border-color:#C8701A;color:#C8701A}
+
+    /* Upgrade callout */
+    .upgrade-bar{background:#1B2E4B;border-radius:12px;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:56px;flex-wrap:wrap}
+    .upgrade-bar-text{}
+    .upgrade-bar-label{font-size:11px;font-weight:700;letter-spacing:2px;color:#C8701A;text-transform:uppercase;margin-bottom:6px}
+    .upgrade-bar-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:white;letter-spacing:0.5px}
+    .upgrade-bar-sub{font-size:13px;color:rgba(255,255,255,0.55);margin-top:4px}
+    .upgrade-bar-btns{display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap}
+    .upgrade-btn{padding:10px 20px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+    .upgrade-btn.primary{background:#C8701A;color:white}
+    .upgrade-btn.ghost{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2)}
+
+    /* Compare table */
+    .compare-wrap{margin-bottom:56px;overflow-x:auto}
+    .compare-table{width:100%;border-collapse:collapse;font-size:14px}
+    .compare-table th{background:#1B2E4B;color:white;padding:12px 16px;text-align:left;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:0.5px}
+    .compare-table th:first-child{border-radius:10px 0 0 0}
+    .compare-table th:last-child{border-radius:0 10px 0 0}
+    .compare-table td{padding:11px 16px;border-bottom:1px solid #EBF0F7;color:#2E3F55}
+    .compare-table tr:last-child td{border-bottom:none}
+    .compare-table tr:nth-child(even) td{background:#F9FBFD}
+    .compare-table td:first-child{font-weight:500;color:#1B2E4B}
+    .check{color:#C8701A;font-weight:700;font-size:16px}
+    .dash{color:#C8D6E8}
+
+    /* FAQ */
+    .faq{margin-bottom:56px}
+    .faq-item{border-bottom:1px solid #E8EFF8;padding:20px 0}
+    .faq-q{font-weight:600;color:#1B2E4B;font-size:15px;margin-bottom:8px}
+    .faq-a{font-size:14px;color:#4A6070;line-height:1.7}
+    .faq-a a{color:#C8701A;text-decoration:none}
+
+    .footer{background:#1B2E4B;padding:24px 40px;text-align:center;font-size:13px;color:rgba(255,255,255,0.4);margin-top:20px}
+    .footer a{color:rgba(255,255,255,0.6);text-decoration:none}
+    .footer a:hover{color:white}
+    @media(max-width:600px){.hero{padding:36px 20px}.container{padding:36px 20px}.nav{padding:16px 20px}.upgrade-bar{flex-direction:column}.upgrade-bar-btns{width:100%}.upgrade-btn{flex:1;text-align:center}}
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">COMPASS <span>BUSINESS</span> SOLUTIONS</a>
+  <a href="mailto:support@compassbizsolutions.com" class="nav-link">support@compassbizsolutions.com</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">Pricing</div>
+  <div class="hero-title">Start with your numbers.<br>Fix what's leaking.</div>
+  <div class="hero-sub">Every product is built around <strong>your specific business</strong> — your rates, your trade, your operations. Not generic advice.</div>
+</div>
+
+<div class="container">
+
+  <!-- MAIN PLANS -->
+  <div class="section-label">Choose your starting point</div>
+  <div class="cards">
+
+    <!-- SNAPSHOT -->
+    <div class="card">
+      <div class="card-icon">🔍</div>
+      <div class="card-name">Profit Leak Snapshot</div>
+      <div class="card-tagline">Find out exactly where your money is going — in 15 minutes.</div>
+      <div class="card-price">
+        <div class="price-amount">$99</div>
+        <div class="price-label">one-time</div>
+      </div>
+      <div class="price-note">Best place to start</div>
+      <hr class="divider"/>
+      <ul class="feature-list">
+        <li>15-minute online intake — your real numbers</li>
+        <li>AI-generated profit leak analysis</li>
+        <li>Top 3 leaks identified with dollar amounts</li>
+        <li>Fix recommendations for each leak</li>
+        <li>Downloadable PDF report</li>
+        <li class="muted">No daily plan or task tracking</li>
+        <li class="muted">No document templates</li>
+      </ul>
+      <a href="/?buy=snapshot" class="cta-btn secondary">Get the Snapshot →</a>
+    </div>
+
+    <!-- FIXKIT 30-DAY -->
+    <div class="card featured">
+      <div class="card-badge">Most Popular</div>
+      <div class="card-icon">⚡</div>
+      <div class="card-name">FixKit 30-Day Plan</div>
+      <div class="card-tagline">A full 30-day program that closes your top profit leaks — one task at a time.</div>
+      <div class="card-price">
+        <div class="price-amount">$299</div>
+        <div class="price-label">one-time</div>
+      </div>
+      <div class="price-note">$199 if upgrading from Snapshot</div>
+      <hr class="divider"/>
+      <ul class="feature-list">
+        <li>Everything in the Snapshot</li>
+        <li>Personalized 30-day action plan</li>
+        <li>Daily 10–15 minute tasks</li>
+        <li>10 Profit Leak Fix guides</li>
+        <li>Business process document templates</li>
+        <li>Rate calculator &amp; pricing worksheet</li>
+        <li>AI assistant with your business context</li>
+        <li>Progress tracking dashboard</li>
+      </ul>
+      <a href="/?buy=30day" class="cta-btn">Get FixKit 30-Day →</a>
+    </div>
+
+    <!-- BUNDLE -->
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <div class="card-name">Complete Bundle</div>
+      <div class="card-tagline">The full 30/60/90 system — everything you need to run a tighter, more profitable operation.</div>
+      <div class="card-price">
+        <div class="price-amount">$599</div>
+        <div class="price-label">one-time</div>
+      </div>
+      <div class="price-note">$499 if upgrading from Snapshot</div>
+      <hr class="divider"/>
+      <ul class="feature-list">
+        <li>Everything in FixKit 30-Day</li>
+        <li>Extended 60 &amp; 90-day plan phases</li>
+        <li>Full document library (all templates)</li>
+        <li>Service agreement &amp; maintenance contract</li>
+        <li>Change order authorization template</li>
+        <li>Employee handbook &amp; training docs</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="/?buy=bundle" class="cta-btn secondary">Get the Bundle →</a>
+    </div>
+
+  </div>
+
+  <!-- UPGRADE CALLOUT -->
+  <div class="upgrade-bar">
+    <div class="upgrade-bar-text">
+      <div class="upgrade-bar-label">Already have a Snapshot?</div>
+      <div class="upgrade-bar-title">Upgrade and get $100 off any FixKit plan</div>
+      <div class="upgrade-bar-sub">Use code <strong style="color:white">SNAPSHOT-UPGRADE</strong> at checkout. Applied automatically from your Snapshot results page.</div>
+    </div>
+    <div class="upgrade-bar-btns">
+      <a href="/?buy=30day" class="upgrade-btn primary">30-Day — $199 →</a>
+      <a href="/?buy=bundle" class="upgrade-btn ghost">Bundle — $499</a>
+    </div>
+  </div>
+
+  <!-- COMPARE TABLE -->
+  <div class="section-label">Full comparison</div>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:40%">Feature</th>
+          <th style="width:20%;text-align:center">Snapshot<br><span style="font-size:13px;font-weight:400;opacity:0.7">$99</span></th>
+          <th style="width:20%;text-align:center">FixKit 30-Day<br><span style="font-size:13px;font-weight:400;opacity:0.7">$299</span></th>
+          <th style="width:20%;text-align:center">Bundle<br><span style="font-size:13px;font-weight:400;opacity:0.7">$599</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>15-min business intake</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td></tr>
+        <tr><td>Top 3 profit leaks identified</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td></tr>
+        <tr><td>Dollar amount per leak</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td></tr>
+        <tr><td>Downloadable PDF report</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td></tr>
+        <tr><td>Personalized 30-day action plan</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td></tr>
+        <tr><td>Daily 10–15 min tasks</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td></tr>
+        <tr><td>All 10 Profit Leak Fix guides</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td></tr>
+        <tr><td>Rate calculator &amp; pricing worksheet</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td></tr>
+        <tr><td>AI assistant (your business context)</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td></tr>
+        <tr><td>Progress tracking dashboard</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="check">✓</td><td style="text-align:center" class="check">✓</td></tr>
+        <tr><td>Extended 60 &amp; 90-day plan phases</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="check">✓</td></tr>
+        <tr><td>Full document library (all templates)</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="check">✓</td></tr>
+        <tr><td>Employee handbook &amp; training docs</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="check">✓</td></tr>
+        <tr><td>Service agreement template</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="dash">—</td><td style="text-align:center" class="check">✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section-label">Common questions</div>
+  <div class="faq">
+
+    <div class="faq-item">
+      <div class="faq-q">What trades does this work for?</div>
+      <div class="faq-a">Any service-based trade business — HVAC, plumbing, electrical, general contracting, landscaping, painting, pest control, cleaning services, air duct, handyman, roofing, and more. The diagnostic and plan are personalized to your specific trade and numbers.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How long does the intake take?</div>
+      <div class="faq-a">About 15 minutes. You answer straightforward questions about how your business runs — your rates, your schedule, your overhead, your team. No accounting software needed, no complicated setup.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">I bought the Snapshot — can I upgrade to FixKit later?</div>
+      <div class="faq-a">Yes. Use code <strong>SNAPSHOT-UPGRADE</strong> when you purchase any FixKit plan and you'll get $100 off — bringing the 30-Day Plan to $199 and the Bundle to $499. The discount is applied automatically from your Snapshot results page.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Is this a subscription?</div>
+      <div class="faq-a">No. All products are one-time purchases. You pay once and keep access to your plan and materials.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What's your refund policy?</div>
+      <div class="faq-a">Digital products can be refunded within 7 days of purchase if you haven't used the product. Full details at <a href="/refund-policy">compassbizsolutions.com/refund-policy</a>.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">I need someone to actually build the systems for me — is that available?</div>
+      <div class="faq-a">Yes. Custom consulting is available for shop owners who want someone to come in and build the processes, workflows, and documentation for them. Email <a href="mailto:support@compassbizsolutions.com">support@compassbizsolutions.com</a> to discuss.</div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM CTA -->
+  <div style="background:#1B2E4B;border-radius:14px;padding:40px;text-align:center;margin-bottom:20px">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:-0.5px;margin-bottom:12px">Not sure where to start?</div>
+    <div style="font-size:15px;color:rgba(255,255,255,0.6);margin-bottom:28px;max-width:440px;margin-left:auto;margin-right:auto">Run the Snapshot first. 15 minutes, $99. It shows you exactly what's leaking before you commit to anything else.</div>
+    <a href="/?buy=snapshot" style="display:inline-block;background:#C8701A;color:white;padding:14px 32px;border-radius:9px;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;letter-spacing:1px;text-decoration:none;text-transform:uppercase">Start with the Snapshot — $99 →</a>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Compass Business Solutions &nbsp;·&nbsp; <a href="mailto:support@compassbizsolutions.com">support@compassbizsolutions.com</a> &nbsp;·&nbsp; <a href="/terms-and-conditions">Terms</a> &nbsp;·&nbsp; <a href="/privacy-policy">Privacy</a> &nbsp;·&nbsp; <a href="/refund-policy">Refunds</a></p>
+</div>
+
+</body>
+</html>
