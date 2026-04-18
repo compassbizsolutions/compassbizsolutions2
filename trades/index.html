@@ -759,7 +759,6 @@ function renderQuestion() {
           grid.querySelectorAll('.btn-opt').forEach(function(b){ b.classList.remove('selected'); });
           btn.classList.add('selected');
           document.getElementById('btn-next').disabled = false;
-          setTimeout(function(){ qNext(); }, 280);
         }
       };
       grid.appendChild(btn);
