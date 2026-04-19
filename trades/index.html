@@ -7,7 +7,6 @@
 <meta name="description" content="Find exactly where your trades business is losing money. Free diagnostic, profit leak snapshot, and 30/60/90-day fix plans for service businesses."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
-<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
 <style>
 :root{--navy:#1B2E4B;--navydark:#111E31;--amber:#C8701A;--light:#F4F7FC;--muted:#5A7291;--slate:#3D6B9E;--green:#1E6B45;--white:#FFFFFF;--border:rgba(61,107,158,0.18)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -270,7 +269,7 @@ footer{background:#0d1622;padding:28px 24px}
       
       <button class="nav-link" onclick="showPage('profitable')">What Profitable Looks Like</button>
       <button class="nav-link" onclick="showPage('about')">Our Story</button>
-      <button class="nav-link nav-cta" onclick="openCheckout('pri_01knjhs5ve0q3gxn8th0g3br9c','Profit Leak Snapshot — $99')">Get Snapshot — $99</button>
+      <button class="nav-link nav-cta" onclick="openCheckout('snapshot','Profit Leak Snapshot — $99')">Get Snapshot — $99</button>
     </div>
     <button class="hamburger" id="hamburger" onclick="toggleMobile()">
       <span id="hb1"></span><span id="hb2"></span><span id="hb3"></span>
@@ -286,7 +285,7 @@ footer{background:#0d1622;padding:28px 24px}
   <button class="mobile-link" onclick="showPage('guides');closeMobile()">Guides & Docs</button>
   <button class="mobile-link" onclick="showPage('profitable');closeMobile()">What Profitable Looks Like</button>
   <button class="mobile-link" onclick="showPage('about');closeMobile()">Our Story</button>
-  <button class="mobile-link" style="color:var(--amber);font-weight:600" onclick="openCheckout('pri_01knjhs5ve0q3gxn8th0g3br9c','Profit Leak Snapshot — $99');closeMobile()">Get Snapshot — $99 →</button>
+  <button class="mobile-link" style="color:var(--amber);font-weight:600" onclick="openCheckout('snapshot','Profit Leak Snapshot — $99');closeMobile()">Get Snapshot — $99 →</button>
 </div>
 
 <!-- TOAST -->
@@ -397,7 +396,7 @@ footer{background:#0d1622;padding:28px 24px}
             <li>Step-by-step fix instructions</li>
             <li>$100 credit toward FixKit upgrade</li>
           </ul>
-          <button class="btn btn-outline" onclick="openCheckout('pri_01knjhs5ve0q3gxn8th0g3br9c','Profit Leak Snapshot — $99')" style="width:100%;text-align:center">Get My Snapshot — $99</button>
+          <button class="btn btn-outline" onclick="openCheckout('snapshot','Profit Leak Snapshot — $99')" style="width:100%;text-align:center">Get My Snapshot — $99</button>
         </div>
         <div class="product-card featured">
           <span class="product-tag tag-amber">Most Popular · $299</span>
@@ -411,7 +410,7 @@ footer{background:#0d1622;padding:28px 24px}
             <li>AI assistant with your full business context</li>
             <li>$100 off with Snapshot upgrade code</li>
           </ul>
-          <button class="btn btn-amber" onclick="openCheckout('pri_01km957nv9t0wgnb7rxrpzmrkv','FixKit 30-Day Plan — $299')" style="width:100%;text-align:center">Get 30-Day Plan — $299</button>
+          <button class="btn btn-amber" onclick="openCheckout('fixkit_30','FixKit 30-Day Plan — $299')" style="width:100%;text-align:center">Get 30-Day Plan — $299</button>
         </div>
         <div class="product-card">
           <span class="product-tag tag-amber">Best Value · $599</span>
@@ -425,7 +424,31 @@ footer{background:#0d1622;padding:28px 24px}
             <li>Saves $298 vs buying phases separately</li>
             <li>$100 off with Snapshot upgrade code</li>
           </ul>
-          <button class="btn btn-dark" onclick="openCheckout('pri_01km95651yv87n7bkktg2fmzna','FixKit Complete Bundle — $599')" style="width:100%;text-align:center">Get Full Bundle — $599</button>
+          <button class="btn btn-dark" onclick="openCheckout('fixkit_bundle','FixKit Complete Bundle — $599')" style="width:100%;text-align:center">Get Full Bundle — $599</button>
+        </div>
+        <div class="product-card">
+          <span class="product-tag tag-slate">$299</span>
+          <div class="product-icon">📅</div>
+          <div class="product-name">FixKit Days 31–60</div>
+          <div class="product-short">Phase 2. Picks up where Day 30 left off — next tier of leaks, same format.</div>
+          <ul class="product-bullets">
+            <li>30 more daily tasks, 15-20 minutes each</li>
+            <li>Next tier of profit leaks in order of impact</li>
+            <li>Continues in your existing portal</li>
+          </ul>
+          <button class="btn btn-outline" onclick="openCheckout('fixkit_3160','FixKit Days 31-60 — $299')" style="width:100%;text-align:center">Get Days 31-60 — $299</button>
+        </div>
+        <div class="product-card">
+          <span class="product-tag tag-slate">$299</span>
+          <div class="product-icon">🏁</div>
+          <div class="product-name">FixKit Days 61–90</div>
+          <div class="product-short">Phase 3. The final 30 days — closes out your remaining profit leaks.</div>
+          <ul class="product-bullets">
+            <li>30 final daily tasks, 15-20 minutes each</li>
+            <li>All remaining leaks closed out</li>
+            <li>Continues in your existing portal</li>
+          </ul>
+          <button class="btn btn-outline" onclick="openCheckout('fixkit_6190','FixKit Days 61-90 — $299')" style="width:100%;text-align:center">Get Days 61-90 — $299</button>
         </div>
       </div>
       <div style="text-align:center;margin-top:20px">
@@ -537,7 +560,7 @@ footer{background:#0d1622;padding:28px 24px}
       <div class="about-stats">
         <div class="about-stat"><div class="about-stat-num">23</div><div class="about-stat-label">Years in business process analysis</div></div>
         <div class="about-stat"><div class="about-stat-num">2</div><div class="about-stat-label">Fortune-level organizations</div></div>
-        <div class="about-stat"><div class="about-stat-num">10</div><div class="about-stat-label">Profit leak categories diagnosed</div></div>
+        <div class="about-stat"><div class="about-stat-num">11</div><div class="about-stat-label">Processes analyzed</div></div>
         <div class="about-stat"><div class="about-stat-num">0</div><div class="about-stat-label">Fluff. Everything applied.</div></div>
       </div>
       <div style="margin-top:40px;padding:28px;background:var(--light);border-radius:12px;border-left:4px solid var(--amber)">
@@ -564,20 +587,7 @@ footer{background:#0d1622;padding:28px 24px}
   </div>
 </footer>
 
-<!-- PRE-CHECKOUT MODAL -->
-<div class="modal-overlay" id="checkout-modal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('checkout-modal')">×</button>
-    <h3 id="checkout-modal-title">Get Your Plan</h3>
-    <p id="checkout-modal-desc">Enter your email to continue to checkout.</p>
-    <input class="modal-input" type="email" id="checkout-email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')launchCheckout()"/>
-    <div id="checkout-err" class="modal-err"></div>
-    <button class="btn btn-amber" onclick="launchCheckout()" style="width:100%;text-align:center">Continue to Checkout →</button>
-    <p class="modal-note">Secure checkout powered by Paddle. Your email is used to deliver your purchase.</p>
-  </div>
-</div>
-
-<!-- UPGRADE MODAL -->
+<!-- UPGRADE MODAL<!-- UPGRADE MODAL -->
 <div class="modal-overlay" id="upgrade-modal">
   <div class="modal modal-dark">
     <button class="modal-close" onclick="closeModal('upgrade-modal')">×</button>
@@ -585,8 +595,8 @@ footer{background:#0d1622;padding:28px 24px}
     <h3>Ready for the Full Plan?</h3>
     <p>As a Snapshot owner you get $100 off any FixKit plan. The discount is built into the upgrade price — no code needed.</p>
     <div style="display:flex;flex-direction:column;gap:10px">
-      <button class="btn btn-amber" onclick="openCheckout('pri_01knjhxqg290q6q1h9m56j8tkc','FixKit 30-Day — $199');closeModal('upgrade-modal')" style="width:100%;text-align:center">FixKit 30-Day — $199 →</button>
-      <button class="btn btn-ghost" onclick="openCheckout('pri_01knjj1nr64jy967rgg4d8z49s','FixKit Bundle — $499');closeModal('upgrade-modal')" style="width:100%;text-align:center;border-color:rgba(255,255,255,0.15)">Full Bundle — $499</button>
+      <button class="btn btn-amber" onclick="openCheckout('snapshot_up_30','FixKit 30-Day — $199');closeModal('upgrade-modal')" style="width:100%;text-align:center">FixKit 30-Day — $199 →</button>
+      <button class="btn btn-ghost" onclick="openCheckout('snapshot_up_bun','FixKit Bundle — $499');closeModal('upgrade-modal')" style="width:100%;text-align:center;border-color:rgba(255,255,255,0.15)">Full Bundle — $499</button>
     </div>
   </div>
 </div>
@@ -671,9 +681,9 @@ const DOCS_DATA = [
 
 const SERVICES_DATA = [
   {icon:'🔍',title:'Free Business Diagnostic',tag:'Free',tagClass:'tag-green',short:'Find out where your money is going. No strings attached.',bullets:['Your top three profit leaks — specific to your trade and numbers','An estimated annual dollar range for each one','What is causing them and what it takes to fix each one'],closing:"What you do with it is entirely up to you. Some people fix it themselves. Some want help. Some just needed to see the number.",cta:'Start Free Diagnostic',onclick:"showPage('home');scrollToEl('diagnostic')"},
-  {icon:'📈',title:'FixKit — Complete 30/60/90-Day Plan',tag:'$599 — saves $298',tagClass:'tag-amber',short:'All three phases. Fully sequenced. Everything in one portal. Best value.',bullets:['Days 1-30 — top leaks, daily plan, calculators, guides, and process docs','Days 31-60 — next tier of leaks with their own day-by-day plan','Days 61-90 — remaining leaks closed out with a final set of docs','Everything in one portal from day one','Full before/after dashboard across all 90 days','Saves $298 vs buying each phase separately','$100 off if upgrading from the DIY Snapshot'],cta:"Get the Full Bundle — $599",onclick:"openCheckout('pri_01km95651yv87n7bkktg2fmzna','FixKit Complete Bundle — $599')"},
-  {icon:'📋',title:'FixKit — 30-Day Quick Win Plan',tag:'$299',tagClass:'tag-amber',short:'Your worst leaks addressed first. Daily tasks. Built-in tracking. AI support.',bullets:['Personalized 30-day plan — daily 15-20 minute tasks in order of impact','Built-in number tracking and progress dashboard','5 full profit calculators built for your numbers','9 process templates for your trade','Before/after comparison showing what your fixes are worth annually','Ask Jen — AI chat with your full business context','$100 off if upgrading from the DIY Snapshot'],cta:"Get the 30-Day Plan — $299",onclick:"openCheckout('pri_01km957nv9t0wgnb7rxrpzmrkv','FixKit 30-Day Plan — $299')"},
-  {icon:'📄',title:'DIY Profit Leak Snapshot',tag:'$99',tagClass:'tag-navy',short:'Your top 3 leaks, the math, and exactly how to fix them — in a PDF you keep.',bullets:['Your top 3 leaks ranked by dollar impact','The exact math showing what each leak costs you annually','Step-by-step fix instructions — not generic advice','A do this first action for each leak you can start this week','Includes a $100 upgrade credit toward FixKit'],closing:'No portal, no daily tasks, no subscription. Just your numbers, your leaks, and what to do about them — in a printable PDF you keep forever.',cta:"Get My Snapshot — $99",onclick:"openCheckout('pri_01knjhs5ve0q3gxn8th0g3br9c','Profit Leak Snapshot — $99')"},
+  {icon:'📈',title:'FixKit — Complete 30/60/90-Day Plan',tag:'$599 — saves $298',tagClass:'tag-amber',short:'All three phases. Fully sequenced. Everything in one portal. Best value.',bullets:['Days 1-30 — top leaks, daily plan, calculators, guides, and process docs','Days 31-60 — next tier of leaks with their own day-by-day plan','Days 61-90 — remaining leaks closed out with a final set of docs','Everything in one portal from day one','Full before/after dashboard across all 90 days','Saves $298 vs buying each phase separately','$100 off if upgrading from the DIY Snapshot'],cta:"Get the Full Bundle — $599",onclick:"openCheckout('fixkit_bundle','FixKit Complete Bundle — $599')"},
+  {icon:'📋',title:'FixKit — 30-Day Quick Win Plan',tag:'$299',tagClass:'tag-amber',short:'Your worst leaks addressed first. Daily tasks. Built-in tracking. AI support.',bullets:['Personalized 30-day plan — daily 15-20 minute tasks in order of impact','Built-in number tracking and progress dashboard','5 full profit calculators built for your numbers','9 process templates for your trade','Before/after comparison showing what your fixes are worth annually','Ask Jen — AI chat with your full business context','$100 off if upgrading from the DIY Snapshot'],cta:"Get the 30-Day Plan — $299",onclick:"openCheckout('fixkit_30','FixKit 30-Day Plan — $299')"},
+  {icon:'📄',title:'DIY Profit Leak Snapshot',tag:'$99',tagClass:'tag-navy',short:'Your top 3 leaks, the math, and exactly how to fix them — in a PDF you keep.',bullets:['Your top 3 leaks ranked by dollar impact','The exact math showing what each leak costs you annually','Step-by-step fix instructions — not generic advice','A do this first action for each leak you can start this week','Includes a $100 upgrade credit toward FixKit'],closing:'No portal, no daily tasks, no subscription. Just your numbers, your leaks, and what to do about them — in a printable PDF you keep forever.',cta:"Get My Snapshot — $99",onclick:"openCheckout('snapshot','Profit Leak Snapshot — $99')"},
   {icon:'🛠️',title:'Done For You — Consulting',tag:'By scope',tagClass:'tag-slate',short:'We build and implement the systems for you.',bullets:['We map how your business actually runs — not how it should run','We build the process docs, pricing structures, and workflows','You review, we refine, it gets done','Scoping call is free with no commitment','Payment plans available'],cta:"Book a Free Scoping Call",onclick:"window.open('https://calendly.com/jvoiselle612-s9gb/free-scoping-call','_blank')"},
   {icon:'📱',title:'The Compass Field Service App — In Development (Releasing June 1, 2026)',tag:'Coming Soon',tagClass:'tag-slate',short:'Run your whole operation with the Compass profit methodology built in.',bullets:['AI-assisted quoting using your actual loaded cost and overhead','Quote-to-job-to-invoice in one workflow','Technician dispatch, time clock, parts, and job signoff from their phone','Inventory and purchase orders tied directly to jobs','Customer portal and FixKit integration'],closing:'Early access opening soon. FixKit customers get priority access and discounted first year.',cta:"Join the Early Access List",onclick:"openWaitlist()"},
 ];
@@ -816,37 +826,26 @@ function submitDiagnostic() {
     return k + ': ' + (Array.isArray(v) ? v.join(', ') : v);
   }).join('\n');
 
-  var userPrompt = 'A ' + trade + ' owner just answered a diagnostic. Here are their answers:\n\n' + answerLines + '\n\nIdentify their top 3 profit leaks. Use their actual numbers (invoice amount, crew size, job count). Be specific and blunt. Talk like someone who has been in the field, not a consultant. Short sentences. No jargon.\n\nRespond ONLY in this exact format:\n\n[HEADLINE]\nOne blunt sentence naming their biggest problem in plain language.\n\n[WHAT_WE_SEE]\n• bullet 1 (max 15 words, specific to their numbers)\n• bullet 2\n• bullet 3\n\n[TOP_LEAK]\nLEAK NAME IN CAPS — $XX,000-$XX,000/year\nWhy this is happening for them specifically (one sentence).\nFix it this week: one specific action.\n\n[SECOND_LEAK]\nSame 3-line format.\n\n[THIRD_LEAK]\nSame 3-line format.\n\n[HOW_WE_HELP]\nTwo sentences. Tell them Compass built a 30-day fix plan with daily tasks built around their specific trade and numbers.';
+  var systemPrompt = 'You are a straight-talking advisor who has worked with hundreds of trades businesses. You talk like someone who has been in the field — blunt, plain, no corporate language. Short sentences. No jargon.';
+  var userPrompt = 'A ' + trade + ' owner answered a diagnostic. Here are their answers:\n\n' + answerLines + '\n\nIdentify their top 3 profit leaks. Use their actual numbers. Be specific and blunt.\n\nRespond ONLY in this exact format:\n\n[HEADLINE]\nOne blunt sentence naming their biggest problem in plain language.\n\n[WHAT_WE_SEE]\n• bullet 1 (max 15 words, specific to their numbers)\n• bullet 2\n• bullet 3\n\n[TOP_LEAK]\nLEAK NAME IN CAPS — $XX,000-$XX,000/year\nWhy this is happening for them specifically (one sentence).\nFix it this week: one specific action.\n\n[SECOND_LEAK]\nSame 3-line format.\n\n[THIRD_LEAK]\nSame 3-line format.\n\n[HOW_WE_HELP]\nTwo sentences max. Tell them Compass built a 30-day fix plan with daily tasks built around their specific trade and numbers.';
 
-  fetch('https://api.anthropic.com/v1/messages', {
+  // Call generate-report — server-side Anthropic proxy (API key stays on server)
+  fetch('https://fixkit.compassbizsolutions.com/api/generate-report', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      system: 'You are a straight-talking advisor who has worked with hundreds of trades businesses. You talk like a guy who has been in the field — blunt, plain, no corporate language.',
-      messages: [{role: 'user', content: userPrompt}]
+      system: systemPrompt,
+      prompt: userPrompt,
+      max_tokens: 1000
     })
   })
   .then(function(r) { return r.json(); })
-  .then(function(aiData) {
-    var report = (aiData.content && aiData.content[0] && aiData.content[0].text) ? aiData.content[0].text : '';
+  .then(function(data) {
+    var report = data.text || '';
 
     function getTag(text, tag) {
       var m = text.match(new RegExp('\\[' + tag + '\\]([\\s\\S]*?)(?=\\[|$)'));
       return m ? m[1].trim() : '';
-    }
-    function parseLeakBlock(text) {
-      if (!text) return {};
-      var lines = text.split('\n').filter(function(l) { return l.trim(); });
-      var first = lines[0] || '';
-      var di = first.indexOf(' — ');
-      return {
-        name: di > 0 ? first.substring(0, di) : first,
-        range: di > 0 ? first.substring(di + 3) : '',
-        why: lines[1] || '',
-        fix: lines[2] || ''
-      };
     }
 
     var parsed = {
@@ -863,22 +862,24 @@ function submitDiagnostic() {
     document.getElementById('diag-loading').style.display = 'none';
     showResults(parsed, email);
 
-    // Send email in background - fire and forget
-    fetch('https://fixkit.compassbizsolutions.com/api/send-diagnostic', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        email: email,
-        biz: trade + ' business',
-        trade: trade,
-        answers: answerLines,
-        report: report
-      })
-    }).catch(function() {});
+    // Send email in background
+    if (report) {
+      fetch('https://fixkit.compassbizsolutions.com/api/send-diagnostic', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          email: email,
+          biz: trade + ' business',
+          trade: trade,
+          answers: answerLines,
+          report: report
+        })
+      }).catch(function() {});
+    }
   })
   .catch(function() {
     document.getElementById('diag-loading').style.display = 'none';
-    showResults({leaks: [], headline: 'Something went wrong', whatWeSee: ''}, email);
+    showResults({leaks: [], headline: '', whatWeSee: '', emailSent: true}, email);
   });
 }
 
@@ -897,11 +898,7 @@ function parseLeakBlock(text) {
 
 function showResults(parsed, email) {
   var wrap = document.getElementById('results-content');
-  var leaks = (parsed && parsed.leaks && parsed.leaks.length) ? parsed.leaks : [
-    {name:'PRICING GAP', range:'$18,000-$28,000/year', why:'Your rate is below your real cost per hour based on your crew and job volume.', fix:'Fix it this week: calculate your true loaded hourly cost and raise your rate.'},
-    {name:'SCHEDULING LEAK', range:'$12,000-$20,000/year', why:'You are losing multiple billable slots every week to no-shows.', fix:'Fix it this week: call every customer the day before to confirm.'},
-    {name:'ADMIN TIME DRAIN', range:'$15,000-$25,000/year', why:'The admin work you listed is eating hours you should be billing.', fix:'Fix it this week: write down every admin task and pick one to eliminate or automate.'}
-  ];
+  var leaks = (parsed && parsed.leaks && parsed.leaks.length) ? parsed.leaks : [];
 
   var headline = (parsed && parsed.headline) ? parsed.headline : 'Your business is losing money in at least three places right now.';
   var whatWeSee = (parsed && parsed.whatWeSee) ? parsed.whatWeSee : '';
@@ -918,6 +915,12 @@ function showResults(parsed, email) {
   });
   var totalStr = totalLow > 0 ? '$' + Math.round(totalLow/1000) + ',000-$' + Math.round(totalHigh/1000) + ',000/year' : '';
 
+  if (!leaks.length) {
+    wrap.innerHTML = '<div style="text-align:center;padding:40px 24px"><div style="font-size:16px;color:var(--muted)">We had trouble analyzing your answers. Your results have been emailed to ' + email + '. Reply to that email for your full report.</div></div>';
+    document.getElementById('diag-results').style.display = 'block';
+    document.getElementById('diag-results').scrollIntoView({behavior:'smooth'});
+    return;
+  }
   var html = '<div class="results-header">'
     + '<div class="results-eyebrow">Your Free Profit Leak Report</div>'
     + '<div class="results-headline" style="font-size:clamp(18px,3vw,28px);margin-bottom:16px">' + headline + '</div>'
@@ -967,84 +970,36 @@ function showResults(parsed, email) {
 
   wrap.innerHTML = html;
   document.getElementById('results-btn-snapshot').addEventListener('click', function() {
-    openCheckout('pri_01knjhs5ve0q3gxn8th0g3br9c', 'Profit Leak Snapshot — $99');
+    openCheckout('snapshot', 'Profit Leak Snapshot — $99');
   });
   document.getElementById('results-btn-fixkit').addEventListener('click', function() {
-    openCheckout('pri_01km957nv9t0wgnb7rxrpzmrkv', 'FixKit 30-Day — $299');
+    openCheckout('fixkit_30', 'FixKit 30-Day — $299');
   });
   document.getElementById('diag-results').style.display = 'block';
   document.getElementById('diag-results').scrollIntoView({behavior:'smooth'});
 }
 
 // ── PADDLE CHECKOUT ───────────────────────────────────────────────────────
-var paddleReady = false;
-    window.addEventListener('load', function() {
-      try {
-        if (window.Paddle) {
-          Paddle.Environment.set('sandbox');
-          Paddle.Initialize({
-            token: 'test_8bbf77a0a6dfe70e27e2e5db1e5',
-            eventCallback: function(e) {
-              console.log('Paddle event:', e.name, e);
-              if (e.name === 'checkout.completed') {
-                closeModal('checkout-modal');
-                showToast('Payment complete! Check your email for access details.');
-                setTimeout(function(){ window.location.href = 'https://fixkit.compassbizsolutions.com'; }, 2000);
-              }
-              if (e.name === 'checkout.error') {
-                console.error('Paddle checkout error:', e);
-                showToast('Checkout error — please try again or contact support.');
-              }
-            }
-          });
-          paddleReady = true;
-          console.log('Paddle initialized in sandbox mode');
-        } else {
-          console.warn('Paddle.js not loaded');
-        }
-      } catch(e) { console.warn('Paddle init failed:', e.message); }
-    });
+// ── STRIPE CHECKOUT ──────────────────────────────────────────────────────
+    var STRIPE_LINKS = {
+      snapshot:        'https://buy.stripe.com/test_00wbIUgZU7hlfpObs39sk00',
+      snapshot_up_30:  'https://buy.stripe.com/test_00w28k4d87hlb9ygMn9sk01',
+      fixkit_30:       'https://buy.stripe.com/test_8x25kw5hcdFJa5ugMn9sk02',
+      fixkit_3160:     'https://buy.stripe.com/test_7sYbIU4d88lpelK2Vx9sk03',
+      fixkit_6190:     'https://buy.stripe.com/test_14A4gs4d8bxB3H60Np9sk04',
+      fixkit_bundle:   'https://buy.stripe.com/test_5kQbIU6lgbxBa5u8fR9sk05',
+      snapshot_up_bun: 'https://buy.stripe.com/test_7sY14g8toeJNb9y8fR9sk06'
+    };
 
-    function openCheckout(priceId, label) {
-      currentPriceId = priceId;
-      currentPriceLabel = label;
-      document.getElementById('checkout-modal-title').textContent = label;
-      document.getElementById('checkout-modal-desc').textContent = 'Enter your email to continue to checkout.';
-      var emailEl = document.getElementById('diag-email-input');
-      document.getElementById('checkout-email').value = emailEl ? emailEl.value : '';
-      document.getElementById('checkout-err').style.display = 'none';
-      openModal('checkout-modal');
-    }
-
-    function launchCheckout() {
-      var email = document.getElementById('checkout-email').value.trim();
-      var err = document.getElementById('checkout-err');
-      if (!email || !email.includes('@')) {
-        err.textContent = 'Please enter a valid email.';
-        err.style.display = 'block';
-        return;
+    function openCheckout(key, label) {
+      var url = STRIPE_LINKS[key];
+      if (url) {
+        window.open(url, '_blank');
+      } else {
+        // fallback: try treating key as a direct URL
+        if (key && key.startsWith('http')) window.open(key, '_blank');
+        else showToast('Checkout unavailable — please contact support@compassbizsolutions.com');
       }
-      err.style.display = 'none';
-      closeModal('checkout-modal');
-      if (paddleReady && window.Paddle) {
-        try {
-          Paddle.Checkout.open({
-            items: [{priceId: currentPriceId, quantity: 1}],
-            customer: {email: email},
-            settings: {
-              displayMode: 'overlay',
-              theme: 'light',
-              locale: 'en'
-            },
-            customData: {customer_email: email}
-          });
-          return;
-        } catch(e) { console.warn('Paddle.Checkout.open failed:', e); }
-      }
-      // Show error in modal instead of broken URL
-      document.getElementById('checkout-err').textContent = 'Checkout unavailable — please email support@compassbizsolutions.com to complete your purchase.';
-      document.getElementById('checkout-err').style.display = 'block';
-      openModal('checkout-modal');
     }
 
 // ── MODALS ────────────────────────────────────────────────────────────────
@@ -1169,7 +1124,7 @@ renderServices();
 (function() {
   var params = new URLSearchParams(window.location.search);
   var buy = params.get('buy');
-  if (buy === 'snapshot') openCheckout('pri_01knjhs5ve0q3gxn8th0g3br9c', 'Profit Leak Snapshot — $99');
+  if (buy === 'snapshot') openCheckout('snapshot', 'Profit Leak Snapshot — $99');
   else if (buy === '30day') openCheckout('pri_01km957nv9t0wgnb7rxrpzmrkv', 'FixKit 30-Day Plan — $299');
   else if (buy === 'bundle') openCheckout('pri_01km95651yv87n7bkktg2fmzna', 'FixKit Complete Bundle — $599');
   
