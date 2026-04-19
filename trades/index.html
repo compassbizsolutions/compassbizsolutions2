@@ -266,7 +266,7 @@ footer{background:#0d1622;padding:28px 24px}
     <div class="nav-links">
       <button class="nav-link" onclick="showPage('home');scrollToEl('diagnostic')">Run Diagnostic</button>
       <button class="nav-link" onclick="showPage('services')">What We Do</button>
-      <button class="nav-link" onclick="showPage('guides')">Guides & Docs</button>
+      
       <button class="nav-link" onclick="showPage('profitable')">What Profitable Looks Like</button>
       <button class="nav-link" onclick="showPage('about')">Our Story</button>
       <button class="nav-link nav-cta" onclick="openCheckout('pri_01knjhs5ve0q3gxn8th0g3br9c','Profit Leak Snapshot — $99')">Get Snapshot — $99</button>
@@ -324,6 +324,7 @@ footer{background:#0d1622;padding:28px 24px}
         <div class="progress-bar-wrap"><div class="progress-bar" id="diag-progress"></div></div>
         <div class="q-label" id="q-label"></div>
         <div class="q-text" id="q-text"></div>
+        <div id="q-skip-hint" style="display:none;font-size:12px;color:var(--muted);margin-bottom:12px">This one is optional — you can skip it if you prefer.</div>
         <div id="q-options"></div>
         <div class="q-nav">
           <div class="q-count" id="q-count"></div>
@@ -718,6 +719,11 @@ function renderQuestion() {
   document.getElementById('diag-progress').style.width = ((diagStep / total) * 100) + '%';
   document.getElementById('q-label').textContent = 'Question ' + (diagStep+1) + ' of ' + total;
   document.getElementById('q-text').textContent = q.q;
+  // Add skip hint on last question
+  var skipHint = document.getElementById('q-skip-hint');
+  if (skipHint) {
+    skipHint.style.display = (diagStep === QUESTIONS.length - 1) ? 'block' : 'none';
+  }
   document.getElementById('q-count').textContent = (diagStep+1) + ' / ' + total;
   document.getElementById('btn-back').style.display = diagStep > 0 ? 'block' : 'none';
   
@@ -969,58 +975,58 @@ function showResults(parsed, email) {
 
 // ── PADDLE CHECKOUT ───────────────────────────────────────────────────────
 var paddleReady = false;
-window.addEventListener('load', function() {
-  if (window.Paddle) {
-    Paddle.Environment.set('sandbox');
-    Paddle.Initialize({token:'test_8bbf77a0a6dfe70e27e2e5db1e5',
-      eventCallback: function(e) {
-        if (e.name === 'checkout.completed') {
-          closeModal('checkout-modal');
-          showToast('Payment complete! Check your email for access details.');
-          setTimeout(function(){ window.location.href = 'https://fixkit.compassbizsolutions.com'; }, 2000);
+    window.addEventListener('load', function() {
+      try {
+        if (window.Paddle) {
+          Paddle.Environment.set('sandbox');
+          Paddle.Initialize({
+            token: 'test_8bbf77a0a6dfe70e27e2e5db1e5',
+            eventCallback: function(e) {
+              if (e.name === 'checkout.completed') {
+                closeModal('checkout-modal');
+                showToast('Payment complete! Check your email for access details.');
+                setTimeout(function(){ window.location.href = 'https://fixkit.compassbizsolutions.com'; }, 2000);
+              }
+            }
+          });
+          paddleReady = true;
         }
+      } catch(e) { console.warn('Paddle init failed:', e); }
+    });
+
+    function openCheckout(priceId, label) {
+      currentPriceId = priceId;
+      currentPriceLabel = label;
+      document.getElementById('checkout-modal-title').textContent = label;
+      document.getElementById('checkout-modal-desc').textContent = 'Enter your email to continue to checkout.';
+      var emailEl = document.getElementById('diag-email-input');
+      document.getElementById('checkout-email').value = emailEl ? emailEl.value : '';
+      document.getElementById('checkout-err').style.display = 'none';
+      openModal('checkout-modal');
+    }
+
+    function launchCheckout() {
+      var email = document.getElementById('checkout-email').value.trim();
+      var err = document.getElementById('checkout-err');
+      if (!email || !email.includes('@')) {
+        err.textContent = 'Please enter a valid email.';
+        err.style.display = 'block';
+        return;
       }
-    });
-    paddleReady = true;
-  }
-});
-
-function openCheckout(priceId, label) {
-  currentPriceId = priceId;
-  currentPriceLabel = label;
-  document.getElementById('checkout-modal-title').textContent = label;
-  document.getElementById('checkout-modal-desc').textContent = 'Enter your email to continue to checkout.';
-  document.getElementById('checkout-email').value = document.getElementById('diag-email-input') ? document.getElementById('diag-email-input').value : '';
-  document.getElementById('checkout-err').style.display = 'none';
-  openModal('checkout-modal');
-}
-
-function launchCheckout() {
-  var email = document.getElementById('checkout-email').value.trim();
-  var err = document.getElementById('checkout-err');
-  if (!email || !email.includes('@')) {
-    err.textContent = 'Please enter a valid email.';
-    err.style.display = 'block';
-    return;
-  }
-  err.style.display = 'none';
-  if (!paddleReady || !window.Paddle) {
-    window.open('https://sandbox-buy.paddle.com/checkout/custom/preview?prices=' + currentPriceId + '&customer_email=' + encodeURIComponent(email), '_blank');
-    closeModal('checkout-modal');
-    return;
-  }
-  try {
-    Paddle.Checkout.open({
-      items: [{priceId: currentPriceId, quantity: 1}],
-      customer: {email: email},
-      customData: {customer_email: email}
-    });
-    closeModal('checkout-modal');
-  } catch(e) {
-    window.open('https://sandbox-buy.paddle.com/checkout/custom/preview?prices=' + currentPriceId + '&customer_email=' + encodeURIComponent(email), '_blank');
-    closeModal('checkout-modal');
-  }
-}
+      err.style.display = 'none';
+      closeModal('checkout-modal');
+      if (paddleReady && window.Paddle) {
+        try {
+          Paddle.Checkout.open({
+            items: [{priceId: currentPriceId, quantity: 1}],
+            customer: {email: email},
+            customData: {customer_email: email}
+          });
+          return;
+        } catch(e) { console.warn('Paddle.Checkout.open failed:', e); }
+      }
+      window.open('https://sandbox-buy.paddle.com/checkout/custom/preview?prices=' + currentPriceId + '&email=' + encodeURIComponent(email), '_blank');
+    }
 
 // ── MODALS ────────────────────────────────────────────────────────────────
 function openModal(id) { document.getElementById(id).classList.add('open'); }
