@@ -94,8 +94,8 @@
     /* ── SERVICES ── */
     .services-bg { background: var(--light); }
     .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-    .service-card { background: white; border: 1px solid #DCE8F5; border-radius: 14px; padding: 32px; position: relative; transition: transform 0.2s, box-shadow 0.2s; }
-    .service-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(27,46,75,0.1); }
+    .service-card { background: white; border: 2px solid var(--amber); border-radius: 14px; padding: 32px; position: relative; transition: transform 0.2s, box-shadow 0.2s; }
+    .service-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(200,112,26,0.15); }
     .service-card.featured { border: 2px solid var(--amber); }
     .service-icon { font-size: 32px; margin-bottom: 16px; }
     .service-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
@@ -313,8 +313,7 @@
         </div>
       </div>
 
-      <div class="service-card featured">
-        <div class="service-badge">In Development</div>
+      <div class="service-card">
         <div class="service-icon">📱</div>
         <div class="service-name">App Development</div>
         <div class="service-desc">Custom tools built around how your business actually works — not off-the-shelf software you're forced to adapt to. Mobile-first, practical, and built to scale.</div>
@@ -356,8 +355,55 @@
         <div class="service-desc">We build purpose-built tools for specific industries — diagnosing profit leaks, building operational infrastructure, and giving business owners the systems that were never built for them. Currently serving the service trades. Additional verticals in development.</div>
         <div class="service-pills">
           <span class="pill">FixKit — Service Trades</span>
-          <span class="pill">Equine Industry — Coming Soon</span>
           <span class="pill">More Verticals Planned</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🤖</div>
+        <div class="service-name">AI Integration Consulting</div>
+        <div class="service-desc">We identify exactly where AI can replace manual work, reduce overhead, and give your team leverage — then we build it. Not a chatbot on your website. Real automation wired into how your business actually runs.</div>
+        <div class="service-pills">
+          <span class="pill">AI Workflow Design</span>
+          <span class="pill">Process Automation</span>
+          <span class="pill">Custom AI Tools</span>
+          <span class="pill">Implementation</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <div class="service-name">Workflow & Automation</div>
+        <div class="service-desc">We don't just find the gaps — we close them. Python scripts, automated reporting pipelines, database systems, workflow automation. The manual work that's costing you time every single day gets eliminated.</div>
+        <div class="service-pills">
+          <span class="pill">Python Scripting</span>
+          <span class="pill">Automated Reporting</span>
+          <span class="pill">Database Systems</span>
+          <span class="pill">Email Pipelines</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">📊</div>
+        <div class="service-name">Data & Reporting Systems</div>
+        <div class="service-desc">Most businesses are flying blind. We build dashboards, KPI systems, and automated reports that show you exactly what's happening in your business — in real time, without manual effort.</div>
+        <div class="service-pills">
+          <span class="pill">KPI Dashboards</span>
+          <span class="pill">Automated Reports</span>
+          <span class="pill">Data Pipelines</span>
+          <span class="pill">Business Intelligence</span>
+        </div>
+      </div>
+
+      <div class="service-card" style="grid-column: span 2;">
+        <div class="service-icon">🏢</div>
+        <div class="service-name">Fractional COO / Operations Advisory</div>
+        <div class="service-desc">For businesses that need senior operational leadership without a full-time hire. We own your operational problems on an ongoing basis — showing up monthly, holding the systems accountable, and keeping the business moving forward. This is what Fortune-level organizations pay millions for. You don't need a million-dollar budget to access it.</div>
+        <div class="service-pills">
+          <span class="pill">Ongoing Advisory</span>
+          <span class="pill">Operations Leadership</span>
+          <span class="pill">Systems Accountability</span>
+          <span class="pill">Monthly Retainer</span>
         </div>
       </div>
 
