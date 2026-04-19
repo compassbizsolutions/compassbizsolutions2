@@ -106,10 +106,10 @@
 
     /* ── ABOUT ── */
     .about-grid { display: grid; grid-template-columns: 280px 1fr; gap: 60px; align-items: start; }
-    .about-photo-wrap { display: flex; flex-direction: column; align-items: flex-start; }
+    .about-photo-wrap { position: relative; display: inline-block; }
     .about-photo-placeholder { background: var(--navy); border-radius: 16px; aspect-ratio: 3/4; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: rgba(255,255,255,0.3); font-size: 13px; text-align: center; padding: 24px; }
     .about-photo-placeholder svg { width: 48px; height: 48px; opacity: 0.4; }
-    .about-accent { position: relative; display: inline-block; background: var(--amber); border-radius: 12px; padding: 14px 20px; margin-top: 12px; }
+    .about-accent { position: absolute; bottom: 16px; right: -12px; background: var(--amber); border-radius: 10px; padding: 12px 18px; }
     .about-accent-num { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; color: white; line-height: 1; }
     .about-accent-label { font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 500; margin-top: 2px; }
     .about-content {}
@@ -412,7 +412,7 @@
   <div class="section-inner">
     <div class="about-grid">
       <div class="about-photo-wrap">
-        <img src="images/Jen_headshot.jpg" alt="Jen Voiselle — Compass Business Solutions" style="width:100%;max-width:280px;border-radius:14px;display:block;aspect-ratio:3/4;object-fit:cover;object-position:top center;box-shadow:0 8px 32px rgba(27,46,75,0.15)"/>
+        <img src="images/Jen_headshot.jpg" alt="Jen Voiselle — Compass Business Solutions" style="width:100%;max-width:280px;border-radius:14px;display:block;aspect-ratio:2/3;object-fit:cover;object-position:top center;box-shadow:0 8px 32px rgba(27,46,75,0.15)"/>
         <div class="about-accent">
           <div class="about-accent-num">25</div>
           <div class="about-accent-label">Years experience</div>
