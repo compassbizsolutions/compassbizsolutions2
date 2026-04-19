@@ -245,7 +245,7 @@ footer{background:#0d1622;padding:28px 24px}
 <!-- NAV -->
 <nav id="nav">
   <div class="nav-inner">
-    <button class="nav-brand" onclick="showPage('home')">
+    <button class="nav-brand" onclick="window.location.href='/'">
       <svg width="36" height="36" viewBox="0 0 80 80" fill="none">
         <circle cx="40" cy="40" r="38" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
         <circle cx="40" cy="40" r="35" fill="#1B2E4B"/>
@@ -264,6 +264,7 @@ footer{background:#0d1622;padding:28px 24px}
       </div>
     </button>
     <div class="nav-links">
+      <a href="/" class="nav-link" style="color:rgba(255,255,255,0.35);font-size:12px">← Compass</a>
       <button class="nav-link" onclick="showPage('home');scrollToEl('diagnostic')">Run Diagnostic</button>
       <button class="nav-link" onclick="showPage('services')">What We Do</button>
       
@@ -279,6 +280,7 @@ footer{background:#0d1622;padding:28px 24px}
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
+  <a href="/" class="mobile-link" style="color:rgba(255,255,255,0.4);font-size:13px">← Back to Compass Business Solutions</a>
   <button class="mobile-link" onclick="showPage('home');scrollToEl('diagnostic');closeMobile()">Run Diagnostic</button>
   <button class="mobile-link" onclick="showPage('services');closeMobile()">What We Do</button>
   <button class="mobile-link" onclick="showPage('guides');closeMobile()">Guides & Docs</button>
@@ -437,6 +439,7 @@ footer{background:#0d1622;padding:28px 24px}
     <div class="section-inner">
       <div class="section-eyebrow">Coming Soon</div>
       <h2 class="section-title" style="color:#fff">The Compass Field Service App</h2>
+      <p style="font-size:13px;color:var(--amber);font-weight:600;margin-bottom:24px;margin-top:-16px">Releasing June 1, 2026</p>
       <p class="section-sub">Run your whole operation — quoting, dispatch, invoicing, inventory, payroll — with the Compass profit methodology built in.</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:32px">
         <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(61,107,158,0.2);border-radius:10px;padding:16px;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5">
@@ -593,7 +596,7 @@ footer{background:#0d1622;padding:28px 24px}
   <div class="modal">
     <button class="modal-close" onclick="closeModal('waitlist-modal')">×</button>
     <h3>Join the Early Access List</h3>
-    <p>The Compass Field Service App is in development. FixKit customers get priority access and a discounted first year.</p>
+    <p>The Compass Field Service App is releasing June 1, 2026. FixKit customers get priority access and a discounted first year.</p>
     <input class="modal-input" type="text" id="waitlist-name" placeholder="Your name"/>
     <input class="modal-input" type="email" id="waitlist-email" placeholder="your@email.com"/>
     <div id="waitlist-err" class="modal-err"></div>
@@ -672,7 +675,7 @@ const SERVICES_DATA = [
   {icon:'📋',title:'FixKit — 30-Day Quick Win Plan',tag:'$299',tagClass:'tag-amber',short:'Your worst leaks addressed first. Daily tasks. Built-in tracking. AI support.',bullets:['Personalized 30-day plan — daily 15-20 minute tasks in order of impact','Built-in number tracking and progress dashboard','5 full profit calculators built for your numbers','9 process templates for your trade','Before/after comparison showing what your fixes are worth annually','Ask Jen — AI chat with your full business context','$100 off if upgrading from the DIY Snapshot'],cta:"Get the 30-Day Plan — $299",onclick:"openCheckout('pri_01km957nv9t0wgnb7rxrpzmrkv','FixKit 30-Day Plan — $299')"},
   {icon:'📄',title:'DIY Profit Leak Snapshot',tag:'$99',tagClass:'tag-navy',short:'Your top 3 leaks, the math, and exactly how to fix them — in a PDF you keep.',bullets:['Your top 3 leaks ranked by dollar impact','The exact math showing what each leak costs you annually','Step-by-step fix instructions — not generic advice','A do this first action for each leak you can start this week','Includes a $100 upgrade credit toward FixKit'],closing:'No portal, no daily tasks, no subscription. Just your numbers, your leaks, and what to do about them — in a printable PDF you keep forever.',cta:"Get My Snapshot — $99",onclick:"openCheckout('pri_01knjhs5ve0q3gxn8th0g3br9c','Profit Leak Snapshot — $99')"},
   {icon:'🛠️',title:'Done For You — Consulting',tag:'By scope',tagClass:'tag-slate',short:'We build and implement the systems for you.',bullets:['We map how your business actually runs — not how it should run','We build the process docs, pricing structures, and workflows','You review, we refine, it gets done','Scoping call is free with no commitment','Payment plans available'],cta:"Book a Free Scoping Call",onclick:"window.open('https://calendly.com/jvoiselle612-s9gb/free-scoping-call','_blank')"},
-  {icon:'📱',title:'The Compass Field Service — In Development',tag:'Coming Soon',tagClass:'tag-slate',short:'Run your whole operation with the Compass profit methodology built in.',bullets:['AI-assisted quoting using your actual loaded cost and overhead','Quote-to-job-to-invoice in one workflow','Technician dispatch, time clock, parts, and job signoff from their phone','Inventory and purchase orders tied directly to jobs','Customer portal and FixKit integration'],closing:'Early access opening soon. FixKit customers get priority access and discounted first year.',cta:"Join the Early Access List",onclick:"openWaitlist()"},
+  {icon:'📱',title:'The Compass Field Service App — In Development (Releasing June 1, 2026)',tag:'Coming Soon',tagClass:'tag-slate',short:'Run your whole operation with the Compass profit methodology built in.',bullets:['AI-assisted quoting using your actual loaded cost and overhead','Quote-to-job-to-invoice in one workflow','Technician dispatch, time clock, parts, and job signoff from their phone','Inventory and purchase orders tied directly to jobs','Customer portal and FixKit integration'],closing:'Early access opening soon. FixKit customers get priority access and discounted first year.',cta:"Join the Early Access List",onclick:"openWaitlist()"},
 ];
 
 // ── STATE ────────────────────────────────────────────────────────────────
@@ -982,16 +985,24 @@ var paddleReady = false;
           Paddle.Initialize({
             token: 'test_8bbf77a0a6dfe70e27e2e5db1e5',
             eventCallback: function(e) {
+              console.log('Paddle event:', e.name, e);
               if (e.name === 'checkout.completed') {
                 closeModal('checkout-modal');
                 showToast('Payment complete! Check your email for access details.');
                 setTimeout(function(){ window.location.href = 'https://fixkit.compassbizsolutions.com'; }, 2000);
               }
+              if (e.name === 'checkout.error') {
+                console.error('Paddle checkout error:', e);
+                showToast('Checkout error — please try again or contact support.');
+              }
             }
           });
           paddleReady = true;
+          console.log('Paddle initialized in sandbox mode');
+        } else {
+          console.warn('Paddle.js not loaded');
         }
-      } catch(e) { console.warn('Paddle init failed:', e); }
+      } catch(e) { console.warn('Paddle init failed:', e.message); }
     });
 
     function openCheckout(priceId, label) {
@@ -1020,12 +1031,20 @@ var paddleReady = false;
           Paddle.Checkout.open({
             items: [{priceId: currentPriceId, quantity: 1}],
             customer: {email: email},
+            settings: {
+              displayMode: 'overlay',
+              theme: 'light',
+              locale: 'en'
+            },
             customData: {customer_email: email}
           });
           return;
         } catch(e) { console.warn('Paddle.Checkout.open failed:', e); }
       }
-      window.open('https://sandbox-buy.paddle.com/checkout/custom/preview?prices=' + currentPriceId + '&email=' + encodeURIComponent(email), '_blank');
+      // Show error in modal instead of broken URL
+      document.getElementById('checkout-err').textContent = 'Checkout unavailable — please email support@compassbizsolutions.com to complete your purchase.';
+      document.getElementById('checkout-err').style.display = 'block';
+      openModal('checkout-modal');
     }
 
 // ── MODALS ────────────────────────────────────────────────────────────────
