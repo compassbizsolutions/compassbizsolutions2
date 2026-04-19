@@ -42,6 +42,16 @@
     .nav-link:hover { color: white; }
     .nav-cta { background: var(--amber); color: white !important; border-radius: 7px; padding: 8px 18px !important; font-weight: 600 !important; transition: opacity 0.15s !important; }
     .nav-cta:hover { opacity: 0.88; }
+    .nav-dropdown-wrap { position: relative; }
+    .nav-dropdown-btn { background: none; border: none; color: rgba(255,255,255,0.55); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 7px 14px; border-radius: 7px; cursor: pointer; transition: color 0.15s; }
+    .nav-dropdown-btn:hover { color: white; }
+    .nav-dropdown { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: var(--navy-dark); border: 1px solid rgba(61,107,158,0.25); border-radius: 10px; min-width: 200px; padding: 8px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); z-index: 300; }
+    .nav-dropdown.open { display: block; }
+    .nav-dropdown-item { display: block; padding: 10px 14px; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; border-radius: 7px; text-decoration: none; transition: background 0.15s; cursor: pointer; }
+    .nav-dropdown-item:hover { background: rgba(255,255,255,0.06); color: white; }
+    .nav-dropdown-soon { color: rgba(255,255,255,0.3) !important; cursor: default; }
+    .nav-dropdown-soon:hover { background: none !important; }
+    .soon-tag { font-size: 10px; background: rgba(200,112,26,0.3); color: var(--amber); padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 700; letter-spacing: 0.5px; }
     .nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; padding: 4px; flex-direction: column; gap: 5px; }
     .nav-mobile-btn span { display: block; width: 22px; height: 2px; background: white; border-radius: 2px; transition: all 0.25s; }
 
@@ -235,7 +245,14 @@
       <a href="#services" class="nav-link">Services</a>
       <a href="#work" class="nav-link">Our Work</a>
       <a href="#about" class="nav-link">About</a>
-      <a href="/trades" class="nav-link">Trades FixKit</a>
+      <div class="nav-dropdown-wrap">
+        <button class="nav-link nav-dropdown-btn" onclick="toggleVerticals(event)">Verticals ▾</button>
+        <div class="nav-dropdown" id="verticals-dropdown">
+          <a href="/trades" class="nav-dropdown-item">🔧 Trades FixKit</a>
+          <div class="nav-dropdown-item nav-dropdown-soon">🐴 Equine <span class="soon-tag">Soon</span></div>
+          <div class="nav-dropdown-item nav-dropdown-soon">🍽️ Restaurants <span class="soon-tag">Soon</span></div>
+        </div>
+      </div>
       <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="nav-link nav-cta">Book a Call</a>
     </div>
     <button class="nav-mobile-btn" id="mobileBtn" aria-label="Menu">
@@ -249,8 +266,13 @@
   <a href="#services" class="mobile-menu-link" onclick="closeMobile()">Services</a>
   <a href="#work" class="mobile-menu-link" onclick="closeMobile()">Our Work</a>
   <a href="#about" class="mobile-menu-link" onclick="closeMobile()">About</a>
-  <a href="/trades" class="mobile-menu-link">Trades FixKit</a>
-  <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="mobile-menu-link" style="color:var(--amber);font-weight:600">Book a Call →</a>
+  <div style="padding:8px 0;border-bottom:1px solid rgba(61,107,158,0.15)">
+    <div style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Verticals</div>
+    <a href="/trades" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">🔧 Trades FixKit</a>
+    <div class="mobile-menu-link" style="padding:8px 0;font-size:14px;color:rgba(255,255,255,0.3)">🐴 Equine <span style="font-size:10px;background:var(--amber);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Soon</span></div>
+    <div class="mobile-menu-link" style="padding:8px 0;font-size:14px;color:rgba(255,255,255,0.3)">🍽️ Restaurants <span style="font-size:10px;background:var(--amber);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Soon</span></div>
+  </div>
+  <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="mobile-menu-link" style="color:var(--amber);font-weight:600" onclick="closeMobile()">Book a Call →</a>
 </div>
 
 <!-- HERO -->
@@ -421,7 +443,8 @@
       <div class="work-card work-card-1">
         <div class="work-status">In Development</div>
         <div class="work-tag">App Development</div>
-        <div class="work-name">Compass Field Service App</div>
+        <div class="work-name">Compass Field Service App
+<span style="font-size:12px;font-weight:600;color:var(--amber);display:block;margin-bottom:6px">Releasing June 1, 2026</span></div>
         <div class="work-desc">Most field service apps are just scheduling and invoicing tools with no business intelligence. The Compass Field Service is built differently — every workflow is designed around protecting your margins.</div>
         <ul class="work-bullets">
           <li>AI-assisted quoting using your actual loaded cost, markup, and overhead</li>
@@ -603,6 +626,15 @@
     b3.style.transform = mobileOpen ? 'rotate(-45deg) translate(5px,-5px)' : '';
   });
   function closeMobile() { mobileOpen = false; document.getElementById('mobileMenu').classList.remove('open'); }
+
+  function toggleVerticals(e) {
+    e.stopPropagation();
+    document.getElementById('verticals-dropdown').classList.toggle('open');
+  }
+  document.addEventListener('click', function() {
+    var dd = document.getElementById('verticals-dropdown');
+    if (dd) dd.classList.remove('open');
+  });
 
   // Smooth anchor scrolling
   document.querySelectorAll('a[href^="#"]').forEach(function(a) {
