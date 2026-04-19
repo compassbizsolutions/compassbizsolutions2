@@ -103,8 +103,10 @@
 
     /* ── SERVICES ── */
     .services-bg { background: var(--light); }
-    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-    .service-card { background: white; border: 2px solid var(--amber); border-radius: 14px; padding: 32px; position: relative; transition: transform 0.2s, box-shadow 0.2s; }
+    .services-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media(min-width:640px){ .services-grid { grid-template-columns: 1fr 1fr; } }
+    @media(min-width:1024px){ .services-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .service-card { background: white; border: 2px solid var(--amber); border-radius: 14px; padding: 24px; position: relative; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
     .service-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(200,112,26,0.15); }
     .service-card.featured { border: 2px solid var(--amber); }
     .service-icon { font-size: 32px; margin-bottom: 16px; }
@@ -288,7 +290,7 @@
         Never Had.
       </h1>
       <p class="hero-sub">
-        <strong>Business process consulting. App development. Web development. Social media marketing.</strong>
+        <strong>Business process consulting. App &amp; AI development. Web development. Social media marketing.</strong>
         25 years turning operational gaps into competitive advantages — for Fortune-level organizations and the small businesses that outperform them.
       </p>
       <div class="hero-actions">
@@ -318,7 +320,7 @@
 <section class="services-bg" id="services">
   <div class="section-inner">
     <div class="section-eyebrow">What We Do</div>
-    <h2 class="section-title">Five Ways We Move<br>Your Business Forward</h2>
+    <h2 class="section-title">Ways We Move<br>Your Business Forward</h2>
     <p class="section-sub">Every service connects back to the same goal: finding where your business is leaking time, money, or opportunity — and fixing it.</p>
     <div class="services-grid">
 
@@ -370,7 +372,7 @@
         </div>
       </div>
 
-      <div class="service-card" style="grid-column: span 2;">
+      <div class="service-card">
         <div class="service-icon">🎯</div>
         <div class="service-name">Vertical Products</div>
         <div class="service-desc">We build purpose-built tools for specific industries — diagnosing profit leaks, building operational infrastructure, and giving business owners the systems that were never built for them. Currently serving the service trades. Additional verticals in development.</div>
@@ -416,7 +418,7 @@
         </div>
       </div>
 
-      <div class="service-card" style="grid-column: span 2;">
+      <div class="service-card">
         <div class="service-icon">🏢</div>
         <div class="service-name">Fractional COO / Operations Advisory</div>
         <div class="service-desc">For businesses that need senior operational leadership without a full-time hire. We own your operational problems on an ongoing basis — showing up monthly, holding the systems accountable, and keeping the business moving forward. This is what Fortune-level organizations pay millions for. You don't need a million-dollar budget to access it.</div>
@@ -441,7 +443,19 @@
     <div class="work-grid">
 
       <div class="work-card work-card-1">
-        <div class="work-status">In Development</div>
+        <div class="work-tag">Vertical Product</div>
+        <div class="work-name">FixKit — Profit Leak Repair</div>
+        <div class="work-desc">A full-stack diagnostic and repair platform for service trades businesses. Built from scratch — intake engine, AI plan generator, task portal, document library, email sequences, and admin dashboard.</div>
+        <ul class="work-bullets">
+          <li>Personalized diagnostic across 11 profit leak categories</li>
+          <li>AI-generated 30/60/90-day action plans with trade-specific guidance</li>
+          <li>22 branded business process documents and guides</li>
+          <li>Automated email sequences and customer lifecycle management</li>
+          <li>Full admin dashboard for customer tracking and engagement</li>
+        </ul>
+        <a href="/trades" class="work-link">See the Trades FixKit →</a>
+      </div><div class="work-card work-card-2">
+        <div class="work-status" style="background:rgba(200,112,26,0.2);color:var(--amber);border-color:rgba(200,112,26,0.3)">Available May 18, 2026</div>
         <div class="work-tag">App Development</div>
         <div class="work-name">Compass Field Service App
 <span style="font-size:12px;font-weight:600;color:var(--amber);display:block;margin-bottom:6px">Releasing June 1, 2026</span></div>
@@ -457,19 +471,7 @@
         <span style="font-size:13px;color:rgba(255,255,255,0.35)">Early access opening soon — FixKit customers get priority.</span>
       </div>
 
-      <div class="work-card work-card-2">
-        <div class="work-tag">Vertical Product</div>
-        <div class="work-name">FixKit — Profit Leak Repair</div>
-        <div class="work-desc">A full-stack diagnostic and repair platform for service trades businesses. Built from scratch — intake engine, AI plan generator, task portal, document library, email sequences, and admin dashboard.</div>
-        <ul class="work-bullets">
-          <li>Personalized diagnostic across 11 profit leak categories</li>
-          <li>AI-generated 30/60/90-day action plans with trade-specific guidance</li>
-          <li>22 branded business process documents and guides</li>
-          <li>Automated email sequences and customer lifecycle management</li>
-          <li>Full admin dashboard for customer tracking and engagement</li>
-        </ul>
-        <a href="/trades" class="work-link">See the Trades FixKit →</a>
-      </div>
+      
 
     </div>
   </div>
@@ -490,7 +492,7 @@
         <div class="section-eyebrow">About</div>
         <div class="about-name">Jen Voiselle</div>
         <div class="about-title">Founder, Compass Business Solutions</div>
-        <p class="about-body">For almost 25 years I worked in business and technology process analysis for Fortune-level corporations — finding exactly where time and money disappear, how the individual parts of a business run, and how the pieces fit together. Automating the stuff that shouldn't be manual. Fixing the gaps that were quietly costing time, efficiency, and money.</p>
+        <p class="about-body">For 25 years I worked in business and technology process analysis across three major organizations — finding exactly where time and money disappear, how the individual parts of a business run, and how the pieces fit together. Automating the stuff that shouldn't be manual. Fixing the gaps that were quietly costing time, efficiency, and money.</p>
         <p class="about-body">That whole time I watched friends in the trades — and small business owners across industries — working themselves into the ground with the same operational problems I'd spent my career solving. They just never had anyone with that background in the room.</p>
         <p class="about-body">Compass is what happens when 25 years of Fortune-level process work gets pointed at the businesses that actually need it.</p>
         <div class="about-stats">
