@@ -325,7 +325,7 @@ footer{background:#0d1622;padding:28px 24px}
         <div class="progress-bar-wrap"><div class="progress-bar" id="diag-progress"></div></div>
         <div class="q-label" id="q-label"></div>
         <div class="q-text" id="q-text"></div>
-        <div id="q-skip-hint" style="display:none;font-size:12px;color:var(--muted);margin-bottom:12px">This one is optional — you can skip it if you prefer.</div>
+        <div id="q-skip-hint" style="display:none;margin-bottom:12px"><button onclick="skipLastQuestion()" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;text-decoration:underline;padding:0">Skip this question →</button></div>
         <div id="q-options"></div>
         <div class="q-nav">
           <div class="q-count" id="q-count"></div>
@@ -342,10 +342,27 @@ footer{background:#0d1622;padding:28px 24px}
       <div id="diag-email" style="display:none">
         <h2>Almost there</h2>
         <p class="sub">Where should we send your results?</p>
-        <input class="q-textarea" type="email" id="diag-email-input" placeholder="your@email.com" style="min-height:auto;padding:14px;border-radius:8px;margin-bottom:8px"/>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div>
+            <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">First Name</label>
+            <input class="q-textarea" type="text" id="diag-name-input" placeholder="First name" style="min-height:auto;padding:14px;border-radius:8px"/>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Phone</label>
+            <input class="q-textarea" type="tel" id="diag-phone-input" placeholder="(555) 555-5555" style="min-height:auto;padding:14px;border-radius:8px"/>
+          </div>
+        </div>
+        <div style="margin-bottom:12px">
+          <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Business Name</label>
+          <input class="q-textarea" type="text" id="diag-biz-input" placeholder="Your business name" style="min-height:auto;padding:14px;border-radius:8px"/>
+        </div>
+        <div style="margin-bottom:8px">
+          <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Email Address *</label>
+          <input class="q-textarea" type="email" id="diag-email-input" placeholder="your@email.com" style="min-height:auto;padding:14px;border-radius:8px"/>
+        </div>
         <div id="diag-email-err" style="font-size:12px;color:#e74c3c;margin-bottom:8px;display:none"></div>
         <button class="btn btn-amber" onclick="submitDiagnostic()" style="width:100%;font-size:16px;padding:14px">Get My Free Results →</button>
-        <p style="font-size:11px;color:var(--muted);margin-top:10px;text-align:center">No spam. Your results are emailed to you. You can also view them right here.</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:10px;text-align:center">No spam. Your results are emailed to you and displayed here.</p>
       </div>
     </div>
   </div>
@@ -672,6 +689,11 @@ function toggleMobile() {
 }
 function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); }
 
+  function skipLastQuestion() {
+    diagStep++;
+    showEmailCapture();
+  }
+
 // ── DIAGNOSTIC ───────────────────────────────────────────────────────────
 function startDiagnostic() {
   document.getElementById('diag-intro').style.display = 'none';
@@ -709,7 +731,7 @@ function renderQuestion() {
       document.getElementById('btn-next').disabled = false;
     };
     opts.appendChild(ta);
-    document.getElementById('btn-next').disabled = !current;
+    document.getElementById('btn-next').disabled = false;
     document.getElementById('btn-next').textContent = 'Submit →';
   } else {
     var grid = document.createElement('div');
@@ -745,7 +767,8 @@ function renderQuestion() {
 
 function qNext() {
   var q = QUESTIONS[diagStep];
-  if (!diagAnswers[q.id] || (Array.isArray(diagAnswers[q.id]) && diagAnswers[q.id].length === 0)) return;
+  var isLastTextarea = q.type === 'area' && diagStep === QUESTIONS.length - 1;
+  if (!isLastTextarea && (!diagAnswers[q.id] || (Array.isArray(diagAnswers[q.id]) && diagAnswers[q.id].length === 0))) return;
   diagStep++;
   if (diagStep >= QUESTIONS.length) {
     showEmailCapture();
@@ -776,6 +799,9 @@ function submitDiagnostic() {
   document.getElementById('diag-loading').style.display = 'block';
 
   var trade = diagAnswers.trade || 'service trade';
+  var name = document.getElementById('diag-name-input') ? document.getElementById('diag-name-input').value.trim() : '';
+  var phone = document.getElementById('diag-phone-input') ? document.getElementById('diag-phone-input').value.trim() : '';
+  var biz = document.getElementById('diag-biz-input') ? document.getElementById('diag-biz-input').value.trim() : '';
   var answerLines = Object.keys(diagAnswers).map(function(k) {
     var v = diagAnswers[k];
     return k + ': ' + (Array.isArray(v) ? v.join(', ') : v);
@@ -823,8 +849,10 @@ function submitDiagnostic() {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
+          name: name,
           email: email,
-          biz: trade + ' business',
+          phone: phone,
+          biz: biz || (trade + ' business'),
           trade: trade,
           answers: answerLines,
           report: report
