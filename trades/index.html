@@ -345,16 +345,20 @@ footer{background:#0d1622;padding:28px 24px}
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
           <div>
             <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">First Name</label>
-            <input class="q-textarea" type="text" id="diag-name-input" placeholder="First name" style="min-height:auto;padding:14px;border-radius:8px"/>
+            <input class="q-textarea" type="text" id="diag-name-input" placeholder="Your first name" style="min-height:auto;padding:14px;border-radius:8px"/>
           </div>
           <div>
-            <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Phone</label>
-            <input class="q-textarea" type="tel" id="diag-phone-input" placeholder="(555) 555-5555" style="min-height:auto;padding:14px;border-radius:8px"/>
+            <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Phone Number</label>
+            <input class="q-textarea" type="tel" id="diag-phone-input" placeholder="Phone number" style="min-height:auto;padding:14px;border-radius:8px"/>
           </div>
         </div>
         <div style="margin-bottom:12px">
           <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Business Name</label>
-          <input class="q-textarea" type="text" id="diag-biz-input" placeholder="Your business name" style="min-height:auto;padding:14px;border-radius:8px"/>
+          <input class="q-textarea" type="text" id="diag-biz-input" placeholder="Business name" style="min-height:auto;padding:14px;border-radius:8px"/>
+        </div>
+        <div style="margin-bottom:12px">
+          <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Business Location</label>
+          <input class="q-textarea" type="text" id="diag-address-input" placeholder="Business address (city and state is fine)" style="min-height:auto;padding:14px;border-radius:8px"/>
         </div>
         <div style="margin-bottom:8px">
           <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Email Address *</label>
@@ -802,6 +806,7 @@ function submitDiagnostic() {
   var name = document.getElementById('diag-name-input') ? document.getElementById('diag-name-input').value.trim() : '';
   var phone = document.getElementById('diag-phone-input') ? document.getElementById('diag-phone-input').value.trim() : '';
   var biz = document.getElementById('diag-biz-input') ? document.getElementById('diag-biz-input').value.trim() : '';
+  var address = document.getElementById('diag-address-input') ? document.getElementById('diag-address-input').value.trim() : '';
   var answerLines = Object.keys(diagAnswers).map(function(k) {
     var v = diagAnswers[k];
     return k + ': ' + (Array.isArray(v) ? v.join(', ') : v);
@@ -853,6 +858,7 @@ function submitDiagnostic() {
           email: email,
           phone: phone,
           biz: biz || (trade + ' business'),
+          address: address,
           trade: trade,
           answers: answerLines,
           report: report
