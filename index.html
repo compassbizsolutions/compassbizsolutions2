@@ -199,6 +199,9 @@
       .nav-links { display: none; }
       .nav-mobile-btn { display: flex; }
     }
+    @media (max-width: 640px) {
+      .calls-grid { grid-template-columns: 1fr !important; }
+    }
     @media (max-width: 600px) {
       section { padding: 60px 20px; }
       .hero { padding: 100px 20px 60px; }
@@ -255,7 +258,7 @@
           <div class="nav-dropdown-item nav-dropdown-soon">🍽️ Restaurants <span class="soon-tag">Soon</span></div>
         </div>
       </div>
-      <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="nav-link nav-cta">Book a Call</a>
+      <a href="https://buy.stripe.com/7sY6oAdog5jSbWT6BodZ60h" target="_blank" class="nav-link nav-cta">Book a Call — From $79</a>
     </div>
     <button class="nav-mobile-btn" id="mobileBtn" aria-label="Menu">
       <span id="mb1"></span><span id="mb2"></span><span id="mb3"></span>
@@ -274,7 +277,7 @@
     <div class="mobile-menu-link" style="padding:8px 0;font-size:14px;color:rgba(255,255,255,0.3)">🐴 Equine <span style="font-size:10px;background:var(--amber);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Soon</span></div>
     <div class="mobile-menu-link" style="padding:8px 0;font-size:14px;color:rgba(255,255,255,0.3)">🍽️ Restaurants <span style="font-size:10px;background:var(--amber);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Soon</span></div>
   </div>
-  <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="mobile-menu-link" style="color:var(--amber);font-weight:600" onclick="closeMobile()">Book a Call →</a>
+  <a href="https://buy.stripe.com/7sY6oAdog5jSbWT6BodZ60h" target="_blank" class="mobile-menu-link" style="color:var(--amber);font-weight:600" onclick="closeMobile()">Book a Call →</a>
 </div>
 
 <!-- HERO -->
@@ -294,7 +297,7 @@
         25 years turning operational gaps into competitive advantages — for Fortune-level organizations and the small businesses that outperform them.
       </p>
       <div class="hero-actions">
-        <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="btn-primary">Book a Free Call →</a>
+        <a href="https://buy.stripe.com/7sY6oAdog5jSbWT6BodZ60h" target="_blank" class="btn-primary">Book a Strategy Call — $79 →</a>
         <a href="#services" class="btn-ghost">See What We Do</a>
       </div>
     </div>
@@ -448,7 +451,7 @@
         <div class="work-desc">A full-stack diagnostic and repair platform for service trades businesses. Built from scratch — intake engine, AI plan generator, task portal, document library, email sequences, and admin dashboard.</div>
         <ul class="work-bullets">
           <li>Personalized diagnostic across 11 profit leak categories</li>
-          <li>AI-generated 30/60/90-day action plans with trade-specific guidance</li>
+          <li>30/60/90-day action plans with trade-specific guidance</li>
           <li>22 branded business process documents and guides</li>
           <li>Automated email sequences and customer lifecycle management</li>
           <li>Full admin dashboard for customer tracking and engagement</li>
@@ -531,6 +534,30 @@
   </div>
 </section>
 
+<!-- CONSULTING CALLS -->
+<section style="background:var(--light)">
+  <div class="section-inner">
+    <div class="section-eyebrow">Book Time With Jen</div>
+    <h2 class="section-title">Paid Consulting Calls</h2>
+    <p class="section-sub">Come with a problem. Leave with a direction. Payment required to book — your time and mine are both worth something.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:800px">
+      <div style="background:#fff;border:2px solid var(--amber);border-radius:14px;padding:28px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--amber);margin-bottom:4px">$79</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:12px">Strategy Call — 30 Min</div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px">Come with one problem. Leave with a direction. Focused 30-minute working call on a specific operational challenge — pricing, scheduling, hiring, cash flow, or anything eating your margin. You'll leave with a clear next step.<br><br>$79 credited toward any Compass project.</p>
+        <a href="https://buy.stripe.com/7sY6oAdog5jSbWT6BodZ60h" target="_blank" class="btn btn-amber" style="display:block;text-align:center">Book Strategy Call — $79 →</a>
+      </div>
+      <div style="background:#fff;border:2px solid var(--amber);border-radius:14px;padding:28px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--amber);margin-bottom:4px">$149</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:12px">Working Session — 60 Min</div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px">A full hour to dig into your operation. We map the problem, trace it to the root cause, and build an action plan you can actually use. You'll leave with a written summary of what we covered and what to do next.<br><br>$149 credited toward any Compass project.</p>
+        <a href="https://buy.stripe.com/00w8wIfwo13C9OL6BodZ60i" target="_blank" class="btn btn-amber" style="display:block;text-align:center">Book Working Session — $149 →</a>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:16px;max-width:800px">FixKit customers: your free 20-minute strategy call is included with your plan — reply to your welcome email to book it.</p>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section class="contact-bg" id="contact">
   <div class="section-inner">
@@ -542,8 +569,8 @@
         <div class="contact-item">
           <div class="contact-icon">📞</div>
           <div>
-            <div class="contact-item-label">Book a Call</div>
-            <div class="contact-item-value">30 minutes. No pitch — just an honest conversation about where your business is and what would actually move the needle.<br><br><a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank">Schedule a 30-Min Strategy Call →</a></div>
+            <div class="contact-item-label">Book a Call — From $79</div>
+            <div class="contact-item-value">Strategy Call (30 min) — $79. Working Session (60 min) — $149. Both credited toward any Compass project.<br><br><a href="https://buy.stripe.com/7sY6oAdog5jSbWT6BodZ60h" target="_blank">Book a Strategy Call — $79 →</a></div>
           </div>
         </div>
         <div class="contact-item">
