@@ -441,6 +441,93 @@ footer{background:#0d1622;padding:28px 24px}
   </section>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: SERVICES -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="page-services" class="page">
+  <div style="background:var(--navydark);padding:80px 24px 48px">
+    <div class="section-inner">
+      <div class="section-eyebrow">What We Do</div>
+      <h2 class="section-title" style="color:#fff">Everything We Offer</h2>
+    </div>
+  </div>
+  <section>
+    <div class="section-inner">
+      <div id="services-list"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: GUIDES & DOCS -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="page-guides" class="page">
+  <div style="background:var(--navydark);padding:80px 24px 48px">
+    <div class="section-inner">
+      <div class="section-eyebrow">Guides & Templates</div>
+      <h2 class="section-title" style="color:#fff">The Fix Kit Library</h2>
+      <p class="section-sub">10 profit leak guides and 12 business process templates — all included with FixKit.</p>
+    </div>
+  </div>
+  <section>
+    <div class="section-inner">
+      <div class="docs-filter">
+        <button class="filter-btn active" onclick="filterDocs('all',this)">All</button>
+        <button class="filter-btn" onclick="filterDocs('guide',this)">Guides</button>
+        <button class="filter-btn" onclick="filterDocs('template',this)">Templates</button>
+      </div>
+      <div class="docs-grid" id="docs-grid"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: WHAT PROFITABLE LOOKS LIKE -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="page-profitable" class="page">
+  <div style="background:var(--navydark);padding:80px 24px 48px">
+    <div class="section-inner">
+      <div class="section-eyebrow">The Standard</div>
+      <h2 class="section-title" style="color:#fff">What a Profitable Shop Looks Like</h2>
+      <p class="section-sub">Not aspirational. These are the operational markers of service businesses that consistently net 15–25%.</p>
+    </div>
+  </div>
+  <section class="section-dark" style="padding-top:0">
+    <div class="section-inner">
+      <div class="traits-grid" id="traits-grid"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: ABOUT / OUR STORY -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="page-about" class="page">
+  <div style="background:var(--navydark);padding:80px 24px 48px">
+    <div class="section-inner">
+      <div class="section-eyebrow">Our Story</div>
+      <h2 class="section-title" style="color:#fff">Why We Built This</h2>
+    </div>
+  </div>
+  <section>
+    <div class="section-inner" style="max-width:760px">
+      <div class="about-beats" id="about-beats"></div>
+      <div class="about-stats">
+        <div class="about-stat"><div class="about-stat-num">25</div><div class="about-stat-label">Years in business process analysis</div></div>
+        <div class="about-stat"><div class="about-stat-num">3</div><div class="about-stat-label">Major organizations</div></div>
+        <div class="about-stat"><div class="about-stat-num">11</div><div class="about-stat-label">Processes analyzed</div></div>
+        <div class="about-stat"><div class="about-stat-num">0</div><div class="about-stat-label">Fluff. Everything applied.</div></div>
+      </div>
+      <div style="margin-top:40px;padding:28px;background:var(--light);border-radius:12px;border-left:4px solid var(--amber)">
+        <p style="font-size:15px;font-style:italic;color:var(--navy);line-height:1.75">"They started their companies because they were good at their trade and figured they could make more running their own shop. Most of them weren't — or couldn't tell if they were. That's a fixable problem."</p>
+      </div>
+      <div style="margin-top:32px;text-align:center">
+        <button class="btn btn-amber" onclick="showPage('home');scrollToEl('diagnostic')">Run the Free Diagnostic →</button>
+      </div>
+    </div>
+  </section>
+</div>
+
 <!-- FOOTER (shared) -->
 <footer id="main-footer">
   <div class="footer-inner">
