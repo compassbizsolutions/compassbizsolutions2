@@ -660,7 +660,7 @@ const SERVICES_DATA = [
   {icon:'📈',title:'FixKit — Complete 30/60/90-Day Plan',tag:'$599 — saves $298',tagClass:'tag-amber',short:'All three phases. Fully sequenced. Everything in one portal. Best value.',bullets:['Days 1-30 — top leaks, daily plan, calculators, guides, and process docs','Days 31-60 — next tier of leaks with their own day-by-day plan','Days 61-90 — remaining leaks closed out with a final set of docs','Everything in one portal from day one','Full before/after dashboard across all 90 days','Saves $298 vs buying each phase separately','$100 off if upgrading from the DIY Snapshot'],cta:"Get the Full Bundle — $599",onclick:"openCheckout('fixkit_bundle','FixKit Complete Bundle — $599')"},
   {icon:'📋',title:'FixKit — 30-Day Quick Win Plan',tag:'$299',tagClass:'tag-amber',short:'Your worst leaks addressed first. Daily tasks. Built-in tracking. AI support.',bullets:['Personalized 30-day plan — daily 15-20 minute tasks in order of impact','Built-in number tracking and progress dashboard','5 full profit calculators built for your numbers','9 process templates for your trade','Before/after comparison showing what your fixes are worth annually','Ask Jen — AI chat with your full business context','$100 off if upgrading from the DIY Snapshot'],cta:"Get the 30-Day Plan — $299",onclick:"openCheckout('fixkit_30','FixKit 30-Day Plan — $299')"},
   {icon:'📄',title:'DIY Profit Leak Snapshot',tag:'$99',tagClass:'tag-navy',short:'Your top 3 leaks, the math, and exactly how to fix them — in a PDF you keep.',bullets:['Your top 3 leaks ranked by dollar impact','The exact math showing what each leak costs you annually','Step-by-step fix instructions — not generic advice','A do this first action for each leak you can start this week','Includes a $100 upgrade credit toward FixKit'],closing:'No portal, no daily tasks, no subscription. Just your numbers, your leaks, and what to do about them — in a printable PDF you keep forever.',cta:"Get My Snapshot — $99",onclick:"openCheckout('snapshot','Profit Leak Snapshot — $99')"},
-  {icon:'🛠️',title:'Done For You — Consulting',tag:'By scope',tagClass:'tag-slate',short:'We build and implement the systems for you.',bullets:['We map how your business actually runs — not how it should run','We build the process docs, pricing structures, and workflows','You review, we refine, it gets done','Scoping call is free with no commitment','Payment plans available'],cta:"Book a Free Scoping Call",onclick:"window.open('https://calendly.com/jvoiselle612-s9gb/free-scoping-call','_blank')"},
+  {icon:'🛠️',title:'Done For You — Consulting',tag:'By scope',tagClass:'tag-slate',short:'We build and implement the systems for you.',bullets:['We map how your business actually runs — not how it should run','We build the process docs, pricing structures, and workflows','You review, we refine, it gets done','Scoping call is free with no commitment','Payment plans available'],cta:"Book a Free Scoping Call",onclick:"window.open('https://calendly.com/jvoiselle612-s9gb/strategy-call','_blank')"},
   {icon:'📱',title:'The Compass Field Service App — In Development (Releasing June 1, 2026)',tag:'Coming Soon',tagClass:'tag-slate',short:'Run your whole operation with the Compass profit methodology built in.',bullets:['AI-assisted quoting using your actual loaded cost and overhead','Quote-to-job-to-invoice in one workflow','Technician dispatch, time clock, parts, and job signoff from their phone','Inventory and purchase orders tied directly to jobs','Customer portal and FixKit integration'],closing:'Early access opening soon. FixKit customers get priority access and discounted first year.',cta:"Join the Early Access List",onclick:"openWaitlist()"},
 ];
 
@@ -816,7 +816,7 @@ function submitDiagnostic() {
   var userPrompt = 'A ' + trade + ' owner answered a diagnostic. Here are their answers:\n\n' + answerLines + '\n\nIdentify their top 3 profit leaks. Use their actual numbers. Be specific and blunt.\n\nRespond ONLY in this exact format:\n\n[HEADLINE]\nOne blunt sentence naming their biggest problem in plain language.\n\n[WHAT_WE_SEE]\n• bullet 1 (max 15 words, specific to their numbers)\n• bullet 2\n• bullet 3\n\n[TOP_LEAK]\nLEAK NAME IN CAPS — $XX,000-$XX,000/year\nWhy this is happening for them specifically (one sentence).\nFix it this week: one specific action.\n\n[SECOND_LEAK]\nSame 3-line format.\n\n[THIRD_LEAK]\nSame 3-line format.\n\n[HOW_WE_HELP]\nTwo sentences max. Tell them Compass built a 30-day fix plan with daily tasks built around their specific trade and numbers.';
 
   // Call generate-report — server-side Anthropic proxy (API key stays on server)
-  fetch('https://fixkit.compassbizsolutions.com/api/generate-report', {
+  fetch('https://www.compassbizsolutions.com/api/generate-report', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
@@ -850,7 +850,7 @@ function submitDiagnostic() {
 
     // Send email in background
     if (report) {
-      fetch('https://fixkit.compassbizsolutions.com/api/send-diagnostic', {
+      fetch('https://www.compassbizsolutions.com/api/send-diagnostic', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
