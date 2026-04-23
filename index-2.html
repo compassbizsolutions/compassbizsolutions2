@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>You're All Set — Compass Business Solutions</title>
+  <meta name="description" content="Thank you for your purchase or booking. Here's what happens next."/>
+  <meta name="robots" content="noindex"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy: #1B2E4B;
+      --navy-dark: #111E31;
+      --amber: #C8701A;
+      --amber-light: #E8902A;
+      --teal: #1E6B45;
+      --slate: #3D6B9E;
+      --light: #F4F7FC;
+      --muted: #5A7291;
+      --border: rgba(61,107,158,0.15);
+      --white: #FFFFFF;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy-dark);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: rgba(17,30,49,0.95);
+      border-bottom: 1px solid rgba(61,107,158,0.2);
+      padding: 0 28px;
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center;
+      height: 68px;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-name-top { font-family: 'Barlow Condensed', sans-serif; font-size: 19px; font-weight: 800; color: white; letter-spacing: 2.5px; line-height: 1; }
+    .nav-name-sub { font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-transform: uppercase; }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 28px;
+    }
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(61,107,158,0.25);
+      border-radius: 20px;
+      padding: 52px 48px;
+      max-width: 620px;
+      width: 100%;
+      text-align: center;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    /* ── CHECK ICON ── */
+    .check-ring {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: rgba(200,112,26,0.12);
+      border: 2px solid rgba(200,112,26,0.35);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 28px;
+      animation: popIn 0.5s 0.2s cubic-bezier(0.175,0.885,0.32,1.275) both;
+    }
+    .check-ring svg { width: 36px; height: 36px; }
+
+    /* ── HEADLINE ── */
+    .eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 3px;
+      color: var(--amber); text-transform: uppercase; margin-bottom: 12px;
+    }
+    .headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(36px, 5vw, 52px);
+      font-weight: 800; color: white;
+      text-transform: uppercase; letter-spacing: -0.5px;
+      line-height: 0.95; margin-bottom: 16px;
+    }
+    .sub {
+      font-size: 15px; color: rgba(255,255,255,0.55);
+      line-height: 1.75; margin-bottom: 36px;
+    }
+    .sub strong { color: white; font-weight: 600; }
+
+    /* ── NEXT STEPS BOX ── */
+    .next-steps {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(61,107,158,0.2);
+      border-radius: 12px;
+      padding: 24px 28px;
+      text-align: left;
+      margin-bottom: 32px;
+    }
+    .next-steps-label {
+      font-size: 10px; font-weight: 700;
+      color: var(--amber); letter-spacing: 2.5px;
+      text-transform: uppercase; margin-bottom: 16px;
+    }
+    .step {
+      display: flex; gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(61,107,158,0.12);
+    }
+    .step:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    .step-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px; font-weight: 800;
+      color: var(--amber); line-height: 1;
+      flex-shrink: 0; min-width: 22px;
+    }
+    .step-text {
+      font-size: 14px; color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+    }
+    .step-text strong { color: white; }
+
+    /* ── BUTTON ── */
+    .btn-home {
+      display: inline-block;
+      background: var(--amber); color: white;
+      padding: 13px 32px;
+      border-radius: 9px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px; font-weight: 800;
+      letter-spacing: 1px; text-decoration: none;
+      text-transform: uppercase;
+      transition: opacity 0.15s;
+    }
+    .btn-home:hover { opacity: 0.88; }
+
+    .help-note {
+      margin-top: 20px;
+      font-size: 13px; color: rgba(255,255,255,0.3);
+      line-height: 1.6;
+    }
+    .help-note a { color: var(--amber); text-decoration: none; }
+    .help-note a:hover { text-decoration: underline; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0D1622;
+      padding: 24px 28px;
+      text-align: center;
+      border-top: 1px solid rgba(61,107,158,0.1);
+    }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); }
+    .footer-copy a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    .footer-copy a:hover { color: rgba(255,255,255,0.7); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.6); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 600px) {
+      .card { padding: 36px 24px; }
+      main { padding: 40px 20px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-brand">
+      <svg width="36" height="36" viewBox="0 0 80 80" fill="none">
+        <circle cx="40" cy="40" r="39" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+        <circle cx="40" cy="40" r="36" fill="#1B2E4B"/>
+        <circle cx="40" cy="40" r="26" stroke="#3D6B9E" stroke-width="1" fill="none" stroke-dasharray="5 4" opacity="0.6"/>
+        <circle cx="40" cy="40" r="17" stroke="#C8701A" stroke-width="1" fill="none" stroke-dasharray="4 4" opacity="0.6"/>
+        <polygon points="40,8 42.5,36 40,40 37.5,36" fill="white" opacity="0.95"/>
+        <polygon points="40,72 37.5,44 40,40 42.5,44" fill="white" opacity="0.3"/>
+        <polygon points="72,40 44,42.5 40,40 44,37.5" fill="white" opacity="0.3"/>
+        <polygon points="8,40 36,37.5 40,40 36,42.5" fill="white" opacity="0.95"/>
+        <circle cx="40" cy="40" r="3" fill="white" opacity="0.9"/>
+        <circle cx="40" cy="8" r="2.5" fill="#C8701A"/>
+      </svg>
+      <div>
+        <div class="nav-name-top">COMPASS</div>
+        <div class="nav-name-sub">Business Solutions</div>
+      </div>
+    </a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <div class="card">
+
+    <div class="check-ring">
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7 18L14.5 25.5L29 11" stroke="#C8701A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="eyebrow" id="eyebrow">Confirmed</div>
+    <h1 class="headline" id="headline">You're All Set.</h1>
+    <p class="sub" id="sub">Check your email — everything you need is on its way.</p>
+
+    <div class="next-steps" id="next-steps">
+      <div class="next-steps-label">What Happens Next</div>
+      <div id="steps-list">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <a href="/" class="btn-home">Back to Compass →</a>
+
+    <p class="help-note">
+      Questions? Email <a href="mailto:support@compassbizsolutions.com">support@compassbizsolutions.com</a>
+    </p>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">
+    © 2025 Compass Business Solutions · Jen Voiselle &nbsp;·&nbsp;
+    <a href="/">compassbizsolutions.com</a>
+  </div>
+</footer>
+
+<script>
+  var params = new URLSearchParams(window.location.search);
+  var type = params.get('type') || 'call';
+
+  var content = {
+    call: {
+      eyebrow: 'Call Booked',
+      headline: "You're Booked.",
+      sub: "Check your email for the calendar invite and call details.",
+      steps: [
+        { num: '1', text: '<strong>Check your inbox</strong> — a calendar invite from Calendly is on its way.' },
+        { num: '2', text: '<strong>Come with one specific problem.</strong> The more focused you are, the more we get done.' },
+        { num: '3', text: '<strong>Have your numbers handy</strong> — revenue, crew size, average job size. Even rough figures help.' },
+        { num: '4', text: 'Your payment is <strong>credited toward any Compass project</strong> if you move forward.' }
+      ]
+    },
+    snapshot: {
+      eyebrow: 'Purchase Confirmed',
+      headline: 'Snapshot Purchased.',
+      sub: "You'll receive an email shortly with your intake questionnaire. That's what we use to build your personalized report.",
+      steps: [
+        { num: '1', text: '<strong>Check your inbox</strong> — your intake link will arrive in the next few minutes.' },
+        { num: '2', text: '<strong>Complete the intake form.</strong> The more specific your answers, the sharper your Snapshot.' },
+        { num: '3', text: 'Your <strong>personalized PDF report</strong> — top 3 leaks with step-by-step fixes — will be delivered within 24 hours.' },
+        { num: '4', text: 'Your $99 is <strong>credited toward any FixKit plan</strong> if you decide to go deeper.' }
+      ]
+    },
+    fixkit_30: {
+      eyebrow: 'Purchase Confirmed',
+      headline: '30-Day Plan Activated.',
+      sub: "You'll receive an email shortly with your account setup and intake questionnaire.",
+      steps: [
+        { num: '1', text: '<strong>Check your inbox</strong> — your account setup link will arrive in the next few minutes.' },
+        { num: '2', text: '<strong>Complete your intake form.</strong> This is where we get the specifics to personalize your plan.' },
+        { num: '3', text: 'Your <strong>personalized 30-day plan</strong> — daily tasks, calculators, and templates — will be ready within 24 hours.' },
+        { num: '4', text: 'Questions before then? Reply to your confirmation email — Jen reads every one.' }
+      ]
+    },
+    fixkit_bundle: {
+      eyebrow: 'Purchase Confirmed',
+      headline: 'Full Bundle Activated.',
+      sub: "You'll receive an email shortly with your account setup and intake questionnaire.",
+      steps: [
+        { num: '1', text: '<strong>Check your inbox</strong> — your account setup link will arrive in the next few minutes.' },
+        { num: '2', text: '<strong>Complete your intake form.</strong> All 90 days are built around your specific numbers and trade.' },
+        { num: '3', text: 'Your <strong>full 30/60/90-day plan</strong> across all 11 leak categories will be ready within 24 hours.' },
+        { num: '4', text: 'Questions before then? Reply to your confirmation email — Jen reads every one.' }
+      ]
+    }
+  };
+
+  var c = content[type] || content['call'];
+
+  document.getElementById('eyebrow').textContent = c.eyebrow;
+  document.getElementById('headline').textContent = c.headline;
+  document.getElementById('sub').textContent = c.sub;
+
+  var stepsList = document.getElementById('steps-list');
+  stepsList.innerHTML = c.steps.map(function(s) {
+    return '<div class="step">'
+      + '<div class="step-num">' + s.num + '</div>'
+      + '<div class="step-text">' + s.text + '</div>'
+      + '</div>';
+  }).join('');
+</script>
+
+</body>
+</html>
