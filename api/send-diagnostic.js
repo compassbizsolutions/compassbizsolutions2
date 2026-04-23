@@ -110,7 +110,8 @@ module.exports = async function handler(req, res) {
             </div>
 
             <!-- 30-Day Plan -->
-            <div style="background:white;border:1px solid #D8D4CD;border-top:3px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;">
+            <div style="background:white;border:2px solid #C8701A;border-top:3px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;position:relative;">
+              <div style="display:inline-block;background:#C8701A;color:white;font-size:9px;font-weight:bold;letter-spacing:1.5px;padding:2px 10px;border-radius:99px;margin-bottom:10px;">MOST POPULAR</div>
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
                 <div>
                   <div style="font-size:13px;font-weight:bold;color:#1A2332;">FixKit — 30-Day Quick Win Plan</div>
