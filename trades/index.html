@@ -594,7 +594,7 @@ footer{background:#0d1622;padding:28px 24px}
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────
 const QUESTIONS = [
-  {id:'trade',q:'What trade are you in?',type:'buttons',opts:['Air Duct Cleaning','Appliance Repair','Carpet Cleaning','Chimney and Fireplace','Cleaning Services','Electrical','Flooring','Garage Door','General Contracting','Gutters','HVAC','Handyman','Irrigation','Landscaping','Locksmith','Painting','Pest Control','Plumbing','Pool and Spa','Pressure Washing','Restoration and Remediation','Roofing','Security Systems','Solar','Tile and Stone','Tree Service','Other']},
+  {id:'trade',q:'What trade are you in?',type:'buttons',opts:['HVAC','Plumbing','Electrical','General Contracting','Roofing','Landscaping','Handyman','Painting'],overflow:['Air Duct Cleaning','Appliance Repair','Carpet Cleaning','Chimney and Fireplace','Cleaning Services','Flooring','Garage Door','Gutters','Irrigation','Locksmith','Pest Control','Pool and Spa','Pressure Washing','Restoration and Remediation','Security Systems','Solar','Tile and Stone','Tree Service','Other']},
   {id:'services',q:'What do you do day to day? Pick all that apply.',type:'multi',opts:['Commercial service calls','Emergency calls','Estimates and bids','Inspections','Maintenance agreements','New installs','Other','Residential service calls']},
   {id:'years',q:'How long have you been in business?',type:'buttons',opts:['Under 2 years','2-5 years','5-10 years','10-20 years','20+ years']},
   {id:'crew',q:'How many guys do you have in the field?',type:'buttons',opts:['Just me','2-3','4-6','7-10','11-20','20+']},
@@ -737,6 +737,97 @@ function renderQuestion() {
     opts.appendChild(ta);
     document.getElementById('btn-next').disabled = false;
     document.getElementById('btn-next').textContent = 'Submit →';
+  } else if (q.overflow) {
+    // POPULAR-FIRST PATTERN (trade question)
+    var popGrid = document.createElement('div');
+    popGrid.className = 'btn-grid';
+    var ovGrid = document.createElement('div');
+    ovGrid.className = 'btn-grid';
+    ovGrid.style.display = 'none';
+    ovGrid.style.marginTop = '8px';
+
+    var toggleBtn = document.createElement('button');
+    toggleBtn.type = 'button';
+    var totalCount = q.opts.length + q.overflow.length;
+    toggleBtn.textContent = "Don't see your trade? Show all " + totalCount + ' →';
+    toggleBtn.style.cssText = 'background:none;border:1px dashed var(--border);color:var(--muted);font-size:13px;font-weight:500;padding:10px 16px;border-radius:8px;cursor:pointer;margin:12px 0 0;font-family:inherit';
+    toggleBtn.onclick = function() {
+      var isOpen = ovGrid.style.display !== 'none';
+      ovGrid.style.display = isOpen ? 'none' : 'flex';
+      toggleBtn.textContent = isOpen
+        ? "Don't see your trade? Show all " + totalCount + ' →'
+        : 'Show fewer ←';
+    };
+
+    var otherWrap = document.createElement('div');
+    otherWrap.style.cssText = 'display:none;margin-top:14px';
+    var otherLabel = document.createElement('label');
+    otherLabel.style.cssText = 'font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px';
+    otherLabel.textContent = 'Tell us what you do';
+    var otherInput = document.createElement('input');
+    otherInput.type = 'text';
+    otherInput.className = 'q-textarea';
+    otherInput.placeholder = 'e.g., Mobile pet grooming, Holiday lighting installation';
+    otherInput.maxLength = 80;
+    otherInput.style.cssText = 'min-height:auto;padding:14px;border-radius:8px';
+    otherInput.oninput = function() {
+      var v = otherInput.value.trim();
+      diagAnswers[q.id] = v || 'Other';
+      document.getElementById('btn-next').disabled = false;
+    };
+    otherWrap.appendChild(otherLabel);
+    otherWrap.appendChild(otherInput);
+
+    function handlePillClick(btn, opt) {
+      opts.querySelectorAll('.btn-opt').forEach(function(b){ b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      if (opt === 'Other') {
+        otherWrap.style.display = 'block';
+        diagAnswers[q.id] = otherInput.value.trim() || 'Other';
+        setTimeout(function(){ otherInput.focus(); }, 50);
+      } else {
+        otherWrap.style.display = 'none';
+        diagAnswers[q.id] = opt;
+      }
+      document.getElementById('btn-next').disabled = false;
+    }
+
+    q.opts.forEach(function(opt) {
+      var btn = document.createElement('button');
+      btn.className = 'btn-opt' + (current === opt ? ' selected' : '');
+      btn.textContent = opt;
+      btn.onclick = function(){ handlePillClick(btn, opt); };
+      popGrid.appendChild(btn);
+    });
+
+    q.overflow.forEach(function(opt) {
+      var btn = document.createElement('button');
+      btn.className = 'btn-opt' + (current === opt ? ' selected' : '');
+      btn.textContent = opt;
+      btn.onclick = function(){ handlePillClick(btn, opt); };
+      ovGrid.appendChild(btn);
+    });
+
+    // If returning with a custom "Other" value already typed, restore it
+    if (current && q.opts.indexOf(current) === -1 && q.overflow.indexOf(current) === -1) {
+      var otherBtn = null;
+      ovGrid.querySelectorAll('.btn-opt').forEach(function(b){ if (b.textContent === 'Other') otherBtn = b; });
+      if (otherBtn) {
+        otherBtn.classList.add('selected');
+        otherInput.value = current === 'Other' ? '' : current;
+        otherWrap.style.display = 'block';
+        ovGrid.style.display = 'flex';
+        toggleBtn.textContent = 'Show fewer ←';
+      }
+    }
+
+    opts.appendChild(popGrid);
+    opts.appendChild(toggleBtn);
+    opts.appendChild(ovGrid);
+    opts.appendChild(otherWrap);
+
+    document.getElementById('btn-next').disabled = !current;
+    document.getElementById('btn-next').textContent = diagStep === total-1 ? 'Submit →' : 'Next →';
   } else {
     var grid = document.createElement('div');
     grid.className = 'btn-grid';
@@ -812,22 +903,20 @@ function submitDiagnostic() {
     return k + ': ' + (Array.isArray(v) ? v.join(', ') : v);
   }).join('\n');
 
-  var systemPrompt = 'You are a straight-talking advisor who has worked with hundreds of trades businesses. You talk like someone who has been in the field — blunt, plain, no corporate language. Short sentences. No jargon.';
-  var userPrompt = 'A ' + trade + ' owner answered a diagnostic. Here are their answers:\n\n' + answerLines + '\n\nIdentify their top 3 profit leaks. Use their actual numbers. Be specific and blunt.\n\nRespond ONLY in this exact format:\n\n[HEADLINE]\nOne blunt sentence naming their biggest problem in plain language.\n\n[WHAT_WE_SEE]\n• bullet 1 (max 15 words, specific to their numbers)\n• bullet 2\n• bullet 3\n\n[TOP_LEAK]\nLEAK NAME IN CAPS — $XX,000-$XX,000/year\nWhy this is happening for them specifically (one sentence).\nFix it this week: one specific action.\n\n[SECOND_LEAK]\nSame 3-line format.\n\n[THIRD_LEAK]\nSame 3-line format.\n\n[HOW_WE_HELP]\nTwo sentences max. Tell them Compass built a 30-day fix plan with daily tasks built around their specific trade and numbers.';
-
-  // Call generate-report — server-side Anthropic proxy (API key stays on server)
+  // Server owns the system prompt now — we just send the intake
   fetch('https://www.compassbizsolutions.com/api/generate-report', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
-      system: systemPrompt,
-      prompt: userPrompt,
-      max_tokens: 1000
+      name: name,
+      biz: biz || (trade + ' business'),
+      trade: trade,
+      answers: diagAnswers
     })
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
-    var report = data.text || '';
+    var report = data.report || data.text || '';
 
     function getTag(text, tag) {
       var m = text.match(new RegExp('\\[' + tag + '\\]([\\s\\S]*?)(?=\\[|$)'));
