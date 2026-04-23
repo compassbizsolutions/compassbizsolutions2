@@ -1,0 +1,218 @@
+<!--
+  FixKit Q1 — Popular-First Trade Selector
+  ============================================================================
+  Drop this into trades/index.html where your current Q1 block lives.
+
+  Visual pattern: 8 popular trades as bubbles up front, "Show all 27 trades ↓"
+  button reveals the rest. Keeps your tap-only mobile UX, cuts visual noise,
+  fits mobile in one screen.
+
+  Integration notes:
+  - Selection state uses class "trade-pill--selected" (orange border)
+  - Hidden input #q1-trade holds the value; your existing Next-button handler
+    should read this value the same way it does now
+  - If your current Q1 handler listens for class name or data attr, adjust the
+    toggleTrade() function below to call it
+  ============================================================================
+-->
+
+<style>
+  /* === Q1 Trade Selector === */
+  .q1-wrap {
+    font-family: Arial, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .q1-label {
+    font-size: 10px;
+    font-weight: bold;
+    color: #C8701A;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .q1-heading {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1A2332;
+    margin: 0 0 20px;
+  }
+
+  .trade-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .trade-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 10px 18px;
+    background: #F7F5F2;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    color: #1A2332;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    user-select: none;
+  }
+
+  .trade-pill:hover {
+    background: #EFEBE4;
+  }
+
+  .trade-pill--selected {
+    border-color: #C8701A;
+    background: white;
+  }
+
+  /* Reveal button */
+  .show-all-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: transparent;
+    border: 1px dashed #A0ABBE;
+    border-radius: 8px;
+    color: #6B7A90;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    margin-bottom: 8px;
+  }
+
+  .show-all-btn:hover {
+    color: #1B2E4B;
+    border-color: #1B2E4B;
+  }
+
+  .show-all-btn .chevron {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .show-all-btn.is-open .chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Hidden overflow trades */
+  .trade-overflow {
+    display: none;
+    animation: fadeSlide 0.25s ease;
+  }
+
+  .trade-overflow.is-open {
+    display: grid;
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Tighter grid on mobile */
+  @media (max-width: 640px) {
+    .trade-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .trade-pill {
+      min-height: 48px;
+      font-size: 14px;
+      padding: 8px 12px;
+    }
+  }
+</style>
+
+<div class="q1-wrap">
+  <div class="q1-label">QUESTION 1 OF 16</div>
+  <h2 class="q1-heading">What trade are you in?</h2>
+
+  <!-- POPULAR TRADES (shown first) -->
+  <div class="trade-grid" id="trades-popular">
+    <div class="trade-pill" data-trade="HVAC">HVAC</div>
+    <div class="trade-pill" data-trade="Plumbing">Plumbing</div>
+    <div class="trade-pill" data-trade="Electrical">Electrical</div>
+    <div class="trade-pill" data-trade="General Contracting">General Contracting</div>
+    <div class="trade-pill" data-trade="Roofing">Roofing</div>
+    <div class="trade-pill" data-trade="Landscaping">Landscaping</div>
+    <div class="trade-pill" data-trade="Handyman">Handyman</div>
+    <div class="trade-pill" data-trade="Painting">Painting</div>
+  </div>
+
+  <!-- SHOW ALL TOGGLE -->
+  <button type="button" class="show-all-btn" id="show-all-trades-btn" onclick="toggleAllTrades()">
+    Don't see your trade? Show all 27 <span class="chevron">▾</span>
+  </button>
+
+  <!-- OVERFLOW TRADES (hidden until toggle) -->
+  <div class="trade-grid trade-overflow" id="trades-overflow">
+    <div class="trade-pill" data-trade="Air Duct Cleaning">Air Duct Cleaning</div>
+    <div class="trade-pill" data-trade="Appliance Repair">Appliance Repair</div>
+    <div class="trade-pill" data-trade="Carpet Cleaning">Carpet Cleaning</div>
+    <div class="trade-pill" data-trade="Chimney and Fireplace">Chimney and Fireplace</div>
+    <div class="trade-pill" data-trade="Cleaning Services">Cleaning Services</div>
+    <div class="trade-pill" data-trade="Flooring">Flooring</div>
+    <div class="trade-pill" data-trade="Garage Door">Garage Door</div>
+    <div class="trade-pill" data-trade="Gutters">Gutters</div>
+    <div class="trade-pill" data-trade="Irrigation">Irrigation</div>
+    <div class="trade-pill" data-trade="Locksmith">Locksmith</div>
+    <div class="trade-pill" data-trade="Pest Control">Pest Control</div>
+    <div class="trade-pill" data-trade="Pool and Spa">Pool and Spa</div>
+    <div class="trade-pill" data-trade="Pressure Washing">Pressure Washing</div>
+    <div class="trade-pill" data-trade="Restoration and Remediation">Restoration and Remediation</div>
+    <div class="trade-pill" data-trade="Security Systems">Security Systems</div>
+    <div class="trade-pill" data-trade="Solar">Solar</div>
+    <div class="trade-pill" data-trade="Tile and Stone">Tile and Stone</div>
+    <div class="trade-pill" data-trade="Tree Service">Tree Service</div>
+    <div class="trade-pill" data-trade="Other">Other</div>
+  </div>
+
+  <!-- Hidden field your existing Next-handler reads -->
+  <input type="hidden" id="q1-trade" name="q1" value="">
+</div>
+
+<script>
+  (function () {
+    // Single-select handler — applies to both popular and overflow pills
+    function selectTrade(pillEl) {
+      document.querySelectorAll('.trade-pill').forEach(function (p) {
+        p.classList.remove('trade-pill--selected');
+      });
+      pillEl.classList.add('trade-pill--selected');
+      var hidden = document.getElementById('q1-trade');
+      if (hidden) hidden.value = pillEl.getAttribute('data-trade');
+
+      // If your existing code listens for a custom event, fire it here.
+      // Comment out if not needed.
+      document.dispatchEvent(new CustomEvent('q1:selected', {
+        detail: { trade: pillEl.getAttribute('data-trade') }
+      }));
+    }
+
+    // Wire up all pills (popular + overflow)
+    document.querySelectorAll('.trade-pill').forEach(function (pill) {
+      pill.addEventListener('click', function () { selectTrade(pill); });
+    });
+
+    // Expose toggle to window so inline onclick works
+    window.toggleAllTrades = function () {
+      var overflow = document.getElementById('trades-overflow');
+      var btn = document.getElementById('show-all-trades-btn');
+      var isOpen = overflow.classList.toggle('is-open');
+      btn.classList.toggle('is-open', isOpen);
+      btn.firstChild.textContent = isOpen
+        ? 'Show fewer '
+        : "Don't see your trade? Show all 27 ";
+    };
+  })();
+</script>
