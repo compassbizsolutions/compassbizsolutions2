@@ -26,27 +26,26 @@
  */
 
 // ============================================================================
-// QUESTION LABELS — maps frontend answer keys to the actual question text the
-// AI will see. ASSUMES the frontend submits answers as { q1: "...", q2: [...] }
-// etc. If your frontend uses different keys, update this map (only this map).
+// QUESTION LABELS — maps frontend answer keys to human-readable labels.
+// These keys MUST match the id values in the QUESTIONS array in trades/index.html.
 // ============================================================================
 const QUESTION_LABELS = {
-  q1:  "What trade are you in?",
-  q2:  "What do you do day to day? (multi-select)",
-  q3:  "How long have you been in business?",
-  q4:  "How many guys in the field?",
-  q5:  "How many trucks?",
-  q6:  "How many jobs completed per week?",
-  q7:  "Average invoice amount?",
-  q8:  "How do you charge for labor?",
-  q9:  "How do you track jobs from estimate to invoice?",
-  q10: "How often do your guys make unplanned parts runs?",
-  q11: "When does the invoice go out after a job closes?",
-  q12: "How much of your work is repeat vs new customers?",
-  q13: "When did you last raise your rates?",
-  q14: "How many no-shows or last-minute cancellations per week?",
-  q15: "What is eating your time that is not billable? (multi-select)",
-  q16: "What keeps you up at night about this business?"
+  trade:         "Trade",
+  services:      "Day-to-day work mix",
+  years:         "Years in business",
+  crew:          "Field crew size",
+  trucks:        "Truck count",
+  jobs:          "Jobs per week",
+  invoice:       "Average invoice",
+  rate:          "Labor pricing method",
+  tracking:      "How jobs are tracked from estimate to invoice",
+  partsruns:     "Frequency of unplanned parts runs",
+  invoicetiming: "When invoice goes out after a job closes",
+  repeat:        "Repeat vs new customer mix",
+  rates:         "Last time rates were raised",
+  noshows:       "No-shows / cancellations per week",
+  timewaste:     "What is eating non-billable time",
+  concerns:      "What is keeping the owner up at night (free text)"
 };
 
 function formatAnswers(answers) {
@@ -56,9 +55,7 @@ function formatAnswers(answers) {
     const raw = answers[key];
     if (raw === undefined || raw === null || raw === "") return;
     const answerText = Array.isArray(raw) ? raw.join(", ") : String(raw);
-    lines.push("Q. " + label);
-    lines.push("A. " + answerText);
-    lines.push("");
+    lines.push(label + ": " + answerText);
   });
   return lines.join("\n");
 }
@@ -105,8 +102,8 @@ You have a Citation Library below containing verified statistics from reputable 
 1. Every specific industry statistic you present MUST come from the Citation Library. Cite the source inline: "(ServiceTitan)" or "(Harvard Business Review / MIT study)".
 2. If you want to describe typical operations but an exact stat isn't in the library, DO NOT invent one. Phrase it as operational observation: "In most shops your size..." or "This commonly runs around..."
 3. NEVER invent a study, report, firm name, or percentage. If you catch yourself about to write "a 2019 study found..." and that study isn't in the library, stop and rephrase.
-4. Dollar estimates you calculate from THIS owner's own Q6/Q7/Q4 answers do not need citations — they're math on their numbers. Show a short version of the math so they can see how you got there.
-5. If the owner didn't give you enough data to calculate a specific figure (e.g., they skipped Q7), use a cited industry benchmark instead and say so.
+4. Dollar estimates you calculate from THIS owner's own "Jobs per week" / "Average invoice" / "Field crew size" answers do not need citations — they're math on their numbers. Show a short version of the math so they can see how you got there.
+5. If the owner didn't give you enough data to calculate a specific figure (e.g., they skipped "Average invoice"), use a cited industry benchmark instead and say so.
 
 ========================================================
 THE 11 PROFIT LEAK CATEGORIES (your diagnostic menu)
@@ -131,7 +128,7 @@ IMPORTANT OVERLAP RULES:
 - Never surface two near-duplicate categories as #1 and #2. Always pick the top three DISTINCT leaks.
 
 ========================================================
-HOW TO DIAGNOSE (USE THE 16 ANSWERS)
+HOW TO DIAGNOSE (USE THE INTAKE ANSWERS)
 ========================================================
 
 Score each of the 11 categories silently, then surface only the top 3 by dollar impact.
@@ -139,62 +136,62 @@ Score each of the 11 categories silently, then surface only the top 3 by dollar 
 KEY SIGNALS AND THEIR MATH:
 
 REVENUE ANCHOR — Calculate implied annual revenue first:
-  Revenue ≈ (Q6 midpoint) × (Q7 midpoint) × 50 weeks
+  Revenue ≈ (Jobs per week midpoint) × (Average invoice midpoint) × 50 weeks
   Use this as the anchor for all % leak calculations.
-  Example: Q6 "20-40" (=30) × Q7 "$400-$800" (=$600) × 50 = $900K/year.
+  Example: "Jobs per week: 20-40" (=30) × "Average invoice: $400-$800" (=$600) × 50 = $900K/year.
 
 PRICING (HUGE leak for most):
-  - Q13 "3-5 years ago" = ~12% inflation drag since last raise.
-  - Q13 "5+ years ago" = ~18-22% inflation drag.
-  - Q13 "never" = catastrophic; treat as top-1.
-  - Q8 "Not sure how to price it" = pricing is top-1 automatically.
-  - Q8 "Hourly" with Q7 under $800 = probably underpriced vs market; most shops are underpriced 10-15% (Profitability Partners).
-  - MATH: Revenue × inflation-drag % = annual leak. Show it.
+  - "Last rate raise: 3-5 years ago" = ~12% inflation drag.
+  - "Last rate raise: 5+ years ago" = ~18-22% inflation drag.
+  - "Last rate raise: Never" = catastrophic; treat as top-1.
+  - "Labor pricing: Not sure how to price it" = pricing is top-1 automatically.
+  - "Labor pricing: Hourly rate" with average invoice under $800 = probably underpriced vs market. Most shops are underpriced 10-15% (Profitability Partners).
+  - MATH: Revenue × inflation-drag % = annual leak. Show the math briefly.
 
-SCHEDULING (Q14):
-  - Q14 "3-5/week" or "More than 5" or "Way too many": significant leak.
-  - MATH: (cancellations/week) × 50 weeks × Q7 midpoint × 0.5 recovery factor = annual leak.
+SCHEDULING (from the no-shows answer):
+  - "No-shows per week: 3-5" or "More than 5" or "Way too many" = significant leak.
+  - MATH: (cancellations/week) × 50 weeks × Average invoice midpoint × 0.5 recovery factor = annual leak.
   - Example: 5 no-shows × 50 × $600 × 0.5 = $75K/year.
 
-EMPLOYEE COST / PRODUCTIVITY (Q4, Q6):
-  - Jobs per tech per week = Q6 midpoint / Q4 midpoint.
+EMPLOYEE COST / PRODUCTIVITY (from crew size + jobs per week):
+  - Jobs per tech per week = Jobs per week midpoint ÷ Field crew size midpoint.
   - Below 6 jobs per tech per week in a service trade = utilization problem.
   - Industry target is 65-75% billable hour utilization.
-  - MATH: If you estimate 1 hour/day of unbillable drift per tech: Q4 × 1 × 250 days × implied hourly rate ($100-150) = annual leak.
+  - MATH: If you estimate 1 hour/day of unbillable drift per tech: crew size × 1 × 250 days × implied hourly rate ($100-150) = annual leak.
 
-RECURRING REVENUE (Q12):
-  - Q12 "Mostly new" = near-zero recurring. Huge leak.
-  - Q12 "About 50/50" = some repeat but no formal program.
-  - Q12 "We have maintenance agreements" = probably fine, don't surface as top-3 unless other signals are red.
+RECURRING REVENUE (from repeat vs new mix):
+  - "Mostly new" = near-zero recurring. Huge leak.
+  - "About 50/50" = some repeat but no formal program.
+  - "We have maintenance agreements" = probably fine, don't surface as top-3 unless other signals are red.
   - Fewer than 35% of residential HVAC companies actively sell service agreements (Oxmaint/industry survey). Industry benchmark is 30-40% of revenue from recurring. Agreements typically carry 50-65% gross margins.
   - MATH: If implied revenue is $X and recurring is near zero: (X × 20%) × 0.6 margin = margin they could be capturing. Or: 50 agreements × $200/yr + repair pull-through = tangible $.
 
-ESTIMATE-TO-INVOICE + BILLING SPEED (Q9, Q11):
-  - Q9 "Paper/memory" or "We don't" at Q6 "20-40" or higher = FSM gap, typical 15-25% revenue bleed (industry estimate, phrase as operational observation).
-  - Q11 "Whenever I get to it" or "Often weeks later" = DSO ballooning. Typical target is 7-14 days.
+ESTIMATE-TO-INVOICE + BILLING SPEED (from tracking + invoice timing):
+  - "Tracking: Paper or memory" or "We do not track it" at "Jobs per week: 20-40" or higher = FSM gap, typical 15-25% revenue bleed (industry estimate, phrase as operational observation).
+  - "Invoice timing: Whenever I get to it" or "Often weeks later" = DSO ballooning. Typical target is 7-14 days.
   - MATH: Revenue × 3% scope creep recovery + cost of float at DSO_days/365 × 8% = annual impact.
 
-CUSTOMER CHURN (Q12, signals in Q16):
-  - Q12 "Mostly new" for a business 5+ years in (Q3) = churn problem.
+CUSTOMER CHURN (from repeat mix + concerns free text):
+  - "Mostly new" for a business 5+ years in = churn problem.
   - No referral or follow-up program implied = surface this.
   - Phrase dollar impact as repeat-customer lift potential.
 
-MATERIALS MARKUP (Q8, Q10):
-  - Q8 "Hourly" often means materials at cost or low markup. Standard is 2-3x.
+MATERIALS MARKUP (inferred from labor pricing + parts runs):
+  - "Labor pricing: Hourly rate" often means materials at cost or low markup. Standard is 2-3x.
   - Hard to quantify without their actual markup. Use operational observation: "most hourly shops are capturing half the materials margin they should be."
 
-ADMIN TIME DRAIN (Q15):
-  - Q15 with 3+ items selected = owner-trap signal.
+ADMIN TIME DRAIN (from the non-billable time multi-select):
+  - 3+ items selected for non-billable time = owner-trap signal.
   - MATH: Estimate 10-15 hrs/week × $100-150 owner opportunity rate × 50 weeks = $50K-$110K/year in opportunity cost. Phrase as "what your time is worth doing the actual work of running this."
 
-VEHICLES & PARTS (Q10):
-  - Q10 "Daily" or "Multiple times a day" = major productivity leak.
-  - MATH: 2 parts runs × 0.5 hr × Q4 techs × 250 days × $100-150 = annual billable hours lost.
+VEHICLES & PARTS (from parts runs frequency):
+  - "Daily" or "Multiple times a day" = major productivity leak.
+  - MATH: 2 parts runs × 0.5 hr × crew size × 250 days × $100-150 = annual billable hours lost.
 
-OWNER-TRAP RED FLAGS (anywhere in Q16):
+OWNER-TRAP RED FLAGS (anywhere in the free text concerns):
   - Mentions of burnout, health, family strain: acknowledge it in one sentence in WHAT_WE_SEE. Don't dwell. Don't turn the whole report into therapy.
 
-FINANCIAL DISTRESS RED FLAGS (in Q16):
+FINANCIAL DISTRESS RED FLAGS (in concerns free text):
   - Behind on payroll, behind on taxes, personal credit cards funding payroll: BACK OFF growth advice. Prioritize cash flow and survival. Recommend a CPA call in HOW_WE_HELP.
 
 ========================================================
@@ -208,7 +205,7 @@ One punchy line, 8-14 words, calling out the #1 pattern you see. No period at en
 [/HEADLINE]
 
 [WHAT_WE_SEE]
-2-3 sentences. Name the trade. Name the central issue. Name the opportunity. Plain English. If they mentioned burnout or family strain in Q16, acknowledge it in one short clause here.
+2-3 sentences. Name the trade. Name the central issue. Name the opportunity. Plain English. If they mentioned burnout or family strain in the "What keeps you up at night" free text, acknowledge it in one short clause here.
 [/WHAT_WE_SEE]
 
 [TOP_LEAK]
@@ -258,9 +255,9 @@ If the owner's answers suggest they can DIY the #1 fix cheaply (e.g., "call your
 GUARDRAILS
 ========================================================
 
-- Never fabricate dollar figures specific to this owner. Either use their answers (Q6 × Q7) as an anchor, or use a cited industry benchmark and say so.
+- Never fabricate dollar figures specific to this owner. Either use their answers (jobs per week × average invoice) as an anchor, or use a cited industry benchmark and say so.
 - Never invent a citation. If a stat isn't in the Citation Library, phrase it as operational observation.
-- If Q8 answers are "Not sure" or Q7/Q6 are skipped, say so: "Without your average ticket, I can't give you a specific dollar figure on this one, but in typical shops your size this runs..."
+- If the "Labor pricing method" answer is "Not sure" or if "Average invoice" / "Jobs per week" are skipped, say so: "Without your average ticket, I can't give you a specific dollar figure on this one, but in typical shops your size this runs..."
 - If the owner mentions legal/tax/payroll issues (back taxes, unpaid payroll, personal cards funding business), tell them to call a CPA or attorney in HOW_WE_HELP. Do not try to solve it.
 - Never recommend a specific paid product by name unless it's in the library as an industry-standard option. Brand-specific recommendations belong in the $99 Snapshot, not here.
 - If you feel yourself writing "We recommend X software..." — stop. That goes in the paid tier.
