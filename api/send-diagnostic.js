@@ -65,30 +65,54 @@ module.exports = async function handler(req, res) {
     const thirdLeak  = getTag(report, "THIRD_LEAK");
     const howWeHelp  = getTag(report, "HOW_WE_HELP");
 
+    // Convert **bold** markdown to <strong> HTML
+    function renderBold(text) {
+      if (!text) return "";
+      return String(text).replace(/\*\*(.+?)\*\*/g, '<strong style="color:#1A2332">$1</strong>');
+    }
+
+    // Convert bullet lines (- item\n- item) to stacked HTML divs + apply bold
+    function renderContent(text) {
+      if (!text) return "";
+      return text.split("\n")
+        .map(function(line) { return line.trim(); })
+        .filter(function(line) { return line.length > 0; })
+        .map(function(line) {
+          var isBullet = /^-\s+/.test(line);
+          var clean    = renderBold(isBullet ? line.replace(/^-\s+/, "") : line);
+          return isBullet
+            ? '<div style="padding:3px 0 3px 14px;position:relative;font-size:13px;color:#3E4E63;line-height:1.65">'
+              + '<span style="position:absolute;left:0;color:#C8701A;font-weight:700">·</span>'
+              + clean + '</div>'
+            : '<div style="font-size:13px;color:#3E4E63;line-height:1.65;margin-bottom:4px">' + clean + '</div>';
+        })
+        .join("");
+    }
+
     const leakBlock = (label, content, color) => !content ? "" : `
       <div style="background:white;border-left:4px solid ${color};border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:10px;border:1px solid #D8D4CD;border-left:4px solid ${color};">
-        <div style="font-size:10px;font-weight:bold;color:${color};letter-spacing:2px;margin-bottom:6px;">${label}</div>
-        <p style="font-size:13px;color:#3E4E63;line-height:1.75;margin:0;white-space:pre-line;">${content}</p>
+        <div style="font-size:10px;font-weight:bold;color:${color};letter-spacing:2px;margin-bottom:8px;">${label}</div>
+        ${renderContent(content)}
       </div>`;
 
     const html = `
       <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;color:#3E4E63;">
         <div style="background:#1B2E4B;padding:32px 36px;border-radius:8px 8px 0 0;">
           <div style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:3px;margin-bottom:10px;">COMPASS BUSINESS SOLUTIONS — FREE DIAGNOSTIC</div>
-          ${headline ? `<div style="font-size:22px;font-weight:bold;color:#C8701A;line-height:1.3;">${headline}</div>` : `<div style="font-size:22px;font-weight:bold;color:#C8701A;">Your Business Diagnostic</div>`}
+          ${headline ? `<div style="font-size:22px;font-weight:bold;color:#C8701A;line-height:1.3;">${renderBold(headline)}</div>` : `<div style="font-size:22px;font-weight:bold;color:#C8701A;">Your Business Diagnostic</div>`}
           <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-top:8px;">Prepared for ${firstName} — ${biz}</div>
         </div>
         <div style="background:#F7F5F2;padding:32px 36px;border-radius:0 0 8px 8px;border:1px solid #D8D4CD;">
           <p style="font-size:15px;color:#1A2332;font-weight:600;margin-top:0;">Hi ${firstName},</p>
           <p style="color:#3E4E63;line-height:1.7;margin-top:0;">Here is your free diagnostic for <strong>${biz}</strong>${trade ? " — " + trade : ""}.</p>
           ${whatWeSee ? `<div style="background:white;border-radius:8px;padding:16px 18px;margin-bottom:16px;border:1px solid #D8D4CD;">
-            <div style="font-size:10px;font-weight:bold;color:#3D6B9E;letter-spacing:2px;margin-bottom:8px;">WHAT WE SEE</div>
-            <p style="font-size:13px;color:#3E4E63;line-height:1.8;margin:0;">${whatWeSee}</p>
+            <div style="font-size:10px;font-weight:bold;color:#3D6B9E;letter-spacing:2px;margin-bottom:10px;">WHAT WE SEE</div>
+            ${renderContent(whatWeSee)}
           </div>` : ""}
           ${leakBlock("#1 BIGGEST LEAK", topLeak, "#B84C2E")}
           ${leakBlock("#2 LEAK", secondLeak, "#C8701A")}
           ${leakBlock("#3 LEAK", thirdLeak, "#A8782A")}
-          ${howWeHelp ? `<p style="font-size:13px;color:#3E4E63;line-height:1.8;margin:20px 0 0;">${howWeHelp}</p>` : ""}
+          ${howWeHelp ? `<p style="font-size:13px;color:#3E4E63;line-height:1.8;margin:20px 0 0;">${renderBold(howWeHelp)}</p>` : ""}
 
           <!-- What to do next -->
           <div style="margin:20px 0;">
