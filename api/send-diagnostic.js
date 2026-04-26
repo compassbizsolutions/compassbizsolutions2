@@ -60,17 +60,38 @@ module.exports = async function handler(req, res) {
 
     const headline   = getTag(report, "HEADLINE");
     const whatWeSee  = getTag(report, "WHAT_WE_SEE");
-    const topLeak    = getTag(report, "TOP_LEAK");
-    const secondLeak = getTag(report, "SECOND_LEAK");
-    const thirdLeak  = getTag(report, "THIRD_LEAK");
+    const topLeak    = stripThirdBullet(getTag(report, "TOP_LEAK"));
+    const secondLeak = stripThirdBullet(getTag(report, "SECOND_LEAK"));
+    const thirdLeak  = stripThirdBullet(getTag(report, "THIRD_LEAK"));
     const howWeHelp  = getTag(report, "HOW_WE_HELP");
 
-    // Convert **bold** markdown to <strong> HTML
-    // color:inherit keeps it the same color as surrounding text
-    // so bold in the amber headline stays amber, bold in body stays navy
+    // Hard strip any third bullet from leak blocks regardless of AI output
+    function stripThirdBullet(text) {
+      if (!text) return text;
+      var lines = text.split("\n");
+      var bulletCount = 0;
+      var result = [];
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+        if (/^-\s+/.test(line.trim())) {
+          bulletCount++;
+          if (bulletCount >= 3) continue; // skip 3rd bullet and beyond
+        }
+        result.push(line);
+      }
+      return result.join("\n");
+    }
+
+    // Two render functions:
+    // renderBoldHeadline = for use inside amber headline (strong stays amber)
+    // renderBold = for use in body text (strong stays navy)
+    function renderBoldHeadline(text) {
+      if (!text) return "";
+      return String(text).replace(/\*\*(.+?)\*\*/g, '<strong style="color:#C8701A;font-weight:700">$1</strong>');
+    }
     function renderBold(text) {
       if (!text) return "";
-      return String(text).replace(/\*\*(.+?)\*\*/g, '<strong style="color:inherit;font-weight:700">$1</strong>');
+      return String(text).replace(/\*\*(.+?)\*\*/g, '<strong style="color:#1A2332;font-weight:700">$1</strong>');
     }
 
     // Convert bullet lines (- item\n- item) to stacked HTML divs + apply bold
@@ -101,7 +122,7 @@ module.exports = async function handler(req, res) {
       <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;color:#3E4E63;">
         <div style="background:#1B2E4B;padding:32px 36px;border-radius:8px 8px 0 0;">
           <div style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:3px;margin-bottom:10px;">COMPASS BUSINESS SOLUTIONS — FREE DIAGNOSTIC</div>
-          ${headline ? `<div style="font-size:22px;font-weight:bold;color:#C8701A;line-height:1.3;">${renderBold(headline)}</div>` : `<div style="font-size:22px;font-weight:bold;color:#C8701A;">Your Business Diagnostic</div>`}
+          ${headline ? `<div style="font-size:22px;font-weight:bold;color:#C8701A;line-height:1.3;">${renderBoldHeadline(headline)}</div>` : `<div style="font-size:22px;font-weight:bold;color:#C8701A;">Your Business Diagnostic</div>`}
           <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-top:8px;">Prepared for ${firstName} — ${biz}</div>
         </div>
         <div style="background:#F7F5F2;padding:32px 36px;border-radius:0 0 8px 8px;border:1px solid #D8D4CD;">
