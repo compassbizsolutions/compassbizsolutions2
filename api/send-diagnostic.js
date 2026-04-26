@@ -130,7 +130,7 @@ module.exports = async function handler(req, res) {
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
                 Answer our in-depth intake and get a personalized PDF report with your top 3 leaks, the specific dollar math, and step-by-step fixes for each one. No portal, no daily tasks — just your numbers and what to do about them. Includes a <strong>$100 upgrade credit</strong> toward FixKit if you want the full experience later.
               </div>
-              <a href="https://www.compassbizsolutions.com/?buy=snapshot" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My Snapshot — $99 →</a>
+              <a href="https://buy.stripe.com/6oU28kfwo27GbWT2l8dZ608" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My Snapshot — $99 →</a>
             </div>
 
             <!-- 30-Day Plan -->
@@ -146,7 +146,7 @@ module.exports = async function handler(req, res) {
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
                 A personalized 30-day plan targeting your specific leaks — daily 15-20 minute tasks, built-in calculators, Fix-It Guides, process templates, and a progress dashboard. Everything lives in <strong>FixKit</strong>, your personal portal. Log in from your phone, track your numbers, ask questions anytime. <strong>$199 if upgrading from the Snapshot.</strong>
               </div>
-              <a href="https://www.compassbizsolutions.com/?buy=30day" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $299 →</a>
+              <a href="https://buy.stripe.com/14A28k9809A8gd9gbYdZ609" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $299 →</a>
             </div>
 
             <!-- Full Bundle -->
@@ -162,7 +162,7 @@ module.exports = async function handler(req, res) {
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
                 Everything in the 30-day plan plus your full 60 and 90-day roadmap — all three phases loaded into FixKit from day one. Biggest leaks first, next tier second, remaining third. One payment, all 90 days, saves $298. <strong>$499 if upgrading from the Snapshot.</strong>
               </div>
-              <a href="https://www.compassbizsolutions.com/?buy=bundle" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full 30/60/90 Bundle — $599 →</a>
+              <a href="https://buy.stripe.com/6oU00c1Fy7s0bWT2l8dZ60f" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full 30/60/90 Bundle — $599 →</a>
             </div>
 
             <!-- Done For You -->
