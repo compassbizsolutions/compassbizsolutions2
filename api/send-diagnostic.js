@@ -240,6 +240,8 @@ module.exports = async function handler(req, res) {
       utm_campaign: utm_campaign || "",
       utm_medium: utm_medium || "",
       source: utm_source || "direct",
+      // Save all diagnostic answers so intake can pre-fill from them
+      diagnostic_answers: answers || {},
     }).catch(function() {});
 
     // Tag in Mailchimp
