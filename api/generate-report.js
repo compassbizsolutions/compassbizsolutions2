@@ -225,20 +225,19 @@ If they mentioned burnout/family strain in the free text, replace bullet 3 with 
 [/WHAT_WE_SEE]
 
 [TOP_LEAK]
-Follow this EXACT shape. Nothing else. Three bullets, NO labels at the start of each bullet. Plain prose.
+Follow this EXACT shape. Nothing else. Two bullets, NO labels at the start of each bullet. Plain prose.
 
 **LEAK NAME IN CAPS** — **$X,XXX/year** or **$X-YK/year**
 - [The symptom they're showing — 8-12 words plain prose. Optional bold on ONE key number. No fix language.]
 - [The math in one line. Bold ONLY the final result. e.g., "30 jobs × $600 × 12% × 50 wks = **$108K/year**"]
-- [The root cause tied to a specific answer they gave. 12-18 words plain prose. Usually zero bold. No fix language.]
 [/TOP_LEAK]
 
 [SECOND_LEAK]
-Same exact shape as TOP_LEAK. Must be a DISTINCT category.
+Same exact shape as TOP_LEAK. Must be a DISTINCT category. Two bullets only.
 [/SECOND_LEAK]
 
 [THIRD_LEAK]
-Same exact shape. Distinct from the first two.
+Same exact shape. Distinct from the first two. Two bullets only.
 [/THIRD_LEAK]
 
 [HOW_WE_HELP]
