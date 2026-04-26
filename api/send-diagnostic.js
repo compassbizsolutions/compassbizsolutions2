@@ -66,9 +66,11 @@ module.exports = async function handler(req, res) {
     const howWeHelp  = getTag(report, "HOW_WE_HELP");
 
     // Convert **bold** markdown to <strong> HTML
+    // color:inherit keeps it the same color as surrounding text
+    // so bold in the amber headline stays amber, bold in body stays navy
     function renderBold(text) {
       if (!text) return "";
-      return String(text).replace(/\*\*(.+?)\*\*/g, '<strong style="color:#1A2332">$1</strong>');
+      return String(text).replace(/\*\*(.+?)\*\*/g, '<strong style="color:inherit;font-weight:700">$1</strong>');
     }
 
     // Convert bullet lines (- item\n- item) to stacked HTML divs + apply bold
