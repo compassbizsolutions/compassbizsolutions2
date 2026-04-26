@@ -1038,7 +1038,9 @@ function parseLeakBlock(text) {
     if (/^do\s+(this\s+week|first|today|now)\s*:/i.test(plain)) {
       action = raw.replace(/^\**do\s+(this\s+week|first|today|now)\*{0,2}\s*:\s*/i, '').trim();
     } else if (/^-\s+/.test(plain)) {
-      bullets.push(raw.replace(/^-\s+/, '').trim());
+      if (bullets.length < 2) { // hard cap at 2 bullets — third bullet never shows
+        bullets.push(raw.replace(/^-\s+/, '').trim());
+      }
     }
   }
   return { name: name, range: range, bullets: bullets, action: action };
@@ -1054,13 +1056,14 @@ function renderInline(text) {
   return safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 }
 
-// Extract bullet lines (lines starting with "- ") from a text block
+// Extract bullet lines (lines starting with "- ") from a text block — max 2
 function extractBullets(text) {
   if (!text) return [];
   return text.split('\n')
     .map(function(l){ return l.trim(); })
     .filter(function(l){ return /^-\s+/.test(l); })
-    .map(function(l){ return l.replace(/^-\s+/, ''); });
+    .map(function(l){ return l.replace(/^-\s+/, ''); })
+    .slice(0, 2);
 }
 
 // Parse a dollar figure or range — returns {low, high} in dollars
