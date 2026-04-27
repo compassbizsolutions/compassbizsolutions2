@@ -184,7 +184,7 @@
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <a href="/" class="nav-brand">
+    <a href="https://www.compassbizsolutions.com/trades" class="nav-brand">
       <svg width="36" height="36" viewBox="0 0 80 80" fill="none">
         <circle cx="40" cy="40" r="39" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
         <circle cx="40" cy="40" r="36" fill="#1B2E4B"/>
@@ -226,7 +226,7 @@
       </div>
     </div>
 
-    <a href="/" class="btn-home">Back to Compass →</a>
+    <a href="https://www.compassbizsolutions.com/trades" class="btn-home">Back to Compass →</a>
 
     <p class="help-note">
       Questions? Email <a href="mailto:support@compassbizsolutions.com">support@compassbizsolutions.com</a>
@@ -239,7 +239,7 @@
 <footer>
   <div class="footer-copy">
     © 2025 Compass Business Solutions · Jen Voiselle &nbsp;·&nbsp;
-    <a href="/">compassbizsolutions.com</a>
+    <a href="https://www.compassbizsolutions.com/trades">compassbizsolutions.com/trades</a>
   </div>
 </footer>
 
@@ -307,6 +307,25 @@
       + '<div class="step-text">' + s.text + '</div>'
       + '</div>';
   }).join('');
+
+  // Auto-redirect to trades after 6 seconds for purchase types
+  // Calls stay on the page (they need to read the booking steps)
+  if (type !== 'call') {
+    var countdown = 6;
+    var redirectNote = document.createElement('p');
+    redirectNote.style.cssText = 'font-size:12px;color:rgba(255,255,255,0.25);margin-top:16px;text-align:center';
+    redirectNote.textContent = 'Redirecting to Compass in ' + countdown + ' seconds…';
+    document.querySelector('.results-cta') && document.querySelector('.results-cta').appendChild(redirectNote);
+
+    var timer = setInterval(function() {
+      countdown--;
+      if (redirectNote) redirectNote.textContent = 'Redirecting to Compass in ' + countdown + ' seconds…';
+      if (countdown <= 0) {
+        clearInterval(timer);
+        window.location.href = 'https://www.compassbizsolutions.com/trades';
+      }
+    }, 1000);
+  }
 </script>
 
 </body>
