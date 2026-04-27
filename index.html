@@ -109,7 +109,7 @@
     .service-card { background: white; border: 2px solid var(--amber); border-radius: 14px; padding: 24px; position: relative; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
     .service-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(200,112,26,0.15); }
     .service-card.featured { border: 2px solid var(--amber); }
-    .service-icon { font-size: 32px; margin-bottom: 16px; }
+    
     .service-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
     .service-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
     .service-pills { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -254,9 +254,9 @@
       <div class="nav-dropdown-wrap">
         <button class="nav-link nav-dropdown-btn" onclick="toggleVerticals(event)">Verticals ▾</button>
         <div class="nav-dropdown" id="verticals-dropdown">
-          <a href="/trades" class="nav-dropdown-item">🔧 Trades FixKit</a>
-          <div class="nav-dropdown-item nav-dropdown-soon">🐴 Equine <span class="soon-tag">Soon</span></div>
-          <div class="nav-dropdown-item nav-dropdown-soon">🍽️ Restaurants <span class="soon-tag">Soon</span></div>
+          <a href="/trades" class="nav-dropdown-item">Trades & Field Service</a>
+          <div class="nav-dropdown-item nav-dropdown-soon">Equine <span class="soon-tag">Soon</span></div>
+          <div class="nav-dropdown-item nav-dropdown-soon">Restaurants <span class="soon-tag">Soon</span></div>
         </div>
       </div>
       <a href="https://calendly.com/jvoiselle612-s9gb/strategy-call" target="_blank" class="nav-link nav-cta">Book a Call — From $79</a>
@@ -327,13 +327,12 @@
   <div class="section-inner">
     <div class="section-eyebrow">What We Do</div>
     <h2 class="section-title">Ways We Move<br>Your Business Forward</h2>
-    <p class="section-sub">Every service connects back to the same goal: finding where your business is leaking time, money, or opportunity — and fixing it.</p>
+    <p class="section-sub">Every service connects back to the same goal — finding where your business is leaking time, money, or opportunity, and fixing it.</p>
     <div class="services-grid">
 
       <div class="service-card">
-        <div class="service-icon">🤖</div>
-        <div class="service-name">AI Integration Consulting</div>
-        <div class="service-desc">We identify exactly where AI can replace manual work, reduce overhead, and give your team leverage — then we build it. Not a chatbot on your website. Real automation wired into how your business actually runs.</div>
+        <div class="service-name">AI & Automation</div>
+        <div class="service-desc">We find the work you're doing by hand and automate it. Not a chatbot on your website — real AI wired into how your business already runs, doing the repetitive work so you don't have to.</div>
         <div class="service-pills">
           <span class="pill">AI Workflow Design</span>
           <span class="pill">Process Automation</span>
@@ -343,33 +342,44 @@
       </div>
 
       <div class="service-card">
-        <div class="service-icon">📱</div>
-        <div class="service-name">App Development</div>
-        <div class="service-desc">Custom tools built around how your business actually works — not off-the-shelf software you're forced to adapt to. Mobile-first, practical, and built to scale.</div>
+        <div class="service-name">Custom Applications</div>
+        <div class="service-desc">Software built around how your business actually works — not generic tools you're forced to adapt to. If the right tool doesn't exist, we build it.</div>
         <div class="service-pills">
           <span class="pill">Mobile Apps</span>
           <span class="pill">Web Apps</span>
           <span class="pill">Internal Tools</span>
-          <span class="pill">Portals</span>
+          <span class="pill">Customer Portals</span>
         </div>
       </div>
 
       <div class="service-card">
-        <div class="service-icon">⚙️</div>
-        <div class="service-name">Business Process Consulting</div>
-        <div class="service-desc">We map how your business actually runs — where time is lost, where risk is hiding, where manual processes are costing you more than they should. Then we fix it.</div>
+        <div class="service-name">Operations Consulting</div>
+        <div class="service-desc">We look at how your business runs — where time is lost, where money is leaking, where things fall through the cracks. Then we fix it. No theory, no frameworks. Just practical changes that stick.</div>
         <div class="service-pills">
           <span class="pill">Process Mapping</span>
-          <span class="pill">Automation</span>
           <span class="pill">Workflow Design</span>
+          <span class="pill">Cost Reduction</span>
           <span class="pill">Risk Analysis</span>
         </div>
       </div>
 
       <div class="service-card">
-        <div class="service-icon">📊</div>
-        <div class="service-name">Data & Reporting Systems</div>
-        <div class="service-desc">Most businesses are flying blind. We build dashboards, KPI systems, and automated reports that show you exactly what's happening in your business — in real time, without manual effort.</div>
+        <div class="service-name">Business Support</div>
+        <div class="service-desc">The admin work that keeps falling to the bottom of your list — we handle it. Follow-up sequences, confirmations, spreadsheets, reports, decks. Done for you, on time, every time. <strong>Starts at $250/mo — a fraction of what a hire costs.</strong></div>
+        <div class="service-pills">
+          <span class="pill">Appointment Confirmations</span>
+          <span class="pill">Customer Follow-Up</span>
+          <span class="pill">Review Outreach</span>
+          <span class="pill">Spreadsheets & Reports</span>
+          <span class="pill">PowerPoint & Marketing</span>
+          <span class="pill">Database Management</span>
+        </div>
+        <div style="margin-top:14px"><a href="/pricing" style="font-size:13px;font-weight:600;color:var(--amber);text-decoration:none">See plans & pricing →</a></div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-name">Data & Reporting</div>
+        <div class="service-desc">If you don't know your numbers, you're guessing. We build dashboards and reports that show you exactly what's happening in your business — revenue, costs, performance — without you pulling it together manually.</div>
         <div class="service-pills">
           <span class="pill">KPI Dashboards</span>
           <span class="pill">Automated Reports</span>
@@ -379,31 +389,30 @@
       </div>
 
       <div class="service-card">
-        <div class="service-icon">📣</div>
         <div class="service-name">Social Media Marketing</div>
-        <div class="service-desc">Strategy, content, and execution for businesses that know they need to show up online but don't have the time or bandwidth to do it right.</div>
+        <div class="service-desc">You know you need to show up online. You just don't have time to do it right. We handle the strategy, content, and execution — so your business is visible without it eating your day.</div>
         <div class="service-pills">
           <span class="pill">Content Strategy</span>
-          <span class="pill">Facebook / Instagram</span>
+          <span class="pill">Facebook & Instagram</span>
           <span class="pill">LinkedIn</span>
           <span class="pill">Done-For-You</span>
         </div>
       </div>
 
       <div class="service-card">
-        <div class="service-icon">🎯</div>
-        <div class="service-name">Vertical Products</div>
-        <div class="service-desc">We build purpose-built tools for specific industries — diagnosing profit leaks, building operational infrastructure, and giving business owners the systems that were never built for them. Currently serving the service trades. Additional verticals in development.</div>
+        <div class="service-name">Trades & Industry Solutions</div>
+        <div class="service-desc">Purpose-built tools for trades and field service businesses — HVAC, plumbing, electrical, roofing, and more. Profit leak analysis, daily fix plans, and a field service app built for how crews actually work.</div>
         <div class="service-pills">
-          <span class="pill">FixKit — Service Trades</span>
-          <span class="pill">More Verticals Planned</span>
+          <span class="pill">FixKit — Profit Leak Plans</span>
+          <span class="pill">FieldKit — Field Service App</span>
+          <span class="pill">More Industries Coming</span>
         </div>
+        <div style="margin-top:14px"><a href="/trades" style="font-size:13px;font-weight:600;color:var(--amber);text-decoration:none">See FixKit & FieldKit →</a></div>
       </div>
 
       <div class="service-card">
-        <div class="service-icon">🌐</div>
         <div class="service-name">Web Development</div>
-        <div class="service-desc">Sites and platforms that work as hard as you do — fast, clean, and built to convert. From landing pages to full business portals.</div>
+        <div class="service-desc">Fast, clean, and built to convert. Whether it's a business site, a landing page, or a full customer portal — it works as hard as you do and doesn't embarrass you when a customer looks you up.</div>
         <div class="service-pills">
           <span class="pill">Business Sites</span>
           <span class="pill">Landing Pages</span>
@@ -413,40 +422,19 @@
       </div>
 
       <div class="service-card">
-        <div class="service-icon">⚡</div>
         <div class="service-name">Workflow & Automation</div>
-        <div class="service-desc">We don't just find the gaps — we close them. Python scripts, automated reporting pipelines, database systems, workflow automation. The manual work that's costing you time every single day gets eliminated.</div>
+        <div class="service-desc">The tasks eating your day — repetitive, manual, mindless — get eliminated. Scripts, pipelines, automated workflows. If you're doing the same thing more than twice a week, we can probably automate it.</div>
         <div class="service-pills">
-          <span class="pill">Python Scripting</span>
-          <span class="pill">Automated Reporting</span>
+          <span class="pill">Task Automation</span>
+          <span class="pill">Reporting Pipelines</span>
           <span class="pill">Database Systems</span>
-          <span class="pill">Email Pipelines</span>
+          <span class="pill">Email Workflows</span>
         </div>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon">🗂️</div>
-        <div class="service-name">Business Support Services</div>
-        <div class="service-desc">The operational work that keeps falling to the bottom of your list — we handle it. From customer communication sequences to spreadsheets, databases, and marketing materials. Built to your specs, delivered ready to use. <strong>Starts at $250/mo — replaces a $3,500/mo admin hire.</strong></div>
-        <div class="service-pills">
-          <span class="pill">Appointment Confirmations</span>
-          <span class="pill">Customer Follow-Up Sequences</span>
-          <span class="pill">Review & Referral Outreach</span>
-          <span class="pill">Estimate & Invoice Follow-Up</span>
-          <span class="pill">Seasonal Campaigns</span>
-          <span class="pill">Spreadsheet Creation & Editing</span>
-          <span class="pill">Database Creation & Admin</span>
-          <span class="pill">PowerPoint & Marketing Materials</span>
-          <span class="pill">New Customer Welcome Sequences</span>
-        </div>
-        <div style="margin-top:14px"><a href="/pricing" style="font-size:13px;font-weight:600;color:var(--amber);text-decoration:none">See plans & pricing →</a></div>
       </div>
 
     </div>
   </div>
 </section>
-
-<!-- OUR WORK -->
 <section class="work-bg" id="work">
   <div class="section-inner">
     <div class="section-eyebrow">Our Work</div>
@@ -621,15 +609,15 @@
             <label class="form-label">I'm interested in</label>
             <select class="form-input" name="service">
               <option value="">Select a service...</option>
-              <option>Business Support Services</option>
-              <option>Business Process Consulting</option>
-              <option>App Development</option>
-              <option>Web Development</option>
-              <option>AI Integration</option>
-              <option>Workflow & Automation</option>
-              <option>Data & Reporting Systems</option>
+              <option>AI & Automation</option>
+              <option>Custom Applications</option>
+              <option>Operations Consulting</option>
+              <option>Business Support</option>
+              <option>Data & Reporting</option>
               <option>Social Media Marketing</option>
-              <option>Trades FixKit</option>
+              <option>Trades & Industry Solutions</option>
+              <option>Web Development</option>
+              <option>Workflow & Automation</option>
               <option>FieldKit Field Service App</option>
               <option>Not sure yet — just exploring</option>
             </select>
