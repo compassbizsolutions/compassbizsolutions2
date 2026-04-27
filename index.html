@@ -1,630 +1,618 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Compass Business Solutions — Business Process Consulting</title>
-  <meta name="description" content="Business process consulting, app development, web development, and social media marketing. 25 years turning operational gaps into competitive advantages."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --navy: #1B2E4B;
-      --navy-dark: #111E31;
-      --amber: #C8701A;
-      --amber-light: #E8902A;
-      --teal: #1E6B45;
-      --slate: #3D6B9E;
-      --light: #F4F7FC;
-      --muted: #5A7291;
-      --border: rgba(61,107,158,0.15);
-      --white: #FFFFFF;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--navy); overflow-x: hidden; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Compass Business Solutions — Stop Leaking Profit</title>
+<meta name="description" content="Find exactly where your trades business is losing money. Free diagnostic, profit leak snapshot, and 30/60/90-day fix plans for service businesses."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#1B2E4B;--navydark:#111E31;--amber:#C8701A;--light:#F4F7FC;--muted:#5A7291;--slate:#3D6B9E;--green:#1E6B45;--white:#FFFFFF;--border:rgba(61,107,158,0.18)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--navy);overflow-x:hidden}
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(17,30,49,0.92); backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(61,107,158,0.2);
-      transition: all 0.3s;
-    }
-    .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 68px; padding: 0 28px; }
-    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .nav-compass { width: 38px; height: 38px; flex-shrink: 0; }
-    .nav-name { display: flex; flex-direction: column; gap: 1px; }
-    .nav-name-top { font-family: 'Barlow Condensed', sans-serif; font-size: 19px; font-weight: 800; color: white; letter-spacing: 2.5px; line-height: 1; }
-    .nav-name-sub { font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-transform: uppercase; }
-    .nav-links { display: flex; align-items: center; gap: 4px; }
-    .nav-link { background: none; border: none; color: rgba(255,255,255,0.55); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 7px 14px; border-radius: 7px; cursor: pointer; transition: color 0.15s; text-decoration: none; }
-    .nav-link:hover { color: white; }
-    .nav-cta { background: var(--amber); color: white !important; border-radius: 7px; padding: 8px 18px !important; font-weight: 600 !important; transition: opacity 0.15s !important; }
-    .nav-cta:hover { opacity: 0.88; }
-    .nav-dropdown-wrap { position: relative; }
-    .nav-dropdown-btn { background: none; border: none; color: rgba(255,255,255,0.55); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 7px 14px; border-radius: 7px; cursor: pointer; transition: color 0.15s; }
-    .nav-dropdown-btn:hover { color: white; }
-    .nav-dropdown { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: var(--navy-dark); border: 1px solid rgba(61,107,158,0.25); border-radius: 10px; min-width: 200px; padding: 8px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); z-index: 300; }
-    .nav-dropdown.open { display: block; }
-    .nav-dropdown-item { display: block; padding: 10px 14px; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; border-radius: 7px; text-decoration: none; transition: background 0.15s; cursor: pointer; }
-    .nav-dropdown-item:hover { background: rgba(255,255,255,0.06); color: white; }
-    .nav-dropdown-soon { color: rgba(255,255,255,0.3) !important; cursor: default; }
-    .nav-dropdown-soon:hover { background: none !important; }
-    .soon-tag { font-size: 10px; background: rgba(200,112,26,0.3); color: var(--amber); padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 700; letter-spacing: 0.5px; }
-    .nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; padding: 4px; flex-direction: column; gap: 5px; }
-    .nav-mobile-btn span { display: block; width: 22px; height: 2px; background: white; border-radius: 2px; transition: all 0.25s; }
+/* ── NAV ── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(17,30,49,0.94);backdrop-filter:blur(14px);border-bottom:1px solid rgba(61,107,158,0.2);transition:all .3s}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:62px;padding:0 24px}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;background:none;border:none}
+.nav-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff;letter-spacing:2px;line-height:1}
+.nav-sub{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:1.5px;margin-top:2px}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-link{background:none;border:none;color:rgba(255,255,255,0.5);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:7px 12px;border-radius:7px;cursor:pointer;transition:color .15s;white-space:nowrap}
+.nav-link:hover{color:#fff}
+.nav-cta{background:var(--amber);color:#fff!important;border-radius:7px;padding:8px 16px!important;font-weight:600!important}
+.nav-cta:hover{opacity:.88}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:4px;flex-direction:column;gap:5px}
+.hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:all .25s}
+.mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:var(--navydark);z-index:199;padding:20px 24px;flex-direction:column;gap:4px;border-bottom:1px solid rgba(61,107,158,0.2)}
+.mobile-menu.open{display:flex}
+.mobile-link{color:rgba(255,255,255,0.65);font-size:16px;font-weight:500;padding:12px 0;border-bottom:1px solid rgba(61,107,158,0.12);background:none;border-left:none;border-right:none;border-top:none;text-align:left;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%}
+.mobile-link:last-child{border-bottom:none}
 
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh; background: var(--navy-dark);
-      display: flex; align-items: center;
-      position: relative; overflow: hidden;
-      padding: 120px 28px 80px;
-    }
-    .hero-bg {
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(61,107,158,0.12) 0%, transparent 70%),
-                  radial-gradient(ellipse 40% 40% at 20% 80%, rgba(200,112,26,0.08) 0%, transparent 60%);
-    }
-    .hero-grid {
-      position: absolute; inset: 0; opacity: 0.03;
-      background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
-      background-size: 60px 60px;
-    }
-    .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 420px; gap: 80px; align-items: center; width: 100%; }
-    .hero-label { font-size: 11px; font-weight: 600; letter-spacing: 3px; color: var(--amber); text-transform: uppercase; margin-bottom: 20px; }
-    .hero-headline { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(48px, 6vw, 76px); font-weight: 800; color: white; line-height: 0.95; letter-spacing: -1px; text-transform: uppercase; margin-bottom: 28px; }
-    .hero-headline em { color: var(--amber); font-style: normal; }
-    .hero-sub { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.75; max-width: 480px; margin-bottom: 40px; }
-    .hero-sub strong { color: white; font-weight: 600; }
-    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-    .btn-primary { background: var(--amber); color: white; padding: 13px 28px; border-radius: 9px; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; letter-spacing: 1px; text-decoration: none; text-transform: uppercase; transition: opacity 0.15s; border: none; cursor: pointer; display: inline-block; }
-    .btn-primary:hover { opacity: 0.88; }
-    .btn-ghost { background: none; color: rgba(255,255,255,0.65); padding: 13px 28px; border-radius: 9px; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 1px; text-decoration: none; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: all 0.15s; display: inline-block; }
-    .btn-ghost:hover { color: white; border-color: rgba(255,255,255,0.5); }
+/* ── PARENT BANNER ── */
+.parent-banner{background:#0D1622;padding:7px 24px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.35);border-bottom:1px solid rgba(61,107,158,0.15)}
+.parent-banner a{color:var(--amber);text-decoration:none;font-weight:600}
+.parent-banner-back{color:rgba(255,255,255,0.35);text-decoration:none;font-size:11px}
+.parent-banner-back:hover{color:rgba(255,255,255,0.6)}
 
-    /* HERO CARD */
-    .hero-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(61,107,158,0.25); border-radius: 16px; padding: 32px; }
-    .hero-card-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--amber); text-transform: uppercase; margin-bottom: 20px; }
-    .hero-stat { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(61,107,158,0.15); }
-    .hero-stat:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-    .hero-stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 42px; font-weight: 800; color: var(--amber); line-height: 1; flex-shrink: 0; min-width: 72px; }
-    .hero-stat-text { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; padding-top: 4px; }
-    .hero-stat-text strong { color: white; display: block; margin-bottom: 2px; font-size: 14px; }
+/* ── PAGES ── */
+.page{display:none;min-height:100vh}
+.page.active{display:block}
 
-    /* ── SECTION SHARED ── */
-    section { padding: 88px 28px; }
-    .section-inner { max-width: 1100px; margin: 0 auto; }
-    .section-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: var(--amber); text-transform: uppercase; margin-bottom: 12px; }
-    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(36px, 4vw, 52px); font-weight: 800; color: var(--navy); letter-spacing: -0.5px; text-transform: uppercase; margin-bottom: 16px; line-height: 0.95; }
-    .section-sub { font-size: 16px; color: var(--muted); line-height: 1.75; max-width: 580px; margin-bottom: 52px; }
+/* ── HERO ── */
+.hero{background:linear-gradient(160deg,var(--navydark) 0%,var(--navy) 100%);padding:100px 24px 60px;text-align:center;position:relative;overflow:hidden}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(61,107,158,0.2);border:1px solid rgba(61,107,158,0.35);border-radius:99px;padding:5px 16px;margin-bottom:20px}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--amber)}
+.hero-badge-text{font-size:11px;color:rgba(200,220,255,0.7);font-weight:600;letter-spacing:2px}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,6vw,58px);font-weight:800;color:#fff;letter-spacing:1px;line-height:1.05;margin-bottom:14px}
+.hero h1 .amber{color:var(--amber)}
+.hero-sub{color:rgba(255,255,255,0.55);font-size:16px;line-height:1.8;max-width:480px;margin:0 auto 28px}
+.hero-source{display:inline-block;margin-bottom:28px;font-size:11px;color:rgba(255,255,255,0.2);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1px}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:52px}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:600px;margin:0 auto}
+.hero-stat{background:rgba(255,255,255,0.04);border:1px solid rgba(61,107,158,0.2);border-radius:12px;padding:20px 16px;text-align:center}
+.hero-stat-num{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:800;color:var(--amber);line-height:1}
+.hero-stat-label{font-size:12px;color:rgba(255,255,255,0.45);margin-top:6px;line-height:1.4}
 
-    /* ── SERVICES ── */
-    .services-bg { background: var(--light); }
-    .services-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-    @media(min-width:640px){ .services-grid { grid-template-columns: 1fr 1fr; } }
-    @media(min-width:1024px){ .services-grid { grid-template-columns: 1fr 1fr 1fr; } }
-    .service-card { background: white; border: 2px solid var(--amber); border-radius: 14px; padding: 24px; position: relative; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
-    .service-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(200,112,26,0.15); }
-    .service-card.featured { border: 2px solid var(--amber); }
-    .service-icon { font-size: 32px; margin-bottom: 16px; }
-    .service-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-    .service-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
-    .service-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-    .pill { font-size: 11px; font-weight: 600; color: var(--slate); background: #EBF2FB; padding: 3px 10px; border-radius: 99px; }
-    .service-badge { position: absolute; top: 16px; right: 16px; background: var(--amber); color: white; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 3px 10px; border-radius: 99px; text-transform: uppercase; }
+/* ── DIAGNOSTIC SECTION ── */
+.diagnostic-wrap{max-width:700px;margin:0 auto;padding:60px 24px}
+.diagnostic-wrap h2{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px}
+.diagnostic-wrap .sub{font-size:14px;color:var(--muted);margin-bottom:32px;line-height:1.6}
+.progress-bar-wrap{height:4px;background:rgba(61,107,158,0.15);border-radius:2px;margin-bottom:32px;overflow:hidden}
+.progress-bar{height:100%;background:var(--amber);border-radius:2px;transition:width .4s ease}
+.q-label{font-size:11px;font-weight:700;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.q-text{font-size:18px;font-weight:600;color:var(--navy);margin-bottom:24px;line-height:1.4}
+.btn-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.btn-opt{background:var(--light);border:2px solid transparent;color:var(--navy);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:10px 16px;border-radius:8px;cursor:pointer;transition:all .15s;text-align:left}
+.btn-opt:hover{border-color:var(--amber);background:#fff}
+.btn-opt.selected{border-color:var(--amber);background:rgba(200,112,26,0.08);color:var(--navy);font-weight:600}
+.q-textarea{width:100%;background:var(--light);border:2px solid transparent;color:var(--navy);font-family:'DM Sans',sans-serif;font-size:14px;padding:14px;border-radius:10px;resize:vertical;min-height:100px;outline:none;transition:border-color .15s}
+.q-textarea:focus{border-color:var(--amber)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px}
+.q-count{font-size:12px;color:var(--muted)}
+.btn-back{background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 20px;border-radius:8px;cursor:pointer;transition:all .15s}
+.btn-back:hover{color:var(--navy);border-color:var(--navy)}
+.btn-next{background:var(--amber);border:none;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;padding:11px 28px;border-radius:8px;cursor:pointer;text-transform:uppercase;transition:opacity .15s}
+.btn-next:hover{opacity:.88}
+.btn-next:disabled{opacity:.4;cursor:not-allowed}
 
-    /* ── ABOUT ── */
-    .about-grid { display: grid; grid-template-columns: 280px 1fr; gap: 60px; align-items: start; }
-    .about-photo-wrap { position: relative; display: inline-block; }
-    .about-photo-placeholder { background: var(--navy); border-radius: 16px; aspect-ratio: 3/4; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: rgba(255,255,255,0.3); font-size: 13px; text-align: center; padding: 24px; }
-    .about-photo-placeholder svg { width: 48px; height: 48px; opacity: 0.4; }
-    .about-accent { position: absolute; bottom: 16px; right: -12px; background: var(--amber); border-radius: 10px; padding: 12px 18px; }
-    .about-accent-num { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; color: white; line-height: 1; }
-    .about-accent-label { font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 500; margin-top: 2px; }
-    .about-content {}
-    .about-name { font-family: 'DM Serif Display', serif; font-size: 36px; color: var(--navy); margin-bottom: 4px; }
-    .about-title { font-size: 13px; font-weight: 600; color: var(--amber); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 24px; }
-    .about-body { font-size: 15px; color: #3A4F66; line-height: 1.8; margin-bottom: 16px; }
-    .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
-    .about-stat { text-align: center; padding: 16px; background: var(--light); border-radius: 10px; }
-    .about-stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 800; color: var(--amber); }
-    .about-stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+/* ── RESULTS / LOADING ── */
+.results-loading{text-align:center;padding:60px 24px}
+.loading-spinner{width:48px;height:48px;border:3px solid rgba(200,112,26,0.2);border-top-color:var(--amber);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-msg{font-size:16px;color:var(--muted)}
+.loading-msg strong{color:var(--navy);display:block;font-size:20px;margin-bottom:8px}
 
-    /* ── WORK ── */
-    .work-bg { background: var(--navy-dark); }
-    .work-bg .section-title { color: white; }
-    .work-bg .section-eyebrow { color: var(--amber); }
-    .work-bg .section-sub { color: rgba(255,255,255,0.5); }
-    .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .work-card { border-radius: 14px; padding: 32px; position: relative; overflow: hidden; }
-    .work-card-1 { background: rgba(255,255,255,0.04); border: 1px solid rgba(61,107,158,0.25); }
-    .work-card-2 { background: rgba(200,112,26,0.08); border: 1px solid rgba(200,112,26,0.2); }
-    .work-tag { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--amber); text-transform: uppercase; margin-bottom: 12px; }
-    .work-name { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-    .work-desc { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 20px; }
-    .work-bullets { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
-    .work-bullets li { font-size: 13px; color: rgba(255,255,255,0.5); padding-left: 16px; position: relative; line-height: 1.5; }
-    .work-bullets li::before { content: "→"; color: var(--amber); position: absolute; left: 0; font-size: 11px; top: 1px; }
-    .work-link { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; color: var(--amber); letter-spacing: 1px; text-decoration: none; text-transform: uppercase; border-bottom: 1px solid rgba(200,112,26,0.3); padding-bottom: 2px; }
-    .work-link:hover { border-color: var(--amber); }
-    .work-status { display: inline-block; background: rgba(30,107,69,0.2); color: #4CAF82; border: 1px solid rgba(30,107,69,0.3); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+.results-wrap{max-width:780px;margin:0 auto;padding:60px 24px}
+.results-header{background:var(--navydark);border-radius:16px;padding:32px;margin-bottom:24px;text-align:center}
+.results-eyebrow{font-size:11px;font-weight:700;color:var(--amber);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
+.results-headline{font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,5vw,48px);font-weight:800;color:#fff;line-height:1;margin-bottom:8px}
+.results-headline strong{color:inherit;font-weight:800}
+.results-total{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,6vw,64px);font-weight:800;color:var(--amber);line-height:1}
+.results-total-label{font-size:14px;color:rgba(255,255,255,0.45);margin-top:6px}
+.leak-cards{display:flex;flex-direction:column;gap:14px;margin-bottom:32px}
+.leak-card{background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:24px;border-left:4px solid var(--amber)}
+.leak-num{font-size:11px;font-weight:700;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.leak-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.leak-range{font-size:20px;font-weight:600;color:var(--amber);margin-bottom:8px}
+.leak-why{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:10px}
+.leak-fix{font-size:13px;color:var(--slate);background:var(--light);padding:8px 12px;border-radius:6px}
 
-    /* ── TRADES CTA ── */
-    .trades-cta { background: var(--navy); border-radius: 16px; padding: 48px; display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; }
-    .trades-cta-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--amber); text-transform: uppercase; margin-bottom: 10px; }
-    .trades-cta-title { font-family: 'Barlow Condensed', sans-serif; font-size: 34px; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 10px; }
-    .trades-cta-sub { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.65; max-width: 480px; }
-    .trades-cta-btns { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+/* ── RESULTS v2: scannable, bullet-heavy, high-contrast ── */
+.leak-card{border-left-width:6px;border-left-style:solid;border-left-color:var(--amber);padding:22px 24px;margin-bottom:14px}
+.leak-card--1{border-left-color:#C8701A}
+.leak-card--2{border-left-color:#3D6B9E}
+.leak-card--3{border-left-color:#5A7291}
+.leak-rank{font-size:11px;font-weight:700;color:var(--navy);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px;opacity:0.7}
+.leak-v2-name{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:0.5px;line-height:1;margin-bottom:10px}
+.leak-amount{font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,5vw,44px);font-weight:800;color:var(--navy);line-height:1;margin-bottom:16px}
+.leak-amount-suffix{font-size:16px;font-weight:500;color:var(--muted);margin-left:4px}
+.leak-bullets{list-style:none;margin:0 0 14px;padding:0}
+.leak-bullets li{position:relative;padding:3px 0 3px 18px;font-size:14.5px;line-height:1.55;color:var(--navy)}
+.leak-bullets li::before{content:"";position:absolute;left:0;top:11px;width:7px;height:7px;background:var(--amber);border-radius:1px}
+.leak-bullets strong,.wws-bullets strong,.hwh-bullets strong{font-weight:700}
+.leak-action{background:#FFF4E8;border-left:4px solid var(--amber);padding:12px 14px;border-radius:6px}
+.leak-action-label{display:block;font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--amber);text-transform:uppercase;margin-bottom:4px}
+.leak-action-text{font-size:14px;font-weight:600;color:var(--navy);line-height:1.45}
+.leak-action-text strong{font-weight:800}
+.wws-box{background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:18px 22px;margin-bottom:16px}
+.wws-label{font-size:10px;font-weight:700;color:var(--slate);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.wws-bullets{list-style:none;margin:0;padding:0}
+.wws-bullets li{position:relative;padding:4px 0 4px 18px;font-size:14.5px;line-height:1.5;color:var(--navy)}
+.wws-bullets li::before{content:"";position:absolute;left:0;top:12px;width:6px;height:6px;background:var(--amber);border-radius:50%}
+.hwh-box{background:var(--navy);border-radius:12px;padding:22px 24px;margin-bottom:20px}
+.hwh-label{font-size:10px;font-weight:700;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.hwh-bullets{list-style:none;margin:0;padding:0}
+.hwh-bullets li{position:relative;padding:4px 0 4px 18px;font-size:14.5px;line-height:1.5;color:rgba(255,255,255,0.85)}
+.hwh-bullets li::before{content:"";position:absolute;left:0;top:12px;width:6px;height:6px;background:var(--amber);border-radius:50%}
+.hwh-bullets strong{color:#fff}
+.results-cta{background:var(--light);border-radius:16px;padding:32px;text-align:center}
+.results-cta h3{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px}
+.results-cta p{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.upgrade-note{font-size:12px;color:var(--amber);font-weight:600;margin-top:12px}
+/* ── PAYWALL GRID (3-card CTA on diagnostic results) ── */
+.paywall-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0 12px;text-align:left}
+.paywall-card{position:relative;background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:24px 20px;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.paywall-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(27,46,75,0.08)}
+.paywall-card.featured{border:2px solid var(--amber);box-shadow:0 4px 16px rgba(200,112,26,0.12)}
+.paywall-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--amber);color:#fff;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:99px;white-space:nowrap}
+.paywall-badge--value{background:var(--navy)}
+.paywall-price{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--navy);line-height:1;margin-bottom:4px}
+.paywall-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.3px;margin-bottom:10px;line-height:1.15}
+.paywall-desc{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:18px;flex:1}
+.paywall-btn{width:100%;text-align:center;font-size:14px;padding:10px 16px}
+.paywall-alt{margin-top:12px;padding-top:18px;border-top:1px dashed rgba(61,107,158,0.25);text-align:center}
+.paywall-alt-text{font-size:13px;color:var(--muted)}
+.paywall-alt-link{font-size:13px;color:var(--amber);font-weight:700;text-decoration:none;margin-left:4px}
+.paywall-alt-link:hover{text-decoration:underline}
+@media(max-width:860px){
+  .paywall-grid{grid-template-columns:1fr;gap:28px}
+  .paywall-card.featured{margin-top:6px}
+}
 
-    /* ── CONTACT ── */
-    .contact-bg { background: var(--navy-dark); }
-    .contact-bg .section-title { color: white; }
-    .contact-bg .section-eyebrow { color: var(--amber); }
-    .contact-bg .section-sub { color: rgba(255,255,255,0.5); }
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
-    .contact-item { display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start; }
-    .contact-icon { width: 44px; height: 44px; background: rgba(200,112,26,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-    .contact-item-label { font-size: 11px; font-weight: 700; color: var(--amber); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
-    .contact-item-value { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; }
-    .contact-item-value a { color: var(--amber); text-decoration: none; }
-    .contact-form { background: rgba(255,255,255,0.04); border: 1px solid rgba(61,107,158,0.2); border-radius: 14px; padding: 32px; }
-    .form-row { margin-bottom: 16px; }
-    .form-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; display: block; }
-    .form-input { width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(61,107,158,0.3); color: white; padding: 11px 14px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.15s; }
-    .form-input:focus { border-color: var(--amber); }
-    .form-input::placeholder { color: rgba(255,255,255,0.25); }
-    textarea.form-input { resize: vertical; min-height: 100px; }
-    select.form-input option { background: var(--navy-dark); color: white; }
+/* ── SECTIONS ── */
+section{padding:72px 24px}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-eyebrow{font-size:11px;font-weight:700;color:var(--amber);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,4vw,48px);font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:-.5px;margin-bottom:14px;line-height:.95}
+.section-sub{font-size:15px;color:var(--muted);line-height:1.75;max-width:560px;margin-bottom:44px}
+.section-dark{background:var(--navydark)}
+.section-dark .section-title{color:#fff}
+.section-dark .section-eyebrow{color:var(--amber)}
+.section-dark .section-sub{color:rgba(255,255,255,0.45)}
+.section-light{background:var(--light)}
 
-    /* ── FOOTER ── */
-    footer { background: #0D1622; padding: 32px 28px; }
-    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
-    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
-    .footer-links { display: flex; gap: 20px; }
-    .footer-link { font-size: 12px; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.15s; }
-    .footer-link:hover { color: rgba(255,255,255,0.7); }
+/* ── PRODUCT CARDS ── */
+.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.product-card{background:#fff;border:1px solid #dce8f5;border-radius:14px;padding:28px;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.product-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(27,46,75,0.1)}
+.product-card.featured{border:2px solid var(--amber)}
+.product-tag{font-size:11px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:99px;display:inline-block;margin-bottom:12px}
+.tag-amber{background:rgba(200,112,26,0.12);color:var(--amber)}
+.tag-green{background:rgba(30,107,69,0.1);color:var(--green)}
+.tag-navy{background:rgba(27,46,75,0.08);color:var(--navy)}
+.tag-slate{background:rgba(61,107,158,0.1);color:var(--slate)}
+.product-icon{font-size:28px;margin-bottom:12px}
+.product-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:6px}
+.product-short{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;flex:1}
+.product-bullets{list-style:none;margin-bottom:20px}
+.product-bullets li{font-size:13px;color:var(--navy);padding:3px 0 3px 18px;position:relative;line-height:1.5}
+.product-bullets li::before{content:"→";color:var(--amber);position:absolute;left:0;font-size:11px;top:4px}
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
-      .hero-card { display: none; }
-      .about-grid { grid-template-columns: 1fr; }
-      .work-grid { grid-template-columns: 1fr; }
-      .contact-grid { grid-template-columns: 1fr; }
-      .trades-cta { grid-template-columns: 1fr; }
-      .trades-cta-btns { flex-direction: row; }
-      .nav-links { display: none; }
-      .nav-mobile-btn { display: flex; }
-    }
-    @media (max-width: 640px) {
-      .calls-grid { grid-template-columns: 1fr !important; }
-    }
-    @media (max-width: 600px) {
-      section { padding: 60px 20px; }
-      .hero { padding: 100px 20px 60px; }
-      .about-stats { grid-template-columns: repeat(3, 1fr); }
-    }
+/* ── ABOUT ── */
+.about-beats{display:flex;flex-direction:column;gap:24px;max-width:720px}
+.about-beat{padding:24px;border-radius:12px;border-left:4px solid}
+.about-beat-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.about-beat-text{font-size:15px;line-height:1.8;color:#3a4f66}
+.about-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:40px}
+.about-stat{background:var(--navydark);border-radius:10px;padding:20px;text-align:center}
+.about-stat-num{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:800;color:var(--amber)}
+.about-stat-label{font-size:11px;color:rgba(255,255,255,0.45);margin-top:4px}
 
-    /* ── MOBILE NAV ── */
-    .mobile-menu { display: none; position: fixed; top: 68px; left: 0; right: 0; bottom: 0; background: var(--navy-dark); z-index: 99; padding: 32px 28px; flex-direction: column; gap: 8px; overflow-y: auto; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu-link { color: rgba(255,255,255,0.65); font-size: 18px; font-weight: 500; padding: 12px 0; border-bottom: 1px solid rgba(61,107,158,0.15); text-decoration: none; font-family: 'DM Sans', sans-serif; }
-    .mobile-menu-link:last-child { border-bottom: none; }
+/* ── DOCS/GUIDES ── */
+.docs-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.filter-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;cursor:pointer;transition:all .15s}
+.filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.docs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.doc-card{background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:22px;transition:transform .15s,box-shadow .15s}
+.doc-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(27,46,75,0.08)}
+.doc-type{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.doc-type.guide{color:var(--amber)}
+.doc-type.template{color:var(--slate)}
+.doc-icon{font-size:22px;margin-bottom:8px}
+.doc-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--navy);margin-bottom:6px;line-height:1.2}
+.doc-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.doc-bullets{list-style:none;margin-bottom:12px}
+.doc-bullets li{font-size:11px;color:#4a6070;padding:2px 0 2px 14px;position:relative}
+.doc-bullets li::before{content:"·";color:var(--amber);position:absolute;left:0;font-weight:700}
+.doc-guide{font-size:11px;color:var(--slate);background:var(--light);padding:6px 10px;border-radius:5px;font-style:italic}
 
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-    .hero-label { animation: fadeUp 0.6s ease both; }
-    .hero-headline { animation: fadeUp 0.6s 0.1s ease both; }
-    .hero-sub { animation: fadeUp 0.6s 0.2s ease both; }
-    .hero-actions { animation: fadeUp 0.6s 0.3s ease both; }
-    .hero-card { animation: fadeUp 0.6s 0.4s ease both; }
-  </style>
+/* ── WHAT PROFITABLE LOOKS LIKE ── */
+.traits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.trait-card{background:rgba(255,255,255,0.04);border:1px solid rgba(61,107,158,0.2);border-radius:12px;padding:24px;cursor:pointer;transition:all .15s}
+.trait-card:hover{border-color:rgba(200,112,26,0.4);background:rgba(255,255,255,0.06)}
+.trait-card.expanded{border-color:var(--amber)}
+.trait-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;text-transform:uppercase}
+.trait-short{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5}
+.trait-expanded{font-size:14px;color:rgba(255,255,255,0.65);line-height:1.7;margin-top:14px;padding-top:14px;border-top:1px solid rgba(61,107,158,0.2);display:none}
+.trait-card.expanded .trait-expanded{display:block}
+.trait-toggle{font-size:11px;color:var(--amber);font-weight:700;margin-top:10px;letter-spacing:.5px}
+
+/* ── BUTTONS ── */
+.btn{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:12px 26px;border-radius:9px;cursor:pointer;border:none;transition:opacity .15s;text-decoration:none}
+.btn-amber{background:var(--amber);color:#fff}
+.btn-amber:hover{opacity:.88}
+.btn-ghost{background:none;color:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.2)}
+.btn-ghost:hover{color:#fff;border-color:rgba(255,255,255,0.5)}
+.btn-outline{background:none;color:var(--navy);border:1px solid #c8d6e8}
+.btn-outline:hover{border-color:var(--amber);color:var(--amber)}
+.btn-dark{background:var(--navy);color:#fff}
+.btn-dark:hover{opacity:.88}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:500;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;padding:32px;max-width:480px;width:100%;position:relative;max-height:90vh;overflow-y:auto}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);line-height:1}
+.modal h3{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px}
+.modal p{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:20px}
+.modal-input{width:100%;background:var(--light);border:2px solid transparent;color:var(--navy);font-family:'DM Sans',sans-serif;font-size:14px;padding:12px 14px;border-radius:8px;outline:none;margin-bottom:12px;transition:border-color .15s}
+.modal-input:focus{border-color:var(--amber)}
+.modal-err{font-size:12px;color:#e74c3c;margin-bottom:8px;display:none}
+.modal-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 24px;border-radius:10px;font-size:13px;font-weight:500;z-index:600;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90%;text-align:center;border-left:3px solid var(--amber)}
+#toast.show{opacity:1}
+
+/* ── FOOTER ── */
+footer{background:#0d1622;padding:28px 24px}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.footer-copy{font-size:12px;color:rgba(255,255,255,0.3)}
+.footer-links{display:flex;gap:18px;flex-wrap:wrap}
+.footer-link{font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color .15s}
+.footer-link:hover{color:rgba(255,255,255,0.7)}
+
+/* ── UPGRADE MODAL (dark) ── */
+.modal-dark{background:var(--navydark);color:#fff}
+.modal-dark h3{color:#fff}
+.modal-dark p{color:rgba(255,255,255,0.55)}
+.modal-dark .modal-input{background:rgba(255,255,255,0.06);border-color:rgba(61,107,158,0.3);color:#fff}
+.modal-dark .modal-input::placeholder{color:rgba(255,255,255,0.25)}
+.modal-dark .modal-input:focus{border-color:var(--amber)}
+.modal-dark .modal-close{color:rgba(255,255,255,0.4)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero-stats{grid-template-columns:1fr 1fr}
+  .hero-stats .hero-stat:last-child{grid-column:span 2}
+  .about-stats{grid-template-columns:1fr 1fr}
+  .section-inner{padding:0}
+}
+@media(max-width:480px){
+  .hero-stats{grid-template-columns:1fr}
+  .hero-stats .hero-stat:last-child{grid-column:span 1}
+  .cta-btns{flex-direction:column;align-items:stretch}
+  .hero-actions{flex-direction:column;align-items:center}
+  /* Diagnostic results — tighten padding on narrow phones */
+  .results-wrap{padding:32px 16px}
+  .results-header{padding:24px 20px}
+  .leak-card{padding:20px 18px}
+  .results-cta{padding:24px 18px}
+  .paywall-card{padding:22px 18px}
+  .wws-box,.hwh-box{padding:18px 18px}
+  /* Free scoping call alt — stack text and link on phones */
+  .paywall-alt-text{display:block;margin-bottom:6px}
+  .paywall-alt-link{margin-left:0}
+}
+</style>
 </head>
 <body>
+
+<!-- PARENT BANNER -->
+<div class="parent-banner">
+  <span>Part of <a href="/trades">Compass Business Solutions</a></span>
+  <a href="/trades" class="parent-banner-back">← compassbizsolutions.com/trades</a>
+</div>
 
 <!-- NAV -->
 <nav id="nav">
   <div class="nav-inner">
-    <a href="/" class="nav-brand">
-      <svg class="nav-compass" viewBox="0 0 80 80" fill="none">
-        <circle cx="40" cy="40" r="39" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
-        <circle cx="40" cy="40" r="36" fill="#1B2E4B"/>
-        <circle cx="40" cy="40" r="26" stroke="#3D6B9E" stroke-width="1" fill="none" stroke-dasharray="5 4" opacity="0.6"/>
-        <circle cx="40" cy="40" r="17" stroke="#C8701A" stroke-width="1" fill="none" stroke-dasharray="4 4" opacity="0.6"/>
-        <polygon points="40,8 42.5,36 40,40 37.5,36" fill="white" opacity="0.95"/>
-        <polygon points="40,72 37.5,44 40,40 42.5,44" fill="white" opacity="0.3"/>
-        <polygon points="72,40 44,42.5 40,40 44,37.5" fill="white" opacity="0.3"/>
-        <polygon points="8,40 36,37.5 40,40 36,42.5" fill="white" opacity="0.95"/>
+    <button class="nav-brand" onclick="window.location.href='/'">
+      <svg width="36" height="36" viewBox="0 0 80 80" fill="none">
+        <circle cx="40" cy="40" r="38" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+        <circle cx="40" cy="40" r="35" fill="#1B2E4B"/>
+        <circle cx="40" cy="40" r="25" stroke="#3D6B9E" stroke-width="1" fill="none" stroke-dasharray="5 4" opacity="0.6"/>
+        <circle cx="40" cy="40" r="16" stroke="#C8701A" stroke-width="1" fill="none" stroke-dasharray="4 4" opacity="0.6"/>
+        <polygon points="40,8 42,35 40,40 38,35" fill="white" opacity="0.95"/>
+        <polygon points="40,72 38,45 40,40 42,45" fill="white" opacity="0.3"/>
+        <polygon points="72,40 45,42 40,40 45,38" fill="white" opacity="0.3"/>
+        <polygon points="8,40 35,38 40,40 35,42" fill="white" opacity="0.95"/>
         <circle cx="40" cy="40" r="3" fill="white" opacity="0.9"/>
         <circle cx="40" cy="8" r="2.5" fill="#C8701A"/>
       </svg>
-      <div class="nav-name">
-        <div class="nav-name-top">COMPASS</div>
-        <div class="nav-name-sub">Business Solutions</div>
+      <div>
+        <div class="nav-title">COMPASS</div>
+        <div class="nav-sub">BUSINESS SOLUTIONS</div>
       </div>
-    </a>
+    </button>
     <div class="nav-links">
-      <a href="#services" class="nav-link">Services</a>
-      <a href="#work" class="nav-link">Our Work</a>
-      <a href="#about" class="nav-link">About</a>
-      <div class="nav-dropdown-wrap">
-        <button class="nav-link nav-dropdown-btn" onclick="toggleVerticals(event)">Verticals ▾</button>
-        <div class="nav-dropdown" id="verticals-dropdown">
-          <a href="/trades" class="nav-dropdown-item">🔧 Trades FixKit</a>
-          <div class="nav-dropdown-item nav-dropdown-soon">🐴 Equine <span class="soon-tag">Soon</span></div>
-          <div class="nav-dropdown-item nav-dropdown-soon">🍽️ Restaurants <span class="soon-tag">Soon</span></div>
-        </div>
-      </div>
-      <a href="https://calendly.com/jvoiselle612-s9gb/strategy-call" target="_blank" class="nav-link nav-cta">Book a Call — From $79</a>
+      <a href="/trades" class="nav-link" style="color:rgba(255,255,255,0.35);font-size:12px">← Compass</a>
+      <button class="nav-link" onclick="showPage('home');scrollToEl('diagnostic')">Run Diagnostic</button>
+      <button class="nav-link" onclick="showPage('services')">What We Do</button>
+      
+      <button class="nav-link" onclick="showPage('profitable')">What Profitable Looks Like</button>
+      <button class="nav-link" onclick="showPage('about')">Our Story</button>
+      <button class="nav-link nav-cta" onclick="openCheckout('snapshot','Profit Leak Snapshot — $99')">Get Snapshot — $99</button>
     </div>
-    <button class="nav-mobile-btn" id="mobileBtn" aria-label="Menu">
-      <span id="mb1"></span><span id="mb2"></span><span id="mb3"></span>
+    <button class="hamburger" id="hamburger" onclick="toggleMobile()">
+      <span id="hb1"></span><span id="hb2"></span><span id="hb3"></span>
     </button>
   </div>
 </nav>
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#services" class="mobile-menu-link" onclick="closeMobile()">Services</a>
-  <a href="#work" class="mobile-menu-link" onclick="closeMobile()">Our Work</a>
-  <a href="#about" class="mobile-menu-link" onclick="closeMobile()">About</a>
-  <div style="padding:8px 0;border-bottom:1px solid rgba(61,107,158,0.15)">
-    <div style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Verticals</div>
-    <a href="/trades" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">🔧 Trades FixKit</a>
-    <div class="mobile-menu-link" style="padding:8px 0;font-size:14px;color:rgba(255,255,255,0.3)">🐴 Equine <span style="font-size:10px;background:var(--amber);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Soon</span></div>
-    <div class="mobile-menu-link" style="padding:8px 0;font-size:14px;color:rgba(255,255,255,0.3)">🍽️ Restaurants <span style="font-size:10px;background:var(--amber);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Soon</span></div>
-  </div>
-  <a href="https://calendly.com/jvoiselle612-s9gb/strategy-call" target="_blank" class="mobile-menu-link" style="color:var(--amber);font-weight:600" onclick="closeMobile()">Book a Call →</a>
+  <a href="/trades" class="mobile-link" style="color:rgba(255,255,255,0.4);font-size:13px">← Back to Compass Business Solutions</a>
+  <button class="mobile-link" onclick="showPage('home');scrollToEl('diagnostic');closeMobile()">Run Diagnostic</button>
+  <button class="mobile-link" onclick="showPage('services');closeMobile()">What We Do</button>
+  <button class="mobile-link" onclick="showPage('profitable');closeMobile()">What Profitable Looks Like</button>
+  <button class="mobile-link" onclick="showPage('about');closeMobile()">Our Story</button>
+  <button class="mobile-link" style="color:var(--amber);font-weight:600" onclick="openCheckout('snapshot','Profit Leak Snapshot — $99');closeMobile()">Get Snapshot — $99 →</button>
 </div>
 
-<!-- HERO -->
-<section class="hero" id="home">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-inner">
-    <div>
-      <h1 class="hero-headline">
-        We Build the<br>
-        Infrastructure<br>
-        <em>Most Businesses</em><br>
-        Never Had.
-      </h1>
-      <p class="hero-sub">
-        <strong>AI integration. App & web development. Business process consulting. Data & reporting. Social media marketing.</strong>
-        25 years turning operational gaps into competitive advantages — for Fortune-level organizations and the small businesses that outperform them.
-      </p>
-      <div class="hero-actions">
-        <a href="https://calendly.com/jvoiselle612-s9gb/strategy-call" target="_blank" class="btn-primary">Book a Strategy Call — $79 →</a>
-        <a href="#services" class="btn-ghost">See What We Do</a>
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: HOME -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><div class="hero-badge-dot"></div><span class="hero-badge-text">FOR SERVICE BUSINESS OWNERS</span></div>
+    <h1>THE AVERAGE HVAC, PLUMBING, OR<br>ELECTRICAL SHOP NETS <span class="amber">2–5% PROFIT.</span></h1>
+    <p class="hero-sub">On a million dollars in revenue, that's $20,000–$50,000 in your pocket. Small changes equal big profit.</p>
+    <a href="https://www.servicetitan.com/blog/hvac-profit-margins" target="_blank" rel="noopener" class="hero-source">Source: ServiceTitan · HVAC Profit Margins →</a>
+    <div class="hero-actions">
+      <button class="btn btn-amber" onclick="scrollToEl('diagnostic')">Run the Free Diagnostic →</button>
+      <button class="btn btn-ghost" onclick="showPage('services')">See What We Do</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">11</div><div class="hero-stat-label">Profit leak categories we diagnose</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">25</div><div class="hero-stat-label">Years in business process analysis</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">0</div><div class="hero-stat-label">Fluff. Everything is applied.</div></div>
+    </div>
+  </div>
+
+  <!-- DIAGNOSTIC -->
+  <div id="diagnostic" style="background:var(--white);padding-top:8px">
+    <div class="diagnostic-wrap">
+      <div id="diag-intro">
+        <h2>Free Business Diagnostic</h2>
+        <p class="sub">Answer 16 questions about how your business actually runs. We'll show you your top 3 profit leaks and what they're costing you annually — specific to your trade and your numbers.</p>
+        <button class="btn btn-amber" onclick="startDiagnostic()" style="width:100%;justify-content:center;font-size:18px;padding:16px">Start the Free Diagnostic →</button>
+      </div>
+      <div id="diag-questions" style="display:none">
+        <div class="progress-bar-wrap"><div class="progress-bar" id="diag-progress"></div></div>
+        <div class="q-label" id="q-label"></div>
+        <div class="q-text" id="q-text"></div>
+        <div id="q-skip-hint" style="display:none;margin-bottom:12px"><button onclick="skipLastQuestion()" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;text-decoration:underline;padding:0">Skip this question →</button></div>
+        <div id="q-options"></div>
+        <div class="q-nav">
+          <div class="q-count" id="q-count"></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn-back" id="btn-back" onclick="qBack()" style="display:none">← Back</button>
+            <button class="btn-next" id="btn-next" onclick="qNext()" disabled>Next →</button>
+          </div>
+        </div>
+      </div>
+      <div id="diag-loading" style="display:none" class="results-loading">
+        <div class="loading-spinner"></div>
+        <div class="loading-msg"><strong>Analyzing your business...</strong>This takes about 30 seconds. We're looking at your numbers across all 11 profit leak categories.</div>
+      </div>
+      <div id="diag-email" style="display:none">
+        <h2>Almost there</h2>
+        <p class="sub">Where should we send your results?</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div>
+            <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">First Name</label>
+            <input class="q-textarea" type="text" id="diag-name-input" placeholder="Your first name" style="min-height:auto;padding:14px;border-radius:8px"/>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Phone Number</label>
+            <input class="q-textarea" type="tel" id="diag-phone-input" placeholder="Phone number" style="min-height:auto;padding:14px;border-radius:8px"/>
+          </div>
+        </div>
+        <div style="margin-bottom:12px">
+          <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Business Name</label>
+          <input class="q-textarea" type="text" id="diag-biz-input" placeholder="Business name" style="min-height:auto;padding:14px;border-radius:8px"/>
+        </div>
+        <div style="margin-bottom:12px">
+          <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Business Location</label>
+          <input class="q-textarea" type="text" id="diag-address-input" placeholder="Business address (city and state is fine)" style="min-height:auto;padding:14px;border-radius:8px"/>
+        </div>
+        <div style="margin-bottom:8px">
+          <label style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">Email Address *</label>
+          <input class="q-textarea" type="email" id="diag-email-input" placeholder="your@email.com" style="min-height:auto;padding:14px;border-radius:8px"/>
+        </div>
+        <div id="diag-email-err" style="font-size:12px;color:#e74c3c;margin-bottom:8px;display:none"></div>
+        <button class="btn btn-amber" onclick="submitDiagnostic()" style="width:100%;font-size:16px;padding:14px">Get My Free Results →</button>
+        <p style="font-size:11px;color:var(--muted);margin-top:10px;text-align:center">No spam. Your results are emailed to you and displayed here.</p>
       </div>
     </div>
-    <div class="hero-card">
-      <div class="hero-card-label">Why Compass</div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">25</div>
-        <div class="hero-stat-text"><strong>Years in Business Process Analysis</strong>Three Fortune-level organizations. Real systems. Real results.</div>
+  </div>
+
+  <!-- RESULTS (shown inline after diagnostic) -->
+  <div id="diag-results" style="display:none;background:var(--light)">
+    <div class="results-wrap" id="results-content"></div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section class="section-light">
+    <div class="section-inner">
+      <div class="section-eyebrow">How It Works</div>
+      <h2 class="section-title">Three Steps to Stopping the Leaks</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px">
+        <div style="background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:28px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:var(--amber);line-height:1;margin-bottom:12px">1</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px">Run the Diagnostic</div>
+          <div style="font-size:14px;color:var(--muted);line-height:1.6">16 questions about how your business actually runs. Takes 10 minutes. No fluff.</div>
+        </div><div style="background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:28px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:var(--amber);line-height:1;margin-bottom:12px">2</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px">See Your Leaks</div>
+          <div style="font-size:14px;color:var(--muted);line-height:1.6">Your top 3 profit leaks with the exact dollar amount each one is costing you annually.</div>
+        </div><div style="background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:28px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:var(--amber);line-height:1;margin-bottom:12px">3</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px">Fix Them</div>
+          <div style="font-size:14px;color:var(--muted);line-height:1.6">Get the fix plan — either the Snapshot to know what to fix, or the full FixKit with daily tasks to actually do it.</div>
+        </div>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">8</div>
-        <div class="hero-stat-text"><strong>Core Service Areas</strong>AI integration, app dev, business process consulting, data & reporting, social media, vertical products, web dev, and workflow automation.
+    </div>
+  </section>
+
+  <!-- PRODUCT TEASE -->
+  <section>
+    <div class="section-inner">
+      <div class="section-eyebrow">The Fix Plans</div>
+      <h2 class="section-title">Choose How You Fix It</h2>
+      <p class="section-sub">Everything is built around your specific numbers, trade, and situation. Not generic advice.</p>
+      <div class="product-grid">
+        <div class="product-card">
+          <span class="product-tag tag-navy">$99</span>
+          <div class="product-icon">📄</div>
+          <div class="product-name">DIY Profit Leak Snapshot</div>
+          <div class="product-short">Your top 3 leaks, the exact math behind each one, what to fix, and the tools to do it.</div>
+          <ul class="product-bullets">
+            <li>Top 3 leaks ranked by dollar impact</li>
+            <li>Exact annual cost of each leak</li>
+            <li>2-3 specific fixes + guides matched to your leaks</li>
+            <li>$99 credited toward any FixKit plan</li>
+          </ul>
+          <button class="btn btn-outline" onclick="openCheckout('snapshot','Profit Leak Snapshot — $99')" style="width:100%;text-align:center">Get My Snapshot — $99</button>
+        </div>
+        <div class="product-card featured">
+          <span class="product-tag tag-amber">Most Popular · $299</span>
+          <div class="product-icon">📋</div>
+          <div class="product-name">FixKit 30-Day Plan</div>
+          <div class="product-short">Daily tasks, built-in tracking, AI support. Everything personalized to your trade and numbers.</div>
+          <ul class="product-bullets">
+            <li>30 days of daily tasks — specific to your trade and leaks</li>
+            <li>8 profit calculators pre-loaded with your numbers</li>
+            <li>Fix-It Guides and docs matched to your top leaks</li>
+            <li>Ask Jen AI advisor with your full business context</li>
+            <li>$99 credited if upgrading from Snapshot</li>
+          </ul>
+          <button class="btn btn-amber" onclick="openCheckout('fixkit_30','FixKit 30-Day Plan — $299')" style="width:100%;text-align:center">Get 30-Day Plan — $299</button>
+        </div>
+        <div class="product-card">
+          <span class="product-tag tag-amber">Best Value · $599</span>
+          <div class="product-icon">📈</div>
+          <div class="product-name">FixKit Complete Bundle</div>
+          <div class="product-short">All three phases. All 11 leaks. Everything in one portal from day one.</div>
+          <ul class="product-bullets">
+            <li>Days 1–30, 31–60, and 61–90 fully sequenced</li>
+            <li>All Fix-It Guides and docs unlocked from day one</li>
+            <li>Before/after dashboard across all 90 days</li>
+            <li>Saves $298 vs buying phases separately</li>
+            <li>$99 credited if upgrading from Snapshot</li>
+          </ul>
+          <button class="btn btn-dark" onclick="openCheckout('fixkit_bundle','FixKit Complete Bundle — $599')" style="width:100%;text-align:center">Get Full Bundle — $599</button>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <p style="font-size:13px;color:var(--amber);font-weight:600">Already have a Snapshot? <strong>$99 credited toward any FixKit plan</strong> — upgrade links are in your Snapshot email.</p>
+      </div>
+
+      <div style="margin-top:40px;padding:28px;background:var(--light);border-radius:12px;border-left:4px solid var(--amber)">
+        <p style="font-size:15px;font-style:italic;color:var(--navy);line-height:1.75">"They started their companies because they were good at their trade and figured they could make more running their own shop. Most of them weren't — or couldn't tell if they were. That's a fixable problem."</p>
+      </div>
+      <div style="margin-top:32px;text-align:center">
+        <button class="btn btn-amber" onclick="showPage('home');scrollToEl('diagnostic')">Run the Free Diagnostic →</button>
+      </div>
+    </div>
+  </section>
 </div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">0</div>
-        <div class="hero-stat-text"><strong>Generic Solutions</strong>Every engagement is built around your specific business, numbers, and goals.</div>
-      </div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: SERVICES -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="page-services" class="page">
+  <div style="background:var(--navydark);padding:80px 24px 48px">
+    <div class="section-inner">
+      <div class="section-eyebrow">What We Do</div>
+      <h2 class="section-title" style="color:#fff">Everything We Offer</h2>
     </div>
   </div>
-</section>
+  <section>
+    <div class="section-inner">
+      <div id="services-list"></div>
+    </div>
+  </section>
+</div>
 
-<!-- SERVICES -->
-<section class="services-bg" id="services">
-  <div class="section-inner">
-    <div class="section-eyebrow">What We Do</div>
-    <h2 class="section-title">Ways We Move<br>Your Business Forward</h2>
-    <p class="section-sub">Every service connects back to the same goal: finding where your business is leaking time, money, or opportunity — and fixing it.</p>
-    <div class="services-grid">
-
-      <div class="service-card">
-        <div class="service-icon">🤖</div>
-        <div class="service-name">AI Integration Consulting</div>
-        <div class="service-desc">We identify exactly where AI can replace manual work, reduce overhead, and give your team leverage — then we build it. Not a chatbot on your website. Real automation wired into how your business actually runs.</div>
-        <div class="service-pills">
-          <span class="pill">AI Workflow Design</span>
-          <span class="pill">Process Automation</span>
-          <span class="pill">Custom AI Tools</span>
-          <span class="pill">Implementation</span>
-        </div>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon">📱</div>
-        <div class="service-name">App Development</div>
-        <div class="service-desc">Custom tools built around how your business actually works — not off-the-shelf software you're forced to adapt to. Mobile-first, practical, and built to scale.</div>
-        <div class="service-pills">
-          <span class="pill">Mobile Apps</span>
-          <span class="pill">Web Apps</span>
-          <span class="pill">Internal Tools</span>
-          <span class="pill">Portals</span>
-        </div>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon">⚙️</div>
-        <div class="service-name">Business Process Consulting</div>
-        <div class="service-desc">We map how your business actually runs — where time is lost, where risk is hiding, where manual processes are costing you more than they should. Then we fix it.</div>
-        <div class="service-pills">
-          <span class="pill">Process Mapping</span>
-          <span class="pill">Automation</span>
-          <span class="pill">Workflow Design</span>
-          <span class="pill">Risk Analysis</span>
-        </div>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon">📊</div>
-        <div class="service-name">Data & Reporting Systems</div>
-        <div class="service-desc">Most businesses are flying blind. We build dashboards, KPI systems, and automated reports that show you exactly what's happening in your business — in real time, without manual effort.</div>
-        <div class="service-pills">
-          <span class="pill">KPI Dashboards</span>
-          <span class="pill">Automated Reports</span>
-          <span class="pill">Data Pipelines</span>
-          <span class="pill">Business Intelligence</span>
-        </div>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon">📣</div>
-        <div class="service-name">Social Media Marketing</div>
-        <div class="service-desc">Strategy, content, and execution for businesses that know they need to show up online but don't have the time or bandwidth to do it right.</div>
-        <div class="service-pills">
-          <span class="pill">Content Strategy</span>
-          <span class="pill">Facebook / Instagram</span>
-          <span class="pill">LinkedIn</span>
-          <span class="pill">Done-For-You</span>
-        </div>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon">🎯</div>
-        <div class="service-name">Vertical Products</div>
-        <div class="service-desc">We build purpose-built tools for specific industries — diagnosing profit leaks, building operational infrastructure, and giving business owners the systems that were never built for them. Currently serving the service trades. Additional verticals in development.</div>
-        <div class="service-pills">
-          <span class="pill">FixKit — Service Trades</span>
-          <span class="pill">More Verticals Planned</span>
-        </div>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon">🌐</div>
-        <div class="service-name">Web Development</div>
-        <div class="service-desc">Sites and platforms that work as hard as you do — fast, clean, and built to convert. From landing pages to full business portals.</div>
-        <div class="service-pills">
-          <span class="pill">Business Sites</span>
-          <span class="pill">Landing Pages</span>
-          <span class="pill">E-Commerce</span>
-          <span class="pill">Web Portals</span>
-        </div>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon">⚡</div>
-        <div class="service-name">Workflow & Automation</div>
-        <div class="service-desc">We don't just find the gaps — we close them. Python scripts, automated reporting pipelines, database systems, workflow automation. The manual work that's costing you time every single day gets eliminated.</div>
-        <div class="service-pills">
-          <span class="pill">Python Scripting</span>
-          <span class="pill">Automated Reporting</span>
-          <span class="pill">Database Systems</span>
-          <span class="pill">Email Pipelines</span>
-        </div>
-      </div>
-
-      
-
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: GUIDES & DOCS -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="page-guides" class="page">
+  <div style="background:var(--navydark);padding:80px 24px 48px">
+    <div class="section-inner">
+      <div class="section-eyebrow">Guides & Templates</div>
+      <h2 class="section-title" style="color:#fff">The Fix Kit Library</h2>
+      <p class="section-sub">Fix-It Guides and business process templates — matched to your specific leaks and included with FixKit.</p>
     </div>
   </div>
-</section>
-
-<!-- OUR WORK -->
-<section class="work-bg" id="work">
-  <div class="section-inner">
-    <div class="section-eyebrow">Our Work</div>
-    <h2 class="section-title" style="color:white">Built. Shipped. Real.</h2>
-    <p class="section-sub">We don't talk about what we can do — we show what we've built.</p>
-    <div class="work-grid">
-
-      <div class="work-card work-card-1">
-        <div class="work-tag">Vertical Product</div>
-        <div class="work-name">FixKit — Profit Leak Repair</div>
-        <div class="work-desc">A full-stack diagnostic and repair platform for service trades businesses. Built from scratch — intake engine, AI plan generator, task portal, document library, email sequences, and admin dashboard.</div>
-        <ul class="work-bullets">
-          <li>Personalized diagnostic across 11 profit leak categories</li>
-          <li>30/60/90-day action plans with trade-specific guidance</li>
-          <li>22 branded business process documents and guides</li>
-          <li>Automated email sequences and customer lifecycle management</li>
-          <li>Full admin dashboard for customer tracking and engagement</li>
-        </ul>
-        <a href="/trades" class="work-link">See the Trades FixKit →</a>
-      </div><div class="work-card work-card-2">
-        <div class="work-status" style="background:rgba(200,112,26,0.2);color:var(--amber);border-color:rgba(200,112,26,0.3)">Available May 18, 2026</div>
-        <div class="work-tag">App Development</div>
-        <div class="work-name">Compass Field Service App</div>
-        <div class="work-desc">Most field service apps are just scheduling and invoicing tools with no business intelligence. The Compass Field Service is built differently — every workflow is designed around protecting your margins.</div>
-        <ul class="work-bullets">
-          <li>AI-assisted quoting using your actual loaded cost, markup, and overhead</li>
-          <li>Quote-to-job-to-invoice in one workflow with no dropped handoffs</li>
-          <li>Technician dispatch, time clock, parts used, and job signoff from their phone</li>
-          <li>Inventory, restock planning, and purchase orders tied directly to jobs</li>
-          <li>Customer portal — service requests, job history, invoice access, maintenance plans</li>
-          <li>FixKit integration — your leak-free progress stays on track automatically</li>
-        </ul>
-        <span style="font-size:13px;color:rgba(255,255,255,0.35)">Early access opening soon — FixKit customers get priority.</span>
+  <section>
+    <div class="section-inner">
+      <div class="docs-filter">
+        <button class="filter-btn active" onclick="filterDocs('all',this)">All</button>
+        <button class="filter-btn" onclick="filterDocs('guide',this)">Guides</button>
+        <button class="filter-btn" onclick="filterDocs('template',this)">Templates</button>
       </div>
+      <div class="docs-grid" id="docs-grid"></div>
+    </div>
+  </section>
+</div>
 
-      
-
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: WHAT PROFITABLE LOOKS LIKE -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="page-profitable" class="page">
+  <div style="background:var(--navydark);padding:80px 24px 48px">
+    <div class="section-inner">
+      <div class="section-eyebrow">The Standard</div>
+      <h2 class="section-title" style="color:#fff">What a Profitable Shop Looks Like</h2>
+      <p class="section-sub">Not aspirational. These are the operational markers of service businesses that consistently net 15–25%.</p>
     </div>
   </div>
-</section>
+  <section class="section-dark" style="padding-top:0">
+    <div class="section-inner">
+      <div class="traits-grid" id="traits-grid"></div>
+    </div>
+  </section>
+</div>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="section-inner">
-    <div class="about-grid">
-      <div class="about-photo-wrap">
-        <img src="images/Jen_headshot.jpg" alt="Jen Voiselle — Compass Business Solutions" style="width:100%;max-width:280px;border-radius:14px;display:block;aspect-ratio:2/3;object-fit:cover;object-position:top center;box-shadow:0 8px 32px rgba(27,46,75,0.15)"/>
-        <div class="about-accent">
-          <div class="about-accent-num">25</div>
-          <div class="about-accent-label">Years experience</div>
-        </div>
-      </div>
-      <div class="about-content">
-        <div class="section-eyebrow">About</div>
-        <div class="about-name">Jen Voiselle</div>
-        <div class="about-title">Founder, Compass Business Solutions</div>
-        <p class="about-body">For 25 years I worked in business and technology process analysis across three major organizations — finding exactly where time and money disappear, how the individual parts of a business run, and how the pieces fit together. Automating the stuff that shouldn't be manual. Fixing the gaps that were quietly costing time, efficiency, and money.</p>
-        <p class="about-body">That whole time I watched friends in the trades — and small business owners across industries — working themselves into the ground with the same operational problems I'd spent my career solving. They just never had anyone with that background in the room.</p>
-        <p class="about-body">Compass is what happens when 25 years of Fortune-level process work gets pointed at the businesses that actually need it.</p>
-        <div class="about-stats">
-          <div class="about-stat">
-            <div class="about-stat-num">25</div>
-            <div class="about-stat-label">Years analysis</div>
-          </div>
-          <div class="about-stat">
-            <div class="about-stat-num">3</div>
-            <div class="about-stat-label">Fortune orgs</div>
-          </div>
-          <div class="about-stat">
-            <div class="about-stat-num">0</div>
-            <div class="about-stat-label">Generic advice</div>
-          </div>
-        </div>
-      </div>
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: ABOUT / OUR STORY -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="page-about" class="page">
+  <div style="background:var(--navydark);padding:80px 24px 48px">
+    <div class="section-inner">
+      <div class="section-eyebrow">Our Story</div>
+      <h2 class="section-title" style="color:#fff">Why We Built This</h2>
     </div>
   </div>
-</section>
-
-<!-- TRADES CTA -->
-<section style="background:var(--light);padding:60px 28px;">
-  <div class="section-inner">
-    <div class="trades-cta">
-      <div>
-        <div class="trades-cta-eyebrow">Service Trades Vertical</div>
-        <div class="trades-cta-title">Own a Trades Business?<br>We Built Something for You.</div>
-        <p class="trades-cta-sub">The FixKit is a purpose-built profit leak diagnostic and repair system for plumbers, HVAC, electricians, contractors, and every other trade. 15-minute diagnostic. Real numbers. Fixes that work this week.</p>
+  <section>
+    <div class="section-inner" style="max-width:760px">
+      <div class="about-beats" id="about-beats"></div>
+      <div class="about-stats">
+        <div class="about-stat"><div class="about-stat-num">25</div><div class="about-stat-label">Years in business process analysis</div></div>
+        <div class="about-stat"><div class="about-stat-num">3</div><div class="about-stat-label">Major organizations</div></div>
+        <div class="about-stat"><div class="about-stat-num">11</div><div class="about-stat-label">Processes analyzed</div></div>
+        <div class="about-stat"><div class="about-stat-num">0</div><div class="about-stat-label">Fluff. Everything applied.</div></div>
       </div>
-      <div class="trades-cta-btns">
-        <a href="/trades" class="btn-primary">See the FixKit →</a>
-        <a href="/trades#diagnostic" class="btn-ghost" style="color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.2)">Run a Diagnostic</a>
+      <div style="margin-top:40px;padding:28px;background:var(--light);border-radius:12px;border-left:4px solid var(--amber)">
+        <p style="font-size:15px;font-style:italic;color:var(--navy);line-height:1.75">"They started their companies because they were good at their trade and figured they could make more running their own shop. Most of them weren't — or couldn't tell if they were. That's a fixable problem."</p>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONSULTING CALLS -->
-<section style="background:var(--light)">
-  <div class="section-inner">
-    <div class="section-eyebrow">Book Time With Jen</div>
-    <h2 class="section-title">Paid Consulting Calls</h2>
-    <p class="section-sub">Come with a problem. Leave with a direction. Payment required to book — your time and mine are both worth something.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:800px">
-      <div style="background:#fff;border:2px solid var(--amber);border-radius:14px;padding:28px">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--amber);margin-bottom:4px">$79</div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:12px">Strategy Call — 30 Min</div>
-        <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px">Come with one problem. Leave with a direction. Focused 30-minute working call on a specific operational challenge — pricing, scheduling, hiring, cash flow, or anything eating your margin. You'll leave with a clear next step.<br><br>$79 credited toward any Compass project.</p>
-        <a href="https://calendly.com/jvoiselle612-s9gb/strategy-call" target="_blank" class="btn btn-amber" style="display:block;text-align:center">Book Strategy Call →</a>
-      </div>
-      <div style="background:#fff;border:2px solid var(--amber);border-radius:14px;padding:28px">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--amber);margin-bottom:4px">$149</div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:12px">Working Session — 60 Min</div>
-        <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px">A full hour to dig into your operation. We map the problem, trace it to the root cause, and build an action plan you can actually use. You'll leave with a written summary of what we covered and what to do next.<br><br>$149 credited toward any Compass project.</p>
-        <a href="https://calendly.com/jvoiselle612-s9gb/working-session" target="_blank" class="btn btn-amber" style="display:block;text-align:center">Book Working Session →</a>
+      <div style="margin-top:32px;text-align:center">
+        <button class="btn btn-amber" onclick="showPage('home');scrollToEl('diagnostic')">Run the Free Diagnostic →</button>
       </div>
     </div>
-    <p style="font-size:12px;color:var(--muted);margin-top:16px;max-width:800px">FixKit customers: your free 20-minute strategy call is included with your plan — reply to your welcome email to book it.</p>
-  </div>
-</section>
+  </section>
+</div>
 
-<!-- CONTACT -->
-<section class="contact-bg" id="contact">
-  <div class="section-inner">
-    <div class="section-eyebrow">Get In Touch</div>
-    <h2 class="section-title" style="color:white">Let's Talk About<br>Your Business</h2>
-    <p class="section-sub">Whether you need a full process audit, a custom app, a new website, or someone to run your social media — start with a conversation.</p>
-    <div class="contact-grid">
-      <div>
-        <div class="contact-item">
-          <div class="contact-icon">📞</div>
-          <div>
-            <div class="contact-item-label">Book a Call — From $79</div>
-            <div class="contact-item-value">Strategy Call (30 min) — $79. Working Session (60 min) — $149. Both credited toward any Compass project.<br><br><a href="https://calendly.com/jvoiselle612-s9gb/strategy-call" target="_blank">Book a Strategy Call — $79 →</a></div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">✉️</div>
-          <div>
-            <div class="contact-item-label">Email</div>
-            <div class="contact-item-value"><a href="mailto:support@compassbizsolutions.com">support@compassbizsolutions.com</a></div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">🔧</div>
-          <div>
-            <div class="contact-item-label">Trades FixKit</div>
-            <div class="contact-item-value">Service trades business? <a href="/trades">Start with the free diagnostic →</a></div>
-          </div>
-        </div>
-      </div>
-      <div class="contact-form">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:20px;">Send a Message</div>
-        <form onsubmit="handleContact(event)">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <div class="form-row">
-              <label class="form-label">Name</label>
-              <input class="form-input" type="text" name="name" placeholder="Your name" required/>
-            </div>
-            <div class="form-row">
-              <label class="form-label">Business</label>
-              <input class="form-input" type="text" name="business" placeholder="Business name"/>
-            </div>
-          </div>
-          <div class="form-row">
-            <label class="form-label">Email</label>
-            <input class="form-input" type="email" name="email" placeholder="your@email.com" required/>
-          </div>
-          <div class="form-row">
-            <label class="form-label">I'm interested in</label>
-            <select class="form-input" name="service">
-              <option value="">Select a service...</option>
-              <option>Business Process Consulting</option>
-              <option>App Development</option>
-              <option>Web Development</option>
-              <option>Social Media Marketing</option>
-              <option>Trades FixKit</option>
-              <option>Not sure yet — just exploring</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label class="form-label">Tell me about your business</label>
-            <textarea class="form-input" name="message" placeholder="What's the biggest challenge you're trying to solve right now?"></textarea>
-          </div>
-          <button type="submit" class="btn-primary" style="width:100%;text-align:center;">Send Message →</button>
-          <div id="form-status" style="margin-top:12px;font-size:13px;color:var(--amber);display:none;"></div>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
+<!-- FOOTER (shared) -->
+<footer id="main-footer">
   <div class="footer-inner">
-    <div class="footer-copy">© 2025 Compass Business Solutions · Jen Voiselle</div>
+    <div class="footer-copy">© 2025 Compass Business Solutions · Jenifer Voiselle</div>
     <div class="footer-links">
-      <a href="/trades" class="footer-link">Trades FixKit</a>
+      <a href="/trades" class="footer-link">← Compass</a>
       <a href="/pricing" class="footer-link">Pricing</a>
       <a href="/terms-and-conditions" class="footer-link">Terms</a>
       <a href="/privacy-policy" class="footer-link">Privacy</a>
@@ -633,78 +621,751 @@
   </div>
 </footer>
 
+<!-- UPGRADE MODAL -->
+<div class="modal-overlay" id="upgrade-modal">
+  <div class="modal modal-dark">
+    <button class="modal-close" onclick="closeModal('upgrade-modal')">×</button>
+    <p style="font-size:10px;font-weight:700;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">SNAPSHOT OWNER UPGRADE</p>
+    <h3>Ready for the Full Plan?</h3>
+    <p>As a Snapshot owner your $99 is credited toward any FixKit plan. The discount is built into the upgrade price — no code needed.</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-amber" onclick="openCheckout('snapshot_up_30','FixKit 30-Day — $199');closeModal('upgrade-modal')" style="width:100%;text-align:center">FixKit 30-Day — $199 →</button>
+      <button class="btn btn-ghost" onclick="openCheckout('snapshot_up_bun','FixKit Bundle — $499');closeModal('upgrade-modal')" style="width:100%;text-align:center;border-color:rgba(255,255,255,0.15)">Full Bundle — $499</button>
+    </div>
+  </div>
+</div>
+
+<!-- WAITLIST MODAL -->
+<div class="modal-overlay" id="waitlist-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('waitlist-modal')">×</button>
+    <h3>Join the Early Access List</h3>
+    <p>The Compass Field Service App is releasing May 2026. FixKit customers get priority access and a discounted first year.</p>
+    <input class="modal-input" type="text" id="waitlist-name" placeholder="Your name"/>
+    <input class="modal-input" type="email" id="waitlist-email" placeholder="your@email.com"/>
+    <div id="waitlist-err" class="modal-err"></div>
+    <div id="waitlist-success" style="display:none;font-size:14px;color:var(--green);margin-bottom:12px;font-weight:600">You're on the list. We'll be in touch.</div>
+    <button class="btn btn-amber" onclick="submitWaitlist()" style="width:100%;text-align:center">Get Early Access →</button>
+  </div>
+</div>
+
 <script>
-  // Mobile nav
-  var mobileOpen = false;
-  document.getElementById('mobileBtn').addEventListener('click', function() {
-    mobileOpen = !mobileOpen;
-    document.getElementById('mobileMenu').classList.toggle('open', mobileOpen);
-    var b1 = document.getElementById('mb1'), b2 = document.getElementById('mb2'), b3 = document.getElementById('mb3');
-    b1.style.transform = mobileOpen ? 'rotate(45deg) translate(5px,5px)' : '';
-    b2.style.opacity = mobileOpen ? '0' : '1';
-    b3.style.transform = mobileOpen ? 'rotate(-45deg) translate(5px,-5px)' : '';
-  });
-  function closeMobile() { mobileOpen = false; document.getElementById('mobileMenu').classList.remove('open'); }
+// ── DATA ──────────────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {id:'trade',q:'What trade are you in?',type:'buttons',opts:['HVAC','Plumbing','Electrical','General Contracting','Roofing','Landscaping','Handyman','Painting'],overflow:['Air Duct Cleaning','Appliance Repair','Carpet Cleaning','Chimney and Fireplace','Cleaning Services','Flooring','Garage Door','Gutters','Irrigation','Locksmith','Pest Control','Pool and Spa','Pressure Washing','Restoration and Remediation','Security Systems','Solar','Tile and Stone','Tree Service','Other']},
+  {id:'services',q:'What do you do day to day? Pick all that apply.',type:'multi',opts:['Commercial service calls','Emergency calls','Estimates and bids','Inspections','Maintenance agreements','New installs','Other','Residential service calls']},
+  {id:'years',q:'How long have you been in business?',type:'buttons',opts:['Under 2 years','2-5 years','5-10 years','10-20 years','20+ years']},
+  {id:'crew',q:'How many guys do you have in the field?',type:'buttons',opts:['Just me','2-3','4-6','7-10','11-20','20+']},
+  {id:'trucks',q:'How many trucks?',type:'buttons',opts:['1','2-3','4-6','7-10','10+']},
+  {id:'jobs',q:'How many jobs do you complete per week?',type:'buttons',opts:['Under 10','10-20','20-40','40-60','60+']},
+  {id:'invoice',q:'What is your average invoice amount?',type:'buttons',opts:['Under $200','$200-$400','$400-$800','$800-$1,500','$1,500-$3,000','$3,000+']},
+  {id:'rate',q:'How do you charge for labor?',type:'buttons',opts:['Flat fee per job','Hourly rate','Mix of both','Not sure how to price it']},
+  {id:'tracking',q:'How do you track jobs from estimate to invoice?',type:'buttons',opts:['Paper or memory','QuickBooks only','Software (ServiceTitan, Jobber etc)','Spreadsheets','We do not track it']},
+  {id:'partsruns',q:'How often do your guys make unplanned parts runs?',type:'buttons',opts:['Almost never','1-2 per week','3-5 per week','Daily','Multiple times a day']},
+  {id:'invoicetiming',q:'When does the invoice go out after a job closes?',type:'buttons',opts:['Same day','Within 2-3 days','End of the week','Whenever I get to it','Often weeks later']},
+  {id:'repeat',q:'How much of your work is repeat vs new customers?',type:'buttons',opts:['Mostly new','About 50/50','Mostly repeat']},
+  {id:'rates',q:'When did you last raise your rates?',type:'buttons',opts:['Last 6 months','1-2 years ago','3-5 years ago','5+ years ago','Never']},
+  {id:'noshows',q:'How many no-shows or last-minute cancellations do you get per week?',type:'buttons',opts:['Almost none','1-2','3-5','More than 5','Way too many']},
+  {id:'timewaste',q:'What is eating your time that is not billable? Pick all that apply.',type:'multi',opts:['Chasing unpaid invoices','Customer complaints','Estimating and quoting','Paperwork and admin','Parts runs','Phone calls while on jobs','Scheduling and rescheduling','Training new hires']},
+  {id:'concerns',q:'Tell us what is really going on. What keeps you up at night about this business?',type:'area',ph:'The more specific you are the better we can help. No one else will see this.'},
+];
 
-  function toggleVerticals(e) {
-    e.stopPropagation();
-    document.getElementById('verticals-dropdown').classList.toggle('open');
+const ABOUT_BEATS = [
+  {color:'#3D6B9E',label:'THE PATTERN I KEPT SEEING',text:"I kept hearing the same thing from friends who went out on their own in the trades — contractors, electricians, plumbers, landscapers, pool companies. They were exhausted. Not from the work — they were built for the work. They were exhausted from everything that came with running the business. Invoicing at 10pm. Calls on weekends. Spouses picking up the slack at home or outright frustrated. Missing soccer games and dinners because there was always something that didn't get done during the week. They'd gone out on their own because they were good at their trade and figured they'd make more running their own shop. Most of them weren't — or couldn't tell if they were."},
+  {color:'#C8701A',label:'WHAT I SPENT 23 YEARS DOING',text:"My background is in business process analysis and automation. For over two decades, across three Fortune-level organizations, my job was to look at how work actually moved through a system — where the gaps were, where the risk was, where time and money were being lost to manual processes that shouldn't be manual anymore. I built automated workflows, developed databases, wrote Python scripts, built SharePoint systems, created automated reporting and email pipelines. When a process was repeatable and could be documented, I documented it. When it could be automated, I automated it. When it was creating audit risk, I fixed it. That's not a hobby — that's what I did every day for 23 years."},
+  {color:'#1E6B45',label:'WHERE THE TWO THINGS MET',text:"The problems I kept hearing from these guys weren't complicated. They were the same kinds of process gaps I'd spent my career solving — just in smaller organizations that had never had anyone with that background in the room. No one had ever sat down with them and mapped out how a job actually flows from booking to invoice. No one had built them a system for confirmations, or parts ordering, or onboarding a new tech, or tracking which jobs were profitable. They were running everything in their head and burning out doing it. I knew exactly what to build. I just needed to build it for them."},
+  {color:'#1B2E4B',label:'WHAT COMPASS ACTUALLY IS',text:"Compass is the business operations side of a service company — the part most owners never had time to build properly. We start with a free diagnostic: a real look at where your money is going, based on your actual numbers. From there, you can work through it yourself with a Profit Leak Snapshot or a full FixKit plan — daily tasks built around your specific numbers and trade. If you need someone to build the systems for you, that's available too. No expensive platforms. No generic advice. Just clean, practical fixes for how your business actually runs."},
+];
+
+const TRAITS = [
+  {title:'They know their real hourly cost',short:"Not what feels right. The actual loaded number.",expanded:"Labor, payroll taxes, workers comp, insurance, trucks, tools, overhead — all of it divided by billable hours. That's the floor. Everything above it is margin. Most shops are guessing at a number that was set years ago."},
+  {title:'They invoice same day, every job',short:"Not end of week. Not when they get to it.",expanded:"Businesses that invoice same-day get paid 40% faster. On $500K in revenue that timing difference is worth $15,000–$25,000 in available cash per year. It's a process change, not a technology change."},
+  {title:'They confirm appointments the day before',short:"Notifications are not confirmations.",expanded:"A text they don't reply to doesn't tell you they'll actually be there. A 2pm call the day before, followed by a text, followed by one more call if no reply — that's a confirmation process. It drops no-shows by 25–35%."},
+  {title:'They mark up materials',short:"20–40% depending on trade. Without exception.",expanded:"You sourced the part, carried the inventory, made the parts run, and you're warranting the work. That has value. If you're billing materials at cost you're giving away margin on every job. It's not a trick — it's standard in every trade."},
+  {title:"They have a fill-in list",short:"Cancellations don't mean empty slots.",expanded:"They keep a running list of customers who said 'call me if you have an opening.' When a slot opens, they work the list. Most shops have 5–10 of these customers and never call them."},
+  {title:'They know their numbers weekly',short:"Revenue, billable hours, no-shows, receivables.",expanded:"Not monthly. Not when tax season hits. Weekly. The shops that catch problems early catch them when they're still small. The ones that check monthly find out after a bad quarter."},
+  {title:'Their rate is above their floor',short:"The floor is break-even. Profit requires margin above it.",expanded:"Break-even doesn't build a business. Every job needs to contribute to profit margin — typically 15–20% for a well-run shop. If your rate is at cost, every busy season feels like treading water."},
+  {title:'They have a follow-up process',short:"Not they'll call when they need us.",expanded:"A same-day text, a Day 3 review ask, a Day 30 check-in. Most customers who went silent would come back if you stayed in touch. Bringing back a customer who already knows you costs 5–7x less than finding a new one."},
+];
+
+const DOCS_DATA = [
+  {type:'guide',icon:'💰',title:'Guide #1: The Pricing Leak Fix',desc:'Find your true cost per hour. Set a rate that actually makes money.',bullets:['True hourly cost calculator','Break-even rate worksheet','Rate increase script','Competitor benchmarking'],guide:'Pairs with: Pricing Worksheet & Rate Calculator template'},
+  {type:'guide',icon:'📅',title:'Guide #2: The Scheduling Black Hole',desc:'Plug the gaps that drain your daily revenue — cancellations and no-shows.',bullets:['Daily revenue capacity calculator','No-show tracker','Same-day fill-the-gap script','Confirmation call template'],guide:'Pairs with: Appointment Confirmation Process template'},
+  {type:'guide',icon:'👷',title:'Guide #3: The Employee Cost Leak',desc:"Know exactly what your team costs and what you're losing to unproductive time.",bullets:['Loaded labor cost calculator','Productivity benchmark tool','Tardiness cost tracker','Role alignment checklist'],guide:'Pairs with: Employee Handbook and New Hire Training templates'},
+  {type:'guide',icon:'🔄',title:'Guide #4: The Recurring Revenue Gap',desc:'Turn one-time customers into monthly income with maintenance agreements.',bullets:['Maintenance plan template','Client conversion script','Recurring revenue tracker','Monthly package pricing guide'],guide:'Pairs with: Service Agreement and Maintenance Contract template'},
+  {type:'guide',icon:'📄',title:'Guide #5: The Estimate-to-Invoice Leak',desc:"Get paid for every dollar of work you actually do. Stop scope creep.",bullets:['Scope creep log','Change order template','Collections follow-up sequence','Bulletproof estimate checklist'],guide:'Pairs with: Change Order Template and Job Completion template'},
+  {type:'guide',icon:'📊',title:'Guide #6: The Cash Flow Blind Spot',desc:"Stop running out of money when business is good. Understand your cash cycle.",bullets:['90-day cash flow projection','Seasonal revenue planner','Emergency reserve calculator','5 cash flow rules'],guide:'Standalone guide'},
+  {type:'guide',icon:'🤝',title:'Guide #7: The Customer Churn Leak',desc:"Recover lost clients and keep the ones you have.",bullets:['Retention rate calculator','Lost client recovery sequence','Follow-up schedule template','Referral request system'],guide:'Pairs with: Customer Follow-Up Sequence and Referral System templates'},
+  {type:'guide',icon:'🔧',title:'Guide #8: The Materials Markup Fix',desc:"Stop buying at cost and selling at cost. Fix your markup.",bullets:['Materials markup calculator','Supplier comparison tool','Markup by category guide','Invoice line-item audit'],guide:'Pairs with: Parts Ordering and Truck Restocking templates'},
+  {type:'guide',icon:'⏱️',title:'Guide #9: The Admin Time Drain',desc:"Reclaim the hours you lose to paperwork and phone calls.",bullets:['Admin time audit','Automation opportunities list','Delegation framework','Weekly schedule template'],guide:'Standalone guide'},
+  {type:'guide',icon:'🚚',title:'Guide #10: The Vehicles and Parts Leak',desc:"Stop hemorrhaging money from your fleet and parts inventory.",bullets:['Fleet cost calculator','Parts run cost tracker','Vehicle ROI analysis','Mileage optimization guide'],guide:'Pairs with: Truck Restocking and Parts Ordering templates'},
+  {type:'template',icon:'🚚',title:'Truck Restocking Checklist',desc:"Every tech leaves with what they need. No more mid-job parts runs.",bullets:['Daily pre-departure checklist','Minimum stock levels','End-of-day restock log','Supplier reorder triggers'],guide:'Supports Guide 10'},
+  {type:'template',icon:'📞',title:'Appointment Confirmation Process',desc:"Drop no-shows by 25-35% with a same-day-before confirmation system.",bullets:['Confirmation call script','Text message templates','What to say when no answer','Cancellation fill-in protocol'],guide:'Supports Guide 2'},
+  {type:'template',icon:'👷',title:'Employee Onboarding Handbook',desc:"Stop training every new hire from scratch. One handbook, consistent standards.",bullets:['Day 1-30 checklist','Company standards','Job site procedures','Tools and vehicle policies'],guide:'Supports Guide 3'},
+  {type:'template',icon:'📄',title:'Job Completion and Invoicing Process',desc:"Every job closes the same way. Invoice sent same day, every time.",bullets:['Job closeout checklist','Same-day invoicing protocol','Photo documentation standard','Customer sign-off process'],guide:'Supports Guide 5'},
+  {type:'template',icon:'🤝',title:'Customer Follow-Up Sequence',desc:"The call after the job. The check-in at 30 days. The review ask.",bullets:['Post-job follow-up script','30-day check-in template','Review request message','Annual maintenance reminder'],guide:'Supports Guide 7'},
+  {type:'template',icon:'🔧',title:'Parts and Supply Ordering Process',desc:"Who orders what, from where, and when. Stops duplicate orders.",bullets:['Approved supplier list','Order authority levels','Reorder point tracker','Emergency sourcing protocol'],guide:'Supports Guide 8'},
+  {type:'template',icon:'📚',title:'New Hire Training Documentation',desc:"Structured training that does not depend on one senior tech.",bullets:['Trade-specific skills checklist','Company systems walkthrough','Week-by-week milestones','Sign-off and evaluation form'],guide:'Supports Guide 3'},
+  {type:'template',icon:'⛑️',title:'Safety and Job Site Procedures',desc:"The docs you need before something goes wrong — not after.",bullets:['Job site safety checklist','Incident reporting procedure','PPE requirements','Customer property protection'],guide:'Supports all guides'},
+  {type:'template',icon:'📋',title:'Service Agreement and Maintenance Contract',desc:"Turn one-time customers into monthly income. Professional recurring agreements.",bullets:['Fill-in service agreement','Payment terms and cancellation','What is included and excluded','Sales script for job completion'],guide:'Supports Guide 4'},
+  {type:'template',icon:'✏️',title:'Change Order Template',desc:"Stop doing work you don't get paid for. One form, two signatures.",bullets:['Scope change description','Cost and schedule impact','Dual signature lines','Conversation script'],guide:'Supports Guide 5'},
+  {type:'template',icon:'⭐',title:'Referral and Review Request System',desc:"Scripts, templates, and tracking for reviews and referrals.",bullets:['In-person review script','Text message templates','Referral request script','Monthly tracking sheet'],guide:'Supports Guide 7'},
+  {type:'template',icon:'💰',title:'Pricing Worksheet and Rate Calculator',desc:"Find your real cost per hour — then set a rate that makes money.",bullets:['Labor cost calculator','Vehicle and equipment worksheet','Overhead breakdown','Break-even plus margin calculator'],guide:'Supports Guide 1'},
+];
+
+const SERVICES_DATA = [
+  {icon:'🔍',title:'Free Business Diagnostic',tag:'Free',tagClass:'tag-green',short:'Find out where your money is going. No strings attached.',bullets:['Your top three profit leaks — specific to your trade and numbers','An estimated annual dollar range for each one','What is causing them and what it takes to fix each one'],closing:"What you do with it is entirely up to you. Some people fix it themselves. Some want help. Some just needed to see the number.",cta:'Start Free Diagnostic',onclick:"showPage('home');scrollToEl('diagnostic')"},
+  {icon:'📈',title:'FixKit — Complete 30/60/90-Day Plan',tag:'$599 — saves $298',tagClass:'tag-amber',short:'All three phases. Fully sequenced. Every leak addressed. Best value.',bullets:['Days 1-30 — top 3 leaks with daily tasks, calculators, guides, and docs','Days 31-60 — next tier of leaks, their own 30-day plan','Days 61-90 — remaining leaks closed out completely','All docs and calculators unlocked from day one','Full before/after tracking across all 90 days','Ask Jen AI advisor throughout','Saves $298 vs buying phases separately'],cta:"Get the Full Bundle — $599",onclick:"openCheckout('fixkit_bundle','FixKit Complete Bundle — $599')"},
+  {icon:'📋',title:'FixKit — 30-Day Quick Win Plan',tag:'$299',tagClass:'tag-amber',short:'Your worst leaks addressed first. Daily tasks. Built-in tracking. AI support.',bullets:['30 days of daily tasks — 15-20 minutes, specific to your trade and your numbers','Fix-It Guides and process docs matched to your top leaks','8 profit calculators pre-loaded with your intake numbers','Progress tracking and before/after dashboard','Ask Jen — AI advisor that knows your situation','$99 credited if upgrading from Snapshot'],cta:"Get the 30-Day Plan — $299",onclick:"openCheckout('fixkit_30','FixKit 30-Day Plan — $299')"},
+  {icon:'📄',title:'DIY Profit Leak Snapshot',tag:'$99',tagClass:'tag-navy',short:'Your top 3 leaks, the math behind each one, and what to fix — plus the tools to do it.',bullets:['Top 3 leaks ranked by annual dollar impact','Exact math showing what each leak costs you','2-3 specific fixes for each leak — not generic advice','Fix-It Guides and process templates matched to your leaks','$99 credited toward any FixKit plan'],closing:'No portal, no daily tasks, no subscription. Your numbers, your leaks, and what to do about them — plus the tools to get started.',cta:"Get My Snapshot — $99",onclick:"openCheckout('snapshot','Profit Leak Snapshot — $99')"},
+  {icon:'🛠️',title:'Done For You — Consulting',tag:'By scope',tagClass:'tag-slate',short:'We build and implement the systems for you.',bullets:['We map how your business actually runs — not how it should run','We build the process docs, pricing structures, and workflows','You review, we refine, it gets done','Scoping call is free with no commitment','Payment plans available'],cta:"Book a Free Scoping Call",onclick:"window.open('https://calendly.com/jvoiselle612-s9gb/strategy-call','_blank')"},
+  {icon:'📱',title:'The Compass Field Service App — In Development (Releasing May 2026)',tag:'Coming Soon',tagClass:'tag-slate',short:'Run your whole operation with the Compass profit methodology built in.',bullets:['AI-assisted quoting using your actual loaded cost and overhead','Quote-to-job-to-invoice in one workflow','Technician dispatch, time clock, parts, and job signoff from their phone','Inventory and purchase orders tied directly to jobs','Customer portal and FixKit integration'],closing:'FixKit customers get priority access and a discounted first year.',cta:"Join the Early Access List",onclick:"openWaitlist()"},
+];
+
+// ── STATE ────────────────────────────────────────────────────────────────
+var diagAnswers = {};
+var diagStep = 0;
+var currentPriceId = '';
+var currentPriceLabel = '';
+
+// ── PAGE ROUTING ─────────────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  var el = document.getElementById('page-' + id);
+  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+}
+
+function scrollToEl(id) {
+  var el = document.getElementById(id);
+  if (el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth'}); }, 100);
+}
+
+// ── MOBILE NAV ───────────────────────────────────────────────────────────
+function toggleMobile() {
+  var m = document.getElementById('mobileMenu');
+  m.classList.toggle('open');
+  var open = m.classList.contains('open');
+  document.getElementById('hb1').style.transform = open ? 'rotate(45deg) translate(5px,5px)' : '';
+  document.getElementById('hb2').style.opacity = open ? '0' : '1';
+  document.getElementById('hb3').style.transform = open ? 'rotate(-45deg) translate(5px,-5px)' : '';
+}
+function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+  function skipLastQuestion() {
+    diagStep++;
+    showEmailCapture();
   }
-  document.addEventListener('click', function() {
-    var dd = document.getElementById('verticals-dropdown');
-    if (dd) dd.classList.remove('open');
-  });
 
-  // Smooth anchor scrolling
-  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
-    a.addEventListener('click', function(e) {
-      var target = document.querySelector(this.getAttribute('href'));
-      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); closeMobile(); }
-    });
-  });
+// ── DIAGNOSTIC ───────────────────────────────────────────────────────────
+function startDiagnostic() {
+  document.getElementById('diag-intro').style.display = 'none';
+  document.getElementById('diag-questions').style.display = 'block';
+  diagStep = 0;
+  diagAnswers = {};
+  renderQuestion();
+}
 
-  // Contact form
-  function handleContact(e) {
-    e.preventDefault();
-    var status = document.getElementById('form-status');
-    var data = new FormData(e.target);
-    var body = {};
-    data.forEach(function(v, k) { body[k] = v; });
+function renderQuestion() {
+  var q = QUESTIONS[diagStep];
+  var total = QUESTIONS.length;
+  document.getElementById('diag-progress').style.width = ((diagStep / total) * 100) + '%';
+  document.getElementById('q-label').textContent = 'Question ' + (diagStep+1) + ' of ' + total;
+  document.getElementById('q-text').textContent = q.q;
+  // Add skip hint on last question
+  var skipHint = document.getElementById('q-skip-hint');
+  if (skipHint) {
+    skipHint.style.display = (diagStep === QUESTIONS.length - 1) ? 'block' : 'none';
+  }
+  document.getElementById('q-count').textContent = (diagStep+1) + ' / ' + total;
+  document.getElementById('btn-back').style.display = diagStep > 0 ? 'block' : 'none';
+  
+  var opts = document.getElementById('q-options');
+  opts.innerHTML = '';
+  var current = diagAnswers[q.id];
+  
+  if (q.type === 'area') {
+    var ta = document.createElement('textarea');
+    ta.className = 'q-textarea';
+    ta.placeholder = q.ph;
+    ta.value = current || '';
+    ta.oninput = function() {
+      diagAnswers[q.id] = ta.value;
+      document.getElementById('btn-next').disabled = false;
+    };
+    opts.appendChild(ta);
+    document.getElementById('btn-next').disabled = false;
+    document.getElementById('btn-next').textContent = 'Submit →';
+  } else if (q.overflow) {
+    // POPULAR-FIRST PATTERN (trade question)
+    var popGrid = document.createElement('div');
+    popGrid.className = 'btn-grid';
+    var ovGrid = document.createElement('div');
+    ovGrid.className = 'btn-grid';
+    ovGrid.style.display = 'none';
+    ovGrid.style.marginTop = '8px';
 
-    status.style.display = 'block';
-    status.style.color = 'rgba(255,255,255,0.6)';
-    status.textContent = 'Sending...';
-    e.target.querySelector('button[type=submit]').disabled = true;
+    var toggleBtn = document.createElement('button');
+    toggleBtn.type = 'button';
+    var totalCount = q.opts.length + q.overflow.length;
+    toggleBtn.textContent = "Don't see your trade? Show all " + totalCount + ' →';
+    toggleBtn.style.cssText = 'background:none;border:1px dashed var(--border);color:var(--muted);font-size:13px;font-weight:500;padding:10px 16px;border-radius:8px;cursor:pointer;margin:12px 0 0;font-family:inherit';
+    toggleBtn.onclick = function() {
+      var isOpen = ovGrid.style.display !== 'none';
+      ovGrid.style.display = isOpen ? 'none' : 'flex';
+      toggleBtn.textContent = isOpen
+        ? "Don't see your trade? Show all " + totalCount + ' →'
+        : 'Show fewer ←';
+    };
 
-    fetch('https://fixkit.compassbizsolutions.com/api/contact', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        name:     body.name || '',
-        email:    body.email || '',
-        business: body.business || '',
-        service:  body.service || '',
-        message:  body.message || '',
-        source:   'contact-form',
-        category: 'contact_form'
-      })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (data.success) {
-        status.style.color = '#4CAF82';
-        status.textContent = "Got it — I'll be in touch within 24 hours.";
-        e.target.reset();
+    var otherWrap = document.createElement('div');
+    otherWrap.style.cssText = 'display:none;margin-top:14px';
+    var otherLabel = document.createElement('label');
+    otherLabel.style.cssText = 'font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px';
+    otherLabel.textContent = 'Tell us what you do';
+    var otherInput = document.createElement('input');
+    otherInput.type = 'text';
+    otherInput.className = 'q-textarea';
+    otherInput.placeholder = 'e.g., Mobile pet grooming, Holiday lighting installation';
+    otherInput.maxLength = 80;
+    otherInput.style.cssText = 'min-height:auto;padding:14px;border-radius:8px';
+    otherInput.oninput = function() {
+      var v = otherInput.value.trim();
+      diagAnswers[q.id] = v || 'Other';
+      document.getElementById('btn-next').disabled = false;
+    };
+    otherWrap.appendChild(otherLabel);
+    otherWrap.appendChild(otherInput);
+
+    function handlePillClick(btn, opt) {
+      opts.querySelectorAll('.btn-opt').forEach(function(b){ b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      if (opt === 'Other') {
+        otherWrap.style.display = 'block';
+        diagAnswers[q.id] = otherInput.value.trim() || 'Other';
+        setTimeout(function(){ otherInput.focus(); }, 50);
       } else {
-        throw new Error(data.error || 'Failed');
+        otherWrap.style.display = 'none';
+        diagAnswers[q.id] = opt;
       }
-    })
-    .catch(function() {
-      status.style.color = '#C8701A';
-      status.textContent = "Something went wrong — please email support@compassbizsolutions.com directly.";
-      e.target.querySelector('button[type=submit]').disabled = false;
+      document.getElementById('btn-next').disabled = false;
+    }
+
+    q.opts.forEach(function(opt) {
+      var btn = document.createElement('button');
+      btn.className = 'btn-opt' + (current === opt ? ' selected' : '');
+      btn.textContent = opt;
+      btn.onclick = function(){ handlePillClick(btn, opt); };
+      popGrid.appendChild(btn);
     });
+
+    q.overflow.forEach(function(opt) {
+      var btn = document.createElement('button');
+      btn.className = 'btn-opt' + (current === opt ? ' selected' : '');
+      btn.textContent = opt;
+      btn.onclick = function(){ handlePillClick(btn, opt); };
+      ovGrid.appendChild(btn);
+    });
+
+    // If returning with a custom "Other" value already typed, restore it
+    if (current && q.opts.indexOf(current) === -1 && q.overflow.indexOf(current) === -1) {
+      var otherBtn = null;
+      ovGrid.querySelectorAll('.btn-opt').forEach(function(b){ if (b.textContent === 'Other') otherBtn = b; });
+      if (otherBtn) {
+        otherBtn.classList.add('selected');
+        otherInput.value = current === 'Other' ? '' : current;
+        otherWrap.style.display = 'block';
+        ovGrid.style.display = 'flex';
+        toggleBtn.textContent = 'Show fewer ←';
+      }
+    }
+
+    opts.appendChild(popGrid);
+    opts.appendChild(toggleBtn);
+    opts.appendChild(ovGrid);
+    opts.appendChild(otherWrap);
+
+    document.getElementById('btn-next').disabled = !current;
+    document.getElementById('btn-next').textContent = diagStep === total-1 ? 'Submit →' : 'Next →';
+  } else {
+    var grid = document.createElement('div');
+    grid.className = 'btn-grid';
+    q.opts.forEach(function(opt) {
+      var btn = document.createElement('button');
+      btn.className = 'btn-opt' + (q.type === 'multi' ? (Array.isArray(current) && current.indexOf(opt) > -1 ? ' selected' : '') : (current === opt ? ' selected' : ''));
+      btn.textContent = opt;
+      btn.onclick = function() {
+        if (q.type === 'multi') {
+          var arr = Array.isArray(diagAnswers[q.id]) ? diagAnswers[q.id].slice() : [];
+          var idx = arr.indexOf(opt);
+          if (idx > -1) arr.splice(idx,1); else arr.push(opt);
+          diagAnswers[q.id] = arr;
+          grid.querySelectorAll('.btn-opt').forEach(function(b,i) {
+            b.classList.toggle('selected', arr.indexOf(q.opts[i]) > -1);
+          });
+          document.getElementById('btn-next').disabled = arr.length === 0;
+        } else {
+          diagAnswers[q.id] = opt;
+          grid.querySelectorAll('.btn-opt').forEach(function(b){ b.classList.remove('selected'); });
+          btn.classList.add('selected');
+          document.getElementById('btn-next').disabled = false;
+        }
+      };
+      grid.appendChild(btn);
+    });
+    opts.appendChild(grid);
+    document.getElementById('btn-next').disabled = q.type === 'multi' ? (!Array.isArray(current) || current.length === 0) : !current;
+    document.getElementById('btn-next').textContent = diagStep === total-1 ? 'Submit →' : 'Next →';
   }
+}
+
+function qNext() {
+  var q = QUESTIONS[diagStep];
+  var isLastTextarea = q.type === 'area' && diagStep === QUESTIONS.length - 1;
+  if (!isLastTextarea && (!diagAnswers[q.id] || (Array.isArray(diagAnswers[q.id]) && diagAnswers[q.id].length === 0))) return;
+  diagStep++;
+  if (diagStep >= QUESTIONS.length) {
+    showEmailCapture();
+  } else {
+    renderQuestion();
+  }
+}
+
+function qBack() {
+  if (diagStep > 0) { diagStep--; renderQuestion(); }
+}
+
+function showEmailCapture() {
+  document.getElementById('diag-questions').style.display = 'none';
+  document.getElementById('diag-email').style.display = 'block';
+}
+
+function submitDiagnostic() {
+  var email = document.getElementById('diag-email-input').value.trim();
+  var err = document.getElementById('diag-email-err');
+  if (!email || !email.includes('@')) {
+    err.textContent = 'Please enter a valid email address.';
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+  document.getElementById('diag-email').style.display = 'none';
+  document.getElementById('diag-loading').style.display = 'block';
+
+  var trade = diagAnswers.trade || 'service trade';
+  var name = document.getElementById('diag-name-input') ? document.getElementById('diag-name-input').value.trim() : '';
+  var phone = document.getElementById('diag-phone-input') ? document.getElementById('diag-phone-input').value.trim() : '';
+  var biz = document.getElementById('diag-biz-input') ? document.getElementById('diag-biz-input').value.trim() : '';
+  var address = document.getElementById('diag-address-input') ? document.getElementById('diag-address-input').value.trim() : '';
+  var answerLines = Object.keys(diagAnswers).map(function(k) {
+    var v = diagAnswers[k];
+    return k + ': ' + (Array.isArray(v) ? v.join(', ') : v);
+  }).join('\n');
+
+  // Server owns the system prompt now — we just send the intake
+  fetch('https://www.compassbizsolutions.com/api/generate-report', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      name: name,
+      biz: biz || (trade + ' business'),
+      trade: trade,
+      answers: diagAnswers
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var report = data.report || data.text || '';
+
+    function getTag(text, tag) {
+      var m = text.match(new RegExp('\\[' + tag + '\\]([\\s\\S]*?)(?=\\[|$)'));
+      return m ? m[1].trim() : '';
+    }
+
+    var parsed = {
+      headline: getTag(report, 'HEADLINE'),
+      whatWeSee: getTag(report, 'WHAT_WE_SEE'),
+      leaks: [
+        parseLeakBlock(getTag(report, 'TOP_LEAK')),
+        parseLeakBlock(getTag(report, 'SECOND_LEAK')),
+        parseLeakBlock(getTag(report, 'THIRD_LEAK'))
+      ].filter(function(l) { return l.name; }),
+      howWeHelp: getTag(report, 'HOW_WE_HELP')
+    };
+
+    document.getElementById('diag-loading').style.display = 'none';
+    showResults(parsed, email);
+
+    // Send email in background
+    if (report) {
+      fetch('https://www.compassbizsolutions.com/api/send-diagnostic', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          phone: phone,
+          biz: biz || (trade + ' business'),
+          address: address,
+          trade: trade,
+          answers: answerLines,
+          report: report
+        })
+      }).catch(function() {});
+    }
+  })
+  .catch(function() {
+    document.getElementById('diag-loading').style.display = 'none';
+    showResults({leaks: [], headline: '', whatWeSee: '', emailSent: true}, email);
+  });
+}
+
+function parseLeakBlock(text) {
+  if (!text) return {};
+  var lines = text.split('\n').map(function(l){ return l.trim(); }).filter(function(l){ return l; });
+
+  // Header line: "**LEAK NAME** — **$X/year**" or plain "LEAK NAME — $X/year"
+  var header = (lines[0] || '').replace(/\*\*/g, '');
+  var di = header.indexOf(' — ');
+  var name = di > 0 ? header.substring(0, di).trim() : header.trim();
+  var range = di > 0 ? header.substring(di + 3).trim() : '';
+
+  var bullets = [];
+  var action = '';
+  for (var i = 1; i < lines.length; i++) {
+    var raw = lines[i];
+    var plain = raw.replace(/\*\*/g, '');
+    if (/^do\s+(this\s+week|first|today|now)\s*:/i.test(plain)) {
+      action = raw.replace(/^\**do\s+(this\s+week|first|today|now)\*{0,2}\s*:\s*/i, '').trim();
+    } else if (/^-\s+/.test(plain)) {
+      if (bullets.length < 2) { // hard cap at 2 bullets — third bullet never shows
+        bullets.push(raw.replace(/^-\s+/, '').trim());
+      }
+    }
+  }
+  return { name: name, range: range, bullets: bullets, action: action };
+}
+
+// Safe markdown-lite renderer: **bold** only, HTML-escaped input
+function renderInline(text) {
+  if (!text) return '';
+  var safe = String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  return safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+}
+
+// Extract bullet lines (lines starting with "- ") from a text block — max 2
+function extractBullets(text) {
+  if (!text) return [];
+  return text.split('\n')
+    .map(function(l){ return l.trim(); })
+    .filter(function(l){ return /^-\s+/.test(l); })
+    .map(function(l){ return l.replace(/^-\s+/, ''); })
+    .slice(0, 2);
+}
+
+// Parse a dollar figure or range — returns {low, high} in dollars
+function parseMoneyRange(text) {
+  if (!text) return { low: 0, high: 0 };
+  var s = String(text).toLowerCase();
+  var hasK = /\d+\s*k\b|\$\d[\d,]*k/.test(s);
+  var nums = [];
+  var re = /(\d[\d,]*)/g;
+  var m;
+  while ((m = re.exec(s)) !== null) {
+    var n = parseInt(m[1].replace(/,/g,''), 10);
+    if (isNaN(n) || n === 0) continue;
+    if (hasK && n < 1000) n *= 1000;
+    nums.push(n);
+  }
+  if (nums.length === 0) return { low: 0, high: 0 };
+  return { low: Math.min.apply(null, nums), high: Math.max.apply(null, nums) };
+}
+
+function showResults(parsed, email) {
+  var wrap = document.getElementById('results-content');
+  var leaks = (parsed && parsed.leaks && parsed.leaks.length) ? parsed.leaks : [];
+
+  var headline = (parsed && parsed.headline) ? parsed.headline : 'Your business is losing money in at least three places right now.';
+  var whatWeSee = (parsed && parsed.whatWeSee) ? parsed.whatWeSee : '';
+  var howWeHelp = (parsed && parsed.howWeHelp) ? parsed.howWeHelp : '';
+
+  // Total across the 3 leaks — handles $108,000 or $30-50K formats
+  var totalLow = 0, totalHigh = 0;
+  leaks.forEach(function(l) {
+    var mr = parseMoneyRange(l.range);
+    totalLow  += mr.low;
+    totalHigh += mr.high;
+  });
+  function fmtK(n) { return '$' + Math.round(n/1000) + ',000'; }
+  var totalStr = '';
+  if (totalLow > 0) {
+    totalStr = (totalLow === totalHigh)
+      ? fmtK(totalLow) + '/year'
+      : fmtK(totalLow) + '-' + fmtK(totalHigh) + '/year';
+  }
+
+  if (!leaks.length) {
+    wrap.innerHTML = '<div style="text-align:center;padding:40px 24px"><div style="font-size:16px;color:var(--muted)">We had trouble analyzing your answers. Your results have been emailed to ' + email + '. Reply to that email for your full report.</div></div>';
+    document.getElementById('diag-results').style.display = 'block';
+    document.getElementById('diag-results').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+
+  var html = '<div class="results-header">'
+    + '<div class="results-eyebrow">Your Free Profit Leak Report</div>'
+    + '<div class="results-headline" style="font-size:clamp(18px,3vw,28px);margin-bottom:16px">' + renderInline(headline) + '</div>'
+    + (totalStr ? '<div class="results-total">' + totalStr + '</div><div class="results-total-label">estimated annual profit leak across your top 3 issues</div>' : '')
+    + '</div>';
+
+  // WHAT WE SEE — bulleted
+  if (whatWeSee) {
+    var wwsBullets = extractBullets(whatWeSee);
+    html += '<div class="wws-box"><div class="wws-label">What We Saw In Your Answers</div>';
+    if (wwsBullets.length) {
+      html += '<ul class="wws-bullets">'
+        + wwsBullets.map(function(b){ return '<li>' + renderInline(b) + '</li>'; }).join('')
+        + '</ul>';
+    } else {
+      html += '<div style="font-size:14.5px;color:var(--navy);line-height:1.55">' + renderInline(whatWeSee) + '</div>';
+    }
+    html += '</div>';
+  }
+
+  // LEAK CARDS — dollar amount as hero, bullets, action box
+  html += '<div class="leak-cards">';
+  leaks.forEach(function(l, i) {
+    var rank = i + 1;
+    var amountHtml = renderInline(l.range || '').replace(/\/year/i, '<span class="leak-amount-suffix">/year</span>');
+    html += '<div class="leak-card leak-card--' + rank + '">'
+      + '<div class="leak-rank">#' + rank + ' Leak</div>'
+      + '<div class="leak-v2-name">' + renderInline(l.name || '') + '</div>'
+      + (l.range ? '<div class="leak-amount">' + amountHtml + '</div>' : '');
+    if (l.bullets && l.bullets.length) {
+      html += '<ul class="leak-bullets">'
+        + l.bullets.map(function(b){ return '<li>' + renderInline(b) + '</li>'; }).join('')
+        + '</ul>';
+    }
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // HOW WE HELP — bulleted on navy background
+  if (howWeHelp) {
+    var hwhBullets = extractBullets(howWeHelp);
+    html += '<div class="hwh-box"><div class="hwh-label">Bottom Line</div>';
+    if (hwhBullets.length) {
+      html += '<ul class="hwh-bullets">'
+        + hwhBullets.map(function(b){ return '<li>' + renderInline(b) + '</li>'; }).join('')
+        + '</ul>';
+    } else {
+      html += '<p style="font-size:14.5px;color:rgba(255,255,255,0.85);line-height:1.6;margin:0">' + renderInline(howWeHelp) + '</p>';
+    }
+    html += '</div>';
+  }
+
+  html += '<div class="results-cta">'
+    + '<h3>Three Ways to Fix It</h3>'
+    + '<p>The free diagnostic showed you where the money is leaking. The fix plans show you exactly what to do about it — built around your numbers and trade.</p>'
+    + '<div class="paywall-grid">'
+    + '  <div class="paywall-card paywall-card--snapshot">'
+    + '    <div class="paywall-price">$99</div>'
+    + '    <div class="paywall-name">Profit Leak Snapshot</div>'
+    + '    <div class="paywall-desc">Your top 3 leaks, the exact math, what to fix, and the guides to do it.</div>'
+    + '    <button class="btn btn-outline paywall-btn" id="results-btn-snapshot">Get Snapshot</button>'
+    + '  </div>'
+    + '  <div class="paywall-card paywall-card--fixkit featured">'
+    + '    <div class="paywall-badge">Most Popular</div>'
+    + '    <div class="paywall-price">$299</div>'
+    + '    <div class="paywall-name">FixKit 30-Day Plan</div>'
+    + '    <div class="paywall-desc">Daily tasks, templates, and tracking to close your top 3 leaks in 30 days.</div>'
+    + '    <button class="btn btn-amber paywall-btn" id="results-btn-fixkit">Get 30-Day Plan</button>'
+    + '  </div>'
+    + '  <div class="paywall-card paywall-card--bundle">'
+    + '    <div class="paywall-badge paywall-badge--value">Best Value</div>'
+    + '    <div class="paywall-price">$599</div>'
+    + '    <div class="paywall-name">FixKit Complete Bundle</div>'
+    + '    <div class="paywall-desc">All 11 leak categories closed over 90 days. Saves $298 vs buying phases separately.</div>'
+    + '    <button class="btn btn-dark paywall-btn" id="results-btn-bundle">Get Full Bundle</button>'
+    + '  </div>'
+    + '</div>'
+    + '<div class="paywall-alt">'
+    + '  <span class="paywall-alt-text">Rather have us build it with you?</span> '
+    + '  <a class="paywall-alt-link" id="results-btn-call" href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" rel="noopener">Book a free scoping call →</a>'
+    + '</div>'
+    + '<p style="font-size:12px;color:var(--muted);margin-top:20px">Your full results were emailed to ' + email + '</p>'
+    + '</div>';
+
+  wrap.innerHTML = html;
+  document.getElementById('results-btn-snapshot').addEventListener('click', function() {
+    openCheckout('snapshot', 'Profit Leak Snapshot — $99');
+  });
+  document.getElementById('results-btn-fixkit').addEventListener('click', function() {
+    openCheckout('fixkit_30', 'FixKit 30-Day — $299');
+  });
+  document.getElementById('results-btn-bundle').addEventListener('click', function() {
+    openCheckout('fixkit_bundle', 'FixKit Complete Bundle — $599');
+  });
+  document.getElementById('diag-results').style.display = 'block';
+  document.getElementById('diag-results').scrollIntoView({behavior:'smooth'});
+}
+
+// ── PADDLE CHECKOUT ───────────────────────────────────────────────────────
+// ── STRIPE CHECKOUT ──────────────────────────────────────────────────────
+    var STRIPE_LINKS = {
+      snapshot:        'https://buy.stripe.com/6oU28kfwo27GbWT2l8dZ608',
+      fixkit_30:       'https://buy.stripe.com/14A28k9809A8gd9gbYdZ609',
+      fixkit_3160:     'https://buy.stripe.com/aFacMYesk7s06Czf7UdZ60a',
+      fixkit_bundle:   'https://buy.stripe.com/6oU00c1Fy7s0bWT2l8dZ60f',
+      snapshot_up_30:  'https://buy.stripe.com/14AbIUgAs3bK3qn2l8dZ60g',
+      fixkit_6190:     'https://buy.stripe.com/eVqaEQdog27G0ebe3QdZ60d',
+      snapshot_up_bun: 'https://buy.stripe.com/eVq28keskfYw6CzcZMdZ60e'
+    };
+
+    function openCheckout(key, label) {
+      var url = STRIPE_LINKS[key];
+      if (url) {
+        window.open(url, '_blank');
+      } else {
+        // fallback: try treating key as a direct URL
+        if (key && key.startsWith('http')) window.open(key, '_blank');
+        else showToast('Checkout unavailable — please contact support@compassbizsolutions.com');
+      }
+    }
+
+// ── MODALS ────────────────────────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(function(m) {
+  m.addEventListener('click', function(e) { if (e.target === m) m.classList.remove('open'); });
+});
+
+function openWaitlist() { openModal('waitlist-modal'); }
+
+function submitWaitlist() {
+  var name = document.getElementById('waitlist-name').value.trim();
+  var email = document.getElementById('waitlist-email').value.trim();
+  var err = document.getElementById('waitlist-err');
+  if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email.'; err.style.display = 'block'; return; }
+  err.style.display = 'none';
+  document.getElementById('waitlist-success').style.display = 'block';
+  fetch('https://fixkit.compassbizsolutions.com/api/waitlist', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({name:name, email:email, source:'trades-site'})
+  }).catch(function(){});
+  setTimeout(function(){ closeModal('waitlist-modal'); }, 2000);
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 4000);
+}
+
+// ── RENDER PAGES ─────────────────────────────────────────────────────────
+function renderDocs() {
+  var grid = document.getElementById('docs-grid');
+  if (!grid) return;
+  grid.innerHTML = DOCS_DATA.map(function(d) {
+    return '<div class="doc-card" data-type="' + d.type + '">'
+      + '<div class="doc-type ' + d.type + '">' + d.type.toUpperCase() + '</div>'
+      + '<div class="doc-icon">' + d.icon + '</div>'
+      + '<div class="doc-title">' + d.title + '</div>'
+      + '<div class="doc-desc">' + d.desc + '</div>'
+      + '<ul class="doc-bullets">' + d.bullets.map(function(b){ return '<li>' + b + '</li>'; }).join('') + '</ul>'
+      + '<div class="doc-guide">' + d.guide + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function filterDocs(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.doc-card').forEach(function(c) {
+    c.style.display = (type === 'all' || c.dataset.type === type) ? '' : 'none';
+  });
+}
+
+function renderTraits() {
+  var grid = document.getElementById('traits-grid');
+  if (!grid) return;
+  grid.innerHTML = TRAITS.map(function(t,i) {
+    return '<div class="trait-card" onclick="toggleTrait(this)">'
+      + '<div class="trait-title">' + t.title + '</div>'
+      + '<div class="trait-short">' + t.short + '</div>'
+      + '<div class="trait-expanded">' + t.expanded + '</div>'
+      + '<div class="trait-toggle">+ Tap to expand</div>'
+      + '</div>';
+  }).join('');
+}
+
+function toggleTrait(el) {
+  el.classList.toggle('expanded');
+  el.querySelector('.trait-toggle').textContent = el.classList.contains('expanded') ? '− Close' : '+ Tap to expand';
+}
+
+function renderAbout() {
+  var el = document.getElementById('about-beats');
+  if (!el) return;
+  el.innerHTML = ABOUT_BEATS.map(function(b) {
+    return '<div class="about-beat" style="border-color:' + b.color + ';background:' + b.color + '08">'
+      + '<div class="about-beat-label" style="color:' + b.color + '">' + b.label + '</div>'
+      + '<div class="about-beat-text">' + b.text + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function renderServices() {
+  var el = document.getElementById('services-list');
+  if (!el) return;
+  var html = '<div style="display:flex;flex-direction:column;gap:20px">';
+  SERVICES_DATA.forEach(function(s, i) {
+    html += '<div style="background:#fff;border:1px solid #dce8f5;border-radius:14px;padding:28px">'
+          + '<div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap">'
+          + '<div style="font-size:36px;flex-shrink:0">' + s.icon + '</div>'
+          + '<div style="flex:1;min-width:200px">'
+          + '<span class="product-tag ' + s.tagClass + '">' + s.tag + '</span>'
+          + '<div class="product-name" style="font-size:22px">' + s.title + '</div>'
+          + '<div style="font-size:14px;color:var(--muted);margin-bottom:14px;line-height:1.6">' + s.short + '</div>'
+          + '<ul class="product-bullets">' + s.bullets.map(function(b){ return '<li>' + b + '</li>'; }).join('') + '</ul>'
+          + (s.closing ? '<div style="font-size:13px;color:var(--muted);margin-bottom:14px;font-style:italic">' + s.closing + '</div>' : '')
+          + '<button class="btn btn-amber" data-svc="' + i + '">' + s.cta + ' →</button>'
+          + '</div></div></div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+  el.querySelectorAll('[data-svc]').forEach(function(btn) {
+    var idx = parseInt(btn.getAttribute('data-svc'));
+    btn.addEventListener('click', function() {
+      var fn = new Function(SERVICES_DATA[idx].onclick);
+      fn();
+    });
+  });
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+renderDocs();
+renderTraits();
+renderAbout();
+renderServices();
+
+// Handle ?buy= params
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var buy = params.get('buy');
+  if (buy === 'snapshot') openCheckout('snapshot', 'Profit Leak Snapshot — $99');
+  else if (buy === '30day') openCheckout('pri_01km957nv9t0wgnb7rxrpzmrkv', 'FixKit 30-Day Plan — $299');
+  else if (buy === 'bundle') openCheckout('pri_01km95651yv87n7bkktg2fmzna', 'FixKit Complete Bundle — $599');
+  
+  // Handle token in URL (post-purchase)
+  var token = params.get('token');
+  if (token) {
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+})();
 </script>
 </body>
 </html>
