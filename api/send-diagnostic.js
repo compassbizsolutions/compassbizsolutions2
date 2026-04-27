@@ -146,12 +146,12 @@ module.exports = async function handler(req, res) {
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
                 <div>
                   <div style="font-size:13px;font-weight:bold;color:#1A2332;">DIY Profit Leak Snapshot</div>
-                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">Your leaks, the math, how to fix them — PDF you keep.</div>
+                  <div style="font-size:12px;color:#6B7A90;margin-top:2px;">Your top 3 leaks, the math, what to fix, and the tools to do it.</div>
                 </div>
                 <div style="font-size:22px;font-weight:bold;color:#1B2E4B;flex-shrink:0;margin-left:12px;">$99</div>
               </div>
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                Answer our in-depth intake and get a personalized PDF report with your top 3 leaks, the specific dollar math, and step-by-step fixes for each one. No portal, no daily tasks — just your numbers and what to do about them. Includes a <strong>$100 upgrade credit</strong> toward FixKit if you want the full experience later.
+                Answer our in-depth intake and get a personalized report with your top 3 leaks, the specific dollar math, 2-3 concrete fixes for each one, and the Fix-It Guides and templates matched to your leaks. No portal, no daily tasks — just your numbers and what to do about them. Your <strong>$99 is credited</strong> toward any FixKit plan if you want the full experience later.
               </div>
               <a href="https://buy.stripe.com/6oU28kfwo27GbWT2l8dZ608" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My Snapshot — $99 →</a>
             </div>
@@ -167,7 +167,7 @@ module.exports = async function handler(req, res) {
                 <div style="font-size:22px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$299</div>
               </div>
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                A personalized 30-day plan targeting your specific leaks — daily 15-20 minute tasks, built-in calculators, Fix-It Guides, process templates, and a progress dashboard. Everything lives in <strong>FixKit</strong>, your personal portal. Log in from your phone, track your numbers, ask questions anytime. <strong>$199 if upgrading from the Snapshot.</strong>
+                A personalized 30-day plan targeting your specific leaks — daily 15-20 minute tasks, calculators pre-loaded with your numbers, Fix-It Guides and process docs matched to your leaks, and a progress dashboard. Everything lives in <strong>FixKit</strong>, your personal portal. Log in from your phone, track your numbers, ask Jen anything. <strong>$99 credited if upgrading from the Snapshot.</strong>
               </div>
               <a href="https://buy.stripe.com/14A28k9809A8gd9gbYdZ609" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My 30-Day Plan — $299 →</a>
             </div>
@@ -183,7 +183,7 @@ module.exports = async function handler(req, res) {
                 <div style="font-size:22px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$599</div>
               </div>
               <div style="font-size:12px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                Everything in the 30-day plan plus your full 60 and 90-day roadmap — all three phases loaded into FixKit from day one. Biggest leaks first, next tier second, remaining third. One payment, all 90 days, saves $298. <strong>$499 if upgrading from the Snapshot.</strong>
+                Everything in the 30-day plan plus your full 60 and 90-day roadmap — all three phases loaded into FixKit from day one. Biggest leaks first, next tier second, remaining third. All docs and calculators unlocked. One payment, all 90 days, saves $298. <strong>$99 credited if upgrading from the Snapshot.</strong>
               </div>
               <a href="https://buy.stripe.com/6oU00c1Fy7s0bWT2l8dZ60f" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full 30/60/90 Bundle — $599 →</a>
             </div>
