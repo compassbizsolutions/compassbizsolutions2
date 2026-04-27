@@ -296,8 +296,8 @@ footer{background:#0d1622;padding:28px 24px}
 
 <!-- PARENT BANNER -->
 <div class="parent-banner">
-  <span>Part of <a href="/">Compass Business Solutions</a></span>
-  <a href="/" class="parent-banner-back">← compassbizsolutions.com</a>
+  <span>Part of <a href="/trades">Compass Business Solutions</a></span>
+  <a href="/trades" class="parent-banner-back">← compassbizsolutions.com/trades</a>
 </div>
 
 <!-- NAV -->
@@ -322,7 +322,7 @@ footer{background:#0d1622;padding:28px 24px}
       </div>
     </button>
     <div class="nav-links">
-      <a href="/" class="nav-link" style="color:rgba(255,255,255,0.35);font-size:12px">← Compass</a>
+      <a href="/trades" class="nav-link" style="color:rgba(255,255,255,0.35);font-size:12px">← Compass</a>
       <button class="nav-link" onclick="showPage('home');scrollToEl('diagnostic')">Run Diagnostic</button>
       <button class="nav-link" onclick="showPage('services')">What We Do</button>
       
@@ -338,7 +338,7 @@ footer{background:#0d1622;padding:28px 24px}
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="/" class="mobile-link" style="color:rgba(255,255,255,0.4);font-size:13px">← Back to Compass Business Solutions</a>
+  <a href="/trades" class="mobile-link" style="color:rgba(255,255,255,0.4);font-size:13px">← Back to Compass Business Solutions</a>
   <button class="mobile-link" onclick="showPage('home');scrollToEl('diagnostic');closeMobile()">Run Diagnostic</button>
   <button class="mobile-link" onclick="showPage('services');closeMobile()">What We Do</button>
   <button class="mobile-link" onclick="showPage('guides');closeMobile()">Guides & Docs</button>
@@ -613,7 +613,7 @@ footer{background:#0d1622;padding:28px 24px}
   <div class="footer-inner">
     <div class="footer-copy">© 2025 Compass Business Solutions · Jenifer Voiselle</div>
     <div class="footer-links">
-      <a href="/" class="footer-link">← Compass Home</a>
+      <a href="/trades" class="footer-link">← Compass</a>
       <a href="/pricing" class="footer-link">Pricing</a>
       <a href="/terms-and-conditions" class="footer-link">Terms</a>
       <a href="/privacy-policy" class="footer-link">Privacy</a>
@@ -664,7 +664,7 @@ const QUESTIONS = [
   {id:'tracking',q:'How do you track jobs from estimate to invoice?',type:'buttons',opts:['Paper or memory','QuickBooks only','Software (ServiceTitan, Jobber etc)','Spreadsheets','We do not track it']},
   {id:'partsruns',q:'How often do your guys make unplanned parts runs?',type:'buttons',opts:['Almost never','1-2 per week','3-5 per week','Daily','Multiple times a day']},
   {id:'invoicetiming',q:'When does the invoice go out after a job closes?',type:'buttons',opts:['Same day','Within 2-3 days','End of the week','Whenever I get to it','Often weeks later']},
-  {id:'repeat',q:'How much of your work is repeat vs new customers?',type:'buttons',opts:['Mostly new','About 50/50','Mostly repeat','We have maintenance agreements']},
+  {id:'repeat',q:'How much of your work is repeat vs new customers?',type:'buttons',opts:['Mostly new','About 50/50','Mostly repeat']},
   {id:'rates',q:'When did you last raise your rates?',type:'buttons',opts:['Last 6 months','1-2 years ago','3-5 years ago','5+ years ago','Never']},
   {id:'noshows',q:'How many no-shows or last-minute cancellations do you get per week?',type:'buttons',opts:['Almost none','1-2','3-5','More than 5','Way too many']},
   {id:'timewaste',q:'What is eating your time that is not billable? Pick all that apply.',type:'multi',opts:['Chasing unpaid invoices','Customer complaints','Estimating and quoting','Paperwork and admin','Parts runs','Phone calls while on jobs','Scheduling and rescheduling','Training new hires']},
