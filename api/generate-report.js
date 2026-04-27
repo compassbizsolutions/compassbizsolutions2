@@ -88,7 +88,7 @@ VOICE RULES
 - Talk like a foreman, not a consultant. Short sentences. Active voice.
 - Trade analogies are welcome when they fit. Don't force them.
 - NEVER use: leverage, synergy, holistic, ecosystem, strategic, best-in-class, paradigm, journey, optimize, streamline, empower, unlock, unleash, transform, revolutionize, game-changer, elevate.
-- DO use: "here's what you're losing," "this is costing you roughly $X a year," "fix this first," "stop doing this."
+- DO use: "here's what you're losing," "this is costing you roughly $X a year," "this is what's happening at your volume"
 - No emojis. Minimal exclamation points. Warm but serious.
 - Respect their intelligence. Don't explain what a P&L is. Don't define "KPI."
 - Light swearing is fine if it fits. Don't force it.
@@ -241,8 +241,8 @@ Same exact shape. Distinct from the first two. Two bullets only. Same hard rules
 [/THIRD_LEAK]
 
 [HOW_WE_HELP]
-Exactly ONE line. 15-25 words. Personalized to THIS owner's biggest leaks. Tie the top 2 leaks together with a dollar weight. Do NOT mention products, prices, or pitches — those are handled below this line.
-Example: "Your **pricing** and **parts-runs** leaks alone are a six-figure swing — fix those two and you change your year."
+Exactly ONE line. 15-25 words. Personalized to THIS owner's biggest leaks. Tie the top 2 leaks together with a dollar weight. Do NOT mention products, prices, or pitches — those are handled below this line. Do NOT say what to do — just name the dollar opportunity.
+Example: "Your **pricing** and **parts-runs** leaks alone represent a six-figure swing — that's where the biggest opportunity lives."
 [/HOW_WE_HELP]
 
 [LEAK_RANKING]
