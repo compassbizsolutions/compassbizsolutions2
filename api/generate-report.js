@@ -228,16 +228,16 @@ If they mentioned burnout/family strain in the free text, replace bullet 3 with 
 Follow this EXACT shape. Nothing else. Two bullets, NO labels at the start of each bullet. Plain prose.
 
 **LEAK NAME IN CAPS** — **$X,XXX/year** or **$X-YK/year**
-- [The symptom they're showing — 8-12 words plain prose. Optional bold on ONE key number. No fix language.]
-- [The math in one line. Bold ONLY the final result. e.g., "30 jobs × $600 × 12% × 50 wks = **$108K/year**"]
+- [The symptom they're showing — 8-12 words plain prose. Optional bold on ONE key number. ZERO fix language. ZERO solution hints. Just what is happening.]
+- [The math ONLY. One line. No commentary after the equals sign. Bold ONLY the final dollar result. e.g., "8 techs × 1 hr × 250 days × $100 = **$200K/year**". NOTHING after the dollar amount. No "which means", no "that's", no explanation of what to do about it.]
 [/TOP_LEAK]
 
 [SECOND_LEAK]
-Same exact shape as TOP_LEAK. Must be a DISTINCT category. Two bullets only.
+Same exact shape as TOP_LEAK. Must be a DISTINCT category. Two bullets only. Same hard rules — no fix language, no solution hints, math bullet ends at the dollar amount.
 [/SECOND_LEAK]
 
 [THIRD_LEAK]
-Same exact shape. Distinct from the first two. Two bullets only.
+Same exact shape. Distinct from the first two. Two bullets only. Same hard rules.
 [/THIRD_LEAK]
 
 [HOW_WE_HELP]
