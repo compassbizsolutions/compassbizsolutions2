@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Request a Quote — Compass Business Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#1B2E4B;--navy-dark:#111E31;--amber:#C8701A;--teal:#1E6B45;--muted:#5A7291;--border:rgba(61,107,158,0.15);--light:#F4F7FC;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--light);color:var(--navy);min-height:100vh}
+nav{background:var(--navy-dark);padding:0 24px;position:sticky;top:0;z-index:50}
+.nav-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:58px}
+.nav-brand{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:white;letter-spacing:2px;text-decoration:none;text-transform:uppercase}
+.nav-back{font-size:12px;color:rgba(255,255,255,0.4);text-decoration:none;transition:color .15s}
+.nav-back:hover{color:rgba(255,255,255,0.7)}
+.page{max-width:680px;margin:0 auto;padding:48px 24px}
+.page-eye{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--amber);text-transform:uppercase;margin-bottom:10px}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,52px);font-weight:900;color:var(--navy);text-transform:uppercase;line-height:.9;margin-bottom:10px}
+.page-sub{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:36px}
+.form-card{background:white;border-radius:14px;padding:32px;box-shadow:0 1px 4px rgba(27,46,75,0.08)}
+.field{margin-bottom:20px}
+.field-label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px}
+.field-required{color:var(--amber);margin-left:2px}
+.field-input{width:100%;background:var(--light);border:1.5px solid var(--border);border-radius:9px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--navy);outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none}
+.field-input:focus{border-color:var(--amber);background:white}
+.field-input::placeholder{color:rgba(91,114,145,0.45)}
+select.field-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A7291' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer}
+textarea.field-input{min-height:110px;resize:vertical}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field-hint{font-size:11px;color:var(--muted);margin-top:5px}
+.section-divider{border:none;border-top:1px solid var(--border);margin:24px 0}
+.section-label{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:16px}
+.btn-submit{width:100%;background:var(--amber);color:white;border:none;border-radius:9px;padding:14px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:opacity .15s;margin-top:8px}
+.btn-submit:hover{opacity:.88}
+.btn-submit:disabled{opacity:.4;cursor:not-allowed}
+.form-status{margin-top:14px;font-size:13px;text-align:center;display:none;line-height:1.6;padding:12px;border-radius:8px}
+.form-status.success{background:rgba(30,107,69,0.08);color:var(--teal);border:1px solid rgba(30,107,69,0.2)}
+.form-status.error{background:rgba(200,112,26,0.08);color:var(--amber);border:1px solid rgba(200,112,26,0.2)}
+.aside-callout{background:var(--navy);border-radius:12px;padding:22px 24px;margin-top:24px}
+.aside-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:white;text-transform:uppercase;margin-bottom:8px}
+.aside-text{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.65}
+.aside-text a{color:var(--amber);text-decoration:none}
+.aside-rate{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:var(--amber);margin:10px 0 4px}
+.aside-rate-sub{font-size:12px;color:rgba(255,255,255,0.35)}
+@media(max-width:560px){.field-grid{grid-template-columns:1fr}.page{padding:32px 16px}.form-card{padding:22px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-brand">Compass</a>
+    <a href="/pricing" class="nav-back">← Back to Pricing</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-eye">Compass Business Solutions</div>
+  <h1 class="page-title">Request a Quote</h1>
+  <p class="page-sub">Tell us what you need and we'll get back to you within 24 hours with a clear scope and price. No obligation, no pressure.</p>
+
+  <div class="form-card">
+    <div class="section-label">About You</div>
+    <form id="quote-form" onsubmit="handleQuote(event)">
+      <!-- Honeypot — hidden from humans, bots fill it in -->
+      <div style="display:none;position:absolute;left:-9999px" aria-hidden="true">
+        <input type="text" name="website" tabindex="-1" autocomplete="off"/>
+      </div>
+      <div class="field-grid">
+        <div class="field">
+          <label class="field-label">Your Name<span class="field-required">*</span></label>
+          <input class="field-input" type="text" name="name" placeholder="First and last name" required/>
+        </div>
+        <div class="field">
+          <label class="field-label">Business Name</label>
+          <input class="field-input" type="text" name="business" placeholder="Your business"/>
+        </div>
+      </div>
+      <div class="field-grid">
+        <div class="field">
+          <label class="field-label">Email<span class="field-required">*</span></label>
+          <input class="field-input" type="email" name="email" placeholder="your@email.com" required/>
+        </div>
+        <div class="field">
+          <label class="field-label">Phone</label>
+          <input class="field-input" type="tel" name="phone" placeholder="(555) 000-0000"/>
+        </div>
+      </div>
+
+      <hr class="section-divider"/>
+      <div class="section-label">Your Project</div>
+
+      <div class="field">
+        <label class="field-label">Service Needed<span class="field-required">*</span></label>
+        <select class="field-input" name="service" required>
+          <option value="">Select a service...</option>
+          <optgroup label="Business Support Services">
+            <option>Appointment confirmation sequence</option>
+            <option>Customer follow-up sequence</option>
+            <option>Review & referral outreach campaign</option>
+            <option>Estimate & invoice follow-up sequence</option>
+            <option>Seasonal or re-engagement campaign</option>
+            <option>Spreadsheet creation or editing</option>
+            <option>Database creation & administration</option>
+            <option>PowerPoint or marketing materials</option>
+            <option>Multiple business support services</option>
+          </optgroup>
+          <optgroup label="Consulting & Development">
+            <option>Business process consulting</option>
+            <option>App development</option>
+            <option>Web development</option>
+            <option>AI integration</option>
+            <option>Workflow & automation</option>
+            <option>Data & reporting systems</option>
+          </optgroup>
+          <option value="not-sure">Not sure — help me figure it out</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Describe Your Project<span class="field-required">*</span></label>
+        <textarea class="field-input" name="message" placeholder="What do you need done? The more detail the better — what's the problem you're trying to solve, what do you have already, and what does done look like?" required></textarea>
+      </div>
+
+      <div class="field-grid">
+        <div class="field">
+          <label class="field-label">Timeline</label>
+          <select class="field-input" name="timeline">
+            <option value="">No rush</option>
+            <option>ASAP — this week</option>
+            <option>Within 2 weeks</option>
+            <option>This month</option>
+            <option>Next 2–3 months</option>
+            <option>Just exploring for now</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Approximate Budget</label>
+          <select class="field-input" name="budget">
+            <option value="">Prefer a quote first</option>
+            <option>Under $500</option>
+            <option>$500 – $1,000</option>
+            <option>$1,000 – $2,500</option>
+            <option>$2,500 – $5,000</option>
+            <option>$5,000+</option>
+            <option>Monthly recurring — open to discuss</option>
+          </select>
+          <div class="field-hint">Ad hoc work starts at $50/hr. Larger projects quoted per scope.</div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="quote-btn">Send Quote Request →</button>
+      <div class="form-status" id="quote-status"></div>
+    </form>
+  </div>
+
+  <div class="aside-callout">
+    <div class="aside-title">Need to Talk First?</div>
+    <div class="aside-text">
+      Not sure exactly what you need? That's what the free scoping call is for. 20 minutes, no obligation — we'll figure out the right approach together.<br><br>
+      <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call">Book a free 20-minute call →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function handleQuote(e) {
+  e.preventDefault();
+  var form   = e.target;
+  var btn    = document.getElementById('quote-btn');
+  var status = document.getElementById('quote-status');
+  var data   = new FormData(form);
+  var body   = {};
+  data.forEach(function(v, k) { body[k] = v; });
+
+  btn.disabled    = true;
+  btn.textContent = 'Sending...';
+  status.style.display = 'none';
+
+  fetch('https://fixkit.compassbizsolutions.com/api/contact', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({
+      name:     body.name     || '',
+      email:    body.email    || '',
+      business: body.business || '',
+      phone:    body.phone    || '',
+      service:  body.service  || '',
+      message:  body.message  || '',
+      timeline: body.timeline || '',
+      budget:   body.budget   || '',
+      source:   'quote-form',
+      category: 'quote_request',
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.success) {
+      status.className   = 'form-status success';
+      status.style.display = 'block';
+      status.textContent = "Got it — I'll review your request and get back to you within 24 hours. Check your inbox for a confirmation.";
+      form.reset();
+      btn.textContent = 'Sent ✓';
+    } else {
+      throw new Error(d.error || 'Failed');
+    }
+  })
+  .catch(function() {
+    status.className     = 'form-status error';
+    status.style.display = 'block';
+    status.textContent   = "Something went wrong — please email jen@compassbizsolutions.com directly.";
+    btn.disabled    = false;
+    btn.textContent = 'Send Quote Request →';
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Compass Business Solutions — Services & Pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#1B2E4B;--navy-dark:#111E31;--amber:#C8701A;--teal:#1E6B45;--muted:#5A7291;--border:rgba(61,107,158,0.15);--light:#F4F7FC;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--light);color:var(--navy)}
+.hdr{background:var(--navy-dark);padding:48px 40px 40px;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 100% 50%,rgba(200,112,26,0.08),transparent);pointer-events:none}
+.hdr-inner{max-width:960px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;position:relative}
+.hdr-eye{font-size:10px;font-weight:700;letter-spacing:4px;color:var(--amber);text-transform:uppercase;margin-bottom:10px}
+.hdr-name{font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,5vw,52px);font-weight:900;color:white;text-transform:uppercase;line-height:.9;letter-spacing:-1px;margin-bottom:8px}
+.hdr-sub{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.6;max-width:400px}
+.hdr-right{text-align:right}
+.hdr-date{font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:6px}
+.hdr-contact{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.8}
+.hdr-contact a{color:var(--amber);text-decoration:none}
+.body{max-width:960px;margin:0 auto;padding:40px}
+.sec{margin-bottom:48px}
+.sec-hdr{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--navy)}
+
+.sec-eye{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--amber);text-transform:uppercase;margin-bottom:2px}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--navy);text-transform:uppercase}
+.sec-note{font-size:11px;color:var(--muted);margin-left:auto;text-align:right;line-height:1.5;max-width:220px}
+.pt{width:100%;border-collapse:collapse;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(27,46,75,0.06)}
+.pt th{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:10px 16px;text-align:left;background:white;border-bottom:1px solid var(--border)}
+.pt th.right{text-align:right}
+.pt td{padding:12px 16px;border-bottom:1px solid var(--border);vertical-align:middle;background:white}
+.pt tr:last-child td{border-bottom:none}
+.pt tr:hover td{background:#FAFBFD}
+.pt-name{font-size:13px;font-weight:600;color:var(--navy);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pt-desc{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.5}
+.pt-price{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);white-space:nowrap;text-align:right}
+.pt-price-sub{font-size:10px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400;display:block;text-align:right;margin-top:1px}
+.pt-free{color:var(--teal)!important}
+.row-highlight td{background:#FFFBEB}
+.row-highlight:hover td{background:#FFF3D0!important}
+.row-sub td{background:var(--light)}
+.row-sub .pt-name{padding-left:14px;position:relative}
+.row-sub .pt-name::before{content:'↳';position:absolute;left:0;color:var(--muted);font-size:11px;top:1px}
+.bdg{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;border-radius:99px;white-space:nowrap}
+.bdg-pop{background:rgba(200,112,26,0.1);color:var(--amber);border:1px solid rgba(200,112,26,0.25)}
+.bdg-val{background:rgba(30,107,69,0.08);color:var(--teal);border:1px solid rgba(30,107,69,0.2)}
+.bdg-soon{background:rgba(61,107,158,0.08);color:var(--muted);border:1px solid var(--border)}
+.callout{border-radius:10px;padding:18px 22px;margin-top:14px}
+.callout.dark{background:var(--navy)}
+.callout.amber{background:rgba(200,112,26,0.06);border:1px solid rgba(200,112,26,0.2)}
+.callout.teal{background:rgba(30,107,69,0.06);border:1px solid rgba(30,107,69,0.2)}
+
+.callout-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;text-transform:uppercase;margin-bottom:3px}
+.callout.dark .callout-title{color:white}
+.callout.amber .callout-title{color:var(--amber)}
+.callout.teal .callout-title{color:var(--teal)}
+.callout-text{font-size:12px;line-height:1.65}
+.callout.dark .callout-text{color:rgba(255,255,255,0.5)}
+.callout.amber .callout-text,.callout.teal .callout-text{color:var(--muted)}
+.callout-text strong{color:var(--navy)}
+.callout.dark .callout-text strong{color:white}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.compare-card{background:white;border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(27,46,75,0.06)}
+.compare-card.featured{border:2px solid var(--amber)}
+.compare-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:4px}
+.compare-price{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--amber);margin-bottom:4px}
+.compare-price-sub{font-size:11px;color:var(--muted);margin-bottom:12px}
+.compare-item{font-size:12px;color:var(--muted);padding:5px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.compare-item:last-child{border-bottom:none}
+.compare-item::before{content:'✓';color:var(--teal);font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+.ftr{background:var(--navy-dark);padding:32px 40px}
+.ftr-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.ftr-left{font-size:12px;color:rgba(255,255,255,0.3);line-height:1.8}
+.ftr-left strong{color:rgba(255,255,255,0.55)}
+.ftr-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-block;padding:11px 22px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:1px;text-decoration:none;text-transform:uppercase;transition:opacity .15s}
+.btn-primary{background:var(--amber);color:white}
+.btn-primary:hover{opacity:.88}
+.btn-outline{background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.55)}
+.btn-outline:hover{border-color:rgba(255,255,255,0.4);color:white}
+@media(max-width:680px){.body{padding:24px 16px}.hdr{padding:32px 20px}.hdr-right{text-align:left}.two-col{grid-template-columns:1fr}.sec-note{display:none}.ftr{padding:24px 20px}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-inner">
+    <div>
+      <div class="hdr-eye">Compass Business Solutions</div>
+      <div class="hdr-name">Services &<br>Pricing Guide</div>
+      <div class="hdr-sub">Consulting, business support, field service app, and trades profit improvement — everything Compass offers in one place.</div>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-date">Effective April 2026</div>
+      <div class="hdr-contact">
+        <a href="https://www.compassbizsolutions.com">compassbizsolutions.com</a><br>
+        <a href="mailto:jen@compassbizsolutions.com">jen@compassbizsolutions.com</a><br>
+        <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call">Book a free 20-min call →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- CONSULTING -->
+<div class="sec">
+  <div class="sec-hdr">
+    <div>
+      <div class="sec-eye">Direct Access</div>
+      <div class="sec-title">Consulting Calls</div>
+    </div>
+    <div class="sec-note">Scheduled via Calendly<br>Paid at time of booking</div>
+  </div>
+  <table class="pt">
+    <thead><tr><th style="width:65%">Session</th><th class="right">Price</th></tr></thead>
+    <tbody>
+      <tr><td><div class="pt-name">Free Scoping Call — 20 Minutes</div><div class="pt-desc">Walk through your situation together. Figure out the right next step. No pitch, no pressure.</div></td><td><div class="pt-price pt-free">FREE</div></td></tr>
+      <tr><td><div class="pt-name">Strategy Call — 60 Minutes</div><div class="pt-desc">Deep dive into your business operations. Identify priorities, build an action plan, answer your toughest questions.</div></td><td><div class="pt-price">$79</div><div class="pt-price-sub">credited toward any purchase</div></td></tr>
+      <tr><td><div class="pt-name">Working Session — 90 Minutes</div><div class="pt-desc">Hands-on build session. We work through a specific problem together — a system, a process, a tool, a workflow.</div></td><td><div class="pt-price">$149</div><div class="pt-price-sub">credited toward any purchase</div></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- BUSINESS SUPPORT SERVICES -->
+<div class="sec">
+  <div class="sec-hdr">
+    <div>
+      <div class="sec-eye">Operational Support</div>
+      <div class="sec-title">Business Support Services</div>
+    </div>
+    <div class="sec-note">Admin replacement<br>Not admin help</div>
+  </div>
+
+  <div class="callout amber" style="margin-bottom:16px">
+    <div>
+      <div class="callout-title">You Don't Need to Hire Someone. You Need This.</div>
+      <div class="callout-text">A full-time admin costs <strong>$3,000–4,000/month</strong> fully loaded — salary, taxes, benefits, training, turnover. Our Business Support Plans start at <strong>$250/month</strong>. Same output. No HR headaches. No sick days. No two weeks notice.</div>
+    </div>
+  </div>
+
+  <table class="pt">
+    <thead><tr><th style="width:65%">Service</th><th class="right">Price</th></tr></thead>
+    <tbody>
+      <tr><td colspan="2" style="background:var(--light);padding:7px 16px;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border)">Ad Hoc — No Commitment</td></tr>
+      <tr><td><div class="pt-name">Ad Hoc Support</div><div class="pt-desc">Small one-off tasks — spreadsheet edits, a quick deck, a follow-up sequence, data cleanup. Billed by the hour, no minimum.</div></td><td><div class="pt-price">$50<span style="font-size:12px;font-weight:400;color:var(--muted)">/hr</span></div></td></tr>
+      <tr><td><div class="pt-name">Project Work</div><div class="pt-desc">Larger projects — database builds, full campaign sequences, custom reporting systems, marketing packages. Quoted per project.</div></td><td><div class="pt-price pt-amber"><a href="/quote" style="color:var(--amber);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800">Request a Quote →</a></div></td></tr>
+      <tr><td colspan="2" style="background:var(--light);padding:7px 16px;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border)">Recurring Plans — Monthly</td></tr>
+      <tr><td><div class="pt-name">Single Task Plan <span class="bdg bdg-pop">Most Popular</span></div><div class="pt-desc">One recurring weekly task handled for you — payroll processing, weekly reporting, invoice follow-up, whatever's eating your time. Consistent. Done. Every week.</div></td><td><div class="pt-price">$250<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div></td></tr>
+      <tr class="row-highlight"><td><div class="pt-name">Small Business Admin Package</div><div class="pt-desc">2–3 recurring tasks per week. Appointment confirmations + follow-up sequences + one additional task of your choice. The core admin work that keeps falling to the bottom of your list.</div></td><td><div class="pt-price">$450<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div></td></tr>
+      <tr><td><div class="pt-name">Full Admin Support <span class="bdg bdg-val">Best Value</span></div><div class="pt-desc">Unlimited tasks up to 20 hours/month. All recurring sequences, reports, spreadsheets, decks, and outreach campaigns handled. Effectively a part-time admin — at a fraction of the cost.</div></td><td><div class="pt-price">$799<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div></td></tr>
+      <tr><td colspan="2" style="background:var(--light);padding:7px 16px;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border)">What's Covered</td></tr>
+      <tr><td colspan="2"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:4px 0">
+        <div style="font-size:12px;color:var(--muted)">— Appointment confirmation sequences</div>
+        <div style="font-size:12px;color:var(--muted)">— Customer follow-up after jobs</div>
+        <div style="font-size:12px;color:var(--muted)">— Review & referral outreach</div>
+        <div style="font-size:12px;color:var(--muted)">— Estimate & invoice follow-up</div>
+        <div style="font-size:12px;color:var(--muted)">— Seasonal & re-engagement campaigns</div>
+        <div style="font-size:12px;color:var(--muted)">— Spreadsheet creation & editing</div>
+        <div style="font-size:12px;color:var(--muted)">— Database creation & administration</div>
+        <div style="font-size:12px;color:var(--muted)">— PowerPoint & marketing materials</div>
+        <div style="font-size:12px;color:var(--muted)">— New customer welcome sequences</div>
+        <div style="font-size:12px;color:var(--muted)">— Weekly reporting & data summaries</div>
+      </div></td></tr>
+    </tbody>
+  </table>
+  <div class="callout dark" style="margin-top:16px">
+    <div>
+      <div class="callout-title">Month-to-Month. No Contracts.</div>
+      <div class="callout-text">All recurring plans run month-to-month. Cancel anytime with 30 days notice. We'll provide a formal service agreement outlining scope, deliverables, and turnaround times — so you always know exactly what you're getting. <strong>Not sure what you need?</strong> <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call">Book a free 20-minute call</a> and we'll figure it out together.</div>
+    </div>
+  </div>
+</div>
+
+<!-- THE MATH -->
+<div class="sec">
+  <div class="sec-hdr">
+    <div>
+      <div class="sec-eye">The Real Cost Comparison</div>
+      <div class="sec-title">Admin Hire vs Compass</div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="compare-card">
+      <div class="compare-name">Hiring an Admin</div>
+      <div class="compare-price" style="color:var(--navy)">$3,500<span style="font-size:14px;font-weight:400;color:var(--muted)">/mo</span></div>
+      <div class="compare-price-sub" style="color:var(--muted)">Fully loaded — salary, taxes, benefits</div>
+      <div class="compare-item" style="color:var(--muted)">$18–22/hr × 40 hrs/week</div>
+      <div class="compare-item" style="color:var(--muted)">Payroll taxes (~15% of wages)</div>
+      <div class="compare-item" style="color:var(--muted)">Health benefits ($400–600/mo)</div>
+      <div class="compare-item" style="color:var(--muted)">Training time (2–4 weeks)</div>
+      <div class="compare-item" style="color:var(--muted)">Sick days, PTO, turnover risk</div>
+      <div class="compare-item" style="color:var(--muted)">HR, onboarding, management overhead</div>
+    </div>
+    <div class="compare-card featured">
+      <div class="compare-name">Compass Business Support</div>
+      <div class="compare-price">From $250<span style="font-size:14px;font-weight:400;color:var(--muted)">/mo</span></div>
+      <div class="compare-price-sub">No HR. No benefits. No sick days.</div>
+      <div class="compare-item">Single recurring task handled every week</div>
+      <div class="compare-item">No payroll taxes or benefits</div>
+      <div class="compare-item">No training — we already know what to do</div>
+      <div class="compare-item">No sick days, no PTO, no turnover</div>
+      <div class="compare-item">Month-to-month — cancel anytime</div>
+      <div class="compare-item">Scales up or down as your needs change</div>
+    </div>
+  </div>
+</div>
+
+<!-- FIELDKIT -->
+<div class="sec">
+  <div class="sec-hdr">
+    <div>
+      <div class="sec-eye">Field Operations · Coming May 2026</div>
+      <div class="sec-title">FieldKit — Field Service App</div>
+    </div>
+    <div class="sec-note">Monthly subscription<br>No contracts · Cancel anytime</div>
+  </div>
+  <table class="pt">
+    <thead><tr><th style="width:65%">Plan</th><th class="right">Price</th></tr></thead>
+    <tbody>
+      <tr><td><div class="pt-name">Base Plan</div><div class="pt-desc">Job management, scheduling, invoicing (auto-send or approve-first), up to 3 techs, customer records, basic reporting.</div></td><td><div class="pt-price pt-amber">$79<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div></td></tr>
+      <tr class="row-highlight"><td><div class="pt-name">Pro Plan <span class="bdg bdg-pop">Most Popular</span></div><div class="pt-desc">Everything in Base + profit tracking per job, revenue benchmarks, weekly profit summary, appointment confirmation sequences (SMS + email), up to 5 techs.</div></td><td><div class="pt-price pt-amber">$109<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div></td></tr>
+      <tr><td><div class="pt-name">Pro + Modules</div><div class="pt-desc">Pro + AI Quoting + Compass Methodology. Full profit intelligence layer.</div></td><td><div class="pt-price pt-amber">$149<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div></td></tr>
+      <tr><td colspan="2" style="background:var(--light);padding:7px 16px;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border)">Add-Ons</td></tr>
+      <tr class="row-sub"><td><div class="pt-name">AI Quoting Module</div></td><td><div class="pt-price">+$20<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div></td></tr>
+      <tr class="row-sub"><td><div class="pt-name">Compass Methodology <span class="bdg bdg-val">Free for FixKit customers</span></div></td><td><div class="pt-price">+$20<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div></td></tr>
+      <tr class="row-sub"><td><div class="pt-name">Auto-Confirm (SMS + email sequences)</div></td><td><div class="pt-price">+$49<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div></td></tr>
+      <tr class="row-sub"><td><div class="pt-name">Payroll Prep</div></td><td><div class="pt-price">+$15<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div></td></tr>
+      <tr><td colspan="2" style="background:var(--light);padding:7px 16px;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border)">Tech Seat Upgrades</td></tr>
+      <tr class="row-sub"><td><div class="pt-name">Up to 10 techs</div></td><td><div class="pt-price">+$30<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div></td></tr>
+      <tr class="row-sub"><td><div class="pt-name">Up to 20 techs</div></td><td><div class="pt-price">+$60<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div></td></tr>
+      <tr class="row-sub"><td><div class="pt-name">Unlimited techs</div></td><td><div class="pt-price">+$100<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></div></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- FIXKIT LINK -->
+<div class="sec">
+  <div class="sec-hdr">
+    <div>
+      <div class="sec-eye">Trades Business Improvement</div>
+      <div class="sec-title">FixKit — Profit Leak Plans</div>
+    </div>
+    <div class="sec-note">One-time · No subscription<br>$99 credited toward any upgrade</div>
+  </div>
+  <div class="callout amber">
+    <div>
+      <div class="callout-title">Built for Trades Companies</div>
+      <div class="callout-text">FixKit is a complete profit leak system built specifically for trades and field service businesses — HVAC, plumbing, electrical, roofing, painting, and more. Free diagnostic through full 90-day plan. Full pricing and product details at <a href="https://www.compassbizsolutions.com/trades"><strong>compassbizsolutions.com/trades</strong></a>.</div>
+    </div>
+  </div>
+  <table class="pt" style="margin-top:14px">
+    <thead><tr><th style="width:65%">Product</th><th class="right">Price</th></tr></thead>
+    <tbody>
+      <tr><td><div class="pt-name">Free Profit Leak Diagnostic</div><div class="pt-desc">16 questions. Top 3 leaks with dollar estimates. No purchase required.</div></td><td><div class="pt-price pt-free">FREE</div></td></tr>
+      <tr><td><div class="pt-name">Profit Leak Snapshot</div><div class="pt-desc">Top 3 leaks, exact math, specific fixes, matched guides and docs.</div></td><td><div class="pt-price">$99</div><div class="pt-price-sub">one-time</div></td></tr>
+      <tr class="row-highlight"><td><div class="pt-name">FixKit 30-Day Plan <span class="bdg bdg-pop">Most Popular</span></div><div class="pt-desc">30 days of daily tasks, 8 calculators, matched docs, Ask Jen AI advisor.</div></td><td><div class="pt-price">$299</div><div class="pt-price-sub">$199 from Snapshot</div></td></tr>
+      <tr><td><div class="pt-name">FixKit Days 31–60 / Days 61–90</div><div class="pt-desc">Additional phases addressing leaks 4–9.</div></td><td><div class="pt-price">$249</div><div class="pt-price-sub">each · one-time</div></td></tr>
+      <tr class="row-highlight"><td><div class="pt-name">Complete Bundle — All 90 Days <span class="bdg bdg-val">Saves $298</span></div><div class="pt-desc">All three phases from day one. Every doc and calculator unlocked.</div></td><td><div class="pt-price">$599</div><div class="pt-price-sub">$499 from Snapshot</div></td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- end body -->
+
+<div class="ftr">
+  <div class="ftr-inner">
+    <div class="ftr-left">
+      <strong>Compass Business Solutions</strong><br>
+      jen@compassbizsolutions.com · compassbizsolutions.com<br>
+      All prices effective April 2026 · Subject to change with 30 days notice
+    </div>
+    <div class="ftr-btns">
+      <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" class="btn btn-primary">Book Free Call →</a>
+      <a href="https://www.compassbizsolutions.com/trades" class="btn btn-outline">Run Free Diagnostic</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
