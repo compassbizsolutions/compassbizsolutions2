@@ -232,6 +232,13 @@ module.exports = async function handler(req, res) {
     const emailKey = email.toLowerCase().replace(/[^a-z0-9@._-]/g, "");
     const topLeakMatch = report.match(/\[LEAK_RANKING\]\s*1\.\s*([^\n—]+)/);
     const topLeakText = topLeakMatch ? topLeakMatch[1].trim() : "";
+
+    // Check for no admin staff
+    const officeStaff = parseInt(answers.office_staff || "0") || 0;
+    const noAdmin = officeStaff === 0 ||
+      String(answers.office_staff || "").toLowerCase().includes("none") ||
+      String(answers.office_staff || "").trim() === "0";
+
     storeInKV("lead:" + emailKey, {
       email, name, biz, phone, trade,
       top_leak: topLeakText,
@@ -240,9 +247,22 @@ module.exports = async function handler(req, res) {
       utm_campaign: utm_campaign || "",
       utm_medium: utm_medium || "",
       source: utm_source || "direct",
-      // Save all diagnostic answers so intake can pre-fill from them
       diagnostic_answers: answers || {},
+      outreach_tags: noAdmin ? ["no_admin_staff"] : [],
+      outreach_opportunity: noAdmin ? "Business Support Services — no admin staff reported" : "",
     }).catch(function() {});
+
+    // Write to outreach queue if no admin staff
+    if (noAdmin) {
+      storeInKV("outreach:no-admin:" + emailKey, {
+        email, name, biz, trade,
+        plan: "lead",
+        tagged_at: new Date().toISOString(),
+        reason: "Reported 0 office/admin staff on free diagnostic",
+        campaign: "business_support_services",
+        status: "pending",
+      }).catch(function() {});
+    }
 
     // Tag in Mailchimp
     tagMailchimp(email, name, trade).catch(function() {});
