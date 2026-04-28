@@ -254,6 +254,13 @@ Example: "Your **pricing** and **parts-runs** leaks alone represent a six-figure
 3. LeakName — $Z/year
 [/LEAK_RANKING]
 
+[ADDITIONAL_LEAKS]
+List every other leak category present beyond the top 3 — brief, plain, no fix details.
+Format each line: LEAK CATEGORY — $X,000-$X,000/year | one sentence specific to their situation.
+Include 3-6 additional leaks typically present in businesses like theirs based on their answers.
+End with exactly this line: "Have a specific challenge not listed here? Reply to this email — we'll tell you if we can help."
+[/ADDITIONAL_LEAKS]
+
 (CRITICAL PARSER RULES:
 - LEAK_RANKING uses plain text, NO bold asterisks. "1. Pricing — $108,000/year"
 - Use em-dash "—" not hyphen "-" between leak name and dollar amount in the ranking line

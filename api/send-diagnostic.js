@@ -64,6 +64,15 @@ module.exports = async function handler(req, res) {
     const secondLeak = stripThirdBullet(getTag(report, "SECOND_LEAK"));
     const thirdLeak  = stripThirdBullet(getTag(report, "THIRD_LEAK"));
     const howWeHelp  = getTag(report, "HOW_WE_HELP");
+    const additionalLeaksRaw = getTag(report, "ADDITIONAL_LEAKS") || "";
+    const additionalLeaks = additionalLeaksRaw
+      .split("\n")
+      .map(l => l.trim())
+      .filter(l => l && /—/.test(l) && !l.toLowerCase().includes("have a specific"))
+      .map(l => {
+        const parts = l.split(" — ");
+        return { name: (parts[0] || "").replace(/^\d+\.\s*/, "").trim(), detail: (parts[1] || "").trim() };
+      });
 
     // Hard strip any third bullet from leak blocks regardless of AI output
     function stripThirdBullet(text) {
@@ -213,6 +222,17 @@ module.exports = async function handler(req, res) {
             </div>
           </div>
           <p style="font-size:14px;color:#6B7A90;margin-bottom:4px;">Questions? Reply to this email — I read every one.</p>
+          ${additionalLeaks.length ? `
+          <div style="background:#F4F7FC;border:1px solid #C8D6E8;border-radius:8px;padding:18px 20px;margin:20px 0">
+            <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#5A7291;margin-bottom:12px">WE ALSO FOUND THESE — WE CAN HELP WITH ALL OF THEM</div>
+            ${additionalLeaks.map(l =>
+              `<div style="padding:8px 0;border-bottom:1px solid #E0E8F4">
+                <span style="font-size:14px;color:#1B2E4B;font-weight:700">${l.name}</span>
+                <span style="font-size:13px;color:#5A7291;margin-left:8px">${l.detail}</span>
+              </div>`
+            ).join('')}
+            <div style="margin-top:12px;font-size:13px;color:#5A7291">Have a specific challenge not on this list? <a href="mailto:support@compassbizsolutions.com" style="color:#C8701A;font-weight:600;text-decoration:none">Reply to this email</a> — we'll tell you if we can help.</div>
+          </div>` : ''}
           <p style="margin:0;color:#3E4E63;font-size:15px;">— Jen, Compass Business Solutions</p>
         </div>
         <div style="text-align:center;padding:16px;font-size:12px;color:#A0ABBE;">
