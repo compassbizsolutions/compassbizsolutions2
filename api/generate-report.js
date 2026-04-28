@@ -225,19 +225,22 @@ If they mentioned burnout/family strain in the free text, replace bullet 3 with 
 [/WHAT_WE_SEE]
 
 [TOP_LEAK]
-Follow this EXACT shape. Nothing else. Two bullets, NO labels at the start of each bullet. Plain prose.
+Follow this EXACT shape. Two bullets only. Plain language. No jargon.
 
-**LEAK NAME IN CAPS** — **$X,XXX/year** or **$X-YK/year**
-- [The symptom they're showing — 8-12 words plain prose. Optional bold on ONE key number. ZERO fix language. ZERO solution hints. Just what is happening.]
-- [The math ONLY. One line. No commentary after the equals sign. Bold ONLY the final dollar result. e.g., "8 techs × 1 hr × 250 days × $100 = **$200K/year**". NOTHING after the dollar amount. No "which means", no "that's", no explanation of what to do about it.]
+**LEAK NAME IN CAPS** — **$X,XXX/year**
+
+You told us: [one plain sentence — what they said that triggered this, e.g. "You haven't raised rates in 5 years."]
+Why it matters: [one plain sentence — what that costs them, e.g. "Inflation alone erased 20% of your margin since 2020."]
+
+- [The math, on its own line. Short. Bold ONLY the final dollar amount. e.g. "30 jobs × $600 × 12% × 50 weeks = **$108,000/year**"]
 [/TOP_LEAK]
 
 [SECOND_LEAK]
-Same exact shape as TOP_LEAK. Must be a DISTINCT category. Two bullets only. Same hard rules — no fix language, no solution hints, math bullet ends at the dollar amount.
+Same exact shape as TOP_LEAK. Distinct category. Two lines + one math bullet.
 [/SECOND_LEAK]
 
 [THIRD_LEAK]
-Same exact shape. Distinct from the first two. Two bullets only. Same hard rules.
+Same exact shape. Distinct from the first two.
 [/THIRD_LEAK]
 
 [HOW_WE_HELP]
@@ -338,23 +341,29 @@ You're doing **$900K** in work for about **$40K** in your pocket
 
 [TOP_LEAK]
 **PRICING** — **$108,000/year**
-- Last rate change was 5+ years ago while costs climbed
-- 30 jobs × $600 × 12% × 50 wks = **$108K/year**
-- You're charging 2021 rates on 2026 costs — inflation alone erased ~20% of margin
+
+You told us: You haven't raised your rates in 5+ years.
+Why it matters: Costs went up 20%+ since 2020 — your margin absorbed every penny of it.
+
+- 30 jobs × $600 × 12% inflation drag × 50 weeks = **$108,000/year**
 [/TOP_LEAK]
 
 [SECOND_LEAK]
 **VEHICLES & PARTS** — **$125,000/year**
-- Daily unplanned parts runs across your 4 techs
-- 4 techs × 1 hr × 250 days × $125 = **$125K/year**
-- No truck stock list means every job risks a billable hour walking out the door
+
+You told us: Your techs are making parts runs daily.
+Why it matters: Every run is an hour of billable time walking out the door.
+
+- 4 techs × 1 hr × 250 days × $125/hr = **$125,000/year**
 [/SECOND_LEAK]
 
 [THIRD_LEAK]
-**RECURRING REVENUE** — **$30-50K/year**
-- Mostly new customers, zero maintenance agreements on the books
-- 50 agreements × $250/yr + repair pull-through = **$30-50K/year**
-- Fewer than 35% of HVAC shops sell agreements (Oxmaint) — your techs aren't asking
+**RECURRING REVENUE** — **$30,000–$50,000/year**
+
+You told us: Most of your work is new customers, no maintenance agreements.
+Why it matters: You're starting from zero every month instead of building on what you already have.
+
+- 50 agreements × $250/yr + repair pull-through = **$30,000–$50,000/year**
 [/THIRD_LEAK]
 
 [HOW_WE_HELP]
