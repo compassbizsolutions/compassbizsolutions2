@@ -6,7 +6,6 @@ const QUESTION_LABELS = {
   trucks:        "Truck count",
   jobs:          "Jobs per week",
   invoice:       "Average invoice",
-  weeks:         "Weeks per year in operation",
   rate:          "Labor pricing method",
   tracking:      "How jobs are tracked from estimate to invoice",
   partsruns:     "Frequency of unplanned parts runs",
@@ -106,11 +105,8 @@ Score each of the 11 categories silently, then surface only the top 3 by dollar 
 KEY SIGNALS AND THEIR MATH:
 
 REVENUE ANCHOR — Calculate implied annual revenue first:
-  Revenue ≈ (Jobs per week midpoint) × (Average invoice midpoint) × (Weeks per year in operation)
-  If "Weeks per year in operation" was answered: use the midpoint (20-30→25, 30-40→35, 40-45→42, 46-50→48, 50-52→51).
-  If not answered: use 50 weeks as default.
-  IMPORTANT for seasonal trades (landscaping, roofing, pool, irrigation): if their trade suggests seasonality
-  and they didn't answer weeks, use a realistic estimate (35 weeks) and note it in your math.
+  Revenue ≈ (Jobs per week midpoint) × (Average invoice midpoint) × 50 weeks
+  Use this as the anchor for all % leak calculations.
   Example: "Jobs per week: 20-40" (=30) × "Average invoice: $400-$800" (=$600) × 50 = $900K/year.
 
 PRICING (HUGE leak for most):
@@ -398,7 +394,7 @@ module.exports = async function handler(req, res) {
         "anthropic-version": "2023-06-01"
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-6",
+        model: "claude-sonnet-4-6",   // current stable Sonnet 4.5; swap to "claude-sonnet-4-6" after post-launch validation
         max_tokens: 2500,
         temperature: 0.7,
         system: SYSTEM_PROMPT,
