@@ -137,10 +137,10 @@ KEY SIGNALS AND THEIR MATH:
 
 REVENUE ANCHOR — Calculate implied annual revenue first:
   Revenue ≈ (Jobs per week midpoint) × (Average invoice midpoint) × (Weeks per year in operation)
-  The customer answered how many weeks they actually work — USE THAT NUMBER, not 50.
-  If they said "20-30 weeks" use 25. If "30-40 weeks" use 35. If "46-50 weeks" use 48. If "50-52 weeks" use 51.
-  If they did not answer the weeks question, default to 48 (not 52 — most businesses have slow weeks).
-  This is CRITICAL for seasonal trades like landscaping, roofing, pool service, irrigation.
+  If "Weeks per year in operation" was answered: use the midpoint (20-30→25, 30-40→35, 40-45→42, 46-50→48, 50-52→51).
+  If not answered: use 50 weeks as default.
+  IMPORTANT for seasonal trades (landscaping, roofing, pool, irrigation): if their trade suggests seasonality
+  and they didn't answer weeks, use a realistic estimate (35 weeks) and note it in your math.
   Example: "Jobs per week: 20-40" (=30) × "Average invoice: $400-$800" (=$600) × 50 = $900K/year.
 
 PRICING (HUGE leak for most):
