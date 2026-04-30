@@ -1,33 +1,3 @@
-* /api/generate-report
- * ----------------------------------------------------------------------------
- * Calls Anthropic Claude to generate the FixKit diagnostic report.
- * Returns the report as a text blob in the [TAG] format that
- * /api/send-diagnostic already knows how to parse and email.
- *
- * FLOW:
- *   Frontend collects 16 answers
- *     -> POST to /api/generate-report (this file)
- *     -> returns { report: "[HEADLINE]...[/LEAK_RANKING]" }
- *   Frontend displays report on page AND posts it along with contact
- *     info to /api/send-diagnostic for email + KV storage.
- *
- * ENV VARS REQUIRED:
- *   ANTHROPIC_API_KEY
- *
- * DEPLOY LOCATION:
- *   Deploy to the same project your frontend is calling. Based on your
- *   recent trades/index.html fix ("generate-report now calls
- *   www.compassbizsolutions.com"), that means:
- *     -> compassbizsolutions2/api/generate-report.js
- *   Confirm ANTHROPIC_API_KEY is set in the compassbizsolutions2 Vercel
- *   project (it already is, per your env var notes).
- * ----------------------------------------------------------------------------
- */
-
-// ============================================================================
-// QUESTION LABELS — maps frontend answer keys to human-readable labels.
-// These keys MUST match the id values in the QUESTIONS array in trades/index.html.
-// ============================================================================
 const QUESTION_LABELS = {
   trade:         "Trade",
   services:      "Day-to-day work mix",
@@ -428,7 +398,7 @@ module.exports = async function handler(req, res) {
         "anthropic-version": "2023-06-01"
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-5-20250929",   // current stable Sonnet 4.5; swap to "claude-sonnet-4-6" after post-launch validation
+        model: "claude-sonnet-4-6",
         max_tokens: 2500,
         temperature: 0.7,
         system: SYSTEM_PROMPT,
