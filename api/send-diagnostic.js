@@ -113,8 +113,8 @@ module.exports = async function handler(req, res) {
           var isBullet = /^-\s+/.test(line);
           var clean    = renderBold(isBullet ? line.replace(/^-\s+/, "") : line);
           return isBullet
-            ? '<div style="padding:5px 0 5px 18px;position:relative;font-size:15px;color:#1A2332;line-height:1.7">'
-              + '<span style="position:absolute;left:0;top:7px;width:6px;height:6px;background:#C8701A;border-radius:50%;display:inline-block"></span>'
+            ? '<div style="padding:5px 0 5px 18px;position:relative;font-size:15px;color:#1A2332;line-height:1.7;margin-bottom:10px;">'
+              + '<span style="position:absolute;left:0;top:10px;width:6px;height:6px;background:#C8701A;border-radius:50%;display:inline-block"></span>'
               + clean + '</div>'
             : '<div style="font-size:15px;color:#1A2332;line-height:1.7;margin-bottom:6px">' + clean + '</div>';
         })
