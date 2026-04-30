@@ -1,5 +1,4 @@
-/**
- * /api/generate-report
+* /api/generate-report
  * ----------------------------------------------------------------------------
  * Calls Anthropic Claude to generate the FixKit diagnostic report.
  * Returns the report as a text blob in the [TAG] format that
@@ -37,6 +36,7 @@ const QUESTION_LABELS = {
   trucks:        "Truck count",
   jobs:          "Jobs per week",
   invoice:       "Average invoice",
+  weeks:         "Weeks per year in operation",
   rate:          "Labor pricing method",
   tracking:      "How jobs are tracked from estimate to invoice",
   partsruns:     "Frequency of unplanned parts runs",
@@ -136,8 +136,11 @@ Score each of the 11 categories silently, then surface only the top 3 by dollar 
 KEY SIGNALS AND THEIR MATH:
 
 REVENUE ANCHOR — Calculate implied annual revenue first:
-  Revenue ≈ (Jobs per week midpoint) × (Average invoice midpoint) × 50 weeks
-  Use this as the anchor for all % leak calculations.
+  Revenue ≈ (Jobs per week midpoint) × (Average invoice midpoint) × (Weeks per year in operation)
+  The customer answered how many weeks they actually work — USE THAT NUMBER, not 50.
+  If they said "20-30 weeks" use 25. If "30-40 weeks" use 35. If "46-50 weeks" use 48. If "50-52 weeks" use 51.
+  If they did not answer the weeks question, default to 48 (not 52 — most businesses have slow weeks).
+  This is CRITICAL for seasonal trades like landscaping, roofing, pool service, irrigation.
   Example: "Jobs per week: 20-40" (=30) × "Average invoice: $400-$800" (=$600) × 50 = $900K/year.
 
 PRICING (HUGE leak for most):
