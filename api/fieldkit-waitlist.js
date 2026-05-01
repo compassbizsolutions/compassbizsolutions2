@@ -81,7 +81,7 @@ module.exports = async function handler(req, res) {
           <p style="font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#F4F7FC;margin:0;font-family:'Barlow Condensed',Helvetica,sans-serif;">FieldKit</p>
         </div>
         <h1 style="font-family:'Barlow Condensed',Helvetica,sans-serif;font-size:36px;font-weight:900;text-transform:uppercase;color:#F4F7FC;margin:0 0 16px;">You're In, ${ownerName}.</h1>
-        <p style="font-size:16px;color:#c8d8e8;line-height:1.6;margin:0 0 24px;">We've saved your spot on the FieldKit waitlist. When we launch on <strong style="color:#C8701A;">May 15, 2026</strong>, you'll be first in line with two full weeks to get your team set up and your operation ready before Q3 kicks off.</p>
+        <p style="font-size:16px;color:#c8d8e8;line-height:1.6;margin:0 0 24px;">We've saved your spot on the FieldKit waitlist. When we launch on <strong style="color:#C8701A;">May 18, 2026</strong>, you'll be first in line with two full weeks to get your team set up and your operation ready before Q3 kicks off.</p>
         <div style="background:#162440;border:1px solid rgba(61,107,158,0.25);border-radius:4px;padding:20px;margin-bottom:24px;">
           <p style="font-family:'Barlow Condensed',Helvetica,sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8aa5c0;margin:0 0 10px;">Your signup details</p>
           <p style="font-size:14px;color:#c8d8e8;margin:0 0 4px;"><strong style="color:#F4F7FC;">Company:</strong> ${company}</p>
