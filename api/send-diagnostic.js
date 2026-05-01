@@ -51,6 +51,16 @@ module.exports = async function handler(req, res) {
     if (!email || !report) return res.status(400).json({ error: "Missing required fields" });
 
     const resend = new Resend(process.env.RESEND_API_KEY);
+
+    // Store lead in KV
+    await storeInKV(email, {
+      name, email, biz, phone, trade,
+      top_leak: answers?.leak1 || '',
+      source: 'free-diagnostic',
+      utm_source: utm_source || '',
+      utm_campaign: utm_campaign || '',
+      created_at: new Date().toISOString()
+    });
     const firstName = name || "there";
 
     function getTag(text, tag) {
