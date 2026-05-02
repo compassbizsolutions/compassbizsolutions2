@@ -1926,15 +1926,6 @@
 </head>
 <body>
 
-<!-- DEV BANNER -->
-<div id="dev-banner" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#C8701A;color:#fff;text-align:center;padding:8px 16px;font-family:sans-serif;font-size:13px;font-weight:600;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:10px">
-  <span>🚧</span>
-  <span>FieldKit is currently in development — launching May 18, 2026. <a href="/trades/fieldkit/features" style="color:#fff;text-decoration:underline;font-weight:700">See features & join the waitlist →</a></span>
-  <span>🚧</span>
-  <button onclick="document.getElementById('dev-banner').style.display='none'" style="background:rgba(255,255,255,0.2);border:none;color:#fff;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:12px;margin-left:8px">✕</button>
-</div>
-<div style="height:40px"></div>
-
 <!-- ═══════════════════════════════════════════
      HERO / LOGIN SCREEN
 ═══════════════════════════════════════════ -->
@@ -4164,35 +4155,37 @@ function requestToEstimate() {
   const id = document.getElementById('raReqId').value;
   const req = portalRequests.find(r => r.id === id);
   closeModal('requestActionModal');
-  if (req) {
-    req.status = 'estimated';
-    // Pre-fill estimate customer
-    const sel = document.getElementById('estimateCustomer');
-    if (sel) {
-      // Try to match or add
-      for (let opt of sel.options) {
-        if (opt.text.includes(req.name.split(' ')[0])) { sel.value = opt.value; break; }
-      }
-    }
-    const desc = document.getElementById('estimateDesc');
-    if (desc) desc.value = req.problem;
-  }
-  renderOverviewRequests();
-  showModal('newEstimateModal');
-}
+  if (!req) return;
+  req.status = 'reviewing';
 
-function requestToEstimate() {
-  const id = document.getElementById('raReqId').value;
-  const req = portalRequests.find(r => r.id === id);
-  closeModal('requestActionModal');
-  if (req) {
-    req.status = 'reviewing';
-    // Pre-fill estimator
-    const prob = document.getElementById('estimatorProblem');
-    if (prob) prob.value = req.problem;
+  // Pre-fill problem description
+  const prob = document.getElementById('estimatorProblem');
+  if (prob) prob.value = req.problem || '';
+
+  // Pre-fill notes with customer info
+  const notesEl = document.getElementById('estimatorNotes');
+  if (notesEl) notesEl.value = 'Customer: ' + (req.name || '') + (req.phone ? ' · ' + req.phone : '');
+
+  // Load customer photo into estimator if present
+  if (req.photoData && req.photoType) {
+    estimatorPhotoData = req.photoData;
+    estimatorPhotoType = req.photoType;
+    const preview = document.getElementById('estimatorPhotoPreview');
+    if (preview) {
+      preview.src = 'data:' + req.photoType + ';base64,' + req.photoData;
+      preview.style.display = 'block';
+      const icon = document.getElementById('estimatorPhotoIcon');
+      const label = document.getElementById('estimatorPhotoLabel');
+      if (icon) icon.style.display = 'none';
+      if (label) label.style.display = 'none';
+    }
   }
+
   renderOverviewRequests();
   showSection('estimator', null);
+
+  // Auto-run AI estimator after UI settles
+  if (req.problem) setTimeout(() => runEstimator(), 400);
 }
 
 function requestToCall() {
@@ -7525,10 +7518,17 @@ function openJobPhotos(jobId, jobLabel) {
               </div>
 
               <!-- Manual entry row (hidden by default) -->
-              <div id="manualPartRow" style="display:none;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-bottom:6px;">
+              <div id="manualPartRow" style="display:none;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-bottom:6px;">
                 <input class="settings-input" id="partNameInput" placeholder="Part name (type manually)" style="font-size:13px;padding:9px 12px;">
                 <button class="btn-sm" onclick="addManualPart()">+ Add</button>
               </div>
+
+              <!-- Parts total -->
+              <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);margin-top:10px;padding-top:10px;">
+                <span style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">Parts Cost Total</span>
+                <span id="partsTotalCost" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--green);">—</span>
+              </div>
+
               <div style="margin-top:10px;">
                 <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--white-dim);">
                   <input type="checkbox" id="missingPartsFlag" style="width:16px;height:16px;accent-color:var(--orange);">
@@ -7895,26 +7895,45 @@ function addPart() {
 
 function renderPartsList() {
   const el = document.getElementById('partsList');
+  if (!el) return;
+  if (!partsUsed.length) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:8px 0;">No parts added yet</div>';
+    updatePartsTotals();
+    return;
+  }
   el.innerHTML = partsUsed.map((p, i) => `
-    <div style="display:flex;align-items:center;gap:10px;background:${p.short ? 'rgba(231,76,60,0.08)' : 'var(--steel)'};border:1px solid ${p.short ? 'rgba(231,76,60,0.3)' : 'var(--border)'};border-radius:2px;padding:10px 14px;">
+    <div style="display:flex;align-items:center;gap:8px;background:${p.short ? 'rgba(231,76,60,0.08)' : 'var(--steel)'};border:1px solid ${p.short ? 'rgba(231,76,60,0.3)' : 'var(--border)'};border-radius:2px;padding:10px 12px;">
       <div style="flex:1;font-size:13px;font-weight:600;color:var(--white);">
         ${p.name}
         ${p.manual ? '<span style="font-size:10px;color:var(--muted);margin-left:6px;">manual</span>' : ''}
         ${p.short ? '<span style="font-size:10px;color:var(--red);margin-left:6px;">⚠️ short</span>' : ''}
       </div>
-      <div style="font-size:12px;color:var(--muted);min-width:40px;text-align:center;">×${p.qty}</div>
+      <div style="font-size:12px;color:var(--muted);min-width:32px;text-align:center;">×${p.qty}</div>
+      <div style="display:flex;align-items:center;gap:4px;">
+        <span style="font-size:11px;color:var(--muted);">$</span>
+        <input type="number" min="0" step="0.01" value="${p.price || ''}" placeholder="0.00"
+          onchange="setPartPrice(${i}, this.value)"
+          style="width:64px;background:var(--navy);border:1px solid var(--border);border-radius:2px;padding:4px 6px;font-size:13px;color:var(--orange);font-weight:700;text-align:right;outline:none;"
+          title="Unit price">
+      </div>
+      <div style="font-size:12px;color:var(--green);min-width:52px;text-align:right;font-weight:600;">
+        ${p.price ? '$' + (p.price * p.qty).toFixed(2) : '—'}
+      </div>
       <button onclick="removePart(${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:0 4px;" title="Remove">×</button>
     </div>`).join('');
+  updatePartsTotals();
 }
 
-function renderPartsList() {
-  const el = document.getElementById('partsList');
-  el.innerHTML = partsUsed.map((p, i) => `
-    <div style="display:flex;align-items:center;gap:10px;background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:10px 14px;">
-      <div style="flex:1;font-size:13px;font-weight:600;color:var(--white);">${p.name}</div>
-      <div style="font-size:12px;color:var(--muted);min-width:40px;text-align:center;">×${p.qty}</div>
-      <button onclick="removePart(${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:0 4px;" title="Remove">×</button>
-    </div>`).join('');
+function setPartPrice(i, val) {
+  partsUsed[i].price = parseFloat(val) || 0;
+  renderPartsList();
+}
+
+function updatePartsTotals() {
+  const totalEl = document.getElementById('partsTotalCost');
+  if (!totalEl) return;
+  const total = partsUsed.reduce((sum, p) => sum + ((p.price || 0) * p.qty), 0);
+  totalEl.textContent = total > 0 ? '$' + total.toFixed(2) : '—';
 }
 
 function removePart(i) {
