@@ -325,6 +325,8 @@ footer{background:#0d1622;padding:28px 24px}
       <a href="https://www.compassbizsolutions.com" class="nav-link" style="color:rgba(255,255,255,0.35);font-size:12px">compassbizsolutions.com</a>
       <button class="nav-link" onclick="showPage('home');scrollToEl('diagnostic')">Run Diagnostic</button>
       <button class="nav-link" onclick="showPage('services')">What We Do</button>
+      <a href="/trades/buildkit" class="nav-link" style="color:rgba(255,255,255,0.5);">BuildKit</a>
+      <a href="/trades/fieldkit/features" class="nav-link" style="color:rgba(255,255,255,0.5);">FieldKit</a>
       
       <button class="nav-link" onclick="showPage('profitable')">What Profitable Looks Like</button>
       <button class="nav-link" onclick="showPage('about')">Our Story</button>
@@ -340,6 +342,8 @@ footer{background:#0d1622;padding:28px 24px}
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-link" onclick="showPage('home');scrollToEl('diagnostic');closeMobile()">Run Diagnostic</button>
   <button class="mobile-link" onclick="showPage('services');closeMobile()">What We Do</button>
+  <a href="/trades/buildkit" class="mobile-link" style="display:block;padding:10px 0;color:rgba(255,255,255,0.6);text-decoration:none;font-size:14px;">🏗️ BuildKit — New Business</a>
+  <a href="/trades/fieldkit/features" class="mobile-link" style="display:block;padding:10px 0;color:rgba(255,255,255,0.6);text-decoration:none;font-size:14px;">📱 FieldKit — Field Ops</a>
   <button class="mobile-link" onclick="showPage('profitable');closeMobile()">What Profitable Looks Like</button>
   <button class="mobile-link" onclick="showPage('about');closeMobile()">Our Story</button>
   <button class="mobile-link" style="color:var(--amber);font-weight:600" onclick="openCheckout('snapshot','Profit Leak Snapshot — $99');closeMobile()">Get Snapshot — $99 →</button>
@@ -609,9 +613,11 @@ footer{background:#0d1622;padding:28px 24px}
 <!-- FOOTER (shared) -->
 <footer id="main-footer">
   <div class="footer-inner">
-    <div class="footer-copy">© 2025 Compass Business Solutions · Jenifer Voiselle</div>
+    <div class="footer-copy">© 2026 Compass Business Solutions · Jenifer Voiselle</div>
     <div class="footer-links">
-      <a href="/trades" class="footer-link">← Compass</a>
+      <a href="https://www.compassbizsolutions.com" class="footer-link">← Compass</a>
+      <a href="/trades/buildkit" class="footer-link">BuildKit</a>
+      <a href="/trades/fieldkit/features" class="footer-link">FieldKit</a>
       <a href="/pricing" class="footer-link">Pricing</a>
       <a href="/terms-and-conditions" class="footer-link">Terms</a>
       <a href="/privacy-policy" class="footer-link">Privacy</a>
@@ -718,7 +724,8 @@ const SERVICES_DATA = [
   {icon:'📋',title:'FixKit — 30-Day Quick Win Plan',tag:'$299',tagClass:'tag-amber',short:'Your worst leaks addressed first. Daily tasks. Built-in tracking. AI support.',bullets:['30 days of daily tasks — 15-20 minutes, specific to your trade and your numbers','Fix-It Guides and process docs matched to your top leaks','8 profit calculators pre-loaded with your intake numbers','Progress tracking and before/after dashboard','Ask Jen — AI advisor that knows your situation','$99 credited if upgrading from Snapshot'],cta:"Get the 30-Day Plan — $299",onclick:"openCheckout('fixkit_30','FixKit 30-Day Plan — $299')"},
   {icon:'📄',title:'DIY Profit Leak Snapshot',tag:'$99',tagClass:'tag-navy',short:'Your top 3 leaks, the math behind each one, and what to fix — plus the tools to do it.',bullets:['Top 3 leaks ranked by annual dollar impact','Exact math showing what each leak costs you','2-3 specific fixes for each leak — not generic advice','Fix-It Guides and process templates matched to your leaks','$99 credited toward any FixKit plan'],closing:'No portal, no daily tasks, no subscription. Your numbers, your leaks, and what to do about them — plus the tools to get started.',cta:"Get My Snapshot — $99",onclick:"openCheckout('snapshot','Profit Leak Snapshot — $99')"},
   {icon:'🛠️',title:'Done For You — Consulting',tag:'By scope',tagClass:'tag-slate',short:'We build and implement the systems for you.',bullets:['We map how your business actually runs — not how it should run','We build the process docs, pricing structures, and workflows','You review, we refine, it gets done','Scoping call is free with no commitment','Payment plans available'],cta:"Book a Free Scoping Call",onclick:"window.open('https://calendly.com/jvoiselle612-s9gb/strategy-call','_blank')"},
-  {icon:'📱',title:'The FieldKit by Compass — In Development (Releasing May 2026)',tag:'Coming Soon',tagClass:'tag-slate',short:'Run your whole operation with the Compass profit methodology built in.',bullets:['AI-assisted quoting using your actual loaded cost and overhead','Quote-to-job-to-invoice in one workflow','Technician dispatch, time clock, parts, and job signoff from their phone','Inventory and purchase orders tied directly to jobs','Customer portal and FixKit integration'],closing:'FixKit customers get priority access and a discounted first year. Custom modules available — if you need something specific, we can build it in.',cta:"Join the Early Access List",onclick:"openWaitlist()"},
+  {icon:'🏗️',title:'BuildKit — New Business Launch System',tag:'Coming May 18',tagClass:'tag-green',short:'Build your trades business right from day one — before the bad habits set in.',bullets:['Business foundation: entity setup, insurance, EIN, bank account','Pricing from scratch: your real hourly cost + target margin calculator','First 10 customers: exactly where to find them and how to close them','Day-one systems: invoicing, confirmation process, parts tracking','90-day week-by-week launch plan tuned to your trade'],closing:'Most trades businesses fail not because the owner was bad at the work — but because nobody taught them how to run a business. BuildKit fixes that from day one. $199 one-time.',cta:'Join BuildKit Waitlist',onclick:"window.location.href='/trades/buildkit#waitlist'"},
+  {icon:'📱',title:'The FieldKit by Compass — Releasing May 18, 2026',tag:'Coming May 18',tagClass:'tag-slate',short:'Run your whole operation with the Compass profit methodology built in.',bullets:['AI-assisted quoting using your actual loaded cost and overhead','Quote-to-job-to-invoice in one workflow','Technician dispatch, time clock, parts, and job signoff from their phone','Inventory and purchase orders tied directly to jobs','Customer portal and FixKit integration'],closing:'Launching May 18, 2026. FixKit customers get priority access. Join the waitlist to lock in your spot and have two weeks to set up before Q3.',cta:"Join FieldKit Waitlist",onclick:"window.location.href='/trades/fieldkit/features#waitlist'"},
 ];
 
 // ── STATE ────────────────────────────────────────────────────────────────
