@@ -254,7 +254,9 @@
       <div class="nav-dropdown-wrap">
         <button class="nav-link nav-dropdown-btn" onclick="toggleVerticals(event)">Verticals ▾</button>
         <div class="nav-dropdown" id="verticals-dropdown">
-          <a href="/trades" class="nav-dropdown-item">Trades & Field Service</a>
+          <a href="/trades" class="nav-dropdown-item">🔧 Trades &amp; Field Service</a>
+          <a href="/trades/buildkit" class="nav-dropdown-item">🏗️ BuildKit — New Business</a>
+          <a href="/trades/fieldkit/features" class="nav-dropdown-item">📱 FieldKit — Field Ops</a>
           <div class="nav-dropdown-item nav-dropdown-soon">Equine <span class="soon-tag">Soon</span></div>
           <div class="nav-dropdown-item nav-dropdown-soon">Restaurants <span class="soon-tag">Soon</span></div>
         </div>
@@ -275,7 +277,9 @@
   <a href="#about" class="mobile-menu-link" onclick="closeMobile()">About</a>
   <div style="padding:8px 0;border-bottom:1px solid rgba(61,107,158,0.15)">
     <div style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Verticals</div>
-    <a href="/trades" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">🔧 Trades FixKit</a>
+    <a href="/trades" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">🔧 Trades &amp; Field Service</a>
+    <a href="/trades/buildkit" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">🏗️ BuildKit — New Business</a>
+    <a href="/trades/fieldkit/features" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">📱 FieldKit — Field Ops</a>
     <div class="mobile-menu-link" style="padding:8px 0;font-size:14px;color:rgba(255,255,255,0.3)">🐴 Equine <span style="font-size:10px;background:var(--amber);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Soon</span></div>
     <div class="mobile-menu-link" style="padding:8px 0;font-size:14px;color:rgba(255,255,255,0.3)">🍽️ Restaurants <span style="font-size:10px;background:var(--amber);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Soon</span></div>
   </div>
@@ -401,13 +405,17 @@
 
       <div class="service-card">
         <div class="service-name">Trades & Industry Solutions</div>
-        <div class="service-desc">Purpose-built tools for trades and field service businesses — HVAC, plumbing, electrical, roofing, and more. Profit leak analysis, daily fix plans, and a FieldKit built for how crews actually work.</div>
+        <div class="service-desc">Purpose-built tools for trades and field service businesses — new business launch, profit leak repair, and full field operations. BuildKit, FixKit, and FieldKit — three tools for every stage.</div>
         <div class="service-pills">
+          <span class="pill">BuildKit — New Business Launch</span>
           <span class="pill">FixKit — Profit Leak Plans</span>
-          <span class="pill">FieldKit</span>
-          <span class="pill">More Industries Coming</span>
+          <span class="pill">FieldKit — Field Operations</span>
         </div>
-        <div style="margin-top:14px"><a href="/trades" style="font-size:13px;font-weight:600;color:var(--amber);text-decoration:none">See FixKit & FieldKit →</a></div>
+        <div style="margin-top:14px;display:flex;gap:16px;flex-wrap:wrap;">
+          <a href="/trades/buildkit" style="font-size:13px;font-weight:600;color:var(--amber);text-decoration:none">BuildKit →</a>
+          <a href="/trades" style="font-size:13px;font-weight:600;color:var(--amber);text-decoration:none">FixKit →</a>
+          <a href="/trades/fieldkit/features" style="font-size:13px;font-weight:600;color:var(--amber);text-decoration:none">FieldKit →</a>
+        </div>
       </div>
 
       <div class="service-card">
@@ -444,6 +452,16 @@
 
       <div class="work-card work-card-1">
         <div class="work-tag">Vertical Product</div>
+        <div class="work-name">BuildKit — New Business Launch</div>
+        <div class="work-desc">A complete launch system for new trades businesses — business foundation, pricing from scratch, first customer playbook, day-one operations, 90-day plan, and tools stack. Built for owners who want to do it right before bad habits set in.</div>
+        <ul style="margin:12px 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px;">
+          <li style="font-size:13px;color:rgba(255,255,255,0.6);display:flex;gap:8px;"><span style="color:#1E6B45;">✓</span>6 core modules tuned to your trade</li>
+          <li style="font-size:13px;color:rgba(255,255,255,0.6);display:flex;gap:8px;"><span style="color:#1E6B45;">✓</span>True hourly cost + pricing calculator</li>
+          <li style="font-size:13px;color:rgba(255,255,255,0.6);display:flex;gap:8px;"><span style="color:#1E6B45;">✓</span>90-day week-by-week launch plan</li>
+        </ul>
+        <a href="/trades/buildkit" style="font-size:13px;font-weight:600;color:var(--amber);text-decoration:none;display:inline-block;margin-bottom:24px;">See BuildKit →</a>
+
+        <div class="work-tag">Vertical Product</div>
         <div class="work-name">FixKit — Profit Leak Repair</div>
         <div class="work-desc">A full-stack diagnostic and repair platform for service trades businesses. Built from scratch — intake engine, AI plan generator, task portal, document library, email sequences, and admin dashboard.</div>
         <ul class="work-bullets">
@@ -453,7 +471,7 @@
           <li>Automated email sequences and customer lifecycle management</li>
           <li>Full admin dashboard for customer tracking and engagement</li>
         </ul>
-        <a href="/trades" class="work-link">See the Trades FixKit →</a>
+        <a href="/trades" class="work-link">See FixKit →</a>
       </div><div class="work-card work-card-2">
         <div class="work-status" style="background:rgba(200,112,26,0.2);color:var(--amber);border-color:rgba(200,112,26,0.3)">Available May 18, 2026</div>
         <div class="work-tag">App Development</div>
@@ -467,7 +485,7 @@
           <li>Customer portal — service requests, job history, invoice access, maintenance plans</li>
           <li>FixKit integration — your leak-free progress stays on track automatically</li>
         </ul>
-        <span style="font-size:13px;color:rgba(255,255,255,0.35)">Early access opening soon — FixKit customers get priority.</span>
+        <a href="/trades/fieldkit/features" style="font-size:13px;font-weight:600;color:var(--amber);text-decoration:none">See FieldKit Features & Join Waitlist →</a>
       </div>
 
       
@@ -519,12 +537,12 @@
     <div class="trades-cta">
       <div>
         <div class="trades-cta-eyebrow">Service Trades Vertical</div>
-        <div class="trades-cta-title">Own a Trades Business?<br>We Built Something for You.</div>
-        <p class="trades-cta-sub">The FixKit is a purpose-built profit leak diagnostic and repair system for plumbers, HVAC, electricians, contractors, and every other trade. 15-minute diagnostic. Real numbers. Fixes that work this week.</p>
+        <div class="trades-cta-title">Own a Trades Business?<br>We Built a Suite for You.</div>
+        <p class="trades-cta-sub">Three purpose-built tools for every stage — BuildKit for new businesses, FixKit for profit leak repair, and FieldKit for full field operations. 15-minute diagnostic. Real numbers. Systems that work.</p>
       </div>
       <div class="trades-cta-btns">
-        <a href="/trades" class="btn-primary">See the FixKit →</a>
-        <a href="/trades#diagnostic" class="btn-ghost" style="color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.2)">Run a Diagnostic</a>
+        <a href="/trades" class="btn-primary">See All Three →</a>
+        <a href="/trades/buildkit" class="btn-ghost" style="color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.2)">New Business? BuildKit →</a>
       </div>
     </div>
   </div>
@@ -639,7 +657,9 @@
   <div class="footer-inner">
     <div class="footer-copy">© 2025 Compass Business Solutions · Jen Voiselle</div>
     <div class="footer-links">
-      <a href="/trades" class="footer-link">Trades FixKit</a>
+      <a href="/trades" class="footer-link">Trades Hub</a>
+      <a href="/trades/buildkit" class="footer-link">BuildKit</a>
+      <a href="/trades/fieldkit/features" class="footer-link">FieldKit</a>
       <a href="/pricing" class="footer-link">Pricing</a>
       <a href="/terms-and-conditions" class="footer-link">Terms</a>
       <a href="/privacy-policy" class="footer-link">Privacy</a>
