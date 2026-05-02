@@ -52,6 +52,12 @@
     .nav-dropdown-soon { color: rgba(255,255,255,0.3) !important; cursor: default; }
     .nav-dropdown-soon:hover { background: none !important; }
     .soon-tag { font-size: 10px; background: rgba(200,112,26,0.3); color: var(--amber); padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 700; letter-spacing: 0.5px; }
+    .nav-dropdown-item { position: relative; }
+    .nav-dropdown-item .dd-tooltip { display:none; position:absolute; left:calc(100% + 10px); top:50%; transform:translateY(-50%); background:var(--navy-dark); border:1px solid rgba(61,107,158,0.35); border-left:2px solid var(--amber); border-radius:8px; padding:10px 14px; width:220px; pointer-events:none; z-index:400; }
+    .nav-dropdown-item:hover .dd-tooltip { display:block; }
+    .dd-tooltip-title { font-size:12px; font-weight:700; color:white; margin-bottom:4px; }
+    .dd-tooltip-desc { font-size:12px; color:rgba(255,255,255,0.5); line-height:1.5; }
+    .dd-tooltip-price { font-size:11px; color:var(--amber); font-weight:600; margin-top:6px; }
     .nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; padding: 4px; flex-direction: column; gap: 5px; }
     .nav-mobile-btn span { display: block; width: 22px; height: 2px; background: white; border-radius: 2px; transition: all 0.25s; }
 
@@ -254,9 +260,27 @@
       <div class="nav-dropdown-wrap">
         <button class="nav-link nav-dropdown-btn" onclick="toggleVerticals(event)">Verticals ▾</button>
         <div class="nav-dropdown" id="verticals-dropdown">
-          <a href="/trades" class="nav-dropdown-item">🔧 Trades &amp; Field Service</a>
-          <a href="/trades/buildkit" class="nav-dropdown-item">🏗️ BuildKit — New Business</a>
-          <a href="/trades/fieldkit/features" class="nav-dropdown-item">📱 FieldKit — Field Ops</a>
+          <a href="/trades" class="nav-dropdown-item">🔧 FixKit — Profit Leak Repair
+            <div class="dd-tooltip">
+              <div class="dd-tooltip-title">FixKit</div>
+              <div class="dd-tooltip-desc">Find and fix the profit leaks draining your trades business. Free diagnostic, AI report, daily fix plan.</div>
+              <div class="dd-tooltip-price">From $99 · Snapshot to full 30-day plan</div>
+            </div>
+          </a>
+          <a href="/trades/buildkit" class="nav-dropdown-item">🏗️ BuildKit — New Business Launch
+            <div class="dd-tooltip">
+              <div class="dd-tooltip-title">BuildKit</div>
+              <div class="dd-tooltip-desc">Build your trades business right from day one — pricing, first customers, systems, and a 90-day launch plan.</div>
+              <div class="dd-tooltip-price">$199 one-time · Launching May 18</div>
+            </div>
+          </a>
+          <a href="/trades/fieldkit/features" class="nav-dropdown-item">📱 FieldKit — Field Operations
+            <div class="dd-tooltip">
+              <div class="dd-tooltip-title">FieldKit</div>
+              <div class="dd-tooltip-desc">Full field ops platform — scheduling, dispatch, AI quoting, invoicing, auto-confirm, and real-time profit tracking.</div>
+              <div class="dd-tooltip-price">From $79/mo · Launching May 18</div>
+            </div>
+          </a>
           <div class="nav-dropdown-item nav-dropdown-soon">Equine <span class="soon-tag">Soon</span></div>
           <div class="nav-dropdown-item nav-dropdown-soon">Restaurants <span class="soon-tag">Soon</span></div>
         </div>
@@ -277,7 +301,7 @@
   <a href="#about" class="mobile-menu-link" onclick="closeMobile()">About</a>
   <div style="padding:8px 0;border-bottom:1px solid rgba(61,107,158,0.15)">
     <div style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Verticals</div>
-    <a href="/trades" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">🔧 Trades &amp; Field Service</a>
+    <a href="/trades" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">🔧 FixKit — Profit Leak Repair</a>
     <a href="/trades/buildkit" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">🏗️ BuildKit — New Business</a>
     <a href="/trades/fieldkit/features" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">📱 FieldKit — Field Ops</a>
     <div class="mobile-menu-link" style="padding:8px 0;font-size:14px;color:rgba(255,255,255,0.3)">🐴 Equine <span style="font-size:10px;background:var(--amber);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Soon</span></div>
