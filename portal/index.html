@@ -268,6 +268,10 @@
         <button class="sidebar-btn" onclick="showPanel('submit')" id="sb-submit">
           <span class="sb-icon">➕</span> Submit Work
         </button>
+        <button class="sidebar-btn" onclick="showPanel('quotes')" id="sb-quotes">
+          <span class="sb-icon">💰</span> My Quotes
+          <span class="sidebar-badge" id="badge-quotes" style="display:none">0</span>
+        </button>
       </div>
 
       <span class="sidebar-label">Support</span>
@@ -521,6 +525,20 @@
         </div>
       </div>
 
+      <!-- QUOTES -->
+      <div class="panel" id="panel-quotes">
+        <div class="page-eye">Pricing</div>
+        <div class="page-title">My Quotes</div>
+        <div class="page-sub">Review your quotes and accept to get started. Quotes are valid for 7 days.</div>
+        <div id="quotes-container">
+          <div class="empty-state">
+            <div class="empty-icon">💰</div>
+            <div class="empty-title">No quotes yet</div>
+            <div class="empty-sub">Submit a work request and your quote will appear here within minutes.</div>
+          </div>
+        </div>
+      </div>
+
       <!-- BILLING -->
       <div class="panel" id="panel-billing">
         <div class="page-eye">Account</div>
@@ -597,6 +615,88 @@
       <textarea class="form-textarea" id="ticket-details" placeholder="Describe the issue in detail — what you expected, what happened, any error messages..."></textarea>
     </div>
     <button class="submit-btn" onclick="submitTicket()">Submit Ticket →</button>
+  </div>
+</div>
+
+<!-- TASK INTAKE MODAL -->
+<div class="modal-overlay" id="taskIntakeModal">
+  <div class="modal" style="max-width:580px;">
+    <button class="modal-close" onclick="closeModal('taskIntakeModal')">×</button>
+    <div class="modal-title">Almost Done!</div>
+    <div class="modal-sub">Tell us when and how you need this delivered. We will have it ready at least 24 hours before your deadline.</div>
+
+    <div style="background:rgba(200,112,26,0.08);border:1px solid rgba(200,112,26,0.25);border-radius:8px;padding:14px 16px;margin-bottom:20px;">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">You selected</div>
+      <div style="font-size:15px;font-weight:700;color:var(--white);" id="intake-service-type">—</div>
+      <div style="font-size:14px;color:var(--amber);font-weight:600;" id="intake-price">—</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">How often do you need this?</label>
+      <select class="form-select" id="intake-frequency" onchange="onFrequencyChange()">
+        <option value="">— Select frequency —</option>
+        <option value="one-time">One time only</option>
+        <option value="weekly">Every week</option>
+        <option value="biweekly">Every two weeks</option>
+        <option value="monthly">Once a month</option>
+      </select>
+    </div>
+
+    <div id="intake-recurring-row" style="display:none;">
+      <div class="form-2col">
+        <div class="form-group">
+          <label class="form-label">Deliver by which day?</label>
+          <select class="form-select" id="intake-delivery-day">
+            <option value="">— Select day —</option>
+            <option value="monday">Monday</option>
+            <option value="tuesday">Tuesday</option>
+            <option value="wednesday">Wednesday</option>
+            <option value="thursday">Thursday</option>
+            <option value="friday">Friday</option>
+            <option value="saturday">Saturday</option>
+            <option value="sunday">Sunday</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">By what time?</label>
+          <select class="form-select" id="intake-delivery-time">
+            <option value="08:00">8:00 AM</option>
+            <option value="09:00" selected>9:00 AM</option>
+            <option value="10:00">10:00 AM</option>
+            <option value="12:00">12:00 PM (Noon)</option>
+            <option value="15:00">3:00 PM</option>
+            <option value="17:00">5:00 PM</option>
+          </select>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:-8px;margin-bottom:16px;">We will deliver at least 24 hours before this deadline every cycle.</div>
+    </div>
+
+    <div id="intake-deadline-row" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">What is your deadline?</label>
+        <input class="form-input" type="date" id="intake-deadline"/>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;">We will deliver at least 24 hours before this date.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Additional Details (optional)</label>
+      <textarea class="form-textarea" id="intake-details" placeholder="Any specific requirements, format preferences, examples to follow, or things we should know..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Access or Login Info Needed (optional)</label>
+      <input class="form-input" type="text" id="intake-access" placeholder="e.g. Google Drive link, login credentials, account access..."/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">File Link (optional)</label>
+      <input class="form-input" type="text" id="intake-files" placeholder="Google Drive, Dropbox, or any shared link..."/>
+    </div>
+
+    <button class="submit-btn" id="intake-submit-btn" onclick="submitTaskIntake()" style="width:100%;">Confirm & Pay →</button>
+    <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:10px;">You will be redirected to secure payment. Your task starts after payment is confirmed.</p>
   </div>
 </div>
 
@@ -683,6 +783,8 @@ async function loadPortalData() {
     renderWorkList();
     renderTicketList();
     renderMessages();
+    renderQuotes();
+    updateQuoteBadge();
   } catch(e) {
     console.error('Portal data error:', e);
     renderDashboard();
@@ -690,6 +792,161 @@ async function loadPortalData() {
 }
 
 // ── RENDER ────────────────────────────────────────────────────────────────
+async function generateQuote(requestId, serviceType, description, priority) {
+  try {
+    var r = await fetch(API + '/generate-quote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ request_id: requestId, service_type: serviceType, description, priority })
+    });
+    var d = await r.json();
+    if (r.ok && d.quote) {
+      portalData.quotes = portalData.quotes || [];
+      portalData.quotes.unshift(d.quote);
+      renderQuotes();
+      updateQuoteBadge();
+      showToast('Your quote is ready! Check My Quotes.');
+    }
+  } catch(e) { console.error('Quote generation error:', e); }
+}
+
+function updateQuoteBadge() {
+  var quotes = portalData.quotes || [];
+  var pending = quotes.filter(function(q){ return q.status === 'pending'; }).length;
+  var badge = document.getElementById('badge-quotes');
+  if (badge) { badge.style.display = pending > 0 ? 'block' : 'none'; badge.textContent = pending; }
+}
+
+function renderQuotes() {
+  var quotes = portalData.quotes || [];
+  var container = document.getElementById('quotes-container');
+  if (!container) return;
+  if (!quotes.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">💰</div><div class="empty-title">No quotes yet</div><div class="empty-sub">Submit a work request and your quote will appear here within minutes.</div></div>';
+    return;
+  }
+
+  container.innerHTML = quotes.map(function(q) {
+    var isPending = q.status === 'pending';
+    var pkg = q.recommended_package;
+    return '<div class="card" style="margin-bottom:16px;border-left:4px solid ' + (isPending ? 'var(--amber)' : '#2ecc71') + ';">'
+      + '<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">'
+      + '<div>'
+      + '<div style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--white);text-transform:uppercase;">' + q.service_type + '</div>'
+      + '<div style="font-size:12px;color:var(--muted);margin-top:3px;">' + formatDate(q.created_at) + ' · ' + (isPending ? 'Awaiting your response' : 'Accepted') + '</div>'
+      + '</div>'
+      + '<span style="font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:4px;background:' + (isPending ? 'rgba(200,112,26,0.12)' : 'rgba(30,107,69,0.12)') + ';color:' + (isPending ? 'var(--amber)' : '#2ecc71') + ';">' + q.status + '</span>'
+      + '</div>'
+      + '<p style="font-size:14px;color:var(--white-dim);line-height:1.6;margin-bottom:20px;">' + q.quote_summary + '</p>'
+      + (pkg ? '<div style="background:rgba(200,112,26,0.08);border:1px solid rgba(200,112,26,0.3);border-radius:10px;padding:18px;margin-bottom:16px;">'
+        + '<div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:8px;">⭐ RECOMMENDED PACKAGE</div>'
+        + '<div style="font-size:18px;font-weight:800;color:var(--white);margin-bottom:4px;">' + pkg.name + ' — $' + pkg.price + '/mo</div>'
+        + '<div style="font-size:13px;color:var(--muted);margin-bottom:8px;">' + pkg.hours + ' · ' + pkg.turnaround + '</div>'
+        + '<div style="font-size:13px;color:var(--white-dim);margin-bottom:10px;">' + pkg.description + '</div>'
+        + (q.savings_message ? '<div style="font-size:13px;font-weight:600;color:#2ecc71;">' + q.savings_message + '</div>' : '')
+        + (isPending ? "<button onclick=\"acceptQuoteById('" + q.id + "','package')\" style=\"margin-top:12px;background:var(--amber);color:white;border:none;border-radius:7px;padding:10px 20px;font-family:var(--font-head);font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;\">Accept Package →</button>" : '')
+        + '</div>' : '')
+      + '<div style="border:1px solid var(--border);border-radius:10px;padding:18px;">'
+      + '<div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">AD HOC OPTION</div>'
+      + '<div style="font-size:28px;font-weight:900;color:var(--white);margin-bottom:4px;">$' + q.ad_hoc_price + '</div>'
+      + '<div style="font-size:13px;color:var(--muted);margin-bottom:4px;">One-time · ' + (q.complexity_desc || '') + '</div>'
+      + '<div style="font-size:12px;color:var(--muted);">Estimated turnaround: ' + q.estimated_turnaround + '</div>'
+      + (isPending ? "<button onclick=\"acceptQuoteById('" + q.id + "','adhoc')\" style=\"margin-top:12px;background:var(--steel);color:white;border:none;border-radius:7px;padding:10px 20px;font-family:var(--font-head);font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;\">Accept Ad Hoc →</button>" : '')
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function acceptQuoteById(quoteId, type) {
+  var quotes = portalData.quotes || [];
+  var quote = quotes.find(function(q){ return q.id === quoteId; });
+  if (quote) acceptQuote(quote, type);
+}
+
+function acceptQuote(quote, type) {
+  // Show post-purchase intake modal
+  window._pendingQuote = quote;
+  window._pendingQuoteType = type;
+  document.getElementById('intake-service-type').textContent = quote.service_type;
+  document.getElementById('intake-price').textContent = type === 'package'
+    ? '$' + quote.recommended_package.price + '/mo — ' + quote.recommended_package.name
+    : '$' + quote.ad_hoc_price + ' one-time';
+  showModal('taskIntakeModal');
+}
+
+async function submitTaskIntake() {
+  var q = window._pendingQuote;
+  if (!q) return;
+
+  var frequency    = document.getElementById('intake-frequency').value;
+  var deliveryDay  = document.getElementById('intake-delivery-day').value;
+  var deliveryTime = document.getElementById('intake-delivery-time').value;
+  var deadline     = document.getElementById('intake-deadline').value;
+  var details      = document.getElementById('intake-details').value.trim();
+  var access       = document.getElementById('intake-access').value.trim();
+  var files        = document.getElementById('intake-files').value.trim();
+  var btn          = document.getElementById('intake-submit-btn');
+
+  if (!frequency) { showToast('Please select how often you need this.'); return; }
+  if (frequency !== 'one-time' && !deliveryDay) { showToast('Please select your preferred delivery day.'); return; }
+  if (frequency === 'one-time' && !deadline) { showToast('Please enter your deadline.'); return; }
+
+  btn.disabled = true; btn.textContent = 'Processing...';
+
+  try {
+    // First submit task intake
+    var r = await fetch(API + '/portal-task-intake', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({
+        quote_id: q.id, service_type: q.service_type,
+        frequency, delivery_day: deliveryDay, delivery_time: deliveryTime,
+        one_time_deadline: deadline, specific_details: details,
+        access_info: access, files
+      })
+    });
+    var d = await r.json();
+    if (!r.ok) { showToast(d.error || 'Something went wrong.'); btn.disabled=false; btn.textContent='Confirm & Pay →'; return; }
+
+    // Then redirect to Stripe
+    var stripeUrl = window._pendingQuoteType === 'package'
+      ? getStripeLink(q.recommended_package && q.recommended_package.id)
+      : getAdHocStripeLink(q.service_type, q.complexity);
+
+    closeModal('taskIntakeModal');
+    showToast('Redirecting to payment...');
+    setTimeout(function() { window.location.href = stripeUrl; }, 1000);
+
+  } catch(e) {
+    showToast('Connection error — please try again.');
+    btn.disabled=false; btn.textContent='Confirm & Pay →';
+  }
+}
+
+function getStripeLink(packageId) {
+  // Wire in Stripe links when available
+  var links = {
+    single_task:     'https://buy.stripe.com/PLACEHOLDER_SINGLE_TASK',
+    small_biz_admin: 'https://buy.stripe.com/PLACEHOLDER_SMALL_BIZ',
+    full_admin:      'https://buy.stripe.com/PLACEHOLDER_FULL_ADMIN',
+  };
+  return links[packageId] || 'https://www.compassbizsolutions.com/portal';
+}
+
+function getAdHocStripeLink(serviceType, complexity) {
+  // Wire in ad hoc Stripe links when available
+  return 'https://www.compassbizsolutions.com/portal';
+}
+
+// Toggle delivery day/deadline based on frequency
+function onFrequencyChange() {
+  var freq = document.getElementById('intake-frequency').value;
+  var recurringRow = document.getElementById('intake-recurring-row');
+  var deadlineRow  = document.getElementById('intake-deadline-row');
+  if (recurringRow) recurringRow.style.display = freq !== 'one-time' ? 'block' : 'none';
+  if (deadlineRow)  deadlineRow.style.display  = freq === 'one-time'  ? 'block' : 'none';
+}
+
 function renderDashboard() {
   var requests = portalData.requests || [];
   var tickets  = portalData.tickets  || [];
@@ -841,7 +1098,8 @@ async function submitWork() {
     });
     var d = await r.json();
     if (r.ok) {
-      showToast('✓ Work request submitted! We\'ll be in touch within 24 hours.');
+      showToast('Request submitted! Generating your quote...');
+      setTimeout(function() { generateQuote(d.request && d.request.id, type, desc, priority); }, 500);
       document.getElementById('work-type').value = '';
       document.getElementById('work-desc').value = '';
       document.getElementById('work-deadline').value = '';
