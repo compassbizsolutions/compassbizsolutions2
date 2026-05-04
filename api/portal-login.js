@@ -76,7 +76,12 @@ module.exports = async function handler(req, res) {
     }
 
     // Create portal session (30 day TTL)
+    // Also write to session: key so FixKit and portal share auth
     const token = generateToken();
+    await saveToKV("session:" + token, {
+      email: email.toLowerCase().trim(),
+      created: new Date().toISOString()
+    }, 60 * 60 * 24 * 30);
     await saveToKV("portal_session:" + token, {
       email: email.toLowerCase().trim(),
       created: new Date().toISOString()

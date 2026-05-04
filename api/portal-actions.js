@@ -31,7 +31,8 @@ async function saveToKV(key, value) {
 
 async function validateSession(token) {
   if (!token) return null;
-  const session = await getFromKV("portal_session:" + token);
+  const session = await getFromKV("portal_session:" + token)
+               || await getFromKV("session:" + token);
   return session ? session.email : null;
 }
 

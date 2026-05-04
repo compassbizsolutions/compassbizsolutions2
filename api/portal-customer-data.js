@@ -18,7 +18,9 @@ async function getFromKV(key) {
 
 async function validateSession(token) {
   if (!token) return null;
-  const session = await getFromKV("portal_session:" + token);
+  // Check portal_session: first, then fall back to FixKit session: format
+  const session = await getFromKV("portal_session:" + token)
+               || await getFromKV("session:" + token);
   return session ? session.email : null;
 }
 
