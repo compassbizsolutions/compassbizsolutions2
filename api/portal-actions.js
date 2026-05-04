@@ -57,7 +57,7 @@ async function sendEmail(to, subject, html) {
 }
 
 async function handleSubmitWork(req, res, email) {
-  const { service_type, description, deadline, priority, files } = req.body || {};
+  const { service_type, description, deadline, priority, files, attachment } = req.body || {};
   if (!service_type || !description) return res.status(400).json({ error: "Service type and description required" });
 
   const eKey = emailKey(email);
@@ -68,10 +68,11 @@ async function handleSubmitWork(req, res, email) {
     id: "req_" + Date.now(),
     service_type,
     description,
-    deadline:  deadline  || null,
-    priority:  priority  || "normal",
-    files:     files     || null,
-    status:    "submitted",
+    deadline:   deadline   || null,
+    priority:   priority   || "normal",
+    files:      files      || null,
+    attachment: attachment ? { name: attachment.name, size: attachment.size, type: attachment.type } : null,
+    status:     "submitted",
     created_at: now,
   };
 
@@ -98,7 +99,8 @@ async function handleSubmitWork(req, res, email) {
         ${deadline ? `<p><strong>Deadline:</strong> ${deadline}</p>` : ""}
         <p><strong>Description:</strong></p>
         <p style="background:#f5f5f5;padding:12px;border-radius:4px;">${description}</p>
-        ${files ? `<p><strong>Files:</strong> <a href="${files}">${files}</a></p>` : ""}
+        ${files ? `<p><strong>Files link:</strong> <a href="${files}">${files}</a></p>` : ""}
+        ${attachment ? `<p><strong>Attachment:</strong> ${attachment.name} (${(attachment.size/1024).toFixed(1)} KB) — view in admin dashboard</p>` : ""}
       </div>`
     );
     // Confirmation to customer
