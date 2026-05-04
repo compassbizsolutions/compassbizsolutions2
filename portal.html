@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>My Portal — Compass Business Solutions</title>
+  <meta name="robots" content="noindex"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --black:#0D1B2A;--navy:#111E31;--charcoal:#162440;--steel:#1B2E4B;
+      --mid:#5A7291;--muted:#8aa5c0;--border:rgba(61,107,158,0.2);
+      --amber:#C8701A;--amber-glow:rgba(200,112,26,0.12);
+      --teal:#1E6B45;--teal-glow:rgba(30,107,69,0.12);
+      --white:#F4F7FC;--white-dim:#c8d8e8;--green:#2ecc71;--red:#e74c3c;
+      --font-head:'Barlow Condensed',sans-serif;
+      --font-body:'Barlow',sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-body);background:var(--black);color:var(--white);min-height:100vh;overflow-x:hidden}
+
+    /* ── LOGIN SCREEN ── */
+    .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--black);}
+    .login-card{background:var(--navy);border:1px solid var(--border);border-radius:16px;padding:40px;width:100%;max-width:420px;}
+    .login-brand-top{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:3px;color:var(--amber);text-transform:uppercase;margin-bottom:4px;}
+    .login-brand-name{font-family:var(--font-head);font-size:28px;font-weight:900;color:var(--white);text-transform:uppercase;letter-spacing:1px;margin-bottom:28px;}
+    .login-title{font-family:var(--font-head);font-size:24px;font-weight:800;color:var(--white);margin-bottom:6px;}
+    .login-sub{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.5;}
+    .login-label{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block;}
+    .login-input{width:100%;background:rgba(244,247,252,0.05);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:15px;color:var(--white);font-family:var(--font-body);outline:none;transition:border .15s;margin-bottom:16px;}
+    .login-input:focus{border-color:var(--amber);}
+    .login-input::placeholder{color:rgba(200,216,232,0.2);}
+    .login-btn{width:100%;background:var(--amber);color:var(--white);border:none;border-radius:8px;padding:14px;font-family:var(--font-head);font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:opacity .15s;margin-top:4px;}
+    .login-btn:hover{opacity:.88;}
+    .login-btn:disabled{opacity:.4;cursor:not-allowed;}
+    .login-err{background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);border-radius:8px;padding:12px 16px;font-size:13px;color:#e74c3c;margin-bottom:16px;display:none;}
+    .login-footer{font-size:12px;color:var(--muted);text-align:center;margin-top:20px;}
+    .login-footer a{color:var(--amber);text-decoration:none;}
+
+    /* ── APP SHELL ── */
+    .app{display:none;min-height:100vh;}
+
+    /* ── TOP NAV ── */
+    .topnav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,27,42,0.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 24px;gap:16px;}
+    .topnav-brand{display:flex;flex-direction:column;line-height:1;margin-right:auto;}
+    .topnav-brand-top{font-family:var(--font-head);font-size:9px;font-weight:700;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+    .topnav-brand-name{font-family:var(--font-head);font-size:20px;font-weight:900;color:var(--white);text-transform:uppercase;letter-spacing:1px;}
+    .topnav-user{font-size:13px;color:var(--muted);}
+    .topnav-user strong{color:var(--white);}
+    .topnav-logout{background:rgba(244,247,252,0.07);color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
+    .topnav-logout:hover{color:var(--white);border-color:rgba(244,247,252,0.3);}
+
+    /* ── LAYOUT ── */
+    .layout{display:flex;padding-top:60px;min-height:100vh;}
+
+    /* ── SIDEBAR ── */
+    .sidebar{width:220px;flex-shrink:0;background:var(--navy);border-right:1px solid var(--border);padding:20px 0;position:fixed;top:60px;bottom:0;overflow-y:auto;}
+    .sidebar-section{padding:0 12px;margin-bottom:4px;}
+    .sidebar-label{font-family:var(--font-head);font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding:12px 12px 6px;display:block;}
+    .sidebar-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;border-radius:8px;padding:10px 12px;font-size:14px;font-weight:500;color:var(--white-dim);cursor:pointer;transition:all .15s;text-align:left;}
+    .sidebar-btn:hover{background:rgba(244,247,252,0.05);color:var(--white);}
+    .sidebar-btn.active{background:rgba(200,112,26,0.12);color:var(--amber);font-weight:600;}
+    .sidebar-btn .sb-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+    .sidebar-badge{margin-left:auto;background:var(--amber);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;font-family:var(--font-head);}
+
+    /* ── MAIN CONTENT ── */
+    .main{flex:1;margin-left:220px;padding:32px;min-height:calc(100vh - 60px);}
+    .panel{display:none;}
+    .panel.active{display:block;}
+
+    /* ── PAGE HEADERS ── */
+    .page-eye{font-family:var(--font-head);font-size:11px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--amber);margin-bottom:8px;}
+    .page-title{font-family:var(--font-head);font-size:clamp(28px,4vw,42px);font-weight:900;text-transform:uppercase;color:var(--white);line-height:1;margin-bottom:8px;}
+    .page-sub{font-size:15px;color:var(--muted);line-height:1.6;margin-bottom:32px;}
+
+    /* ── CARDS ── */
+    .card{background:var(--charcoal);border:1px solid var(--border);border-radius:12px;padding:24px;}
+    .card+.card{margin-top:16px;}
+    .card-title{font-family:var(--font-head);font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--white);margin-bottom:4px;}
+    .card-sub{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5;}
+
+    /* ── DASHBOARD GRID ── */
+    .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px;}
+    .stat-card{background:var(--charcoal);border:1px solid var(--border);border-radius:12px;padding:20px;}
+    .stat-label{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+    .stat-val{font-family:var(--font-head);font-size:36px;font-weight:900;color:var(--white);line-height:1;}
+    .stat-sub{font-size:12px;color:var(--muted);margin-top:4px;}
+
+    /* ── QUICK ACTIONS ── */
+    .quick-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px;}
+    .qa-btn{display:flex;align-items:center;gap:8px;background:var(--charcoal);border:1px solid var(--border);border-radius:10px;padding:12px 20px;font-size:14px;font-weight:600;color:var(--white-dim);cursor:pointer;transition:all .15s;font-family:var(--font-body);}
+    .qa-btn:hover{border-color:var(--amber);color:var(--white);background:var(--amber-glow);}
+    .qa-btn.primary{background:var(--amber);color:var(--white);border-color:var(--amber);}
+    .qa-btn.primary:hover{opacity:.88;}
+
+    /* ── PRODUCTS ── */
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+    .product-card{background:var(--charcoal);border:1px solid var(--border);border-radius:12px;padding:24px;transition:border-color .2s;}
+    .product-card:hover{border-color:rgba(200,112,26,0.4);}
+    .product-icon{font-size:28px;margin-bottom:12px;}
+    .product-name{font-family:var(--font-head);font-size:20px;font-weight:800;text-transform:uppercase;color:var(--white);margin-bottom:6px;}
+    .product-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;}
+    .product-badge{display:inline-block;font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:14px;}
+    .badge-active{background:var(--teal-glow);color:var(--green);border:1px solid rgba(30,107,69,0.3);}
+    .badge-soon{background:rgba(90,114,145,0.15);color:var(--muted);border:1px solid var(--border);}
+    .product-btn{display:inline-block;background:var(--amber);color:var(--white);border:none;border-radius:7px;padding:9px 18px;font-family:var(--font-head);font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:opacity .15s;}
+    .product-btn:hover{opacity:.88;}
+    .product-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+
+    /* ── WORK REQUESTS ── */
+    .work-list{display:flex;flex-direction:column;gap:12px;}
+    .work-item{background:var(--charcoal);border:1px solid var(--border);border-radius:10px;padding:18px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+    .work-status{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:4px;flex-shrink:0;}
+    .status-submitted{background:rgba(90,114,145,0.15);color:var(--muted);}
+    .status-review{background:rgba(200,112,26,0.12);color:var(--amber);}
+    .status-progress{background:rgba(61,107,158,0.15);color:#6fa3d8;}
+    .status-delivered{background:var(--teal-glow);color:var(--green);}
+    .work-info{flex:1;min-width:200px;}
+    .work-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px;}
+    .work-meta{font-size:12px;color:var(--muted);}
+    .work-action{font-size:12px;font-weight:600;color:var(--amber);cursor:pointer;white-space:nowrap;}
+
+    /* ── TICKETS ── */
+    .ticket-list{display:flex;flex-direction:column;gap:10px;}
+    .ticket-item{background:var(--charcoal);border:1px solid var(--border);border-radius:10px;padding:16px 20px;cursor:pointer;transition:border-color .2s;}
+    .ticket-item:hover{border-color:rgba(200,112,26,0.3);}
+    .ticket-header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+    .ticket-id{font-family:var(--font-head);font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;}
+    .ticket-title{font-size:14px;font-weight:600;color:var(--white);flex:1;}
+    .ticket-date{font-size:12px;color:var(--muted);}
+    .ticket-preview{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.5;}
+
+    /* ── MESSAGES ── */
+    .msg-thread{background:var(--charcoal);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+    .msg-list{padding:20px;display:flex;flex-direction:column;gap:14px;max-height:400px;overflow-y:auto;}
+    .msg-bubble{max-width:80%;padding:12px 16px;border-radius:10px;font-size:14px;line-height:1.6;}
+    .msg-from-me{background:var(--amber);color:white;align-self:flex-end;border-radius:10px 10px 2px 10px;}
+    .msg-from-jen{background:var(--steel);color:var(--white-dim);align-self:flex-start;border-radius:10px 10px 10px 2px;}
+    .msg-sender{font-size:11px;font-weight:700;margin-bottom:4px;opacity:.7;}
+    .msg-compose{border-top:1px solid var(--border);padding:16px;display:flex;gap:12px;}
+    .msg-input{flex:1;background:rgba(244,247,252,0.05);border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-size:14px;color:var(--white);font-family:var(--font-body);outline:none;resize:none;transition:border .15s;}
+    .msg-input:focus{border-color:var(--amber);}
+    .msg-input::placeholder{color:rgba(200,216,232,0.2);}
+    .msg-send{background:var(--amber);color:white;border:none;border-radius:8px;padding:10px 20px;font-family:var(--font-head);font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;flex-shrink:0;}
+
+    /* ── FORM ── */
+    .form-group{margin-bottom:16px;}
+    .form-label{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block;}
+    .form-input,.form-select,.form-textarea{width:100%;background:rgba(244,247,252,0.05);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:14px;color:var(--white);font-family:var(--font-body);outline:none;transition:border .15s;}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--amber);}
+    .form-input::placeholder,.form-textarea::placeholder{color:rgba(200,216,232,0.2);}
+    .form-select option{background:var(--navy);}
+    .form-textarea{resize:vertical;min-height:100px;}
+    .form-2col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    @media(max-width:600px){.form-2col{grid-template-columns:1fr}}
+    .submit-btn{background:var(--amber);color:var(--white);border:none;border-radius:8px;padding:14px 28px;font-family:var(--font-head);font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:opacity .15s;}
+    .submit-btn:hover{opacity:.88;}
+    .submit-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+    /* ── BILLING ── */
+    .invoice-list{display:flex;flex-direction:column;gap:10px;}
+    .invoice-item{background:var(--charcoal);border:1px solid var(--border);border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+    .invoice-num{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--muted);}
+    .invoice-desc{flex:1;font-size:14px;color:var(--white-dim);}
+    .invoice-amt{font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--white);}
+    .invoice-status{font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:4px;}
+    .inv-paid{background:var(--teal-glow);color:var(--green);}
+    .inv-due{background:var(--amber-glow);color:var(--amber);}
+
+    /* ── EMPTY STATE ── */
+    .empty-state{text-align:center;padding:60px 20px;}
+    .empty-icon{font-size:48px;margin-bottom:16px;opacity:.4;}
+    .empty-title{font-family:var(--font-head);font-size:20px;font-weight:800;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+    .empty-sub{font-size:14px;color:var(--muted);line-height:1.6;}
+
+    /* ── MODAL ── */
+    .modal-overlay{position:fixed;inset:0;background:rgba(13,27,42,0.85);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;}
+    .modal-overlay.open{display:flex;}
+    .modal{background:var(--charcoal);border:1px solid var(--border);border-radius:16px;padding:32px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;}
+    .modal-title{font-family:var(--font-head);font-size:22px;font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:6px;}
+    .modal-sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
+    .modal-close{float:right;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;margin-top:-4px;}
+
+    /* ── TOAST ── */
+    #portal-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1E6B45;color:white;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);transition:opacity .3s;opacity:0;pointer-events:none;font-family:var(--font-body);}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px){
+      .sidebar{display:none;}
+      .main{margin-left:0;padding:20px;}
+      .topnav{padding:0 16px;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN SCREEN ── -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-brand-top">Compass Business Solutions</div>
+    <div class="login-brand-name">Customer Portal</div>
+    <div class="login-title">Welcome Back</div>
+    <div class="login-sub">Log in to access your work requests, support tickets, and Compass products.</div>
+    <div class="login-err" id="loginErr"></div>
+    <label class="login-label">Email Address</label>
+    <input class="login-input" type="email" id="loginEmail" placeholder="you@yourbusiness.com" autocomplete="email"/>
+    <label class="login-label">Password</label>
+    <input class="login-input" type="password" id="loginPass" placeholder="Your password" autocomplete="current-password"/>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">Log In →</button>
+    <div class="login-footer">
+      Need access? <a href="mailto:jen@compassbizsolutions.com">Contact Jen →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── APP SHELL ── -->
+<div class="app" id="appShell">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="topnav-brand">
+      <span class="topnav-brand-top">Compass Business Solutions</span>
+      <span class="topnav-brand-name">My Portal</span>
+    </div>
+    <span class="topnav-user">Hello, <strong id="nav-name">—</strong></span>
+    <button class="topnav-logout" onclick="doLogout()">Log Out</button>
+  </nav>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <span class="sidebar-label">Overview</span>
+      <div class="sidebar-section">
+        <button class="sidebar-btn active" onclick="showPanel('dashboard')" id="sb-dashboard">
+          <span class="sb-icon">🏠</span> Dashboard
+        </button>
+      </div>
+
+      <span class="sidebar-label">My Work</span>
+      <div class="sidebar-section">
+        <button class="sidebar-btn" onclick="showPanel('work')" id="sb-work">
+          <span class="sb-icon">📋</span> Work Requests
+          <span class="sidebar-badge" id="badge-work" style="display:none">0</span>
+        </button>
+        <button class="sidebar-btn" onclick="showPanel('submit')" id="sb-submit">
+          <span class="sb-icon">➕</span> Submit Work
+        </button>
+      </div>
+
+      <span class="sidebar-label">Support</span>
+      <div class="sidebar-section">
+        <button class="sidebar-btn" onclick="showPanel('tickets')" id="sb-tickets">
+          <span class="sb-icon">🎫</span> Support Tickets
+          <span class="sidebar-badge" id="badge-tickets" style="display:none">0</span>
+        </button>
+        <button class="sidebar-btn" onclick="showPanel('messages')" id="sb-messages">
+          <span class="sb-icon">💬</span> Messages
+          <span class="sidebar-badge" id="badge-messages" style="display:none">0</span>
+        </button>
+      </div>
+
+      <span class="sidebar-label">Products</span>
+      <div class="sidebar-section">
+        <button class="sidebar-btn" onclick="showPanel('products')" id="sb-products">
+          <span class="sb-icon">📦</span> My Products
+        </button>
+      </div>
+
+      <span class="sidebar-label">Account</span>
+      <div class="sidebar-section">
+        <button class="sidebar-btn" onclick="showPanel('billing')" id="sb-billing">
+          <span class="sb-icon">💳</span> Billing
+        </button>
+        <button class="sidebar-btn" onclick="showPanel('book')" id="sb-book">
+          <span class="sb-icon">📅</span> Book a Call
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- DASHBOARD -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="page-eye">Welcome Back</div>
+        <div class="page-title" id="dash-title">Your Portal</div>
+        <div class="page-sub">Everything in one place — work requests, support, and your Compass products.</div>
+
+        <div class="dash-grid">
+          <div class="stat-card">
+            <div class="stat-label">Active Requests</div>
+            <div class="stat-val" id="stat-requests">0</div>
+            <div class="stat-sub">Work in progress</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Open Tickets</div>
+            <div class="stat-val" id="stat-tickets">0</div>
+            <div class="stat-sub">Support items</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Messages</div>
+            <div class="stat-val" id="stat-messages">0</div>
+            <div class="stat-sub">Unread</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Products</div>
+            <div class="stat-val" id="stat-products">0</div>
+            <div class="stat-sub">Active</div>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <button class="qa-btn primary" onclick="showPanel('submit')">➕ Submit Work Request</button>
+          <button class="qa-btn" onclick="showPanel('tickets')">🎫 Open Support Ticket</button>
+          <button class="qa-btn" onclick="showPanel('messages')">💬 Message Jen</button>
+          <button class="qa-btn" onclick="showPanel('book')">📅 Book a Call</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Recent Activity</div>
+          <div class="card-sub">Your latest work requests and support tickets.</div>
+          <div id="dash-activity">
+            <div class="empty-state">
+              <div class="empty-icon">📭</div>
+              <div class="empty-title">No activity yet</div>
+              <div class="empty-sub">Submit your first work request or open a support ticket to get started.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORK REQUESTS -->
+      <div class="panel" id="panel-work">
+        <div class="page-eye">My Work</div>
+        <div class="page-title">Work Requests</div>
+        <div class="page-sub">Track the status of your submitted work. Click any item to view details.</div>
+        <div id="work-list-container">
+          <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <div class="empty-title">No requests yet</div>
+            <div class="empty-sub">Submit your first work request and we'll get started.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBMIT WORK -->
+      <div class="panel" id="panel-submit">
+        <div class="page-eye">Submit Work</div>
+        <div class="page-title">New Work Request</div>
+        <div class="page-sub">Describe what you need. We'll review it and get back to you with a quote or timeline within 24 hours.</div>
+
+        <div class="card">
+          <div class="form-group">
+            <label class="form-label">Service Type</label>
+            <select class="form-select" id="work-type">
+              <option value="">— Select what you need —</option>
+              <optgroup label="Admin & Operations">
+                <option>Spreadsheet / Data Work</option>
+                <option>Payroll Processing Help</option>
+                <option>Receipt / Expense Organization</option>
+                <option>Email Management / Outreach</option>
+                <option>Data Entry & Cleanup</option>
+                <option>Invoice & Estimate Follow-Up</option>
+                <option>Research & Competitive Analysis</option>
+              </optgroup>
+              <optgroup label="Marketing & Outreach">
+                <option>Social Media Management</option>
+                <option>Marketing Campaign Setup</option>
+                <option>Customer Follow-Up Sequences</option>
+                <option>Review & Referral Outreach</option>
+                <option>New Customer Welcome Campaigns</option>
+                <option>Appointment Confirmation Setup</option>
+                <option>Seasonal Re-Engagement Campaign</option>
+              </optgroup>
+              <optgroup label="Creative & Design">
+                <option>Presentation / Deck</option>
+                <option>Marketing Materials</option>
+                <option>PowerPoint / Pitch Deck</option>
+              </optgroup>
+              <optgroup label="Reporting & Data">
+                <option>Reporting & Summaries</option>
+                <option>Database Build or Cleanup</option>
+              </optgroup>
+              <optgroup label="Website">
+                <option>Website Updates & Fixes</option>
+              </optgroup>
+              <option value="other">Other — I'll describe below</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tell Us What You Need</label>
+            <textarea class="form-textarea" id="work-desc" placeholder="Describe the task in as much detail as you can — what needs to be done, any deadlines, how often (one-time or recurring), and any files or access we'll need..." style="min-height:140px;"></textarea>
+          </div>
+          <div class="form-2col">
+            <div class="form-group">
+              <label class="form-label">Deadline (if any)</label>
+              <input class="form-input" type="date" id="work-deadline"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Priority</label>
+              <select class="form-select" id="work-priority">
+                <option value="normal">Normal</option>
+                <option value="high">High — needed soon</option>
+                <option value="urgent">Urgent — ASAP</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Attach Files (optional)</label>
+            <input class="form-input" type="text" id="work-files" placeholder="Paste a Google Drive or Dropbox link if you have files to share"/>
+          </div>
+          <button class="submit-btn" id="submitWorkBtn" onclick="submitWork()">Submit Request →</button>
+        </div>
+      </div>
+
+      <!-- SUPPORT TICKETS -->
+      <div class="panel" id="panel-tickets">
+        <div class="page-eye">Support</div>
+        <div class="page-title">Support Tickets</div>
+        <div class="page-sub">Questions, issues, or anything you need help with. We respond within 24 hours.</div>
+
+        <div style="margin-bottom:20px;">
+          <button class="qa-btn primary" onclick="showModal('newTicketModal')">➕ Open New Ticket</button>
+        </div>
+
+        <div id="ticket-list-container">
+          <div class="empty-state">
+            <div class="empty-icon">🎫</div>
+            <div class="empty-title">No tickets yet</div>
+            <div class="empty-sub">Open a ticket if you have a question or need help with anything.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="panel" id="panel-messages">
+        <div class="page-eye">Direct Messages</div>
+        <div class="page-title">Messages</div>
+        <div class="page-sub">Direct line to Jen. Responses within 24 hours on business days.</div>
+
+        <div class="msg-thread">
+          <div class="msg-list" id="msg-list">
+            <div class="empty-state" style="padding:40px 20px;">
+              <div class="empty-icon">💬</div>
+              <div class="empty-title">No messages yet</div>
+              <div class="empty-sub">Send Jen a message — questions, updates, or anything on your mind.</div>
+            </div>
+          </div>
+          <div class="msg-compose">
+            <textarea class="msg-input" id="msg-input" placeholder="Type a message..." rows="2"></textarea>
+            <button class="msg-send" onclick="sendMessage()">Send</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="panel" id="panel-products">
+        <div class="page-eye">My Products</div>
+        <div class="page-title">Compass Products</div>
+        <div class="page-sub">Your active Compass products and tools. Click to access each one.</div>
+
+        <div class="products-grid" id="products-grid">
+          <div class="product-card">
+            <div class="product-icon">🔍</div>
+            <div class="product-name">FixKit</div>
+            <div class="product-badge badge-active">Active</div>
+            <div class="product-desc">Your profit leak diagnostic and 30-day fix plan. Daily tasks, calculators, Fix-It guides, and Ask Jen.</div>
+            <a href="https://fixkit.compassbizsolutions.com/dashboard" target="_blank" class="product-btn">Open FixKit →</a>
+          </div>
+          <div class="product-card">
+            <div class="product-icon">📱</div>
+            <div class="product-name">FieldKit</div>
+            <div class="product-badge badge-soon">Launching May 18</div>
+            <div class="product-desc">Full field operations platform for your crew — scheduling, dispatch, AI quoting, profit tracking, and more.</div>
+            <a href="/trades/fieldkit/features" class="product-btn ghost">Learn More →</a>
+          </div>
+          <div class="product-card">
+            <div class="product-icon">🏗️</div>
+            <div class="product-name">BuildKit</div>
+            <div class="product-badge badge-soon">Launching May 18</div>
+            <div class="product-desc">Business launch system for any new business — legal foundation, pricing, first customers, 90-day plan.</div>
+            <a href="/buildkit" class="product-btn ghost">Learn More →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- BILLING -->
+      <div class="panel" id="panel-billing">
+        <div class="page-eye">Account</div>
+        <div class="page-title">Billing</div>
+        <div class="page-sub">Your invoice history and any outstanding balances.</div>
+
+        <div id="billing-container">
+          <div class="empty-state">
+            <div class="empty-icon">💳</div>
+            <div class="empty-title">No invoices yet</div>
+            <div class="empty-sub">Your invoice history will appear here once you have completed work or active subscriptions.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOK A CALL -->
+      <div class="panel" id="panel-book">
+        <div class="page-eye">Schedule Time</div>
+        <div class="page-title">Book a Call</div>
+        <div class="page-sub">Choose the right session for what you need.</div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">
+          <div class="card" style="border-top:3px solid var(--teal);">
+            <div class="card-title">Free Scoping Call</div>
+            <div style="font-family:var(--font-head);font-size:28px;font-weight:900;color:var(--green);margin-bottom:8px;">Free</div>
+            <div class="card-sub">20 minutes. For FixKit customers — I'll review your snapshot and tell you exactly where to focus first.</div>
+            <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="submit-btn" style="display:inline-block;text-decoration:none;font-size:13px;padding:10px 20px;">Book Free Call →</a>
+          </div>
+          <div class="card" style="border-top:3px solid var(--amber);">
+            <div class="card-title">Strategy Call</div>
+            <div style="font-family:var(--font-head);font-size:28px;font-weight:900;color:var(--amber);margin-bottom:8px;">$79</div>
+            <div class="card-sub">30 minutes. Focused strategy session on your biggest business challenge — pricing, hiring, growth, systems.</div>
+            <a href="https://calendly.com/jvoiselle612-s9gb/strategy-call" target="_blank" class="submit-btn" style="display:inline-block;text-decoration:none;font-size:13px;padding:10px 20px;">Book Strategy Call →</a>
+          </div>
+          <div class="card" style="border-top:3px solid var(--mid);">
+            <div class="card-title">Working Session</div>
+            <div style="font-family:var(--font-head);font-size:28px;font-weight:900;color:var(--white);margin-bottom:8px;">$149</div>
+            <div class="card-sub">60 minutes. We build something together — a system, a process, a pricing model. You leave with a deliverable.</div>
+            <a href="https://calendly.com/jvoiselle612-s9gb/working-session" target="_blank" class="submit-btn" style="display:inline-block;text-decoration:none;font-size:13px;padding:10px 20px;">Book Working Session →</a>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- NEW TICKET MODAL -->
+<div class="modal-overlay" id="newTicketModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('newTicketModal')">×</button>
+    <div class="modal-title">Open Support Ticket</div>
+    <div class="modal-sub">Describe your issue or question. We'll respond within 24 hours.</div>
+    <div class="form-group">
+      <label class="form-label">Subject</label>
+      <input class="form-input" type="text" id="ticket-subject" placeholder="Brief description of your issue"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select class="form-select" id="ticket-category">
+        <option value="">— Select category —</option>
+        <option>FixKit — Portal Issue</option>
+        <option>FixKit — Report Question</option>
+        <option>FieldKit — Question</option>
+        <option>BuildKit — Question</option>
+        <option>Billing — Invoice or Payment</option>
+        <option>Work Request — Question</option>
+        <option>Technical Issue</option>
+        <option>General Question</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Details</label>
+      <textarea class="form-textarea" id="ticket-details" placeholder="Describe the issue in detail — what you expected, what happened, any error messages..."></textarea>
+    </div>
+    <button class="submit-btn" onclick="submitTicket()">Submit Ticket →</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="portal-toast"></div>
+
+<script>
+var API = 'https://www.compassbizsolutions.com/api';
+var SK  = 'compass_portal_session';
+var session = null;
+var portalData = { requests: [], tickets: [], messages: [] };
+
+// ── AUTH ──────────────────────────────────────────────────────────────────
+function loadSession() {
+  try { session = JSON.parse(localStorage.getItem(SK)); } catch(e) {}
+  if (session && session.token) {
+    showApp();
+    loadPortalData();
+  }
+}
+
+async function doLogin() {
+  var email = document.getElementById('loginEmail').value.trim();
+  var pass  = document.getElementById('loginPass').value;
+  var err   = document.getElementById('loginErr');
+  var btn   = document.getElementById('loginBtn');
+  err.style.display = 'none';
+  if (!email || !pass) { showLoginErr('Please enter your email and password.'); return; }
+  btn.disabled = true; btn.textContent = 'Logging in…';
+  try {
+    var r = await fetch(API + '/portal-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pass })
+    });
+    var d = await r.json();
+    if (!r.ok) { showLoginErr(d.error || 'Login failed.'); btn.disabled=false; btn.textContent='Log In →'; return; }
+    session = { token: d.token, email: email, name: d.name, company: d.company };
+    localStorage.setItem(SK, JSON.stringify(session));
+    showApp();
+    loadPortalData();
+  } catch(e) {
+    showLoginErr('Connection error — please try again.');
+    btn.disabled=false; btn.textContent='Log In →';
+  }
+}
+
+function doLogout() {
+  localStorage.removeItem(SK);
+  session = null;
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('appShell').style.display = 'none';
+}
+
+function showLoginErr(msg) {
+  var el = document.getElementById('loginErr');
+  el.textContent = msg; el.style.display = 'block';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') doLogin();
+});
+
+// ── APP ───────────────────────────────────────────────────────────────────
+function showApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appShell').style.display = 'block';
+  var name = (session.name || session.email || '').split(' ')[0] || 'there';
+  document.getElementById('nav-name').textContent = name;
+  document.getElementById('dash-title').textContent = 'Welcome back, ' + name;
+}
+
+async function loadPortalData() {
+  try {
+    var r = await fetch(API + '/portal-customer-data', {
+      headers: { 'Authorization': 'Bearer ' + session.token }
+    });
+    if (!r.ok) { if (r.status === 401) { doLogout(); return; } }
+    var d = await r.json();
+    portalData = d;
+    renderDashboard();
+    renderWorkList();
+    renderTicketList();
+    renderMessages();
+  } catch(e) {
+    console.error('Portal data error:', e);
+    renderDashboard();
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────
+function renderDashboard() {
+  var requests = portalData.requests || [];
+  var tickets  = portalData.tickets  || [];
+  var messages = portalData.messages || [];
+  var products = portalData.products || ['fixkit'];
+
+  document.getElementById('stat-requests').textContent = requests.filter(r => r.status !== 'delivered').length;
+  document.getElementById('stat-tickets').textContent  = tickets.filter(t => t.status !== 'closed').length;
+  document.getElementById('stat-messages').textContent = messages.filter(m => !m.read && m.from === 'jen').length;
+  document.getElementById('stat-products').textContent = products.length;
+
+  // Update badges
+  var wb = document.getElementById('badge-work');
+  var openReq = requests.filter(r => r.status !== 'delivered').length;
+  if (openReq > 0) { wb.style.display='block'; wb.textContent=openReq; } else { wb.style.display='none'; }
+
+  var tb = document.getElementById('badge-tickets');
+  var openTix = tickets.filter(t => t.status !== 'closed').length;
+  if (openTix > 0) { tb.style.display='block'; tb.textContent=openTix; } else { tb.style.display='none'; }
+
+  var mb = document.getElementById('badge-messages');
+  var unread = messages.filter(m => !m.read && m.from === 'jen').length;
+  if (unread > 0) { mb.style.display='block'; mb.textContent=unread; } else { mb.style.display='none'; }
+
+  // Recent activity
+  var activity = document.getElementById('dash-activity');
+  var all = [
+    ...requests.map(r => ({...r, type:'request'})),
+    ...tickets.map(t => ({...t, type:'ticket'}))
+  ].sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0,5);
+
+  if (!all.length) {
+    activity.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">No activity yet</div><div class="empty-sub">Submit your first work request or open a support ticket to get started.</div></div>';
+    return;
+  }
+
+  activity.innerHTML = '<div class="work-list">' + all.map(function(item) {
+    var label = item.type === 'request' ? (item.service_type || 'Work Request') : (item.subject || 'Support Ticket');
+    var icon  = item.type === 'request' ? '📋' : '🎫';
+    var statusClass = {submitted:'status-submitted',review:'status-review','in-progress':'status-progress',delivered:'status-delivered',open:'status-review',closed:'status-submitted'}[item.status] || 'status-submitted';
+    return '<div class="work-item"><span class="work-status ' + statusClass + '">' + (item.status||'submitted') + '</span><div class="work-info"><div class="work-title">' + icon + ' ' + label + '</div><div class="work-meta">' + formatDate(item.created_at) + '</div></div></div>';
+  }).join('') + '</div>';
+}
+
+function renderWorkList() {
+  var requests = portalData.requests || [];
+  var container = document.getElementById('work-list-container');
+  if (!requests.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">No requests yet</div><div class="empty-sub">Submit your first work request and we\'ll get started.</div></div>';
+    return;
+  }
+  container.innerHTML = '<div class="work-list">' + requests.map(function(r) {
+    var statusClass = {submitted:'status-submitted',review:'status-review','in-progress':'status-progress',delivered:'status-delivered'}[r.status] || 'status-submitted';
+    return '<div class="work-item"><span class="work-status ' + statusClass + '">' + (r.status||'submitted') + '</span><div class="work-info"><div class="work-title">' + (r.service_type||'Work Request') + '</div><div class="work-meta">' + formatDate(r.created_at) + (r.priority === 'urgent' ? ' · 🔴 Urgent' : r.priority === 'high' ? ' · 🟡 High Priority' : '') + '</div><div style="font-size:13px;color:var(--muted);margin-top:4px;">' + (r.description||'').substring(0,120) + (r.description&&r.description.length>120?'…':'') + '</div></div></div>';
+  }).join('') + '</div>';
+}
+
+function renderTicketList() {
+  var tickets = portalData.tickets || [];
+  var container = document.getElementById('ticket-list-container');
+  if (!tickets.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">🎫</div><div class="empty-title">No tickets yet</div><div class="empty-sub">Open a ticket if you have a question or need help.</div></div>';
+    return;
+  }
+  container.innerHTML = '<div class="ticket-list">' + tickets.map(function(t,i) {
+    var statusClass = {open:'status-review',closed:'status-submitted','in-progress':'status-progress'}[t.status] || 'status-review';
+    return '<div class="ticket-item"><div class="ticket-header"><span class="ticket-id">#' + (i+1).toString().padStart(4,'0') + '</span><span class="ticket-title">' + (t.subject||'Support Ticket') + '</span><span class="work-status ' + statusClass + '">' + (t.status||'open') + '</span><span class="ticket-date">' + formatDate(t.created_at) + '</span></div><div class="ticket-preview">' + (t.details||'').substring(0,150) + (t.details&&t.details.length>150?'…':'') + '</div></div>';
+  }).join('') + '</div>';
+}
+
+function renderMessages() {
+  var messages = portalData.messages || [];
+  var list = document.getElementById('msg-list');
+  if (!messages.length) {
+    list.innerHTML = '<div class="empty-state" style="padding:40px 20px;"><div class="empty-icon">💬</div><div class="empty-title">No messages yet</div><div class="empty-sub">Send Jen a message — questions, updates, or anything on your mind.</div></div>';
+    return;
+  }
+  list.innerHTML = messages.map(function(m) {
+    var isMe = m.from !== 'jen';
+    return '<div style="display:flex;flex-direction:column;align-items:' + (isMe?'flex-end':'flex-start') + '"><div class="msg-bubble ' + (isMe?'msg-from-me':'msg-from-jen') + '"><div class="msg-sender">' + (isMe?'You':'Jen') + ' · ' + formatDate(m.created_at) + '</div>' + m.text + '</div></div>';
+  }).join('');
+  list.scrollTop = list.scrollHeight;
+}
+
+// ── ACTIONS ───────────────────────────────────────────────────────────────
+async function submitWork() {
+  var type = document.getElementById('work-type').value;
+  var desc = document.getElementById('work-desc').value.trim();
+  var deadline = document.getElementById('work-deadline').value;
+  var priority = document.getElementById('work-priority').value;
+  var files = document.getElementById('work-files').value.trim();
+  var btn  = document.getElementById('submitWorkBtn');
+
+  if (!type) { showToast('Please select a service type.'); return; }
+  if (!desc) { showToast('Please describe what you need.'); return; }
+
+  btn.disabled=true; btn.textContent='Submitting…';
+  try {
+    var r = await fetch(API + '/portal-submit-work', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ service_type: type, description: desc, deadline, priority, files })
+    });
+    var d = await r.json();
+    if (r.ok) {
+      showToast('✓ Work request submitted! We\'ll be in touch within 24 hours.');
+      document.getElementById('work-type').value = '';
+      document.getElementById('work-desc').value = '';
+      document.getElementById('work-deadline').value = '';
+      document.getElementById('work-priority').value = 'normal';
+      document.getElementById('work-files').value = '';
+      showPanel('work');
+      loadPortalData();
+    } else {
+      showToast(d.error || 'Submission failed — please try again.');
+    }
+  } catch(e) { showToast('Connection error — please try again.'); }
+  btn.disabled=false; btn.textContent='Submit Request →';
+}
+
+async function submitTicket() {
+  var subject  = document.getElementById('ticket-subject').value.trim();
+  var category = document.getElementById('ticket-category').value;
+  var details  = document.getElementById('ticket-details').value.trim();
+  if (!subject) { showToast('Please enter a subject.'); return; }
+  if (!details) { showToast('Please describe your issue.'); return; }
+  try {
+    var r = await fetch(API + '/portal-submit-ticket', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ subject, category, details })
+    });
+    var d = await r.json();
+    if (r.ok) {
+      showToast('✓ Ticket submitted! We\'ll respond within 24 hours.');
+      closeModal('newTicketModal');
+      document.getElementById('ticket-subject').value = '';
+      document.getElementById('ticket-details').value = '';
+      showPanel('tickets');
+      loadPortalData();
+    } else { showToast(d.error || 'Submission failed.'); }
+  } catch(e) { showToast('Connection error — please try again.'); }
+}
+
+async function sendMessage() {
+  var input = document.getElementById('msg-input');
+  var text  = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  try {
+    var r = await fetch(API + '/portal-send-message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ text })
+    });
+    if (r.ok) { loadPortalData(); }
+  } catch(e) { showToast('Message failed — please try again.'); }
+}
+
+// ── UI HELPERS ────────────────────────────────────────────────────────────
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.sidebar-btn').forEach(function(b) { b.classList.remove('active'); });
+  var panel = document.getElementById('panel-' + name);
+  var btn   = document.getElementById('sb-' + name);
+  if (panel) panel.classList.add('active');
+  if (btn)   btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function showToast(msg) {
+  var t = document.getElementById('portal-toast');
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._to);
+  t._to = setTimeout(function() { t.style.opacity = '0'; }, 3000);
+}
+
+function formatDate(iso) {
+  if (!iso) return '';
+  try {
+    var d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  } catch(e) { return ''; }
+}
+
+// Close modal on backdrop click
+document.querySelectorAll('.modal-overlay').forEach(function(el) {
+  el.addEventListener('click', function(e) { if (e.target === el) el.classList.remove('open'); });
+});
+
+// Send message on Enter (Shift+Enter for newline)
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey && document.activeElement.id === 'msg-input') {
+    e.preventDefault(); sendMessage();
+  }
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+loadSession();
+</script>
+</body>
+</html>
