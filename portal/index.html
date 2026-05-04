@@ -429,8 +429,22 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Attach Files (optional)</label>
-            <input class="form-input" type="text" id="work-files" placeholder="Paste a Google Drive or Dropbox link if you have files to share"/>
+            <label class="form-label">Attach File (optional)</label>
+            <div id="upload-area" style="border:2px dashed rgba(61,107,158,0.3);border-radius:8px;padding:24px;text-align:center;cursor:pointer;transition:border-color .15s;" onclick="document.getElementById('work-file-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--amber)'" ondragleave="this.style.borderColor='rgba(61,107,158,0.3)'" ondrop="handleFileDrop(event)">
+              <div id="upload-label">
+                <div style="font-size:28px;margin-bottom:8px;">📎</div>
+                <div style="font-size:14px;color:var(--muted);">Click to upload or drag and drop</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:4px;">PDF, Word, Excel, images — max 10MB</div>
+              </div>
+              <div id="upload-preview" style="display:none;">
+                <div style="font-size:20px;margin-bottom:6px;">✅</div>
+                <div id="upload-filename" style="font-size:14px;font-weight:600;color:var(--white);"></div>
+                <div id="upload-filesize" style="font-size:12px;color:var(--muted);margin-top:2px;"></div>
+                <button onclick="clearUpload(event)" style="margin-top:8px;background:none;border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-size:12px;color:var(--muted);cursor:pointer;">Remove</button>
+              </div>
+            </div>
+            <input type="file" id="work-file-input" style="display:none;" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.jpg,.jpeg,.png,.gif" onchange="handleFileSelect(this)"/>
+            <div style="margin-top:8px;font-size:12px;color:var(--muted);">Or paste a link: <input class="form-input" type="text" id="work-files" placeholder="Google Drive, Dropbox, etc." style="display:inline;width:auto;padding:6px 10px;font-size:13px;margin-left:6px;"/></div>
           </div>
           <button class="submit-btn" id="submitWorkBtn" onclick="submitWork()">Submit Request →</button>
         </div>
@@ -761,6 +775,52 @@ function renderMessages() {
 }
 
 // ── ACTIONS ───────────────────────────────────────────────────────────────
+// ── FILE UPLOAD HANDLING ─────────────────────────────────────────────────
+var uploadedFile = null; // { name, size, type, data (base64) }
+
+function handleFileSelect(input) {
+  var file = input.files[0];
+  if (file) processFile(file);
+}
+
+function handleFileDrop(event) {
+  event.preventDefault();
+  document.getElementById('upload-area').style.borderColor = 'rgba(61,107,158,0.3)';
+  var file = event.dataTransfer.files[0];
+  if (file) processFile(file);
+}
+
+function processFile(file) {
+  if (file.size > 10 * 1024 * 1024) {
+    showToast('File too large — maximum 10MB.');
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    uploadedFile = {
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      data: e.target.result.split(',')[1] // base64 only
+    };
+    document.getElementById('upload-label').style.display = 'none';
+    document.getElementById('upload-preview').style.display = 'block';
+    document.getElementById('upload-filename').textContent = file.name;
+    document.getElementById('upload-filesize').textContent = (file.size / 1024).toFixed(1) + ' KB';
+    document.getElementById('upload-area').style.borderColor = 'var(--amber)';
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearUpload(e) {
+  e.stopPropagation();
+  uploadedFile = null;
+  document.getElementById('work-file-input').value = '';
+  document.getElementById('upload-label').style.display = 'block';
+  document.getElementById('upload-preview').style.display = 'none';
+  document.getElementById('upload-area').style.borderColor = 'rgba(61,107,158,0.3)';
+}
+
 async function submitWork() {
   var type = document.getElementById('work-type').value;
   var desc = document.getElementById('work-desc').value.trim();
@@ -777,7 +837,7 @@ async function submitWork() {
     var r = await fetch(API + '/portal-submit-work', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
-      body: JSON.stringify({ service_type: type, description: desc, deadline, priority, files })
+      body: JSON.stringify({ service_type: type, description: desc, deadline, priority, files, attachment: uploadedFile || null })
     });
     var d = await r.json();
     if (r.ok) {
@@ -787,6 +847,7 @@ async function submitWork() {
       document.getElementById('work-deadline').value = '';
       document.getElementById('work-priority').value = 'normal';
       document.getElementById('work-files').value = '';
+      clearUpload({stopPropagation:function(){}});
       showPanel('work');
       loadPortalData();
     } else {
