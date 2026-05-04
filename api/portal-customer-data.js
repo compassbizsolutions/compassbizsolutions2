@@ -43,11 +43,12 @@ module.exports = async function handler(req, res) {
 
     const eKey = emailKey(email);
 
-    const [customer, requests, tickets, messages] = await Promise.all([
+    const [customer, requests, tickets, messages, quotes] = await Promise.all([
       getFromKV("customer:" + eKey),
       getFromKV("portal_requests:" + eKey),
       getFromKV("portal_tickets:" + eKey),
       getFromKV("portal_messages:" + eKey),
+      getFromKV("portal_quotes:" + eKey),
     ]);
 
     // Determine active products
@@ -68,6 +69,7 @@ module.exports = async function handler(req, res) {
       requests: requests || [],
       tickets:  tickets  || [],
       messages: messages || [],
+      quotes:   quotes   || [],
       products,
     });
 
