@@ -209,8 +209,28 @@
     <label class="login-label">Password</label>
     <input class="login-input" type="password" id="loginPass" placeholder="Your password" autocomplete="current-password"/>
     <button class="login-btn" id="loginBtn" onclick="doLogin()">Log In →</button>
-    <div class="login-footer">
-      Need access? <a href="mailto:jen@compassbizsolutions.com">Contact Jen →</a>
+    <div class="login-footer" style="margin-top:20px;">
+      <div style="border-top:1px solid rgba(61,107,158,0.2);padding-top:16px;margin-top:16px;">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:10px;">Don't have access yet?</div>
+        <button onclick="showRequestAccess()" style="background:transparent;border:1px solid rgba(200,112,26,0.4);color:var(--amber);border-radius:7px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;width:100%;font-family:var(--font-body);">Request Portal Access →</button>
+      </div>
+    </div>
+
+    <!-- REQUEST ACCESS FORM -->
+    <div id="requestAccessForm" style="display:none;margin-top:20px;border-top:1px solid rgba(61,107,158,0.2);padding-top:20px;">
+      <div style="font-family:var(--font-head);font-size:16px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Request Access</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5;">Tell us a bit about yourself and we'll get you set up within 24 hours.</div>
+      <div class="login-err" id="reqErr"></div>
+      <label class="login-label">Your Name</label>
+      <input class="login-input" type="text" id="reqName" placeholder="Mike Johnson"/>
+      <label class="login-label">Email Address</label>
+      <input class="login-input" type="email" id="reqEmail" placeholder="mike@yourbusiness.com"/>
+      <label class="login-label">Company / Business Name</label>
+      <input class="login-input" type="text" id="reqCompany" placeholder="Johnson Plumbing LLC"/>
+      <label class="login-label">What do you need help with?</label>
+      <textarea style="width:100%;background:rgba(244,247,252,0.05);border:1px solid rgba(61,107,158,0.2);border-radius:8px;padding:12px 16px;font-size:14px;color:var(--white);font-family:var(--font-body);outline:none;resize:none;min-height:80px;margin-bottom:16px;" id="reqNeeds" placeholder="e.g. I need help with spreadsheets, social media, and website updates..."></textarea>
+      <button class="login-btn" id="reqBtn" onclick="submitAccessRequest()">Send Request →</button>
+      <div style="text-align:center;margin-top:12px;"><button onclick="hideRequestAccess()" style="background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;">← Back to Login</button></div>
     </div>
   </div>
 </div>
@@ -599,7 +619,9 @@ async function doLogin() {
       body: JSON.stringify({ email, password: pass })
     });
     var d = await r.json();
-    if (!r.ok) { showLoginErr(d.error || 'Login failed.'); btn.disabled=false; btn.textContent='Log In →'; return; }
+    if (!r.ok) { var msg = d.error || 'Login failed.';
+    if (d.redirect === '/create-account') msg = 'Account setup not complete. Please contact Jen at jen@compassbizsolutions.com to finish setting up your account.';
+    showLoginErr(msg); btn.disabled=false; btn.textContent='Log In →'; return; }
     session = { token: d.token, email: email, name: d.name, company: d.company };
     localStorage.setItem(SK, JSON.stringify(session));
     showApp();
@@ -854,6 +876,64 @@ document.addEventListener('keydown', function(e) {
     e.preventDefault(); sendMessage();
   }
 });
+
+// ── REQUEST ACCESS ───────────────────────────────────────────────────────
+function showRequestAccess() {
+  document.getElementById('requestAccessForm').style.display = 'block';
+  document.querySelector('.login-footer').style.display = 'none';
+  document.querySelector('.login-card > .login-title').style.display = 'none';
+  document.querySelector('.login-card > .login-sub').style.display = 'none';
+  document.querySelector('.login-card > .login-err').style.display = 'none';
+  document.querySelectorAll('.login-card > .login-label, .login-card > .login-input, .login-card > .login-btn').forEach(function(el){ el.style.display='none'; });
+}
+
+function hideRequestAccess() {
+  document.getElementById('requestAccessForm').style.display = 'none';
+  document.querySelector('.login-footer').style.display = 'block';
+  document.querySelector('.login-card > .login-title').style.display = 'block';
+  document.querySelector('.login-card > .login-sub').style.display = 'block';
+  document.querySelectorAll('.login-card > .login-label, .login-card > .login-input, .login-card > .login-btn').forEach(function(el){ el.style.display=''; });
+}
+
+async function submitAccessRequest() {
+  var name    = document.getElementById('reqName').value.trim();
+  var email   = document.getElementById('reqEmail').value.trim();
+  var company = document.getElementById('reqCompany').value.trim();
+  var needs   = document.getElementById('reqNeeds').value.trim();
+  var btn     = document.getElementById('reqBtn');
+  var err     = document.getElementById('reqErr');
+  err.style.display = 'none';
+
+  if (!name)  { err.textContent='Please enter your name.'; err.style.display='block'; return; }
+  if (!email || !email.includes('@')) { err.textContent='Please enter a valid email.'; err.style.display='block'; return; }
+
+  btn.disabled=true; btn.textContent='Sending…';
+
+  try {
+    var r = await fetch(API + '/portal-request-access', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, company, needs })
+    });
+    var d = await r.json();
+    if (r.ok) {
+      document.getElementById('requestAccessForm').innerHTML =
+        '<div style="text-align:center;padding:20px 0;">' +
+        '<div style="font-size:40px;margin-bottom:16px;">✅</div>' +
+        '<div style="font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;margin-bottom:8px;">Request Sent!</div>' +
+        '<div style="font-size:14px;color:var(--muted);line-height:1.6;">We'll get you set up within 24 hours and email you your login details.</div>' +
+        '</div>';
+    } else {
+      err.textContent = d.error || 'Something went wrong — please try again.';
+      err.style.display = 'block';
+      btn.disabled=false; btn.textContent='Send Request →';
+    }
+  } catch(e) {
+    err.textContent = 'Connection error — please try again.';
+    err.style.display = 'block';
+    btn.disabled=false; btn.textContent='Send Request →';
+  }
+}
 
 // ── INIT ──────────────────────────────────────────────────────────────────
 loadSession();
