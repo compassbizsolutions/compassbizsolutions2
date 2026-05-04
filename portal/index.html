@@ -784,6 +784,7 @@ async function loadPortalData() {
     renderTicketList();
     renderMessages();
     renderQuotes();
+    renderBilling();
     updateQuoteBadge();
   } catch(e) {
     console.error('Portal data error:', e);
@@ -815,6 +816,27 @@ function updateQuoteBadge() {
   var pending = quotes.filter(function(q){ return q.status === 'pending'; }).length;
   var badge = document.getElementById('badge-quotes');
   if (badge) { badge.style.display = pending > 0 ? 'block' : 'none'; badge.textContent = pending; }
+}
+
+function renderBilling() {
+  var invoices = portalData.invoices || [];
+  var container = document.getElementById('billing-container');
+  if (!container) return;
+  if (!invoices.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">💳</div><div class="empty-title">No invoices yet</div><div class="empty-sub">Your invoice history will appear here once you have completed work or active subscriptions.</div></div>';
+    return;
+  }
+  container.innerHTML = '<div class="invoice-list">' + invoices.map(function(inv) {
+    var statusClass = inv.status === 'paid' ? 'inv-paid' : 'inv-due';
+    var statusLabel = inv.status === 'paid' ? 'Paid' : 'Payment Due';
+    return '<div class="invoice-item">'
+      + '<div class="invoice-num">' + formatDate(inv.created_at) + '</div>'
+      + '<div class="invoice-desc">' + inv.service_type + (inv.complexity ? ' (' + inv.complexity + ')' : '') + '</div>'
+      + '<div class="invoice-amt">$' + (inv.amount || 0).toFixed(2) + '</div>'
+      + '<span class="invoice-status ' + statusClass + '">' + statusLabel + '</span>'
+      + (inv.stripe_invoice_url ? '<a href="' + inv.stripe_invoice_url + '" target="_blank" style="font-size:12px;color:var(--amber);text-decoration:none;font-weight:600;">View →</a>' : '')
+      + '</div>';
+  }).join('') + '</div>';
 }
 
 function renderQuotes() {
@@ -908,14 +930,40 @@ async function submitTaskIntake() {
     var d = await r.json();
     if (!r.ok) { showToast(d.error || 'Something went wrong.'); btn.disabled=false; btn.textContent='Confirm & Pay →'; return; }
 
-    // Then redirect to Stripe
-    var stripeUrl = window._pendingQuoteType === 'package'
-      ? getStripeLink(q.recommended_package && q.recommended_package.id)
-      : getAdHocStripeLink(q.service_type, q.complexity);
+    // Create Stripe invoice
+    var invoicePayload = {
+      quote_id:    q.id,
+      type:        window._pendingQuoteType === 'package' ? 'package' : 'adhoc',
+      package_id:  q.recommended_package && q.recommended_package.id,
+      service_type: q.service_type,
+      complexity:  q.complexity,
+      amount:      q.ad_hoc_price,
+      intake:      { frequency, delivery_day: deliveryDay, delivery_time: deliveryTime,
+                     one_time_deadline: deadline, specific_details: details, access_info: access, files }
+    };
+
+    var ir = await fetch(API + '/create-stripe-invoice', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify(invoicePayload)
+    });
+    var id = await ir.json();
 
     closeModal('taskIntakeModal');
-    showToast('Redirecting to payment...');
-    setTimeout(function() { window.location.href = stripeUrl; }, 1000);
+
+    if (ir.ok && id.invoice_url) {
+      showToast('Invoice sent! Check your email to complete payment.');
+      // Show invoice URL in portal
+      showPanel('quotes');
+      loadPortalData();
+      // Open Stripe hosted invoice in new tab
+      setTimeout(function() { window.open(id.invoice_url, '_blank'); }, 1500);
+    } else if (ir.ok) {
+      showToast('Invoice created! Check your email to complete payment.');
+      loadPortalData();
+    } else {
+      showToast((id && id.error) || 'Invoice creation failed — please try again.');
+    }
 
   } catch(e) {
     showToast('Connection error — please try again.');
@@ -923,20 +971,7 @@ async function submitTaskIntake() {
   }
 }
 
-function getStripeLink(packageId) {
-  // Wire in Stripe links when available
-  var links = {
-    single_task:     'https://buy.stripe.com/PLACEHOLDER_SINGLE_TASK',
-    small_biz_admin: 'https://buy.stripe.com/PLACEHOLDER_SMALL_BIZ',
-    full_admin:      'https://buy.stripe.com/PLACEHOLDER_FULL_ADMIN',
-  };
-  return links[packageId] || 'https://www.compassbizsolutions.com/portal';
-}
-
-function getAdHocStripeLink(serviceType, complexity) {
-  // Wire in ad hoc Stripe links when available
-  return 'https://www.compassbizsolutions.com/portal';
-}
+// Stripe invoicing handled by /api/create-stripe-invoice
 
 // Toggle delivery day/deadline based on frequency
 function onFrequencyChange() {
@@ -1163,6 +1198,8 @@ function showPanel(name) {
   if (panel) panel.classList.add('active');
   if (btn)   btn.classList.add('active');
   window.scrollTo(0,0);
+  if (name === 'billing') renderBilling();
+  if (name === 'quotes')  renderQuotes();
 }
 
 function showModal(id) { document.getElementById(id).classList.add('open'); }
