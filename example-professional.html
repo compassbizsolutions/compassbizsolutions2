@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Meridian Wealth Partners — Financial Planning & Advisory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#0F1923;--slate:#1D2D3E;--mid:#2D4158;
+  --gold:#B8975A;--gold-dim:rgba(184,151,90,0.12);--gold-border:rgba(184,151,90,0.25);
+  --silver:#8FA3B8;--light:#F2F5F8;--white:#FAFCFE;--border:rgba(45,65,88,0.12);
+  --ff-head:'Cormorant Garamond',serif;--ff-body:'Outfit',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-body);background:var(--white);color:var(--ink);overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,252,254,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 56px;height:68px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;flex-direction:column;line-height:1;}
+.nav-logo-top{font-family:var(--ff-head);font-size:22px;font-weight:600;color:var(--ink);letter-spacing:.5px;}
+.nav-logo-sub{font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);}
+.nav-links{display:flex;gap:36px;align-items:center;}
+.nav-links a{font-size:13px;font-weight:400;color:var(--silver);text-decoration:none;letter-spacing:.5px;transition:color .15s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-cta{background:var(--ink)!important;color:var(--white)!important;padding:10px 24px!important;font-size:13px!important;font-weight:500!important;letter-spacing:.5px!important;transition:background .15s!important;}
+.nav-cta:hover{background:var(--gold)!important;color:var(--ink)!important;}
+
+/* ── HERO ── */
+.hero{min-height:100vh;padding:140px 56px 80px;display:flex;align-items:center;position:relative;background:var(--ink);}
+.hero-texture{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(184,151,90,0.03) 0px,rgba(184,151,90,0.03) 1px,transparent 1px,transparent 80px),repeating-linear-gradient(90deg,rgba(184,151,90,0.03) 0px,rgba(184,151,90,0.03) 1px,transparent 1px,transparent 80px);}
+.hero-accent{position:absolute;top:0;right:0;width:40%;height:100%;background:linear-gradient(135deg,transparent,rgba(184,151,90,0.06));pointer-events:none;}
+.hero-inner{position:relative;max-width:680px;}
+.hero-rule{width:48px;height:1px;background:var(--gold);margin-bottom:28px;}
+.hero-h1{font-family:var(--ff-head);font-size:clamp(52px,6vw,88px);font-weight:300;line-height:1.05;color:var(--white);margin-bottom:28px;letter-spacing:-.5px;}
+.hero-h1 em{color:var(--gold);font-style:italic;}
+.hero-sub{font-size:16px;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.9;max-width:480px;margin-bottom:44px;}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;}
+.btn-gold{background:var(--gold);color:var(--ink);padding:14px 32px;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:opacity .15s;}
+.btn-gold:hover{opacity:.88;}
+.btn-ghost{background:transparent;color:rgba(255,255,255,0.7);padding:14px 32px;font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;border:1px solid rgba(255,255,255,0.2);transition:all .15s;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.hero-disclaimer{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);font-size:11px;color:rgba(255,255,255,0.3);line-height:1.6;max-width:520px;}
+
+/* ── STATS ── */
+.stats-bar{background:var(--gold);padding:0 56px;}
+.stats-inner{display:flex;justify-content:space-around;padding:36px 0;}
+.stat-item{text-align:center;}
+.stat-num{font-family:var(--ff-head);font-size:40px;font-weight:600;color:var(--ink);line-height:1;}
+.stat-label{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(15,25,35,0.6);margin-top:6px;}
+
+/* ── SERVICES ── */
+.services{padding:100px 56px;background:var(--white);}
+.section-eyebrow{font-size:11px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.section-h2{font-family:var(--ff-head);font-size:clamp(36px,4vw,56px);font-weight:300;color:var(--ink);margin-bottom:60px;line-height:1.15;}
+.section-h2 em{color:var(--gold);font-style:italic;}
+.services-list{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.service-item{background:var(--light);padding:48px;transition:background .2s;position:relative;}
+.service-item:hover{background:var(--ink);}
+.service-item:hover .svc-name{color:var(--white);}
+.service-item:hover .svc-desc{color:rgba(255,255,255,0.5);}
+.service-item:hover .svc-num{color:var(--gold);}
+.svc-num{font-family:var(--ff-head);font-size:48px;font-weight:300;color:rgba(15,25,35,0.1);margin-bottom:16px;line-height:1;transition:color .2s;}
+.svc-name{font-family:var(--ff-head);font-size:26px;font-weight:400;color:var(--ink);margin-bottom:12px;transition:color .2s;}
+.svc-desc{font-size:14px;color:var(--silver);line-height:1.8;transition:color .2s;}
+
+/* ── APPROACH ── */
+.approach{padding:100px 56px;background:var(--slate);display:grid;grid-template-columns:1fr 1.4fr;gap:80px;align-items:center;}
+.approach-left .section-h2{color:var(--white);margin-bottom:24px;}
+.approach-left p{font-size:15px;color:rgba(255,255,255,0.5);line-height:1.9;margin-bottom:32px;}
+.approach-right{display:flex;flex-direction:column;gap:24px;}
+.step{display:flex;gap:24px;align-items:flex-start;padding:28px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);}
+.step-num{font-family:var(--ff-head);font-size:36px;font-weight:300;color:var(--gold);line-height:1;flex-shrink:0;width:44px;}
+.step-text strong{display:block;font-size:15px;font-weight:500;color:var(--white);margin-bottom:6px;}
+.step-text span{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.7;}
+
+/* ── TEAM ── */
+.team{padding:100px 56px;background:var(--white);}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:56px;}
+.team-card{text-align:center;}
+.team-photo{width:120px;height:120px;border-radius:50%;margin:0 auto 20px;background:var(--light);display:flex;align-items:center;justify-content:center;font-size:40px;border:3px solid var(--gold-border);}
+.team-name{font-family:var(--ff-head);font-size:22px;font-weight:400;color:var(--ink);margin-bottom:4px;}
+.team-title{font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.team-bio{font-size:13px;color:var(--silver);line-height:1.7;}
+.team-creds{margin-top:12px;font-size:11px;font-weight:600;letter-spacing:1px;color:var(--mid);}
+
+/* ── CTA ── */
+.cta{padding:100px 56px;background:var(--light);text-align:center;}
+.cta h2{font-family:var(--ff-head);font-size:clamp(40px,5vw,64px);font-weight:300;color:var(--ink);margin-bottom:14px;line-height:1.1;}
+.cta h2 em{color:var(--gold);font-style:italic;}
+.cta p{font-size:16px;color:var(--silver);margin-bottom:40px;max-width:480px;margin-left:auto;margin-right:auto;}
+.cta-note{font-size:12px;color:var(--silver);margin-top:20px;letter-spacing:.5px;}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:64px 56px 32px;}
+.footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
+.footer-logo-top{font-family:var(--ff-head);font-size:20px;font-weight:400;color:var(--white);margin-bottom:4px;}
+.footer-logo-sub{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);}
+.footer-desc{font-size:12px;color:rgba(255,255,255,0.3);line-height:1.8;margin-top:12px;max-width:260px;}
+.footer-title{font-size:10px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:16px;}
+.footer-links{display:flex;flex-direction:column;gap:10px;}
+.footer-links a{font-size:13px;color:rgba(255,255,255,0.4);text-decoration:none;transition:color .15s;}
+.footer-links a:hover{color:var(--gold);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.07);padding-top:28px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px;}
+.footer-legal{font-size:11px;color:rgba(255,255,255,0.2);line-height:1.7;max-width:600px;}
+.powered{background:rgba(184,151,90,0.1);border:1px solid rgba(184,151,90,0.2);color:var(--gold);padding:7px 14px;font-size:11px;font-weight:500;letter-spacing:1px;text-decoration:none;transition:background .15s;white-space:nowrap;}
+.powered:hover{background:rgba(184,151,90,0.2);}
+
+@media(max-width:768px){
+  nav{padding:0 20px;} .nav-links{display:none;}
+  .hero{padding:100px 20px 60px;}
+  .stats-bar{padding:0 20px;} .stats-inner{flex-wrap:wrap;gap:20px;}
+  .services,.approach,.team,.cta{padding:60px 20px;}
+  .services-list,.approach{grid-template-columns:1fr;}
+  .team-grid{grid-template-columns:1fr;}
+  .footer-inner{grid-template-columns:1fr 1fr;}
+  footer{padding:48px 20px 24px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-top">Meridian Wealth Partners</div>
+    <div class="nav-logo-sub">Independent Financial Advisory</div>
+  </div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#approach">Our Approach</a>
+    <a href="#team">Our Team</a>
+    <a href="#cta" class="nav-cta">Schedule a Call</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-texture"></div>
+  <div class="hero-accent"></div>
+  <div class="hero-inner">
+    <div class="hero-rule"></div>
+    <h1 class="hero-h1">Your Wealth.<br/><em>Your Terms.</em><br/>Our Expertise.</h1>
+    <p class="hero-sub">Independent fee-only financial planning for professionals and business owners who want a trusted advisor — not a product salesperson.</p>
+    <div class="hero-btns">
+      <a href="#cta" class="btn-gold">Schedule a Consultation</a>
+      
+    </div>
+    <div class="hero-disclaimer">Meridian Wealth Partners is a registered investment advisor. Past performance is not indicative of future results. All financial planning involves risk. Please review our ADV disclosure brochure before engaging our services.</div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-num">$340M</div><div class="stat-label">Assets Under Management</div></div>
+    <div class="stat-item"><div class="stat-num">18</div><div class="stat-label">Years in Practice</div></div>
+    <div class="stat-item"><div class="stat-num">280+</div><div class="stat-label">Client Families</div></div>
+    <div class="stat-item"><div class="stat-num">Fee-Only</div><div class="stat-label">No Commissions. Ever.</div></div>
+  </div>
+</div>
+
+<section class="services" id="services">
+  <div class="section-eyebrow">What We Do</div>
+  <h2 class="section-h2">Comprehensive Planning<br/>for <em>Every Season</em> of Life.</h2>
+  <div class="services-list">
+    <div class="service-item">
+      <div class="svc-num">01</div>
+      <div class="svc-name">Financial Planning</div>
+      <div class="svc-desc">Comprehensive plans built around your goals — retirement, education, major purchases, and everything in between. We model multiple scenarios so you can make informed decisions.</div>
+    </div>
+    <div class="service-item">
+      <div class="svc-num">02</div>
+      <div class="svc-name">Investment Management</div>
+      <div class="svc-desc">Evidence-based, low-cost portfolios aligned to your timeline and risk tolerance. No proprietary products. No hidden fees. Just disciplined, transparent management.</div>
+    </div>
+    <div class="service-item">
+      <div class="svc-num">03</div>
+      <div class="svc-name">Business Owner Advisory</div>
+      <div class="svc-desc">Exit planning, business valuation, succession strategy, and retirement plan design for business owners who need a financial partner who understands both sides of the equation.</div>
+    </div>
+    <div class="service-item">
+      <div class="svc-num">04</div>
+      <div class="svc-name">Tax-Efficient Strategies</div>
+      <div class="svc-desc">Roth conversions, tax-loss harvesting, income timing, and entity structuring coordinated with your CPA to minimize your lifetime tax burden — not just this year's bill.</div>
+    </div>
+  </div>
+</section>
+
+<section class="approach" id="approach">
+  <div class="approach-left">
+    <div class="section-eyebrow">How We Work</div>
+    <h2 class="section-h2">A <em>Process</em><br/>Built for Clarity.</h2>
+    <p>We believe good financial advice starts with understanding your whole picture — not just your portfolio. Every engagement begins with listening, not selling.</p>
+    <a href="#cta" class="btn-gold" style="display:inline-block;text-decoration:none;">Start the Conversation</a>
+  </div>
+  <div class="approach-right">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-text">
+        <strong>Discovery Meeting</strong>
+        <span>A 60-minute no-obligation conversation to understand your goals, concerns, and current situation. No sales pitch — just questions and listening.</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-text">
+        <strong>Financial Assessment</strong>
+        <span>We analyze your complete financial picture — assets, liabilities, tax situation, insurance, estate documents — and identify gaps and opportunities.</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-text">
+        <strong>Plan Presentation</strong>
+        <span>A written financial plan with clear recommendations, prioritized actions, and projected outcomes across multiple scenarios.</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-text">
+        <strong>Ongoing Partnership</strong>
+        <span>Quarterly reviews, unlimited calls and emails, and proactive outreach when something changes — in markets, tax law, or your life.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="team" id="team">
+  <div class="section-eyebrow">Our Team</div>
+  <h2 class="section-h2">Advisors Who <em>Actually</em> Answer the Phone.</h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-photo">👩‍💼</div>
+      <div class="team-name">Margaret Hollis, CFP®</div>
+      <div class="team-title">Founding Partner</div>
+      <div class="team-bio">18 years in independent financial planning. Specializes in retirement transitions and women's financial independence. Former instructor at Boston University CFP program.</div>
+      <div class="team-creds">CFP® · ChFC® · MBA, Boston College</div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo">👨‍💼</div>
+      <div class="team-name">Daniel Ortega, CFA</div>
+      <div class="team-title">Director of Investments</div>
+      <div class="team-bio">Portfolio management and asset allocation specialist. Previously managed institutional portfolios at Fidelity. Passionate about evidence-based investing and behavioral finance.</div>
+      <div class="team-creds">CFA® · MS Finance, Northeastern</div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo">👩‍💼</div>
+      <div class="team-name">Priya Nair, CFP®</div>
+      <div class="team-title">Senior Financial Planner</div>
+      <div class="team-bio">Business owner specialist with expertise in exit planning and executive compensation. Works primarily with entrepreneurs and professionals navigating major financial transitions.</div>
+      <div class="team-creds">CFP® · JD, Suffolk Law · CEPA®</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="cta">
+  <div class="section-eyebrow">Get Started</div>
+  <h2>Ready for a <em>Real</em> Conversation?</h2>
+  <p>Your first consultation is complimentary. No obligation. No sales pressure. Just an honest conversation about where you are and where you want to be.</p>
+  <a href="#cta" class="btn-gold" style="text-decoration:none;display:inline-block;">Schedule Your Consultation</a>
+  <div class="cta-note">Or call us directly: (617) 555-0294 · Mon–Fri 8am–5pm ET</div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo-top">Meridian Wealth Partners</div>
+      <div class="footer-logo-sub">Independent Financial Advisory</div>
+      <p class="footer-desc">Fee-only financial planning and investment management for professionals and business owners. Registered Investment Advisor, Commonwealth of Massachusetts.</p>
+    </div>
+    <div>
+      <div class="footer-title">Services</div>
+      <div class="footer-links">
+        <a href="#services">Financial Planning</a>
+        <a href="#services">Investment Management</a>
+        <a href="#services">Business Advisory</a>
+        <a href="#services">Tax Strategy</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-title">Company</div>
+      <div class="footer-links">
+        <a href="#approach">Our Approach</a>
+        <a href="#team">Our Team</a>
+        <a href="#">Form ADV</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-title">Contact</div>
+      <div class="footer-links">
+        <a href="tel:6175550294">(617) 555-0294</a>
+        <a href="mailto:hello@meridianwp.com">hello@meridianwp.com</a>
+        <a href="#">200 State St, Boston MA</a>
+        <a href="#cta">Schedule a Call</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-legal">Meridian Wealth Partners LLC is a registered investment advisor in the Commonwealth of Massachusetts. Registration does not imply a certain level of skill or training. This website is for informational purposes only and does not constitute investment advice. All investing involves risk including loss of principal. Past performance is not indicative of future results. Please review our Form ADV Part 2 before engaging our services.</div>
+    <a href="https://www.compassbizsolutions.com" target="_blank" class="powered">⚙️ Powered by Compass</a>
+  </div>
+</footer>
+
+</body>
+</html>
