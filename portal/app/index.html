@@ -385,50 +385,60 @@
       </div>
 
       <!-- SUBMIT WORK -->
-      <!-- SUBMIT WORK -->
       <div class="panel" id="panel-submit">
         <div class="page-eye">Submit Work</div>
         <div class="page-title">New Work Request</div>
-        <div class="page-sub">The more detail you give us, the faster and more accurate your quote. Everything on this form helps us do the work right the first time.</div>
+        <div class="page-sub">Describe what you need. We'll review it, generate a quote, and get started after payment.</div>
 
         <div class="card" id="submit-form-card">
 
+          <!-- ── SECTION 1: WHAT ── -->
           <div class="form-section">
-            <div class="form-section-title">01 — What do you need?</div>
+            <div class="form-section-title">What do you need?</div>
+
             <div class="form-group">
               <label class="form-label">Service Type <span style="color:var(--amber)">*</span></label>
               <select class="form-select" id="work-type" onchange="onServiceTypeChange()">
                 <option value="">— Select what you need —</option>
-                <optgroup label="Admin & Operations">
-                  <option>Spreadsheet / Data Work</option><option>Payroll Processing Help</option>
-                  <option>Receipt / Expense Organization</option><option>Email Management / Outreach</option>
-                  <option>Data Entry & Cleanup</option><option>Invoice & Estimate Follow-Up</option>
-                  <option>Research & Competitive Analysis</option>
+                <optgroup label="Admin & Data">
+                  <option value="Spreadsheet / Data Work">Spreadsheet / Data Work</option>
+                  <option value="Data Entry & Cleanup">Data Entry & Cleanup</option>
+                  <option value="Payroll Processing Help">Payroll Processing Help</option>
+                  <option value="Receipt / Expense Organization">Receipt / Expense Organization</option>
+                  <option value="Invoice & Estimate Follow-Up">Invoice & Estimate Follow-Up</option>
+                  <option value="Research & Competitive Analysis">Research & Competitive Analysis</option>
+                  <option value="Reporting & Summaries">Reporting & Summaries</option>
+                  <option value="Database Build or Cleanup">Database Build or Cleanup</option>
                 </optgroup>
-                <optgroup label="Marketing & Outreach">
-                  <option>Social Media Management</option><option>Marketing Campaign Setup</option>
-                  <option>Customer Follow-Up Sequences</option><option>Review & Referral Outreach</option>
-                  <option>New Customer Welcome Campaigns</option><option>Appointment Confirmation Setup</option>
-                  <option>Seasonal Re-Engagement Campaign</option>
+                <optgroup label="Email & Outreach">
+                  <option value="Email Management / Outreach">Email Management / Outreach</option>
+                  <option value="Customer Follow-Up Sequences">Customer Follow-Up Sequences</option>
+                  <option value="Review & Referral Outreach">Review & Referral Outreach</option>
+                  <option value="New Customer Welcome Campaigns">New Customer Welcome Campaigns</option>
+                  <option value="Seasonal Re-Engagement Campaign">Seasonal Re-Engagement Campaign</option>
                 </optgroup>
-                <optgroup label="Creative & Design">
-                  <option>Presentation / Deck</option><option>Marketing Materials</option>
-                  <option>PowerPoint / Pitch Deck</option><option>Proposal or One-Pager</option>
+                <optgroup label="Marketing & Social">
+                  <option value="Social Media Management">Social Media Management</option>
+                  <option value="Marketing Campaign Setup">Marketing Campaign Setup</option>
+                  <option value="Appointment Confirmation Setup">Appointment Confirmation Setup</option>
                 </optgroup>
-                <optgroup label="Reporting & Data">
-                  <option>Reporting & Summaries</option><option>Database Build or Cleanup</option>
+                <optgroup label="Creative">
+                  <option value="Presentation / Deck">Presentation / Deck</option>
+                  <option value="Marketing Materials">Marketing Materials</option>
+                  <option value="Proposal or One-Pager">Proposal or One-Pager</option>
                 </optgroup>
-                <optgroup label="Website"><option>Website Updates & Fixes</option></optgroup>
-                <optgroup label="Scheduling">
-                  <option>Appointment Confirmation Setup</option><option>No-Show Reduction System</option>
+                <optgroup label="Website">
+                  <option value="Website Updates & Fixes">Website Updates & Fixes</option>
                 </optgroup>
-                <option value="other">Other — I will describe below</option>
+                <option value="Other">Other — I'll describe below</option>
               </select>
             </div>
+
             <div class="form-group">
               <label class="form-label">Describe what you need <span style="color:var(--amber)">*</span></label>
-              <textarea class="form-textarea" id="work-desc" placeholder="Be specific — what needs to be done, what the result should look like, any context that helps us understand the goal..." style="min-height:120px;"></textarea>
+              <textarea class="form-textarea" id="work-desc" placeholder="Be specific — what needs to be done, what the result should look like, any important context..." style="min-height:110px;"></textarea>
             </div>
+
             <div class="form-2col">
               <div class="form-group">
                 <label class="form-label">How often? <span style="color:var(--amber)">*</span></label>
@@ -445,18 +455,20 @@
                 <select class="form-select" id="work-priority">
                   <option value="normal">Normal</option>
                   <option value="high">High — needed soon</option>
-                  <option value="urgent">Urgent — ASAP</option>
+                  <option value="urgent">Urgent — ASAP (rush fee may apply)</option>
                 </select>
               </div>
             </div>
-            <div id="deadline-row" style="display:none">
+
+            <div id="deadline-row" style="display:none;">
               <div class="form-group">
                 <label class="form-label">Deadline <span style="color:var(--amber)">*</span></label>
                 <input class="form-input" type="date" id="work-deadline"/>
                 <div style="font-size:11px;color:var(--muted);margin-top:4px;">We deliver at least 24 hours before this date.</div>
               </div>
             </div>
-            <div id="recurring-row" style="display:none">
+
+            <div id="recurring-row" style="display:none;">
               <div class="form-2col">
                 <div class="form-group">
                   <label class="form-label">Deliver by which day? <span style="color:var(--amber)">*</span></label>
@@ -469,123 +481,161 @@
                 <div class="form-group">
                   <label class="form-label">By what time?</label>
                   <select class="form-select" id="work-delivery-time">
-                    <option value="08:00">8:00 AM</option><option value="09:00" selected>9:00 AM</option>
-                    <option value="10:00">10:00 AM</option><option value="12:00">12:00 PM</option>
-                    <option value="15:00">3:00 PM</option><option value="17:00">5:00 PM</option>
+                    <option value="08:00">8:00 AM</option>
+                    <option value="09:00" selected>9:00 AM</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="15:00">3:00 PM</option>
+                    <option value="17:00">5:00 PM</option>
                   </select>
                 </div>
               </div>
-              <div style="font-size:11px;color:var(--muted);margin-top:-8px;margin-bottom:16px;">Delivered at least 24 hours before this time every cycle.</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:-8px;margin-bottom:14px;">We deliver at least 24 hours before this time every cycle.</div>
             </div>
           </div>
 
+          <!-- ── SECTION 2: FILES ── -->
           <div class="form-section">
-            <div class="form-section-title">02 — Context & preferences</div>
-            <div class="form-group">
-              <label class="form-label">Who is this work for? (target audience)</label>
-              <input class="form-input" type="text" id="work-audience" placeholder="e.g. Existing customers, new homeowners in MA, restaurant owners..."/>
-            </div>
-            <div class="form-2col">
-              <div class="form-group">
-                <label class="form-label">Tone for this request</label>
-                <select class="form-select" id="work-tone">
-                  <option value="">Use my account default</option>
-                  <option value="professional">Professional and formal</option>
-                  <option value="friendly">Friendly and conversational</option>
-                  <option value="casual">Casual and relaxed</option>
-                  <option value="direct">Direct and to the point</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Output format preference</label>
-                <select class="form-select" id="work-format">
-                  <option value="">No preference</option>
-                  <option value="word">Word (.docx)</option>
-                  <option value="excel">Excel (.xlsx)</option>
-                  <option value="pdf">PDF</option>
-                  <option value="google-doc">Google Doc</option>
-                  <option value="google-sheet">Google Sheet</option>
-                  <option value="plain-text">Plain text</option>
-                  <option value="html">HTML</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">What should NOT be included or changed</label>
-              <textarea class="form-textarea" id="work-exclusions" placeholder="Things to avoid, keep off limits, or leave untouched..." style="min-height:60px;"></textarea>
-            </div>
-            <div class="form-2col">
-              <div class="form-group">
-                <label class="form-label">Approval contact (if not you)</label>
-                <input class="form-input" type="text" id="work-approver-name" placeholder="Name"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Best way to reach them</label>
-                <input class="form-input" type="text" id="work-approver-contact" placeholder="Email or phone"/>
-              </div>
-            </div>
-          </div>
+            <div class="form-section-title">Files & references</div>
 
-          <div class="form-section">
-            <div class="form-section-title">03 — Files & references</div>
+            <div id="sensitive-warning" style="display:none;background:rgba(184,76,46,0.08);border:1px solid rgba(184,76,46,0.3);border-radius:7px;padding:14px 16px;margin-bottom:16px;font-size:13px;color:rgba(255,255,255,0.7);line-height:1.7;">
+              <strong style="color:#e88070;display:block;margin-bottom:6px;">⚠️ Sensitive Data — Do Not Upload Directly</strong>
+              Do not upload files containing SSNs, credit card numbers, or financial account numbers through this form. Instead, use <a href="https://bitwarden.com/products/send/" target="_blank" style="color:var(--amber);font-weight:600;">Bitwarden Send</a> (free, no account needed) to share the file with end-to-end encryption, then paste the link below. Your file will be encrypted in transit and at rest.
+            </div>
+
             <div class="form-group">
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);cursor:pointer;margin-bottom:12px;">
+                <input type="checkbox" id="sensitive-check" style="accent-color:var(--amber);width:14px;height:14px;" onchange="onSensitiveChange()"/>
+                This request involves sensitive data (SSNs, credit card numbers, financial account numbers)
+              </label>
+            </div>
+
+            <div id="file-upload-area" class="form-group">
               <label class="form-label">Upload file (optional)</label>
-              <div id="upload-area" style="border:2px dashed rgba(61,107,158,0.3);border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:border-color .15s;" onclick="document.getElementById('work-file-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--amber)'" ondragleave="this.style.borderColor='rgba(61,107,158,0.3)'" ondrop="handleFileDrop(event)">
-                <div id="upload-label"><div style="font-size:13px;color:var(--muted);">📎 Click to upload or drag and drop</div><div style="font-size:11px;color:var(--muted);margin-top:3px;">PDF, Word, Excel, CSV, images — max 10MB</div></div>
+              <div id="upload-area" style="border:2px dashed rgba(61,107,158,0.3);border-radius:8px;padding:18px;text-align:center;cursor:pointer;transition:border-color .15s;" onclick="document.getElementById('work-file-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--amber)'" ondragleave="this.style.borderColor='rgba(61,107,158,0.3)'" ondrop="handleFileDrop(event)">
+                <div id="upload-label"><div style="font-size:13px;color:var(--muted);">📎 Click or drag to upload</div><div style="font-size:11px;color:var(--muted);margin-top:3px;">PDF, Word, Excel, CSV, images — max 10MB</div></div>
                 <div id="upload-preview" style="display:none;"><div id="upload-filename" style="font-size:13px;font-weight:600;color:var(--white);"></div><div id="upload-filesize" style="font-size:11px;color:var(--muted);margin-top:2px;"></div><button onclick="clearUpload(event)" style="margin-top:6px;background:none;border:1px solid var(--border);border-radius:5px;padding:3px 10px;font-size:11px;color:var(--muted);cursor:pointer;">Remove</button></div>
               </div>
               <input type="file" id="work-file-input" style="display:none;" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.jpg,.jpeg,.png,.gif,.pptx" onchange="handleFileSelect(this)"/>
             </div>
+
             <div class="form-group">
-              <label class="form-label">File link (Google Drive, Dropbox, etc.)</label>
+              <label class="form-label" id="file-link-label">File link (Google Drive, Dropbox, etc.)</label>
               <input class="form-input" type="url" id="work-files" placeholder="https://drive.google.com/..."/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Brand guidelines link</label>
-              <input class="form-input" type="url" id="work-brand-link" placeholder="Link to brand kit, style guide, or brand assets..."/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Examples or templates to follow</label>
-              <textarea class="form-textarea" id="work-examples" placeholder="Links to examples, past work you liked, or describe the style you want..." style="min-height:60px;"></textarea>
+              <div id="bitwarden-hint" style="display:none;font-size:12px;color:var(--amber);margin-top:5px;line-height:1.6;">Paste your <a href="https://bitwarden.com/products/send/" target="_blank" style="color:var(--amber);font-weight:600;">Bitwarden Send</a> link here. The recipient password will be provided to Jen separately via email or text.</div>
             </div>
           </div>
 
+          <!-- ── SECTION 3: DELIVERY ── -->
           <div class="form-section">
-            <div class="form-section-title">04 — Access & credentials <span style="font-size:11px;font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;">(only if this work needs system access)</span></div>
-            <div style="background:var(--amber-dim);border:1px solid rgba(200,112,26,0.2);border-radius:7px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.7;">
-              We recommend creating a <strong style="color:rgba(255,255,255,.7)">dedicated Compass account</strong> (e.g. compass@yourbusiness.com) or <strong style="color:rgba(255,255,255,.7)">temporary credentials</strong> you can revoke when the work is complete. We only access what you authorize for this specific request.
+            <div class="form-section-title">Delivery</div>
+            <div style="background:var(--light);border-radius:7px;padding:12px 16px;font-size:13px;color:var(--slate);margin-bottom:12px;">
+              <span style="color:var(--muted);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px;">Default</span>
+              Completed work is delivered to your portal. You'll receive an email notification when it's ready to download.
+            </div>
+            <div style="margin-bottom:14px;">
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);cursor:pointer;">
+                <input type="checkbox" id="change-delivery-check" style="accent-color:var(--amber);width:14px;height:14px;" onchange="toggleDeliveryOptions()"/>
+                Change delivery preferences
+              </label>
+            </div>
+            <div id="delivery-options" style="display:none;">
+              <div class="form-2col">
+                <div class="form-group">
+                  <label class="form-label">Deliver to</label>
+                  <select class="form-select" id="work-delivery-method">
+                    <option value="portal_email">Portal + email notification (default)</option>
+                    <option value="portal">Portal only — no email</option>
+                    <option value="email">Email with file attached</option>
+                    <option value="gdrive">Portal + Google Drive</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Google Drive folder</label>
+                  <input class="form-input" type="url" id="work-gdrive" placeholder="https://drive.google.com/drive/folders/..."/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── SECTION 4: CREDENTIALS — shown only for relevant service types ── -->
+          <div class="form-section" id="credentials-section" style="display:none;">
+            <div class="form-section-title">Access & credentials</div>
+            <div style="background:rgba(212,130,15,0.06);border:1px solid rgba(212,130,15,0.2);border-radius:7px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.7;">
+              We recommend a <strong style="color:rgba(255,255,255,.7)">dedicated Compass account</strong> (e.g. compass@yourbusiness.com) or <strong style="color:rgba(255,255,255,.7)">temporary credentials</strong> you can revoke when done. We only access what you authorize for this specific request — nothing else, ever.
             </div>
             <div id="credentials-list"></div>
-            <button type="button" onclick="addCredential()" style="background:transparent;border:1px dashed rgba(200,112,26,0.35);color:var(--amber);border-radius:6px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;width:100%;margin-bottom:14px;">+ Add Access / Credentials</button>
+            <button type="button" onclick="addCredential()" style="background:transparent;border:1px dashed rgba(200,112,26,0.35);color:var(--amber);border-radius:6px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;width:100%;margin-bottom:14px;">+ Add Login / Access</button>
             <div style="display:flex;align-items:flex-start;gap:8px;">
               <input type="checkbox" id="cred-auth-check" style="accent-color:var(--amber);width:14px;height:14px;flex-shrink:0;margin-top:2px"/>
-              <label for="cred-auth-check" style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.6;">I authorize Compass Business Solutions to access any credentials provided solely for this specific request. Additional access requires a separate written request. I will revoke credentials when this project is complete.</label>
+              <label for="cred-auth-check" style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.6;cursor:pointer;">I authorize Compass Business Solutions to access any credentials provided solely for this specific request. Additional access requires a separate written request. I will revoke credentials when this project is complete.</label>
             </div>
           </div>
 
-          <div class="form-section">
-            <div class="form-section-title">05 — Delivery</div>
-            <div class="form-2col">
-              <div class="form-group">
-                <label class="form-label">Deliver to</label>
-                <select class="form-select" id="work-delivery-method">
-                  <option value="portal">Portal only</option>
-                  <option value="both">Portal + email notification</option>
-                  <option value="gdrive">Portal + Google Drive</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Google Drive folder (if applicable)</label>
-                <input class="form-input" type="url" id="work-gdrive" placeholder="https://drive.google.com/drive/folders/..."/>
-              </div>
+          <!-- ── ADVANCED OPTIONS — collapsed by default ── -->
+          <div class="form-section" style="margin-bottom:0;padding-bottom:0;border-bottom:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding-bottom:12px;" onclick="toggleAdvanced()">
+              <div style="font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;">Advanced options</div>
+              <div style="font-size:12px;color:var(--muted);" id="advanced-arrow">Show ▾</div>
             </div>
-            <div class="form-group">
-              <label class="form-label">Anything else we should know?</label>
-              <textarea class="form-textarea" id="work-notes" placeholder="Other context, constraints, special instructions..." style="min-height:70px;"></textarea>
+            <div id="advanced-options" style="display:none;">
+              <div class="form-group">
+                <label class="form-label">Who is this work for? (target audience)</label>
+                <input class="form-input" type="text" id="work-audience" placeholder="e.g. Existing customers, new homeowners, restaurant owners..."/>
+              </div>
+              <div class="form-2col">
+                <div class="form-group">
+                  <label class="form-label">Tone preference</label>
+                  <select class="form-select" id="work-tone">
+                    <option value="">Use my account default</option>
+                    <option value="professional">Professional & formal</option>
+                    <option value="friendly">Friendly & conversational</option>
+                    <option value="casual">Casual & relaxed</option>
+                    <option value="direct">Direct & to the point</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Output format</label>
+                  <select class="form-select" id="work-format">
+                    <option value="">No preference</option>
+                    <option value="word">Word (.docx)</option>
+                    <option value="excel">Excel (.xlsx)</option>
+                    <option value="pdf">PDF</option>
+                    <option value="google-doc">Google Doc</option>
+                    <option value="google-sheet">Google Sheet</option>
+                    <option value="plain-text">Plain text</option>
+                    <option value="html">HTML</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">What should NOT be included or changed</label>
+                <textarea class="form-textarea" id="work-exclusions" placeholder="Things to avoid, keep off limits, or leave untouched..." style="min-height:60px;"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Brand guidelines link</label>
+                <input class="form-input" type="url" id="work-brand-link" placeholder="Link to brand kit, style guide, or brand assets..."/>
+              </div>
+              <div class="form-2col">
+                <div class="form-group">
+                  <label class="form-label">Approval contact (if not you)</label>
+                  <input class="form-input" type="text" id="work-approver-name" placeholder="Name"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Best way to reach them</label>
+                  <input class="form-input" type="text" id="work-approver-contact" placeholder="Email or phone"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Additional notes</label>
+                <textarea class="form-textarea" id="work-notes" placeholder="Anything else we should know..." style="min-height:60px;"></textarea>
+              </div>
             </div>
           </div>
 
-          <button class="submit-btn" id="submitWorkBtn" onclick="submitWork()">Submit Request →</button>
+          <div style="margin-top:20px;">
+            <button class="submit-btn" id="submitWorkBtn" onclick="submitWork()">Submit Request →</button>
+          </div>
         </div>
       </div>
 
@@ -1304,20 +1354,60 @@ function clearUpload(e) {
 
 var credentialCount = 0;
 
+// Service types that need system access
+var CRED_SERVICES = [
+  'Website Updates & Fixes',
+  'Payroll Processing Help',
+  'Social Media Management',
+  'Marketing Campaign Setup',
+  'Email Management / Outreach',
+  'Appointment Confirmation Setup',
+  'Customer Follow-Up Sequences',
+];
+
 function onFrequencyChange() {
   var freq = document.getElementById('work-frequency').value;
   var dr = document.getElementById('deadline-row');
   var rr = document.getElementById('recurring-row');
   if (dr) dr.style.display = freq === 'one-time' ? 'block' : 'none';
-  if (rr) rr.style.display = (freq === 'weekly' || freq === 'biweekly' || freq === 'monthly') ? 'block' : 'none';
+  if (rr) rr.style.display = (freq && freq !== 'one-time') ? 'block' : 'none';
 }
 
 function onServiceTypeChange() {
-  // Could show/hide credential section based on service type
   var type = document.getElementById('work-type').value;
-  var needsCreds = ['Website Updates & Fixes','Payroll Processing Help','Social Media Management','Marketing Campaign Setup'].indexOf(type) !== -1;
-  var credsSection = document.querySelector('.form-section:nth-child(4)');
-  // Always show for now
+  var credsSection = document.getElementById('credentials-section');
+  if (credsSection) {
+    credsSection.style.display = CRED_SERVICES.indexOf(type) !== -1 ? 'block' : 'none';
+  }
+}
+
+function onSensitiveChange() {
+  var checked = document.getElementById('sensitive-check').checked;
+  var warning = document.getElementById('sensitive-warning');
+  var uploadArea = document.getElementById('file-upload-area');
+  var linkLabel = document.getElementById('file-link-label');
+  var bitwardenHint = document.getElementById('bitwarden-hint');
+  if (warning) warning.style.display = checked ? 'block' : 'none';
+  if (uploadArea) uploadArea.style.display = checked ? 'none' : 'block';
+  if (linkLabel) linkLabel.textContent = checked ? 'Bitwarden Send link (encrypted file share)' : 'File link (Google Drive, Dropbox, etc.)';
+  if (bitwardenHint) bitwardenHint.style.display = checked ? 'block' : 'none';
+  // Clear upload if switching to sensitive
+  if (checked) { uploadedFile = null; var up = document.getElementById('upload-preview'); var ul = document.getElementById('upload-label'); if(up) up.style.display='none'; if(ul) ul.style.display='block'; }
+}
+
+function toggleDeliveryOptions() {
+  var checked = document.getElementById('change-delivery-check').checked;
+  var opts = document.getElementById('delivery-options');
+  if (opts) opts.style.display = checked ? 'block' : 'none';
+}
+
+function toggleAdvanced() {
+  var opts = document.getElementById('advanced-options');
+  var arrow = document.getElementById('advanced-arrow');
+  if (!opts) return;
+  var open = opts.style.display !== 'none';
+  opts.style.display = open ? 'none' : 'block';
+  if (arrow) arrow.textContent = open ? 'Show ▾' : 'Hide ▴';
 }
 
 function addCredential() {
@@ -1412,7 +1502,7 @@ async function submitWork() {
         files:           (document.getElementById('work-files')||{}).value || '',
         brand_link:      (document.getElementById('work-brand-link')||{}).value || '',
         examples:        (document.getElementById('work-examples')||{}).value || '',
-        delivery_method: (document.getElementById('work-delivery-method')||{}).value || 'portal',
+        delivery_method: (document.getElementById('work-delivery-method')||{}).value || 'portal_email',
         gdrive_folder:   (document.getElementById('work-gdrive')||{}).value || '',
         notes:           (document.getElementById('work-notes')||{}).value || '',
         credentials:     collectCredentials(),
