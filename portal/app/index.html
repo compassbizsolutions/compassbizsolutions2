@@ -1446,7 +1446,7 @@ async function submitTicket() {
   if (!subject) { showToast('Please enter a subject.'); return; }
   if (!details) { showToast('Please describe your issue.'); return; }
   try {
-    var r = await fetch(API + '/portal-submit-ticket', {
+    var r = await fetch(API + '/portal-actions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
       body: JSON.stringify({ subject, category, details })
@@ -1469,7 +1469,7 @@ async function sendMessage() {
   if (!text) return;
   input.value = '';
   try {
-    var r = await fetch(API + '/portal-send-message', {
+    var r = await fetch(API + '/portal-actions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
       body: JSON.stringify({ text })
