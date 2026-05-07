@@ -57,7 +57,12 @@ async function sendEmail(to, subject, html) {
 }
 
 async function handleSubmitWork(req, res, email) {
-  const { service_type, description, deadline, priority, files, attachment } = req.body || {};
+  const {
+    service_type, description, deadline, priority, files, attachment,
+    frequency, delivery_day, delivery_time, audience, tone, output_format,
+    exclusions, approver_name, approver_contact, brand_link, examples,
+    delivery_method, gdrive_folder, notes, credentials, cred_authorized,
+  } = req.body || {};
   if (!service_type || !description) return res.status(400).json({ error: "Service type and description required" });
 
   const eKey = emailKey(email);
@@ -65,15 +70,37 @@ async function handleSubmitWork(req, res, email) {
   const now = new Date().toISOString();
 
   const newRequest = {
-    id: "req_" + Date.now(),
-    service_type,
-    description,
-    deadline:   deadline   || null,
-    priority:   priority   || "normal",
-    files:      files      || null,
-    attachment: attachment ? { name: attachment.name, size: attachment.size, type: attachment.type } : null,
-    status:     "submitted",
-    created_at: now,
+    id:               "req_" + Date.now(),
+    service_type:     service_type,
+    description:      description,
+    frequency:        frequency        || "one-time",
+    deadline:         deadline         || null,
+    delivery_day:     delivery_day     || null,
+    delivery_time:    delivery_time    || null,
+    priority:         priority         || "normal",
+    audience:         audience         || null,
+    tone:             tone             || null,
+    output_format:    output_format    || null,
+    exclusions:       exclusions       || null,
+    approver_name:    approver_name    || null,
+    approver_contact: approver_contact || null,
+    files:            files            || null,
+    brand_link:       brand_link       || null,
+    examples:         examples         || null,
+    delivery_method:  delivery_method  || "portal",
+    gdrive_folder:    gdrive_folder    || null,
+    notes:            notes            || null,
+    credentials:      cred_authorized && credentials?.length
+                        ? credentials.map(function(c) { return {
+                            platform: c.platform, url: c.url,
+                            username: c.username, password: c.password,
+                            level: c.level, expiry: c.expiry, notes: c.notes
+                          }; })
+                        : [],
+    cred_authorized:  cred_authorized  || false,
+    attachment:       attachment ? { name: attachment.name, size: attachment.size, type: attachment.type } : null,
+    status:           "submitted",
+    created_at:       now,
   };
 
   await saveToKV("portal_requests:" + eKey, [newRequest, ...existing]);
@@ -91,16 +118,27 @@ async function handleSubmitWork(req, res, email) {
     await sendEmail(
       "reports@compassbizsolutions.com",
       `New Work Request — ${service_type} (${priority})`,
-      `<div style="font-family:sans-serif;max-width:500px;">
+`<div style="font-family:sans-serif;max-width:560px;">
         <h2 style="color:#C8701A;">New Work Request</h2>
         <p><strong>Customer:</strong> ${email}</p>
-        <p><strong>Service:</strong> ${service_type}</p>
-        <p><strong>Priority:</strong> ${priority}</p>
+        <p><strong>Service:</strong> ${service_type} — <em>${priority}</em></p>
+        <p><strong>Frequency:</strong> ${frequency || "one-time"}</p>
         ${deadline ? `<p><strong>Deadline:</strong> ${deadline}</p>` : ""}
+        ${delivery_day ? `<p><strong>Deliver by:</strong> ${delivery_day} at ${delivery_time || "9:00 AM"}</p>` : ""}
         <p><strong>Description:</strong></p>
         <p style="background:#f5f5f5;padding:12px;border-radius:4px;">${description}</p>
-        ${files ? `<p><strong>Files link:</strong> <a href="${files}">${files}</a></p>` : ""}
-        ${attachment ? `<p><strong>Attachment:</strong> ${attachment.name} (${(attachment.size/1024).toFixed(1)} KB) — view in admin dashboard</p>` : ""}
+        ${audience ? `<p><strong>Audience:</strong> ${audience}</p>` : ""}
+        ${tone ? `<p><strong>Tone:</strong> ${tone}</p>` : ""}
+        ${output_format ? `<p><strong>Output format:</strong> ${output_format}</p>` : ""}
+        ${exclusions ? `<p><strong>Exclusions:</strong> ${exclusions}</p>` : ""}
+        ${approver_name ? `<p><strong>Approval contact:</strong> ${approver_name} — ${approver_contact || ""}</p>` : ""}
+        ${files ? `<p><strong>Files:</strong> <a href="${files}">${files}</a></p>` : ""}
+        ${brand_link ? `<p><strong>Brand guidelines:</strong> <a href="${brand_link}">${brand_link}</a></p>` : ""}
+        ${examples ? `<p><strong>Examples:</strong> ${examples}</p>` : ""}
+        ${notes ? `<p><strong>Additional notes:</strong> ${notes}</p>` : ""}
+        ${attachment ? `<p><strong>Attachment:</strong> ${attachment.name} (${(attachment.size/1024).toFixed(1)} KB)</p>` : ""}
+        ${newRequest.credentials?.length ? `<p><strong>⚠️ Credentials provided (${newRequest.credentials.length}):</strong> View in admin dashboard — stored in KV.</p>` : ""}
+        <p><strong>Delivery method:</strong> ${delivery_method || "portal"}</p>
       </div>`
     );
     // Confirmation to customer
@@ -207,12 +245,20 @@ module.exports = async function handler(req, res) {
     const email = await validateSession(token);
     if (!email) return res.status(401).json({ error: "Unauthorized" });
 
-    const path = req.url || "";
-    if (path.includes("submit-work"))   return handleSubmitWork(req, res, email);
-    if (path.includes("submit-ticket")) return handleSubmitTicket(req, res, email);
-    if (path.includes("send-message"))  return handleSendMessage(req, res, email);
+    // Route by action field OR by URL path (supports both patterns)
+    const path   = req.url || "";
+    const action = req.body?.action || "";
 
-    return res.status(404).json({ error: "Unknown endpoint" });
+    if (path.includes("submit-work")   || action === "submit-work")   return handleSubmitWork(req, res, email);
+    if (path.includes("submit-ticket") || action === "submit-ticket") return handleSubmitTicket(req, res, email);
+    if (path.includes("send-message")  || action === "send-message")  return handleSendMessage(req, res, email);
+
+    // Fallback: if single endpoint file, try to infer from body fields
+    if (req.body?.service_type || req.body?.description) return handleSubmitWork(req, res, email);
+    if (req.body?.subject && req.body?.details)          return handleSubmitTicket(req, res, email);
+    if (req.body?.text)                                   return handleSendMessage(req, res, email);
+
+    return res.status(404).json({ error: "Unknown action. Pass action: submit-work | submit-ticket | send-message" });
 
   } catch(err) {
     console.error("portal-actions error:", err.message);
