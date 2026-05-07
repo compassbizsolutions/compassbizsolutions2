@@ -62,6 +62,7 @@ async function handleSubmitWork(req, res, email) {
     frequency, delivery_day, delivery_time, audience, tone, output_format,
     exclusions, approver_name, approver_contact, brand_link, examples,
     delivery_method, gdrive_folder, notes, credentials, cred_authorized,
+    sensitive_data,
   } = req.body || {};
   if (!service_type || !description) return res.status(400).json({ error: "Service type and description required" });
 
@@ -98,6 +99,7 @@ async function handleSubmitWork(req, res, email) {
                           }; })
                         : [],
     cred_authorized:  cred_authorized  || false,
+    sensitive_data:   sensitive_data   || false,
     attachment:       attachment ? { name: attachment.name, size: attachment.size, type: attachment.type } : null,
     status:           "submitted",
     created_at:       now,
@@ -138,7 +140,8 @@ async function handleSubmitWork(req, res, email) {
         ${notes ? `<p><strong>Additional notes:</strong> ${notes}</p>` : ""}
         ${attachment ? `<p><strong>Attachment:</strong> ${attachment.name} (${(attachment.size/1024).toFixed(1)} KB)</p>` : ""}
         ${newRequest.credentials?.length ? `<p><strong>⚠️ Credentials provided (${newRequest.credentials.length}):</strong> View in admin dashboard — stored in KV.</p>` : ""}
-        <p><strong>Delivery method:</strong> ${delivery_method || "portal"}</p>
+        ${sensitive_data ? `<p style="background:rgba(184,76,46,0.1);border:1px solid rgba(184,76,46,0.3);padding:10px;border-radius:4px;"><strong>⚠️ SENSITIVE DATA FLAGGED</strong> — Customer indicated this request contains sensitive information (SSNs, financial account numbers, etc.). They should have shared via Bitwarden Send. Do not forward files via unencrypted email.</p>` : ""}
+        <p><strong>Delivery method:</strong> ${delivery_method || "portal_email"}</p>
       </div>`
     );
     // Confirmation to customer
