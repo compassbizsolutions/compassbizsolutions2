@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Create Account — Compass Business Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#0C1520;--navy:#0F1E30;--steel:#162840;--panel:#1A2F45;
+  --amber:#D4820F;--amber-dim:rgba(212,130,15,0.1);
+  --muted:#7A95B0;--border:rgba(120,160,200,0.15);
+  --white:#FAFCFE;--red:#B84C2E;--green:#1A6040;
+  --ff-serif:'Libre Baskerville',serif;
+  --ff-body:'DM Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff-body);background:var(--ink);color:var(--white);min-height:100vh;display:flex;flex-direction:column}
+nav{padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);flex-shrink:0}
+.nav-logo-top{font-family:var(--ff-serif);font-size:14px;font-weight:700;color:var(--white)}
+.nav-logo-sub{font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--amber)}
+nav a{font-size:13px;color:var(--muted);text-decoration:none}
+nav a:hover{color:var(--amber)}
+.page{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:40px 20px 80px}
+.card{background:var(--navy);border:1px solid var(--border);border-radius:10px;width:100%;max-width:560px;padding:40px}
+.card-title{font-family:var(--ff-serif);font-size:26px;font-weight:700;color:var(--white);margin-bottom:6px}
+.card-sub{font-size:14px;color:var(--muted);margin-bottom:32px;line-height:1.6}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{margin-bottom:16px}
+.form-label{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+.form-input,.form-select{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:6px;padding:11px 14px;font-size:14px;color:var(--white);font-family:var(--ff-body);outline:none;transition:border .15s}
+.form-input:focus,.form-select:focus{border-color:var(--amber)}
+.form-input::placeholder{color:rgba(255,255,255,0.18)}
+.form-select option{background:var(--navy)}
+.form-hint{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5}
+.divider{height:1px;background:var(--border);margin:24px 0;position:relative}
+.divider span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--navy);padding:0 12px;font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;white-space:nowrap}
+.terms-check{display:flex;align-items:flex-start;gap:10px;margin-bottom:24px}
+.terms-check input{width:16px;height:16px;flex-shrink:0;margin-top:2px;accent-color:var(--amber)}
+.terms-check label{font-size:13px;color:var(--muted);line-height:1.6}
+.terms-check label a{color:var(--amber);text-decoration:none}
+.submit-btn{width:100%;background:var(--amber);color:var(--ink);border:none;border-radius:6px;padding:14px;font-family:var(--ff-body);font-size:15px;font-weight:600;cursor:pointer;transition:opacity .15s;letter-spacing:.3px}
+.submit-btn:hover{opacity:.88}
+.submit-btn:disabled{opacity:.4;cursor:not-allowed}
+.err-box{background:rgba(184,76,46,.1);border:1px solid rgba(184,76,46,.3);border-radius:6px;padding:12px 14px;font-size:13px;color:#e88070;margin-bottom:16px;display:none}
+.login-link{text-align:center;margin-top:20px;font-size:13px;color:var(--muted)}
+.login-link a{color:var(--amber);text-decoration:none;font-weight:600}
+.strength-bar{height:3px;border-radius:2px;background:var(--border);margin-top:6px;overflow:hidden}
+.strength-fill{height:100%;border-radius:2px;transition:width .3s,background .3s;width:0%}
+.strength-label{font-size:11px;margin-top:4px}
+@media(max-width:500px){.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div>
+    <div class="nav-logo-top">Compass Business Solutions</div>
+    <div class="nav-logo-sub">Client Portal</div>
+  </div>
+  <a href="/portal">← Back to portal</a>
+</nav>
+
+<div class="page">
+  <div class="card">
+    <div class="card-title">Create your account</div>
+    <div class="card-sub">Free to join. No commitment until you submit a request and accept a quote.</div>
+
+    <div class="err-box" id="errBox"></div>
+
+    <!-- STEP 1: ACCOUNT INFO -->
+    <div id="step1">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input class="form-input" type="text" id="firstName" placeholder="Jennifer" autocomplete="given-name"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input class="form-input" type="text" id="lastName" placeholder="Voiselle" autocomplete="family-name"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Business Name</label>
+        <input class="form-input" type="text" id="bizName" placeholder="Compass Business Solutions" autocomplete="organization"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Industry</label>
+        <select class="form-select" id="industry">
+          <option value="">— Select your industry —</option>
+          <option>Trades (HVAC, Plumbing, Electrical, etc.)</option>
+          <option>Retail</option>
+          <option>Restaurant / Food Service</option>
+          <option>Professional Services</option>
+          <option>Healthcare / Medical</option>
+          <option>Real Estate</option>
+          <option>Construction</option>
+          <option>Cleaning / Janitorial</option>
+          <option>Landscaping / Lawn Care</option>
+          <option>Auto / Automotive</option>
+          <option>Fitness / Wellness</option>
+          <option>Childcare / Education</option>
+          <option>E-Commerce</option>
+          <option>Non-Profit</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input class="form-input" type="tel" id="phone" placeholder="(508) 555-0100" autocomplete="tel"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">State</label>
+          <input class="form-input" type="text" id="state" placeholder="MA" maxlength="2" style="text-transform:uppercase"/>
+        </div>
+      </div>
+
+      <div class="divider"><span>Login credentials</span></div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="email" placeholder="you@yourbusiness.com" autocomplete="email"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" id="password" placeholder="At least 8 characters" oninput="checkStrength()" autocomplete="new-password"/>
+        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+        <div class="strength-label" id="strengthLabel" style="color:var(--muted)"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirm Password</label>
+        <input class="form-input" type="password" id="confirmPassword" placeholder="Repeat your password" autocomplete="new-password"/>
+      </div>
+
+      <div class="divider"><span>Preferences</span></div>
+
+      <div class="form-group">
+        <label class="form-label">Preferred Delivery Format</label>
+        <select class="form-select" id="deliveryFormat">
+          <option value="portal">Portal only (download from portal)</option>
+          <option value="both">Portal + email attachment</option>
+          <option value="gdrive">Portal + Google Drive</option>
+        </select>
+        <div class="form-hint">How you prefer to receive completed work. Can be changed per request.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tone / Voice Preference</label>
+        <select class="form-select" id="tone">
+          <option value="">No preference</option>
+          <option value="professional">Professional & formal</option>
+          <option value="friendly">Friendly & conversational</option>
+          <option value="casual">Casual & relaxed</option>
+          <option value="direct">Direct & to the point</option>
+        </select>
+        <div class="form-hint">Default tone for any writing, emails, or marketing we produce for you.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">How did you hear about us?</label>
+        <select class="form-select" id="referral">
+          <option value="">— Select one —</option>
+          <option>FixKit customer</option>
+          <option>Referred by someone</option>
+          <option>Google search</option>
+          <option>Social media</option>
+          <option>Compass website</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="terms-check">
+        <input type="checkbox" id="termsCheck"/>
+        <label for="termsCheck">I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a>. I understand that Compass Business Solutions will only access any credentials I provide to complete the specific work I request.</label>
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="createAccount()">Create My Account →</button>
+      <div class="login-link">Already have an account? <a href="/portal/app">Log in →</a></div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div id="successMsg" style="display:none;text-align:center;padding:20px 0">
+      <div style="font-size:48px;margin-bottom:16px">✅</div>
+      <div style="font-family:var(--ff-serif);font-size:22px;font-weight:700;color:var(--white);margin-bottom:10px">Account created!</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px">Check your email for a confirmation. You're being redirected to your portal...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+var API = 'https://www.compassbizsolutions.com/api';
+
+function checkStrength() {
+  var pw = document.getElementById('password').value;
+  var fill = document.getElementById('strengthFill');
+  var label = document.getElementById('strengthLabel');
+  var score = 0;
+  if (pw.length >= 8) score++;
+  if (pw.length >= 12) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  var pct = Math.round(score / 5 * 100);
+  var colors = ['#B84C2E','#E8900A','#E8C00A','#1A9060','#1A6040'];
+  var labels = ['','Weak','Fair','Good','Strong','Very strong'];
+  fill.style.width = pct + '%';
+  fill.style.background = colors[score-1] || 'transparent';
+  label.textContent = labels[score] || '';
+  label.style.color = colors[score-1] || 'var(--muted)';
+}
+
+async function createAccount() {
+  var err = document.getElementById('errBox');
+  err.style.display = 'none';
+  var btn = document.getElementById('submitBtn');
+
+  var firstName  = document.getElementById('firstName').value.trim();
+  var lastName   = document.getElementById('lastName').value.trim();
+  var bizName    = document.getElementById('bizName').value.trim();
+  var industry   = document.getElementById('industry').value;
+  var phone      = document.getElementById('phone').value.trim();
+  var state      = document.getElementById('state').value.trim().toUpperCase();
+  var email      = document.getElementById('email').value.trim();
+  var password   = document.getElementById('password').value;
+  var confirm    = document.getElementById('confirmPassword').value;
+  var format     = document.getElementById('deliveryFormat').value;
+  var tone       = document.getElementById('tone').value;
+  var referral   = document.getElementById('referral').value;
+  var terms      = document.getElementById('termsCheck').checked;
+
+  if (!firstName || !lastName)  return showErr('Please enter your first and last name.');
+  if (!bizName)                 return showErr('Please enter your business name.');
+  if (!email || !email.includes('@')) return showErr('Please enter a valid email address.');
+  if (password.length < 8)     return showErr('Password must be at least 8 characters.');
+  if (password !== confirm)     return showErr('Passwords do not match.');
+  if (!terms)                   return showErr('Please agree to the Terms of Service to continue.');
+
+  btn.disabled = true; btn.textContent = 'Creating account…';
+
+  try {
+    var r = await fetch(API + '/portal-signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name:      firstName + ' ' + lastName,
+        firstName, lastName, biz: bizName, industry,
+        phone, state, email, password,
+        prefs: { deliveryFormat: format, tone, referral }
+      })
+    });
+    var d = await r.json();
+    if (!r.ok) { showErr(d.error || 'Something went wrong. Please try again.'); btn.disabled=false; btn.textContent='Create My Account →'; return; }
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    setTimeout(function(){ window.location.href = '/portal/app'; }, 2500);
+  } catch(e) {
+    showErr('Connection error — please try again.');
+    btn.disabled=false; btn.textContent='Create My Account →';
+  }
+}
+
+function showErr(msg) {
+  var el = document.getElementById('errBox');
+  el.textContent = msg; el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') createAccount();
+});
+</script>
+</body>
+</html>
