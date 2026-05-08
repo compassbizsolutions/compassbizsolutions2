@@ -434,9 +434,25 @@
               </select>
             </div>
 
+            <div class="form-group" id="slide-count-row" style="display:none;">
+              <label class="form-label">How many slides do you need? <span style="color:var(--amber)">*</span></label>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <input class="form-input" type="number" id="work-slide-count" min="1" max="200" placeholder="e.g. 12" style="max-width:120px;"/>
+                <span style="font-size:12px;color:var(--muted);line-height:1.5;">Up to 15 slides included in the base price.<br/>$20 per slide over 15.</span>
+              </div>
+            </div>
+
             <div class="form-group">
               <label class="form-label">Describe what you need <span style="color:var(--amber)">*</span></label>
               <textarea class="form-textarea" id="work-desc" placeholder="Be specific — what needs to be done, what the result should look like, any important context..." style="min-height:110px;"></textarea>
+            </div>
+
+            <div id="slide-count-row" style="display:none;">
+              <div class="form-group">
+                <label class="form-label">Number of slides</label>
+                <input class="form-input" type="number" id="work-slide-count" min="1" max="100" placeholder="e.g. 12"/>
+                <div style="font-size:11px;color:var(--muted);margin-top:4px;">Up to 15 slides included in the Complex rate ($449). Over 15 slides are invoiced at $20 per additional slide. Leave blank if you are not sure — we will confirm before quoting.</div>
+              </div>
             </div>
 
             <div class="form-2col">
@@ -697,7 +713,7 @@
             <div class="product-icon">📱</div>
             <div class="product-name">FieldKit</div>
             <div class="product-badge badge-soon">Launching May 18</div>
-            <div class="product-desc">Full field operations platform for your crew — scheduling, dispatch, AI quoting, profit tracking, and more.</div>
+            <div class="product-desc">Full field operations platform for your crew — scheduling, dispatch, quoting, profit tracking, and more.</div>
             <a href="/trades/fieldkit/features" class="product-btn ghost">Learn More →</a>
           </div>
           <div class="product-card">
@@ -1098,7 +1114,9 @@ function renderQuotes() {
       + '</div>'
       + '<span style="font-family:var(--font-head);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:4px;background:' + (isPending ? 'rgba(200,112,26,0.12)' : 'rgba(30,107,69,0.12)') + ';color:' + (isPending ? 'var(--amber)' : '#2ecc71') + ';">' + q.status + '</span>'
       + '</div>'
-      + '<p style="font-size:14px;color:var(--white-dim);line-height:1.6;margin-bottom:20px;">' + q.quote_summary + '</p>'
+      + '<p style="font-size:14px;color:var(--white-dim);line-height:1.6;margin-bottom:16px;">' + q.quote_summary + '</p>'
+      + (q.pending_info ? '<div style="background:rgba(184,76,46,0.1);border:1px solid rgba(184,76,46,0.3);border-radius:7px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#e88070;line-height:1.6;"><strong style="display:block;margin-bottom:4px;">⏳ Pending confirmation</strong>' + (q.pending_message || 'Slide count not confirmed — quote will be finalized once we hear back from you.') + '</div>' : '')
+      + (q.overage_note ? '<div style="background:rgba(212,130,15,0.06);border:1px solid rgba(212,130,15,0.2);border-radius:7px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:var(--amber);line-height:1.6;">📐 ' + q.overage_note + '</div>' : '')
       + (pkg ? '<div style="background:rgba(200,112,26,0.08);border:1px solid rgba(200,112,26,0.3);border-radius:10px;padding:18px;margin-bottom:16px;">'
         + '<div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:8px;">⭐ RECOMMENDED PACKAGE</div>'
         + '<div style="font-size:18px;font-weight:800;color:var(--white);margin-bottom:4px;">' + pkg.name + ' — $' + pkg.price + '/mo</div>'
@@ -1375,9 +1393,17 @@ function onFrequencyChange() {
 
 function onServiceTypeChange() {
   var type = document.getElementById('work-type').value;
+
+  // Show credentials section for relevant service types
   var credsSection = document.getElementById('credentials-section');
   if (credsSection) {
     credsSection.style.display = CRED_SERVICES.indexOf(type) !== -1 ? 'block' : 'none';
+  }
+
+  // Show slide count field for presentations
+  var slideRow = document.getElementById('slide-count-row');
+  if (slideRow) {
+    slideRow.style.display = (type === 'Presentation / Deck') ? 'block' : 'none';
   }
 }
 
@@ -1482,11 +1508,14 @@ async function submitWork() {
 
   btn.disabled=true; btn.textContent='Submitting…';
   try {
-    var r = await fetch(API + '/portal-submit-work', {
+    var r = await fetch(API + '/portal-actions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
       body: JSON.stringify({
+        action:          'submit-work',
+        sensitive_data:  (document.getElementById('sensitive-check')||{}).checked || false,
         service_type:    type,
+        slide_count:     parseInt((document.getElementById('work-slide-count')||{}).value) || null,
         description:     desc,
         frequency:       (document.getElementById('work-frequency')||{}).value || 'one-time',
         deadline:        (document.getElementById('work-deadline')||{}).value || '',
@@ -1512,8 +1541,7 @@ async function submitWork() {
     });
     var d = await r.json();
     if (r.ok) {
-      showToast('Request submitted! Generating your quote...');
-      setTimeout(function() { generateQuote(d.request && d.request.id, type, desc, priority); }, 500);
+      showToast('Request submitted! We will be in touch within 24 hours with a quote.');
       document.getElementById('work-type').value = '';
       document.getElementById('work-desc').value = '';
       document.getElementById('work-deadline').value = '';
@@ -1539,7 +1567,7 @@ async function submitTicket() {
     var r = await fetch(API + '/portal-actions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
-      body: JSON.stringify({ subject, category, details })
+      body: JSON.stringify({ action: 'submit-ticket', subject: subject, category: category, details: details })
     });
     var d = await r.json();
     if (r.ok) {
