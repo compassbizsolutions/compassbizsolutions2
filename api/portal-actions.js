@@ -152,22 +152,45 @@ async function handleSubmitWork(req, res, email) {
           <div style="font-family:Georgia,serif;font-size:20px;font-weight:700;color:#FAFCFE;">We received your request.</div>
         </div>
         <div style="background:#162840;padding:24px 28px;border-radius:0 0 8px 8px;">
-          <p style="font-size:14px;color:#c8d8e8;line-height:1.7;margin-bottom:20px;">Your <strong style="color:#FAFCFE;">${service_type}</strong> request has been received. Here is what happens next:</p>
+          <p style="font-size:14px;color:#c8d8e8;line-height:1.7;margin-bottom:24px;">Your <strong style="color:#FAFCFE;">${service_type}</strong> request has been received. Here is what happens next:</p>
 
-          <div style="border-left:3px solid #D4820F;padding-left:16px;margin-bottom:20px;">
-            <div style="display:flex;flex-direction:column;gap:12px;">
-              <div style="font-size:13px;color:#c8d8e8;line-height:1.5;"><strong style="color:#FAFCFE;">1. We review your request</strong><br/>We look at what you need and scope the work.</div>
-              <div style="font-size:13px;color:#c8d8e8;line-height:1.5;"><strong style="color:#FAFCFE;">2. You receive a quote</strong><br/>We send you a quote within 24 hours. You approve it in your portal.</div>
-              <div style="font-size:13px;color:#c8d8e8;line-height:1.5;"><strong style="color:#FAFCFE;">3. Payment</strong><br/>Once you approve the quote, payment is collected via your portal.</div>
-              <div style="font-size:13px;color:#c8d8e8;line-height:1.5;"><strong style="color:#FAFCFE;">4. Work is completed</strong><br/>We complete the work and review it before delivery.</div>
-              <div style="font-size:13px;color:#c8d8e8;line-height:1.5;"><strong style="color:#FAFCFE;">5. Delivered to your portal</strong><br/>You will receive an email notification when your completed work is ready to download${delivery_method === 'email' ? ' — and it will also be emailed to you directly' : delivery_method === 'gdrive' ? ' — and saved to your Google Drive' : ''}.</div>
-            </div>
-          </div>
-
-          <div style="background:rgba(212,130,15,0.08);border:1px solid rgba(212,130,15,0.2);border-radius:6px;padding:14px 16px;margin-bottom:20px;font-size:12px;color:rgba(255,255,255,0.45);line-height:1.7;">
-            <strong style="color:rgba(255,255,255,0.6);display:block;margin-bottom:4px;">A note on our process</strong>
-            Compass Business Solutions may utilize technology tools — including AI-assisted analysis — to help complete your work efficiently. All work is reviewed before delivery. You are always receiving work that has been checked and approved by a real person.
-          </div>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid rgba(120,160,200,0.12);">
+                <span style="display:inline-block;background:#D4820F;color:#0C1520;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;margin-bottom:6px;letter-spacing:1px;">STEP 1</span><br/>
+                <strong style="font-size:14px;color:#FAFCFE;">We review your request</strong><br/>
+                <span style="font-size:13px;color:#7A95B0;line-height:1.6;">We look at what you need, review any files you uploaded, and scope the work.</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid rgba(120,160,200,0.12);">
+                <span style="display:inline-block;background:#D4820F;color:#0C1520;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;margin-bottom:6px;letter-spacing:1px;">STEP 2</span><br/>
+                <strong style="font-size:14px;color:#FAFCFE;">You receive a quote</strong><br/>
+                <span style="font-size:13px;color:#7A95B0;line-height:1.6;">We send you a quote within 24 hours. You review and approve it in your portal before any work begins.</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid rgba(120,160,200,0.12);">
+                <span style="display:inline-block;background:#D4820F;color:#0C1520;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;margin-bottom:6px;letter-spacing:1px;">STEP 3</span><br/>
+                <strong style="font-size:14px;color:#FAFCFE;">Payment</strong><br/>
+                <span style="font-size:13px;color:#7A95B0;line-height:1.6;">Once you approve the quote, payment is collected securely through your portal. Work begins immediately after.</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid rgba(120,160,200,0.12);">
+                <span style="display:inline-block;background:#D4820F;color:#0C1520;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;margin-bottom:6px;letter-spacing:1px;">STEP 4</span><br/>
+                <strong style="font-size:14px;color:#FAFCFE;">Work is completed</strong><br/>
+                <span style="font-size:13px;color:#7A95B0;line-height:1.6;">We complete your request and review it before it leaves our desk.</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 0;">
+                <span style="display:inline-block;background:#D4820F;color:#0C1520;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;margin-bottom:6px;letter-spacing:1px;">STEP 5</span><br/>
+                <strong style="font-size:14px;color:#FAFCFE;">Delivered to your portal</strong><br/>
+                <span style="font-size:13px;color:#7A95B0;line-height:1.6;">You will receive an email notification when your completed work is ready to download${delivery_method === 'email' ? ' — and it will also be emailed to you directly' : delivery_method === 'gdrive' ? ' — and saved to your Google Drive' : ''}.</span>
+              </td>
+            </tr>
+          </table>
 
           <a href="https://www.compassbizsolutions.com/portal/app" style="display:inline-block;background:#D4820F;color:#0C1520;padding:12px 24px;border-radius:5px;text-decoration:none;font-weight:600;font-size:14px;">View in My Portal →</a>
           <p style="font-size:12px;color:#4A6580;margin-top:16px;line-height:1.6;">Questions? Reply to this email — we read every one.</p>
