@@ -146,11 +146,32 @@ async function handleSubmitWork(req, res, email) {
     );
     // Confirmation to customer
     await sendEmail(email, `Work Request Received — ${service_type}`,
-      `<div style="font-family:sans-serif;max-width:500px;background:#111E31;padding:32px;border-radius:8px;color:#F4F7FC;">
-        <p style="font-size:11px;letter-spacing:3px;color:#C8701A;text-transform:uppercase;font-weight:700;">Compass Business Solutions</p>
-        <h2 style="color:#F4F7FC;">We got your request!</h2>
-        <p style="color:#c8d8e8;">Your <strong>${service_type}</strong> request has been received. We'll review it and get back to you within 24 hours with a timeline and quote if applicable.</p>
-        <p style="color:#8aa5c0;margin-top:24px;">Questions? Reply to this email or message us directly in your portal.</p>
+      `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;">
+        <div style="background:#0F1E30;padding:24px 28px;border-radius:8px 8px 0 0;border-bottom:1px solid rgba(120,160,200,0.15);">
+          <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#D4820F;font-weight:700;margin-bottom:4px;">Compass Business Solutions</div>
+          <div style="font-family:Georgia,serif;font-size:20px;font-weight:700;color:#FAFCFE;">We received your request.</div>
+        </div>
+        <div style="background:#162840;padding:24px 28px;border-radius:0 0 8px 8px;">
+          <p style="font-size:14px;color:#c8d8e8;line-height:1.7;margin-bottom:20px;">Your <strong style="color:#FAFCFE;">${service_type}</strong> request has been received. Here is what happens next:</p>
+
+          <div style="border-left:3px solid #D4820F;padding-left:16px;margin-bottom:20px;">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="font-size:13px;color:#c8d8e8;line-height:1.5;"><strong style="color:#FAFCFE;">1. We review your request</strong><br/>We look at what you need and scope the work.</div>
+              <div style="font-size:13px;color:#c8d8e8;line-height:1.5;"><strong style="color:#FAFCFE;">2. You receive a quote</strong><br/>We send you a quote within 24 hours. You approve it in your portal.</div>
+              <div style="font-size:13px;color:#c8d8e8;line-height:1.5;"><strong style="color:#FAFCFE;">3. Payment</strong><br/>Once you approve the quote, payment is collected via your portal.</div>
+              <div style="font-size:13px;color:#c8d8e8;line-height:1.5;"><strong style="color:#FAFCFE;">4. Work is completed</strong><br/>We complete the work and review it before delivery.</div>
+              <div style="font-size:13px;color:#c8d8e8;line-height:1.5;"><strong style="color:#FAFCFE;">5. Delivered to your portal</strong><br/>You will receive an email notification when your completed work is ready to download${delivery_method === 'email' ? ' — and it will also be emailed to you directly' : delivery_method === 'gdrive' ? ' — and saved to your Google Drive' : ''}.</div>
+            </div>
+          </div>
+
+          <div style="background:rgba(212,130,15,0.08);border:1px solid rgba(212,130,15,0.2);border-radius:6px;padding:14px 16px;margin-bottom:20px;font-size:12px;color:rgba(255,255,255,0.45);line-height:1.7;">
+            <strong style="color:rgba(255,255,255,0.6);display:block;margin-bottom:4px;">A note on our process</strong>
+            Compass Business Solutions may utilize technology tools — including AI-assisted analysis — to help complete your work efficiently. All work is reviewed before delivery. You are always receiving work that has been checked and approved by a real person.
+          </div>
+
+          <a href="https://www.compassbizsolutions.com/portal/app" style="display:inline-block;background:#D4820F;color:#0C1520;padding:12px 24px;border-radius:5px;text-decoration:none;font-weight:600;font-size:14px;">View in My Portal →</a>
+          <p style="font-size:12px;color:#4A6580;margin-top:16px;line-height:1.6;">Questions? Reply to this email — we read every one.</p>
+        </div>
       </div>`
     );
   } catch(e) { console.error("Email error:", e.message); }

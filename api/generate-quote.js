@@ -43,28 +43,7 @@ const PACKAGES = [
   }
 ];
 
-const AD_HOC_PRICING = {
-  "Spreadsheet / Data Work":         { simple: 75,  standard: 150, complex: 300 },
-  "Payroll Processing Help":          { simple: 100, standard: 200, complex: 350 },
-  "Receipt / Expense Organization":   { simple: 50,  standard: 100, complex: 175 },
-  "Email Management / Outreach":      { simple: 75,  standard: 150, complex: 250 },
-  "Data Entry & Cleanup":             { simple: 50,  standard: 100, complex: 200 },
-  "Invoice & Estimate Follow-Up":     { simple: 75,  standard: 125, complex: 200 },
-  "Research & Competitive Analysis":  { simple: 100, standard: 200, complex: 400 },
-  "Social Media Management":          { simple: 150, standard: 300, complex: 500 },
-  "Marketing Campaign Setup":         { simple: 200, standard: 400, complex: 750 },
-  "Customer Follow-Up Sequences":     { simple: 150, standard: 250, complex: 450 },
-  "Review & Referral Outreach":       { simple: 100, standard: 200, complex: 350 },
-  "New Customer Welcome Campaigns":   { simple: 150, standard: 275, complex: 450 },
-  "Appointment Confirmation Setup":   { simple: 100, standard: 200, complex: 350 },
-  "Seasonal Re-Engagement Campaign":  { simple: 150, standard: 300, complex: 500 },
-  "Presentation / Deck":              { simple: 150, standard: 300, complex: 500 },
-  "Marketing Materials":              { simple: 100, standard: 250, complex: 450 },
-  "PowerPoint / Pitch Deck":          { simple: 200, standard: 400, complex: 700 },
-  "Reporting & Summaries":            { simple: 75,  standard: 150, complex: 300 },
-  "Database Build or Cleanup":        { simple: 100, standard: 250, complex: 450 },
-  "Website Updates & Fixes":          { simple: 100, standard: 250, complex: 500 },
-};
+const { AD_HOC_PRICING, COMPLEXITY_SIGNALS } = require("./pricing");
 
 const COMPLEXITY_DESCRIPTIONS = {
   simple:   "Straightforward task, under 2 hours, minimal back and forth",
@@ -120,10 +99,12 @@ module.exports = async function handler(req, res) {
     const email = await validateSession(sessionToken);
     if (!email) return res.status(401).json({ error: "Unauthorized" });
 
-    const { request_id, service_type, description, priority } = req.body || {};
+    const { request_id, service_type, description, priority, slide_count } = req.body || {};
     if (!service_type || !description) return res.status(400).json({ error: "Service type and description required" });
 
     // Call Claude to analyze the request and determine complexity + recommendation
+    const pricingRow = AD_HOC_PRICING[service_type] || { simple: 79, standard: 149, complex: 299 };
+    const complexSignals = COMPLEXITY_SIGNALS;
     const aiPrompt = `You are a business operations consultant at Compass Business Solutions. Analyze this work request and determine:
 1. Complexity level (simple/standard/complex) based on scope
 2. Whether a monthly package would serve them better than ad hoc
@@ -133,8 +114,12 @@ SERVICE TYPE: ${service_type}
 DESCRIPTION: ${description}
 PRIORITY: ${priority || "normal"}
 
-AD HOC PRICING FOR THIS SERVICE:
-${JSON.stringify(AD_HOC_PRICING[service_type] || { simple: 100, standard: 200, complex: 350 })}
+AD HOC PRICING FOR THIS SERVICE (use these exact prices):
+Simple: $${pricingRow.simple} | Standard: $${pricingRow.standard} | Complex: $${pricingRow.complex}
+
+COMPLEXITY SIGNALS — words that suggest simple: ${complexSignals.simple.join(', ')}
+COMPLEXITY SIGNALS — words that suggest complex: ${complexSignals.complex.join(', ')}
+If no strong signals, default to Standard.
 
 MONTHLY PACKAGES:
 - Single Task Plan ($250/mo): One recurring task weekly or monthly
@@ -195,7 +180,29 @@ Respond with ONLY valid JSON in this exact format:
     }
 
     // Build the full quote object
-    const adHocPrice = AD_HOC_PRICING[service_type]?.[analysis.complexity] || analysis.ad_hoc_price;
+    let adHocPrice = (AD_HOC_PRICING[service_type] || {})[analysis.complexity] || analysis.ad_hoc_price || pricingRow.standard;
+
+    // Handle per-unit overages (e.g. presentation slides over threshold)
+    if (pricingRow.overage_rate && pricingRow.overage_threshold) {
+      // Use explicit slide_count field first, fall back to parsing description
+      const parsedFromDesc = parseInt((description || "").match(/(\d+)\s*slide/i)?.[1]) || 0;
+      const resolvedCount  = slide_count || parsedFromDesc || 0;
+      const basePrice      = (AD_HOC_PRICING[service_type] || {}).complex || pricingRow.complex;
+
+      if (resolvedCount === 0) {
+        // No slide count provided — flag for manual confirmation
+        analysis.pending_info    = true;
+        analysis.pending_message = "Slide count not provided. Please confirm the number of slides before approving this quote. Base rate is $" + basePrice + " for up to " + pricingRow.overage_threshold + " slides. Over " + pricingRow.overage_threshold + " slides = $" + pricingRow.overage_rate + " per additional slide.";
+        analysis.quote_summary   = (analysis.quote_summary || "") + " NOTE: Slide count was not specified — this quote is pending your confirmation of the slide count before it is sent to the customer.";
+      } else if (resolvedCount > pricingRow.overage_threshold) {
+        const overageSlides = resolvedCount - pricingRow.overage_threshold;
+        const overageFee    = overageSlides * pricingRow.overage_rate;
+        adHocPrice          = basePrice + overageFee;
+        analysis.overage_note = resolvedCount + " slides — base $" + basePrice + " + " + overageSlides + " slides over " + pricingRow.overage_threshold + " at $" + pricingRow.overage_rate + "/slide = $" + adHocPrice;
+      } else if (resolvedCount > 0) {
+        analysis.overage_note = resolvedCount + " slides — within the " + pricingRow.overage_threshold + "-slide threshold, flat rate applies.";
+      }
+    }
     const recommendedPackage = analysis.recommend_package && analysis.recommended_package_id
       ? PACKAGES.find(p => p.id === analysis.recommended_package_id)
       : null;
@@ -216,6 +223,7 @@ Respond with ONLY valid JSON in this exact format:
       quote_summary:        analysis.quote_summary,
       estimated_turnaround: analysis.estimated_turnaround,
       is_recurring:         analysis.is_recurring,
+      pending_confirmation: analysis.pending_confirmation || null,
       recurring_reason:     analysis.recurring_reason,
       all_packages:         PACKAGES,
       status:               "pending",
@@ -302,6 +310,7 @@ Respond with ONLY valid JSON in this exact format:
             <p><strong>Ad hoc price:</strong> $${adHocPrice}</p>
             <p><strong>Package recommended:</strong> ${recommendedPackage ? recommendedPackage.name + " ($" + recommendedPackage.price + "/mo)" : "No"}</p>
             <p><strong>Quote summary:</strong> ${analysis.quote_summary}</p>
+          ${analysis.pending_confirmation ? `<p style="background:#fff3cd;border:1px solid #ffc107;padding:10px;border-radius:4px;color:#856404;"><strong>⚠️ ACTION NEEDED:</strong> ${analysis.pending_confirmation}</p>` : ""}
           </div>`
         })
       });
