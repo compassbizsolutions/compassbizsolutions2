@@ -24,7 +24,7 @@ body{font-family:var(--ff-body);background:var(--ink);color:var(--white);overflo
 nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(12,21,32,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
 .nav-logo{display:flex;flex-direction:column;line-height:1.15}
 .nav-logo-top{font-family:var(--ff-serif);font-size:14px;font-weight:700;color:var(--white)}
-.nav-logo-sub{font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--amber)}
+.nav-logo-sub{font-size:11px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--amber);margin-top:6px;padding-left:1px}
 .nav-links{display:flex;gap:28px;align-items:center}
 .nav-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s}
 .nav-links a:hover{color:var(--white)}
@@ -61,7 +61,7 @@ h2 em{color:var(--amber);font-style:italic}
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px}
 .step{background:var(--steel);padding:36px 28px;transition:background .2s}
 .step:hover{background:var(--panel)}
-.step-num{font-family:var(--ff-serif);font-size:52px;font-weight:700;color:rgba(212,130,15,.12);line-height:1;margin-bottom:16px}
+.step-num{font-family:var(--ff-serif);font-size:52px;font-weight:700;color:rgba(212,130,15,.45);line-height:1;margin-bottom:16px}
 .step-title{font-family:var(--ff-serif);font-size:19px;font-weight:700;color:var(--white);margin-bottom:10px}
 .step-desc{font-size:13px;color:var(--muted);line-height:1.7}
 
@@ -174,6 +174,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
     <a href="#packages">Packages</a>
     <a href="#how">How It Works</a>
     <a href="#ai">AI-Powered</a>
+    <a href="/portal/pricing" style="font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s;" onmouseover="this.style.color='var(--white)'" onmouseout="this.style.color='var(--muted)'">Pricing</a>
     <a href="/portal/signup" class="nav-login">Create Account</a>
     <a href="/portal/app" class="nav-cta">Log In</a>
   </div>
@@ -183,10 +184,9 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
   <div class="hero-inner">
-    <div class="hero-label">Compass Business Solutions</div>
-    <h1>The front end of your<br/>business. <em>Handled.</em></h1>
+    <h1>The business of your<br/>business, <em>handled.</em></h1>
     <div class="hero-tagline">The front end of Compass. The back end of yours.</div>
-    <p class="hero-sub">Submit your work. We scope it, price it, and get it done — powered by AI, reviewed by a real person, delivered to your portal. Admin support, marketing, data, reports, and more.</p>
+    <p class="hero-sub">Submit your work. We scope it, price it, and get it done — delivered to your portal when complete. Admin support, marketing, data, reports, and more.</p>
     <div class="hero-btns">
       <a href="/portal/signup" class="btn-primary">Get Started — It's Free to Join</a>
       <a href="#how" class="btn-outline">See How It Works</a>
@@ -194,7 +194,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
     <div class="hero-trust">
       <div class="trust-item"><div class="trust-dot"></div>No retainer required</div>
       <div class="trust-item"><div class="trust-dot"></div>Pay only for what you need</div>
-      <div class="trust-item"><div class="trust-dot"></div>AI-powered, human-reviewed</div>
+      <div class="trust-item"><div class="trust-dot"></div>Handled with care</div>
       <div class="trust-item"><div class="trust-dot"></div>Delivered to your portal</div>
     </div>
   </div>
@@ -212,8 +212,8 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
       </div>
       <div class="step">
         <div class="step-num">02</div>
-        <div class="step-title">AI scopes your quote</div>
-        <div class="step-desc">Our AI reads your request and any uploaded files, determines complexity, and generates a personalized quote in minutes — with a package recommendation if it applies.</div>
+        <div class="step-title">We scope your quote</div>
+        <div class="step-desc">We review your request and any uploaded files, determine scope and complexity, and send you a personalized quote — with a package recommendation if it is more appropriate.</div>
       </div>
       <div class="step">
         <div class="step-num">03</div>
@@ -222,13 +222,13 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
       </div>
       <div class="step">
         <div class="step-num">04</div>
-        <div class="step-title">AI does the work</div>
-        <div class="step-desc">Depending on the task, AI executes it directly — drafting, building, analyzing, writing. Complex tasks are flagged for additional attention.</div>
+        <div class="step-title">The work gets done</div>
+        <div class="step-desc">We complete the work — drafting, building, analyzing, writing.</div>
       </div>
       <div class="step">
         <div class="step-num">05</div>
-        <div class="step-title">Human review before delivery</div>
-        <div class="step-desc">Every completed task is reviewed before it reaches you. We check it, refine it if needed, and approve it — so you get work that's actually ready to use.</div>
+        <div class="step-title">Peer reviewed</div>
+        <div class="step-desc">Before anything leaves our desk, it gets a second set of eyes. If it needs a tweak, it gets one. You get it when it's right.</div>
       </div>
       <div class="step">
         <div class="step-num">06</div>
@@ -328,7 +328,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
           <div class="pkg-feat">One recurring task (weekly or monthly)</div>
           <div class="pkg-feat">Up to 3 hours per task cycle</div>
           <div class="pkg-feat">Delivered by your chosen deadline</div>
-          <div class="pkg-feat">Human-reviewed before delivery</div>
+          <div class="pkg-feat">Reviewed before delivery</div>
           <div class="pkg-feat">Portal delivery + email notification</div>
         </div>
         <a href="/portal/signup" class="pkg-cta ghost">Get Started</a>
@@ -342,7 +342,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
           <div class="pkg-feat">Up to 5 hours of work per month</div>
           <div class="pkg-feat">Multiple task types — mix and match</div>
           <div class="pkg-feat">48-hour turnaround on most tasks</div>
-          <div class="pkg-feat">Human-reviewed before every delivery</div>
+          <div class="pkg-feat">Reviewed before delivery</div>
           <div class="pkg-feat">Priority scheduling</div>
           <div class="pkg-feat">Portal delivery + email notification</div>
         </div>
@@ -356,7 +356,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
           <div class="pkg-feat">Unlimited task submissions</div>
           <div class="pkg-feat">Priority 24-hour turnaround</div>
           <div class="pkg-feat">All service types included</div>
-          <div class="pkg-feat">Human-reviewed before every delivery</div>
+          <div class="pkg-feat">Reviewed before delivery</div>
           <div class="pkg-feat">Dedicated support contact</div>
           <div class="pkg-feat">Portal delivery + email notification</div>
         </div>
@@ -368,7 +368,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
       <div class="adhoc-note-text">
         <h3>Just need something done once?</h3>
         <p>No package required. Create a free account, submit your request, and get a custom quote in minutes. Pay only for that task. Simple as that — and if you find yourself coming back, we'll suggest the package that saves you money.</p>
-        <a href="/portal/signup" style="display:inline-block;margin-top:14px;color:var(--amber);text-decoration:none;font-size:13px;font-weight:600">Create free account → Submit a request</a>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;"><a href="/portal/signup" style="color:var(--amber);text-decoration:none;font-size:13px;font-weight:600;">Create free account →</a><a href="/portal/pricing" style="color:var(--muted);text-decoration:none;font-size:13px;">See full price list →</a></div>
       </div>
     </div>
   </div>
@@ -377,28 +377,28 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
 <section class="ai-sec" id="ai">
   <div class="ai-text">
     <div class="sec-label">AI-Powered Work</div>
-    <h2>Not just managed.<br/><em>Executed.</em></h2>
-    <p>We don't just coordinate your work — we do it. Our AI reads your files, understands your request, and produces real deliverables. Every output is reviewed by a human before it reaches you.</p>
+    <h2>Done right.<br/><em>Every time.</em></h2>
+    <p>We don't just coordinate your work — we complete it. We review your files, understand your request, and produce real deliverables. Jen reviews every output before it reaches you.</p>
     <div class="ai-features">
       <div class="ai-feat">
         <div class="ai-feat-icon">📄</div>
         <div class="ai-feat-text">
-          <strong>Reads your files</strong>
-          <span>Upload spreadsheets, documents, reports. AI analyzes them and incorporates the content into your deliverable.</span>
+          <strong>We review your files</strong>
+          <span>Upload spreadsheets, documents, reports. We analyze them and incorporate the content into your deliverable.</span>
         </div>
       </div>
       <div class="ai-feat">
         <div class="ai-feat-icon">⚡</div>
         <div class="ai-feat-text">
-          <strong>Executes, doesn't just plan</strong>
+          <strong>We deliver, not just advise</strong>
           <span>Drafts the email sequence. Builds the spreadsheet. Writes the report. Actual work product, not just an outline.</span>
         </div>
       </div>
       <div class="ai-feat">
         <div class="ai-feat-icon">👁️</div>
         <div class="ai-feat-text">
-          <strong>Human review before delivery</strong>
-          <span>Every completed task is reviewed and approved before it reaches you. Quality guaranteed, not just promised.</span>
+          <strong>Handled with care</strong>
+          <span>Before anything is delivered, Jen looks it over. You get it when it's right.</span>
         </div>
       </div>
       <div class="ai-feat">
@@ -419,7 +419,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
       </div>
       <div class="flow-step">
         <div class="flow-num">2</div>
-        <div class="flow-text"><strong>AI quotes</strong><span>Reads your request & files, scopes complexity, generates personalized quote</span></div>
+        <div class="flow-text"><strong>We scope your quote</strong><span>We review your request and files, scope the work, and send you a quote</span></div>
       </div>
       <div class="flow-step">
         <div class="flow-num">3</div>
@@ -427,7 +427,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
       </div>
       <div class="flow-step">
         <div class="flow-num">4</div>
-        <div class="flow-text"><strong>AI works</strong><span>Executes the task — drafts, builds, analyzes, writes</span></div>
+        <div class="flow-text"><strong>Work gets done</strong><span>We complete the task — drafting, building, analyzing, writing</span></div>
       </div>
       <div class="flow-step">
         <div class="flow-num">5</div>
@@ -471,6 +471,13 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
   </div>
 </section>
 
+<section style="padding:48px 48px;background:var(--navy);border-top:1px solid var(--border);">
+  <div style="max-width:760px;margin:0 auto;font-size:13px;color:rgba(255,255,255,0.35);line-height:1.8;">
+    <strong style="color:rgba(255,255,255,0.5);display:block;margin-bottom:8px;font-size:11px;letter-spacing:2px;text-transform:uppercase;">A note on our process</strong>
+    Compass Business Solutions may utilize technology tools — including AI-assisted software — to help analyze, draft, or produce work more efficiently. All work is reviewed before delivery. You receive work that has been checked for accuracy, quality, and relevance to your specific request. We will never deliver AI-generated content that has not been reviewed for accuracy, quality, and relevance to your specific request.
+  </div>
+</section>
+
 <section class="cta-sec">
   <div class="cta-content">
     <div class="sec-label">Get Started</div>
@@ -488,7 +495,7 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:48px 48p
     <div>
       <div class="footer-logo-top">Compass Business Solutions</div>
       <div class="footer-logo-sub">Client Portal</div>
-      <p class="footer-desc">AI-powered business support for small business owners who need things done, not just managed.</p>
+      <p class="footer-desc">Business support for small business owners who need things done, not just managed.</p>
     </div>
     <div>
       <div class="footer-col-title">Services</div>
