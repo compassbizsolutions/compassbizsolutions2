@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Pricing — Compass Business Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#0C1520;--navy:#0F1E30;--steel:#162840;--panel:#1A2F45;
+  --amber:#D4820F;--amber-dim:rgba(212,130,15,0.1);
+  --muted:#7A95B0;--border:rgba(120,160,200,0.15);
+  --white:#FAFCFE;--green:#1A6040;--red:#c0392b;
+  --ff-serif:'Libre Baskerville',serif;
+  --ff-body:'DM Sans',sans-serif;
+  --ff-mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-body);background:var(--ink);color:var(--white);min-height:100vh}
+
+nav{position:sticky;top:0;z-index:100;padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(12,21,32,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-top{font-family:var(--ff-serif);font-size:14px;font-weight:700;color:var(--white)}
+.nav-logo-sub{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-top:4px;padding-left:1px}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{background:var(--amber)!important;color:var(--ink)!important;padding:8px 18px;border-radius:5px;font-weight:600}
+.nav-cta:hover{opacity:.88!important}
+
+.hero{padding:72px 40px 48px;text-align:center;border-bottom:1px solid var(--border)}
+.hero-label{font-family:var(--ff-mono);font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+.hero h1{font-family:var(--ff-serif);font-size:clamp(36px,5vw,52px);font-weight:700;color:var(--white);margin-bottom:14px;line-height:1.1}
+.hero h1 em{color:var(--amber);font-style:italic}
+.hero p{font-size:15px;color:var(--muted);line-height:1.8;max-width:540px;margin:0 auto 32px}
+
+.tiers{display:flex;gap:2px;justify-content:center;max-width:680px;margin:0 auto}
+.tier{flex:1;padding:16px 18px;text-align:center}
+.tier.simple{background:rgba(46,204,113,0.06);border:1px solid rgba(46,204,113,0.15)}
+.tier.standard{background:rgba(212,130,15,0.06);border:1px solid rgba(212,130,15,0.15)}
+.tier.complex{background:rgba(192,57,43,0.06);border:1px solid rgba(192,57,43,0.15)}
+.tier-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px}
+.tier.simple .tier-label{color:#2ecc71}
+.tier.standard .tier-label{color:var(--amber)}
+.tier.complex .tier-label{color:#e74c3c}
+.tier-desc{font-size:12px;color:var(--muted);line-height:1.6}
+
+.main{max-width:960px;margin:0 auto;padding:48px 40px 80px}
+
+.how-note{background:var(--navy);border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin-bottom:40px;font-size:13px;color:var(--muted);line-height:1.8}
+.how-note strong{color:var(--white)}
+
+.category{margin-bottom:48px}
+.cat-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--amber);padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:16px}
+
+.svc{background:var(--navy);border:1px solid var(--border);margin-bottom:3px;transition:background .15s}
+.svc:hover{background:var(--steel)}
+.svc-main{display:grid;grid-template-columns:1fr auto;align-items:stretch;cursor:pointer}
+.svc-name-col{padding:16px 20px}
+.svc-name{font-size:14px;font-weight:500;color:var(--white);margin-bottom:3px}
+.svc-what{font-size:12px;color:var(--muted);line-height:1.5}
+.svc-prices{display:flex;border-left:1px solid var(--border)}
+.price-cell{padding:14px 18px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:88px;border-left:1px solid var(--border)}
+.price-cell:first-child{border-left:none}
+.price-tier{font-family:var(--ff-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.price-tier.simple{color:#2ecc71}
+.price-tier.standard{color:var(--amber)}
+.price-tier.complex{color:#e74c3c}
+.price-amount{font-family:var(--ff-serif);font-size:19px;font-weight:700;color:var(--white)}
+.price-na{font-size:11px;color:rgba(255,255,255,0.15);font-style:italic}
+
+.svc-detail{display:none;padding:0 20px 18px;border-top:1px solid var(--border)}
+.svc-detail.open{display:block}
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px}
+.detail-item{font-size:12px;line-height:1.7}
+.detail-tier{font-family:var(--ff-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px}
+.detail-tier.simple{color:#2ecc71}
+.detail-tier.standard{color:var(--amber)}
+.detail-tier.complex{color:#e74c3c}
+.detail-tier.not{color:rgba(255,255,255,0.2)}
+.detail-text{color:var(--muted)}
+.detail-not{color:rgba(255,255,255,0.2);font-style:italic}
+.expand-hint{font-size:11px;color:rgba(255,255,255,0.2);margin-top:6px}
+
+.disclaimer{background:var(--steel);border:1px solid var(--border);border-radius:8px;padding:22px 26px;margin-top:40px;margin-bottom:40px}
+.disclaimer-title{font-family:var(--ff-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px}
+.disclaimer p{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.8}
+.disclaimer strong{color:rgba(255,255,255,0.6)}
+
+.cta-bar{background:var(--amber);border-radius:8px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.cta-bar h3{font-family:var(--ff-serif);font-size:20px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.cta-bar p{font-size:13px;color:rgba(12,21,32,0.6)}
+.cta-bar a{background:var(--ink);color:var(--white);padding:12px 24px;border-radius:5px;font-weight:600;font-size:14px;text-decoration:none;white-space:nowrap;transition:opacity .15s}
+.cta-bar a:hover{opacity:.85}
+
+@media(max-width:700px){
+  nav{padding:0 16px}.nav-links{display:none}
+  .hero,.main{padding-left:16px;padding-right:16px}
+  .hero{padding-top:48px}
+  .svc-main{grid-template-columns:1fr}
+  .svc-prices{border-left:none;border-top:1px solid var(--border)}
+  .price-cell{min-width:0;flex:1;padding:10px 12px}
+  .tiers{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-top">Compass Business Solutions</div>
+    <div class="nav-logo-sub">&nbsp;Client Portal</div>
+  </div>
+  <div class="nav-links">
+    <a href="/portal">About</a>
+    <a href="/portal/signup">Create Account</a>
+    <a href="/portal/app" class="nav-cta">Log In →</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">Ad Hoc Pricing</div>
+  <h1>Transparent pricing.<br/><em>No surprises.</em></h1>
+  <p>Every request is scoped and quoted before work begins. Click any service to see exactly what each tier includes — and what it doesn't.</p>
+  <div class="tiers">
+    <div class="tier simple">
+      <div class="tier-label">Simple</div>
+      <div class="tier-desc">Under 2 hours. Clear task, defined endpoint, minimal back and forth.</div>
+    </div>
+    <div class="tier standard">
+      <div class="tier-label">Standard</div>
+      <div class="tier-desc">2–5 hours. Moderate scope, some coordination or customization needed.</div>
+    </div>
+    <div class="tier complex">
+      <div class="tier-label">Complex</div>
+      <div class="tier-desc">5+ hours. Custom work, multiple rounds, strategy or system setup involved.</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="how-note">
+    <strong>How it works:</strong> Submit your request, we review it and send you a quote based on scope and complexity — before any work begins. You approve the quote, payment is collected, and then we start. If your request falls between tiers, we'll quote the closest match and explain why.
+  </div>
+
+  <!-- ADMIN & DATA -->
+  <div class="category">
+    <div class="cat-label">Admin & Data</div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Spreadsheet / Data Work</div>
+          <div class="svc-what">Build, clean, format, and organize spreadsheets in Excel, Google Sheets, or CSV.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-tier simple">Simple</div><div class="price-amount">$79</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$149</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$299</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier simple">Simple</div><div class="detail-text">Clean up or reformat an existing spreadsheet. Fix broken formulas. Merge two sheets with the same structure. Apply consistent formatting.</div></div>
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Build a new tracking sheet from scratch. Combine and reconcile multiple files. Add pivot tables, VLOOKUP/XLOOKUP, conditional formatting, or dropdown lists.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Full dashboard with multiple interconnected sheets, automated calculations, charts, and summaries built from multiple data sources.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Live database integrations, API connections, macros or VBA scripting, Power BI, Tableau.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Data Entry & Cleanup</div>
+          <div class="svc-what">Enter, organize, and clean up lists and records in spreadsheets, Airtable, Notion, or any system we can access.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-tier simple">Simple</div><div class="price-amount">$79</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$129</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$249</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier simple">Simple</div><div class="detail-text">Enter a provided list of contacts, products, or records into a spreadsheet. Reformat dates, phone numbers, or addresses to a consistent style.</div></div>
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Deduplicate and clean a full customer or contact list. Standardize fields, fill in missing data from provided sources, merge records.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Large-scale data migration or import across systems. Cleaning and normalizing data from multiple inconsistent sources.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Sourcing data not provided. Scraping websites. Building integrations or automations.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Payroll Processing Help</div>
+          <div class="svc-what">Organize and prepare payroll data so it's ready to run. We prepare the numbers — we do not submit to a processor or issue checks.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-na">—</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$199</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$349</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Full payroll prep for a team — calculate gross pay, deductions summary, and net pay from provided time records. Produce a run-ready summary sheet.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Multi-period payroll reconciliation. Correcting prior runs. Quarterly summary reports. Tracking PTO, overtime, and adjustments across multiple pay periods.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Submitting payroll through any processor (ADP, Gusto, Paychex, etc.). Filing payroll taxes. Issuing checks or direct deposits.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Receipt / Expense Organization</div>
+          <div class="svc-what">Sort, categorize, and summarize receipts and expenses into organized reports from uploaded files or photos.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-tier simple">Simple</div><div class="price-amount">$79</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$149</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$249</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier simple">Simple</div><div class="detail-text">Categorize and total a single month of receipts into a clean summary. Match receipts to a provided transaction list.</div></div>
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Full quarter expense report — categorized by type, totaled by category, formatted for your accountant or bookkeeper. Mileage log formatting included.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Multi-month reconciliation across multiple accounts or cards. Reimbursement reports for a team. Expense tracking system setup.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Bookkeeping, tax filing, or accounting software entries unless access is provided.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Invoice & Estimate Follow-Up</div>
+          <div class="svc-what">Write and send follow-up communications for outstanding invoices, overdue accounts, or pending estimates.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-tier simple">Simple</div><div class="price-amount">$79</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$149</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$249</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier simple">Simple</div><div class="detail-text">Draft and send a single round of follow-up emails for outstanding invoices or estimates.</div></div>
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Full AR aging review — identify overdue accounts, draft tiered follow-ups by age (30/60/90 day), and send.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Full collections follow-up process — escalating message sequences, final notice templates, and a tracking system for responses.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Collecting payments, issuing credits, or contacting clients by phone.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Research & Competitive Analysis</div>
+          <div class="svc-what">Research a topic, competitor, or market and deliver a clear organized summary with sources.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-na">—</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$199</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$349</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Full competitive analysis — 3 to 5 competitors compared across pricing, services, positioning, and online presence. Delivered as a summary document.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Deep market research report — multiple sources, trend analysis, pricing landscape, opportunity summary, and recommendations. Multi-section document.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Primary research such as surveys or interviews. Legal or financial advice.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Reporting & Summaries</div>
+          <div class="svc-what">Turn raw data, notes, or documents into clean readable reports and summaries.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-tier simple">Simple</div><div class="price-amount">$79</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$149</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$279</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier simple">Simple</div><div class="detail-text">Summarize a single document, set of meeting notes, or dataset into a clear written summary.</div></div>
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Weekly or monthly business performance report from provided data. Narrative summary plus key metrics in a clean formatted document.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Multi-source report pulling from multiple data inputs — narrative, charts, tables, and a recommendations section.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Sourcing data not provided. Live dashboard builds (see Spreadsheet / Data Work).</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Database Build or Cleanup</div>
+          <div class="svc-what">Build or clean up organized databases in spreadsheets, Airtable, Notion, or basic CRM systems.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-na">—</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$199</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$399</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Full CRM or database setup — custom fields, categories, views, and filters. Import existing data and organize for daily use.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Large-scale database build with relationships, automation rules, and multiple views. Data import, deduplication, and normalization across sources.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Enterprise CRM development. Code-based database work. API integrations.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL & OUTREACH -->
+  <div class="category">
+    <div class="cat-label">Email & Outreach</div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Email Management / Outreach</div>
+          <div class="svc-what">Write, format, and schedule outbound emails. We write the copy and prepare it to send — we do not manage inbox replies.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-tier simple">Simple</div><div class="price-amount">$79</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$149</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$279</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier simple">Simple</div><div class="detail-text">Write a single outreach email or response template. Formatted and ready to send.</div></div>
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Write and schedule a batch of up to 10 outreach emails. Subject line variants, personalization, formatted and ready to send.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Full outreach campaign — segmented list, personalized sequences, scheduled sends, and follow-up emails.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Managing inbox replies. List building or lead sourcing. Full email platform setup.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Customer Follow-Up Sequences</div>
+          <div class="svc-what">Write and set up follow-up sequences for after a job, purchase, or appointment.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-na">—</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$199</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$349</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">3-touch post-service sequence — thank you, review request, and referral ask. Written, formatted, and set up in your platform if access is provided.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Full multi-touch sequence — 5 or more touchpoints, conditional timing, and segmentation by job type or customer category. Platform setup included.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Building the email platform from scratch. SMS automation without platform access.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Review & Referral Outreach</div>
+          <div class="svc-what">Write and send outreach to generate reviews and encourage referrals.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-tier simple">Simple</div><div class="price-amount">$79</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$149</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$249</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier simple">Simple</div><div class="detail-text">Single review request email or text template with a direct link to your review page.</div></div>
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">2 to 3 touchpoint campaign — initial ask, one follow-up, and a referral prompt. Written and formatted for your platform.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Full review and referral system — automated sequence, segmented by customer type, with tracking.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Responding to existing reviews. Removing or flagging negative reviews.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">New Customer Welcome Campaigns</div>
+          <div class="svc-what">Write and set up communications that welcome a new customer after their first purchase or appointment.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-na">—</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$199</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$349</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">3-part welcome sequence — introduction, value delivery, and next steps. Written, formatted, and set up in your platform.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Full onboarding campaign — segmented by customer type, 5 or more touchpoints, with automated triggers and platform setup.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Building the email platform from scratch. Loyalty program setup.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Seasonal Re-Engagement Campaign</div>
+          <div class="svc-what">Write and send a campaign to re-engage customers who haven't purchased or booked in a while.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-na">—</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$199</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$349</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">2 to 3 email seasonal campaign with an offer or reason to return. Written, formatted, and scheduled.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Full segmented re-engagement campaign — multiple customer segments, 4 or more touchpoints, with tracking and a follow-up sequence.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">List building. Paid advertising. Incentive fulfillment.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Appointment Confirmation Setup</div>
+          <div class="svc-what">Write and set up confirmation and reminder messages for appointments or service calls.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-na">—</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$199</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$349</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Confirmation plus day-before and day-of reminders. Written for email or text and set up in your booking or messaging platform.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Full 5-touch confirmation system — booking confirmation, reminder sequence, reschedule option, and no-show follow-up. Platform setup included.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Booking platform setup from scratch. Phone call reminders.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARKETING & SOCIAL -->
+  <div class="category">
+    <div class="cat-label">Marketing & Social</div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Social Media Management</div>
+          <div class="svc-what">Write captions and copy and post to your platforms. We write and schedule — we do not create graphics or photography.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-tier simple">Simple</div><div class="price-amount">$99</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$199</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$349</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier simple">Simple</div><div class="detail-text">Write captions and hashtags for 5 posts. Formatted and ready to copy-paste or hand off.</div></div>
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Full week of content — 7 posts with captions, hashtags, and posting schedule. Posted to your platforms if access is provided.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Monthly content calendar — 30 days of content across platforms, with themes, captions, hashtags, and a scheduling queue.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Graphic design, photography, or video editing. Responding to comments or DMs. Paid advertising.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Marketing Campaign Setup</div>
+          <div class="svc-what">Plan, write, and set up a marketing campaign across email and social. Delivered ready to launch.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-na">—</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$299</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$499</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Multi-channel campaign — email copy, social post copy, and a send schedule. Formatted and set up in your platforms.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Full campaign strategy — audience segmentation, multi-channel copy, scheduling, tracking setup, and a post-campaign summary template.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Paid advertising management. Graphic design. Building platforms from scratch.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATIVE -->
+  <div class="category">
+    <div class="cat-label">Creative</div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Presentation / Deck</div>
+          <div class="svc-what">Build or reformat presentations in PowerPoint or Google Slides. Clear, professional, on-brand.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-tier simple">Simple</div><div class="price-amount">$149</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$299</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$449</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier simple">Simple</div><div class="detail-text">Clean up and reformat an existing presentation under 10 slides. Fix layout, fonts, and flow.</div></div>
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Build a 10 to 15 slide deck from your outline or notes. Structure, copy, and formatting included.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Full presentation built from scratch up to 15 slides — structure, copy, data visualization, and design direction.</div></div>
+          <div class="detail-item" style="background:rgba(212,130,15,0.05);border:1px solid rgba(212,130,15,0.15);border-radius:5px;padding:10px 12px;">
+            <div class="detail-tier standard">Overage</div>
+            <div class="detail-text">Decks over 15 slides are invoiced at <strong style="color:var(--amber);">$20 per slide</strong> over the 15-slide threshold. A 20-slide deck = $449 + $100 = $549. You will be quoted the exact amount before work begins.</div>
+          </div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Custom graphic design or illustration. Animation or video.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Marketing Materials</div>
+          <div class="svc-what">Write and format marketing collateral — flyers, one-pagers, sell sheets, and promotional pieces.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-tier simple">Simple</div><div class="price-amount">$99</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$199</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$349</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier simple">Simple</div><div class="detail-text">Single flyer, one-pager, or promotional piece. Copy written and formatted.</div></div>
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Small set of 2 to 3 coordinated marketing pieces with consistent copy and formatting.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Full marketing collateral package — 4 or more pieces, coordinated copy and messaging, formatted and ready to print or share.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Custom graphic design or brand identity. Print production.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Proposal or One-Pager</div>
+          <div class="svc-what">Write and format business proposals, project scopes, and summary documents.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-tier simple">Simple</div><div class="price-amount">$99</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$199</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$349</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier simple">Simple</div><div class="detail-text">Single-page summary or simple proposal from notes or bullet points you provide.</div></div>
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Full business proposal — executive summary, scope of work, pricing, and terms. Written and formatted.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Custom multi-section proposal with research, tailored content, competitive positioning, and a designed layout.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Legal contract drafting. Pricing strategy consultation.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEBSITE -->
+  <div class="category">
+    <div class="cat-label">Website</div>
+
+    <div class="svc" onclick="toggleDetail(this)">
+      <div class="svc-main">
+        <div class="svc-name-col">
+          <div class="svc-name">Website Updates & Fixes</div>
+          <div class="svc-what">Update content, fix issues, and make changes to your website. We work in any CMS or custom code.</div>
+          <div class="expand-hint">Click to see what's included</div>
+        </div>
+        <div class="svc-prices">
+          <div class="price-cell"><div class="price-na">—</div></div>
+          <div class="price-cell"><div class="price-tier standard">Standard</div><div class="price-amount">$299</div></div>
+          <div class="price-cell"><div class="price-tier complex">Complex</div><div class="price-amount">$499</div></div>
+        </div>
+      </div>
+      <div class="svc-detail">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="detail-tier standard">Standard</div><div class="detail-text">Content updates, photo swaps, new page or section, form updates, navigation changes. Anything that does not require rebuilding the site structure.</div></div>
+          <div class="detail-item"><div class="detail-tier complex">Complex</div><div class="detail-text">Multi-page overhaul, new features, third-party tool integration, automation setup, or significant layout changes. Requires platform access.</div></div>
+          <div class="detail-item"><div class="detail-tier not">Not included</div><div class="detail-not">Full website redesign or rebuild from scratch. Domain or hosting setup. SEO strategy (basic on-page fixes included at complex tier).</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <div class="disclaimer-title">Scope of Work</div>
+    <p>Compass Business Solutions performs exactly the work described in your approved request. <strong>Any work beyond the agreed scope may incur additional fees</strong> based on time or complexity. If we identify that your request requires additional work, we will notify you and obtain approval before proceeding. You will never be charged for work you did not approve.</p>
+  </div>
+
+  <div class="cta-bar">
+    <div>
+      <h3>Ready to get something off your plate?</h3>
+      <p>Submit a request — we scope it, quote it, and get it done.</p>
+    </div>
+    <a href="/portal/app">Submit a Request →</a>
+  </div>
+
+</div>
+
+<script>
+function toggleDetail(el) {
+  var detail = el.querySelector('.svc-detail');
+  var hint = el.querySelector('.expand-hint');
+  if (!detail) return;
+  var open = detail.classList.toggle('open');
+  if (hint) hint.style.display = open ? 'none' : 'block';
+}
+</script>
+</body>
+</html>
