@@ -79,6 +79,57 @@ module.exports = async function handler(req, res) {
     const task = queue[taskIdx];
     if (!task) return res.status(404).json({ error: "Task not found in review queue" });
 
+    // approve_quote — admin edits and approves a quote, sends to customer
+    if (action === "approve_quote") {
+      const { quote_id, ad_hoc_price, complexity, quote_summary } = req.body || {};
+      const eKey = emailKey(customer_email);
+      const quotes = await getFromKV("portal_quotes:" + eKey) || [];
+      const adminQuotes = await getFromKV("admin_quotes") || [];
+      const updated = quotes.map(function(q) {
+        return q.id === quote_id ? Object.assign({}, q, {
+          ad_hoc_price: ad_hoc_price || q.ad_hoc_price,
+          complexity:   complexity   || q.complexity,
+          quote_summary: quote_summary || q.quote_summary,
+          status: "pending",
+          reviewed_at: now,
+        }) : q;
+      });
+      const updatedAdmin = adminQuotes.map(function(q) {
+        return q.id === quote_id ? Object.assign({}, q, {
+          ad_hoc_price: ad_hoc_price || q.ad_hoc_price,
+          complexity:   complexity   || q.complexity,
+          quote_summary: quote_summary || q.quote_summary,
+          reviewed_at: now,
+        }) : q;
+      });
+      await saveToKV("portal_quotes:" + eKey, updated);
+      await saveToKV("admin_quotes", updatedAdmin);
+      // Notify customer their quote is ready
+      try {
+        await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { Authorization: "Bearer " + process.env.RESEND_API_KEY, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            from: "Compass Business Solutions <reports@compassbizsolutions.com>",
+            to: customer_email,
+            subject: "Your quote is ready",
+            html: "<div style=\"font-family:sans-serif;max-width:560px;background:#0F1E30;padding:28px;border-radius:8px;color:#FAFCFE;\">"
+              + "<p style=\"font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#D4820F;font-weight:700;margin-bottom:8px;\">Compass Business Solutions</p>"
+              + "<h2 style=\"color:#FAFCFE;margin-bottom:12px;\">Your quote is ready.</h2>"
+              + "<p style=\"font-size:14px;color:#c8d8e8;line-height:1.7;margin-bottom:16px;\">" + (quote_summary||"We've reviewed your request and your quote is ready for review.") + "</p>"
+              + "<div style=\"background:rgba(212,130,15,0.1);border:1px solid rgba(212,130,15,0.2);border-radius:6px;padding:16px;margin-bottom:20px;\">"
+              + "<div style=\"font-size:28px;font-weight:800;color:#D4820F;\">$" + (ad_hoc_price||"") + "</div>"
+              + "<div style=\"font-size:12px;color:#7A95B0;margin-top:4px;\">" + (complexity||"") + " complexity &middot; one-time</div>"
+              + "</div>"
+              + "<a href=\"https://www.compassbizsolutions.com/portal/app\" style=\"background:#D4820F;color:#0C1520;padding:12px 24px;border-radius:5px;text-decoration:none;font-weight:600;font-size:14px;display:inline-block;\">Review & Accept Quote &rarr;</a>"
+              + "<p style=\"font-size:11px;color:#4A6580;margin-top:16px;\">Quote valid for 7 days. Questions? Reply to this email.</p>"
+              + "</div>"
+          })
+        });
+      } catch(e) { console.error("Quote notify error:", e.message); }
+      return res.status(200).json({ success: true, action: "quote_approved", quote_id });
+    }
+
     if (action === "approve" || action === "deliver") {
       // Mark as approved
       queue[taskIdx] = Object.assign({}, task, {

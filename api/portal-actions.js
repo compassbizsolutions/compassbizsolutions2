@@ -117,33 +117,34 @@ async function handleSubmitWork(req, res, email) {
 
   // Notify Jen
   try {
-    await sendEmail(
-      "reports@compassbizsolutions.com",
-      `New Work Request — ${service_type} (${priority})`,
-`<div style="font-family:sans-serif;max-width:560px;">
-        <h2 style="color:#C8701A;">New Work Request</h2>
-        <p><strong>Customer:</strong> ${email}</p>
-        <p><strong>Service:</strong> ${service_type} — <em>${priority}</em></p>
-        <p><strong>Frequency:</strong> ${frequency || "one-time"}</p>
-        ${deadline ? `<p><strong>Deadline:</strong> ${deadline}</p>` : ""}
-        ${delivery_day ? `<p><strong>Deliver by:</strong> ${delivery_day} at ${delivery_time || "9:00 AM"}</p>` : ""}
-        <p><strong>Description:</strong></p>
-        <p style="background:#f5f5f5;padding:12px;border-radius:4px;">${description}</p>
-        ${audience ? `<p><strong>Audience:</strong> ${audience}</p>` : ""}
-        ${tone ? `<p><strong>Tone:</strong> ${tone}</p>` : ""}
-        ${output_format ? `<p><strong>Output format:</strong> ${output_format}</p>` : ""}
-        ${exclusions ? `<p><strong>Exclusions:</strong> ${exclusions}</p>` : ""}
-        ${approver_name ? `<p><strong>Approval contact:</strong> ${approver_name} — ${approver_contact || ""}</p>` : ""}
-        ${files ? `<p><strong>Files:</strong> <a href="${files}">${files}</a></p>` : ""}
-        ${brand_link ? `<p><strong>Brand guidelines:</strong> <a href="${brand_link}">${brand_link}</a></p>` : ""}
-        ${examples ? `<p><strong>Examples:</strong> ${examples}</p>` : ""}
-        ${notes ? `<p><strong>Additional notes:</strong> ${notes}</p>` : ""}
-        ${attachment ? `<p><strong>Attachment:</strong> ${attachment.name} (${(attachment.size/1024).toFixed(1)} KB)</p>` : ""}
-        ${newRequest.credentials?.length ? `<p><strong>⚠️ Credentials provided (${newRequest.credentials.length}):</strong> View in admin dashboard — stored in KV.</p>` : ""}
-        ${sensitive_data ? `<p style="background:rgba(184,76,46,0.1);border:1px solid rgba(184,76,46,0.3);padding:10px;border-radius:4px;"><strong>⚠️ SENSITIVE DATA FLAGGED</strong> — Customer indicated this request contains sensitive information (SSNs, financial account numbers, etc.). They should have shared via Bitwarden Send. Do not forward files via unencrypted email.</p>` : ""}
-        <p><strong>Delivery method:</strong> ${delivery_method || "portal_email"}</p>
-      </div>`
-    );
+    var jenRows = [
+        "<h2 style=\"color:#C8701A;\">New Work Request</h2>",
+        "<p><strong>Customer:</strong> " + email + "</p>",
+        "<p><strong>Service:</strong> " + service_type + " &mdash; " + (priority||"normal") + "</p>",
+        "<p><strong>Frequency:</strong> " + (frequency||"one-time") + "</p>",
+        deadline ? "<p><strong>Deadline:</strong> " + deadline + "</p>" : "",
+        delivery_day ? "<p><strong>Deliver by:</strong> " + delivery_day + " at " + (delivery_time||"9:00 AM") + "</p>" : "",
+        "<p><strong>Description:</strong></p>",
+        "<p style=\"background:#f5f5f5;padding:12px;border-radius:4px;\">" + (description||"") + "</p>",
+        audience ? "<p><strong>Audience:</strong> " + audience + "</p>" : "",
+        tone ? "<p><strong>Tone:</strong> " + tone + "</p>" : "",
+        output_format ? "<p><strong>Output format:</strong> " + output_format + "</p>" : "",
+        exclusions ? "<p><strong>Exclusions:</strong> " + exclusions + "</p>" : "",
+        approver_name ? "<p><strong>Approval contact:</strong> " + approver_name + (approver_contact ? " &mdash; " + approver_contact : "") + "</p>" : "",
+        files ? "<p><strong>Files:</strong> <a href=\"" + files + "\">" + files + "</a></p>" : "",
+        brand_link ? "<p><strong>Brand guidelines:</strong> <a href=\"" + brand_link + "\">" + brand_link + "</a></p>" : "",
+        examples ? "<p><strong>Examples:</strong> " + examples + "</p>" : "",
+        notes ? "<p><strong>Additional notes:</strong> " + notes + "</p>" : "",
+        attachment ? "<p><strong>Attachment:</strong> " + attachment.name + " (" + (attachment.size/1024).toFixed(1) + " KB)</p>" : "",
+        newRequest.credentials && newRequest.credentials.length ? "<p><strong>&#9888; Credentials provided (" + newRequest.credentials.length + "):</strong> View in admin dashboard under Portal &rsaquo; Work Requests.</p>" : "",
+        sensitive_data ? "<p style=\"background:rgba(184,76,46,0.1);border:1px solid rgba(184,76,46,0.3);padding:10px;border-radius:4px;\"><strong>&#9888; SENSITIVE DATA FLAGGED</strong> &mdash; Customer indicated sensitive data. They should have shared via Bitwarden Send. Do not forward unencrypted.</p>" : "",
+        "<p><strong>Delivery method:</strong> " + (delivery_method||"portal_email") + "</p>",
+      ].filter(Boolean).join("");
+      await sendEmail(
+        "reports@compassbizsolutions.com",
+        "New Work Request — " + service_type + " (" + (priority||"normal") + ")",
+        "<div style=\"font-family:sans-serif;max-width:560px;\">" + jenRows + "</div>"
+      );
     // Confirmation to customer
     await sendEmail(email, `Work Request Received — ${service_type}`,
       `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;">
