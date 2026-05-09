@@ -1505,6 +1505,8 @@ async function submitWork() {
 
   if (!type) { showToast('Please select a service type.'); return; }
   if (!desc) { showToast('Please describe what you need.'); return; }
+  var freq = (document.getElementById('work-frequency')||{}).value || '';
+  if (!freq) { showToast('Please select how often you need this.'); return; }
 
   btn.disabled=true; btn.textContent='Submitting…';
   try {
@@ -1536,7 +1538,7 @@ async function submitWork() {
         notes:           (document.getElementById('work-notes')||{}).value || '',
         credentials:     collectCredentials(),
         cred_authorized: (document.getElementById('cred-auth-check')||{}).checked || false,
-        attachment:      uploadedFile || null,
+        attachment:      uploadedFile ? { name: uploadedFile.name, size: uploadedFile.size, type: uploadedFile.type } : null,
       })
     });
     var d = await r.json();
@@ -1553,7 +1555,7 @@ async function submitWork() {
     } else {
       showToast(d.error || 'Submission failed — please try again.');
     }
-  } catch(e) { showToast('Connection error — please try again.'); }
+  } catch(e) { console.error('submitWork error:', e); showToast('Connection error — please try again. Check console for details.'); }
   btn.disabled=false; btn.textContent='Submit Request →';
 }
 
@@ -1578,7 +1580,7 @@ async function submitTicket() {
       showPanel('tickets');
       loadPortalData();
     } else { showToast(d.error || 'Submission failed.'); }
-  } catch(e) { showToast('Connection error — please try again.'); }
+  } catch(e) { console.error('submitWork error:', e); showToast('Connection error — please try again. Check console for details.'); }
 }
 
 async function sendMessage() {
