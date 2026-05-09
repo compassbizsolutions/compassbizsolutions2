@@ -109,11 +109,47 @@ async function handleSubmitWork(req, res, email) {
 
   // Also write to admin inbox in KV
   const adminInbox = await getFromKV("admin_work_requests") || [];
-  await saveToKV("admin_work_requests", [{
-    ...newRequest,
+  await saveToKV("admin_work_requests", [Object.assign({}, newRequest, {
     customer_email: email,
     eKey,
-  }, ...adminInbox]);
+  }), ...adminInbox]);
+
+  // Also write an inbound-style record so it shows in the admin inbox with a body
+  const inboundKey = "inbound:" + eKey + ":" + Date.now();
+  const bodyText = [
+    "Service: " + service_type,
+    "Priority: " + (priority || "normal"),
+    "Frequency: " + (frequency || "one-time"),
+    deadline ? "Deadline: " + deadline : "",
+    delivery_day ? "Deliver by: " + delivery_day + " at " + (delivery_time || "9:00 AM") : "",
+    "",
+    "Description:",
+    description || "",
+    audience ? "\nAudience: " + audience : "",
+    tone ? "Tone: " + tone : "",
+    output_format ? "Output format: " + output_format : "",
+    exclusions ? "Exclusions: " + exclusions : "",
+    files ? "Files: " + files : "",
+    notes ? "Additional notes: " + notes : "",
+    newRequest.credentials && newRequest.credentials.length ? "\nCredentials provided: " + newRequest.credentials.length + " (view in Portal tab)" : "",
+    sensitive_data ? "\n⚠ SENSITIVE DATA FLAGGED" : "",
+  ].filter(Boolean).join("\n");
+
+  await saveToKV(inboundKey, {
+    inboundKey,
+    id: "portal_req_" + newRequest.id,
+    from: email,
+    fromName: (customer && customer.name) || email,
+    subject: "Work Request — " + service_type + " (" + (priority || "normal") + ")",
+    textBody: bodyText,
+    htmlBody: "",
+    receivedAt: now,
+    status: "unread",
+    isPortalRequest: true,
+    requestId: newRequest.id,
+    aiDraft: null,
+    repliedAt: null,
+  });
 
   // Notify Jen
   try {
