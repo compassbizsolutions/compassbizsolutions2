@@ -139,7 +139,7 @@ async function handleSubmitWork(req, res, email) {
     inboundKey,
     id: "portal_req_" + newRequest.id,
     from: email,
-    fromName: (customer && customer.name) || email,
+    fromName: email,
     subject: "Work Request — " + service_type + " (" + (priority || "normal") + ")",
     textBody: bodyText,
     htmlBody: "",
