@@ -109,10 +109,10 @@ async function handleSubmitWork(req, res, email) {
 
   // Also write to admin inbox in KV
   const adminInbox = await getFromKV("admin_work_requests") || [];
-  await saveToKV("admin_work_requests", [Object.assign({}, newRequest, {
-    customer_email: email,
-    eKey,
-  }), ...adminInbox]);
+  var newAdminReq = Object.assign({}, newRequest, { customer_email: email, eKey: eKey });
+  adminInbox.unshift(newAdminReq);
+  if (adminInbox.length > 200) adminInbox = adminInbox.slice(0, 200);
+  await saveToKV("admin_work_requests", adminInbox);
 
   // Also write an inbound-style record so it shows in the admin inbox with a body
   const inboundKey = "inbound:" + eKey + ":" + Date.now();
@@ -260,7 +260,8 @@ async function handleSubmitTicket(req, res, email) {
 
   // Admin inbox
   const adminTickets = await getFromKV("admin_tickets") || [];
-  await saveToKV("admin_tickets", [{ ...newTicket, customer_email: email, eKey }, ...adminTickets]);
+  adminTickets.unshift(Object.assign({}, newTicket, { customer_email: email, eKey: eKey }));
+  await saveToKV("admin_tickets", adminTickets.slice(0, 200));
 
   // Notify Jen
   try {
