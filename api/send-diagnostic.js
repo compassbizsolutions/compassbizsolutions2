@@ -7,8 +7,8 @@
 const { Resend } = require("resend");
 
 async function storeInKV(email, data) {
-  const url = process.env.KV_REST_API_URL;
-  const token = process.env.KV_REST_API_TOKEN;
+  const url = process.env.LIME_REST_API_URL || process.env.KV_REST_API_URL;
+  const token = process.env.LIME_REST_API_TOKEN || process.env.KV_REST_API_TOKEN;
   if (!url || !token) return;
   const key = "diagnostic:" + email.toLowerCase().replace(/[^a-z0-9@._-]/g, "");
   await fetch(url + "/set/" + encodeURIComponent(key), {
