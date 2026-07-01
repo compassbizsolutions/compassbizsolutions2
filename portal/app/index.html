@@ -242,8 +242,22 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
       <input type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
     </div>
     <button class="btn-amber" id="loginBtn" onclick="doLogin()">Sign In →</button>
+    <div style="text-align:center;margin-top:12px;">
+      <a href="#" onclick="showForgotPassword()" style="font-size:12px;color:var(--muted);text-decoration:none;">Forgot your password?</a>
+    </div>
     <div class="login-footer">
       New here? <a href="/portal/signup">Create an account</a> &nbsp;·&nbsp; <a href="mailto:jen@compassbizsolutions.com">Need help?</a>
+    </div>
+
+    <!-- FORGOT PASSWORD -->
+    <div id="forgotWrap" style="display:none;margin-top:20px;border-top:1px solid var(--border);padding-top:20px;">
+      <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;">Reset your password</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Enter your email and we'll send you a reset link.</div>
+      <div id="resetMsg" style="display:none;font-size:13px;color:var(--green2);margin-bottom:10px;"></div>
+      <div class="field" style="margin-bottom:10px;">
+        <input type="email" id="resetEmail" placeholder="your@email.com" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:13px;outline:none;"/>
+      </div>
+      <button onclick="sendReset()" style="width:100%;background:var(--navy3);border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:10px;font-size:13px;font-weight:600;cursor:pointer;">Send Reset Link →</button>
     </div>
   </div>
 </div>
@@ -984,6 +998,93 @@ function escapeHtml(str) {
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && document.getElementById('loginWrap').style.display !== 'none') doLogin();
 });
+
+function showForgotPassword() {
+  const wrap = document.getElementById('forgotWrap');
+  wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
+  if (wrap.style.display === 'block') {
+    document.getElementById('resetEmail').value = document.getElementById('loginEmail').value;
+    document.getElementById('resetEmail').focus();
+  }
+}
+
+async function sendReset() {
+  const email = document.getElementById('resetEmail').value.trim();
+  if (!email) return;
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  try {
+    await fetch('/api/portal-reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const msg = document.getElementById('resetMsg');
+    msg.textContent = 'Reset link sent! Check your email.';
+    msg.style.display = 'block';
+    btn.textContent = 'Sent ✓';
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = 'Send Reset Link →';
+  }
+}
+
+// Handle password reset from URL
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const resetToken = params.get('reset');
+  if (resetToken) {
+    // Show reset password form
+    document.getElementById('loginWrap').innerHTML = `
+      <div class="login-card">
+        <div class="login-logo">Compass Business Solutions</div>
+        <div class="login-title">Set New <span style="color:var(--amber)">Password</span></div>
+        <div class="login-sub">Enter your new password below.</div>
+        <div class="login-err" id="resetErr" style="display:none"></div>
+        <div class="field">
+          <label>New Password</label>
+          <input type="password" id="newPassword" placeholder="At least 8 characters"/>
+        </div>
+        <div class="field">
+          <label>Confirm Password</label>
+          <input type="password" id="confirmNewPassword" placeholder="Repeat your password"/>
+        </div>
+        <button class="btn-amber" onclick="submitNewPassword('${resetToken}')">Set New Password →</button>
+      </div>`;
+  }
+})();
+
+async function submitNewPassword(token) {
+  const password = document.getElementById('newPassword').value;
+  const confirm = document.getElementById('confirmNewPassword').value;
+  const err = document.getElementById('resetErr');
+  err.style.display = 'none';
+
+  if (password.length < 8) { err.textContent = 'Password must be at least 8 characters.'; err.style.display = 'block'; return; }
+  if (password !== confirm) { err.textContent = 'Passwords do not match.'; err.style.display = 'block'; return; }
+
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  try {
+    const r = await fetch('/api/portal-reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, password })
+    });
+    const d = await r.json();
+    if (!r.ok) { err.textContent = d.error || 'Reset failed.'; err.style.display = 'block'; btn.disabled = false; btn.textContent = 'Set New Password →'; return; }
+    saveSession({ token: d.token, email: d.email, name: d.name });
+    window.location.href = '/portal/app';
+  } catch(e) {
+    err.textContent = 'Connection error. Please try again.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Set New Password →';
+  }
+}
 </script>
 </body>
 </html>
