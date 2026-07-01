@@ -14,7 +14,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .header-logo span{color:var(--amber);}
 .header-back{font-size:13px;color:var(--muted);text-decoration:none;}
 .header-back:hover{color:var(--amber);}
-.page{max-width:780px;margin:0 auto;padding:32px 24px 80px;}
+.page{max-width:820px;margin:0 auto;padding:32px 24px 80px;}
 .page-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;}
 .page-title{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:white;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
 .page-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:32px;}
@@ -29,37 +29,74 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,0.15);}
 .field select option{background:var(--navy2);}
 .field textarea{resize:vertical;min-height:80px;line-height:1.5;}
+
+/* UPLOAD */
 .upload-area{border:2px dashed var(--border2);border-radius:10px;padding:28px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;}
 .upload-area:hover{border-color:var(--amber);background:var(--amber-dim);}
 .upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;}
-.upload-icon{font-size:32px;margin-bottom:10px;}
-.upload-text{font-size:14px;font-weight:600;color:white;margin-bottom:4px;}
-.upload-sub{font-size:12px;color:var(--muted);}
-.upload-preview{display:none;align-items:center;gap:12px;background:var(--navy2);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;margin-top:10px;}
+.upload-preview{display:none;align-items:center;gap:12px;background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-top:10px;}
 .upload-preview-name{font-size:13px;color:var(--text2);flex:1;}
-.upload-preview-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;}
-.upload-preview-remove:hover{color:var(--red2);}
+.upload-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;}
+.upload-remove:hover{color:var(--red2);}
+
+/* FORMAT SELECTOR */
+.format-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.format-card{background:var(--navy2);border:2px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.15s;text-align:center;}
+.format-card:hover{border-color:var(--border2);}
+.format-card.selected{border-color:var(--amber);background:var(--amber-dim);}
+.format-card-name{font-size:13px;font-weight:700;color:white;margin-bottom:4px;}
+.format-card-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+.format-card-badge{font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 8px;border-radius:99px;background:var(--green-dim);color:var(--green2);border:1px solid rgba(26,96,64,0.25);display:inline-block;margin-top:4px;}
+
+/* EMPLOYEE ROSTER */
 .employee-row{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;}
-.employee-row-grid{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;align-items:center;}
-.btn-add{background:transparent;border:1px dashed var(--border2);color:var(--muted);border-radius:8px;padding:10px;width:100%;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;margin-top:6px;}
+.employee-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:10px;align-items:center;}
+.btn-add{background:transparent;border:1px dashed var(--border2);color:var(--muted);border-radius:8px;padding:10px;width:100%;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;margin-top:4px;}
 .btn-add:hover{border-color:var(--amber);color:var(--amber);}
-.btn-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1;padding:4px;}
+.btn-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1;}
 .btn-remove:hover{color:var(--red2);}
-.info-box{background:var(--amber-dim);border:1px solid var(--amber-border);border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--text2);line-height:1.6;}
+
+/* FIELD PICKER */
+.field-picker{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.field-picker-note{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6;}
+.field-columns{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.field-option{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--navy3);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s;user-select:none;}
+.field-option:hover{border-color:var(--border2);}
+.field-option.selected{border-color:var(--amber);background:var(--amber-dim);}
+.field-option input[type=checkbox]{accent-color:var(--amber);width:14px;height:14px;flex-shrink:0;}
+.field-option-label{font-size:12px;color:var(--text2);flex:1;}
+.field-option.selected .field-option-label{color:var(--text);}
+.field-order{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;min-height:36px;padding:8px;background:var(--navy3);border:1px solid var(--border);border-radius:8px;}
+.order-tag{background:var(--amber-dim);border:1px solid var(--amber-border);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--amber);cursor:grab;user-select:none;display:flex;align-items:center;gap:6px;}
+.order-tag-remove{background:none;border:none;color:var(--amber);cursor:pointer;font-size:14px;line-height:1;padding:0;}
+.order-hint{font-size:11px;color:var(--muted);margin-top:6px;}
+
+/* CONDITIONAL */
+.conditional{display:none;margin-top:14px;}
+.conditional.show{display:block;}
+
+/* INFO BOX */
+.info-box{background:var(--amber-dim);border:1px solid var(--amber-border);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:13px;color:var(--text2);line-height:1.6;}
 .info-box strong{color:var(--amber);}
+
+/* SUBMIT */
 .submit-btn{width:100%;background:var(--amber);color:white;border:none;border-radius:10px;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:center;gap:10px;}
 .submit-btn:hover{background:var(--amber2);}
 .submit-btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+/* WORKING */
 .working-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:40px;text-align:center;margin-top:28px;display:none;}
 .spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,0.08);border-top-color:var(--amber);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .working-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:white;text-transform:uppercase;margin-bottom:8px;}
 .working-sub{font-size:13px;color:var(--muted);}
+
+/* RESULT */
 .result-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:28px;margin-top:28px;display:none;}
 .result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
 .result-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;text-transform:uppercase;}
 .result-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;background:var(--green-dim);color:var(--green2);border:1px solid rgba(26,96,64,0.3);}
-.result-content{background:white;border-radius:10px;padding:24px;margin-bottom:20px;color:#1a2332;font-family:'DM Mono',monospace,sans-serif;font-size:13px;line-height:1.7;white-space:pre-wrap;max-height:500px;overflow-y:auto;}
+.result-content{background:white;border-radius:10px;padding:20px;margin-bottom:20px;color:#1a2332;font-family:monospace;font-size:12px;line-height:1.7;white-space:pre-wrap;max-height:500px;overflow-y:auto;}
 .result-actions{display:flex;gap:12px;flex-wrap:wrap;}
 .btn-download{background:var(--green);color:white;border:none;border-radius:10px;padding:12px 22px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
 .btn-download:hover{background:var(--green2);}
@@ -69,11 +106,12 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .revision-input::placeholder{color:rgba(255,255,255,0.15);}
 .btn-revise{background:var(--navy3);border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
 .btn-revise:hover{border-color:var(--amber);color:var(--amber);}
+
 .toast{position:fixed;bottom:24px;right:24px;background:var(--navy2);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:13px;color:var(--text);z-index:999;opacity:0;transform:translateY(8px);transition:all 0.2s;pointer-events:none;}
 .toast.show{opacity:1;transform:translateY(0);}
 .toast.error{border-color:rgba(139,26,26,0.4);color:var(--red2);}
 .toast.success{border-color:rgba(26,96,64,0.4);color:var(--green2);}
-@media(max-width:600px){.form-grid{grid-template-columns:1fr;}.employee-row-grid{grid-template-columns:1fr 1fr;}.page{padding:20px 16px 60px;}}
+@media(max-width:600px){.form-grid,.format-grid,.field-columns,.employee-grid{grid-template-columns:1fr;}.page{padding:20px 16px 60px;}}
 </style>
 </head>
 <body>
@@ -84,89 +122,127 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 <div class="page">
   <div class="page-eyebrow">📊 Featured Task</div>
   <div class="page-title">Payroll Compilation</div>
-  <div class="page-sub">Upload your timesheet (photo, spreadsheet, or document) and enter your crew's rates. We'll compile everything into a clean QuickBooks-ready CSV. — $35</div>
+  <div class="page-sub">Upload your timesheet in any format — photo, spreadsheet, screenshot, or type it in. Choose your payroll software output format or build your own. We'll compile everything and produce a file ready to import. — $35</div>
 
-  <div class="info-box"><strong>Tip:</strong> You can upload a photo of a handwritten timesheet, a whiteboard, a spreadsheet, or any document with your crew's hours. Include any format — we'll figure it out. Add employee rates below so we can calculate gross pay.</div>
+  <div class="info-box"><strong>Any format works:</strong> Photo of a whiteboard, handwritten timesheet, spreadsheet, screenshot from your scheduling app — upload it and we'll read it. If information is missing or unclear, we'll flag it in the output so you can correct it before importing.</div>
 
+  <!-- TIMESHEET UPLOAD -->
   <div class="section">
-    <div class="section-title">Timesheet Upload</div>
+    <div class="section-title">Your Timesheet</div>
     <div class="upload-area" onclick="document.getElementById('tsFile').click()">
       <input type="file" id="tsFile" accept=".xlsx,.xls,.csv,.pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp" onchange="handleFile(this.files[0])"/>
-      <div class="upload-icon">📋</div>
-      <div class="upload-text">Upload your timesheet</div>
-      <div class="upload-sub">Photo, spreadsheet, PDF, or document — any format works</div>
+      <div style="font-size:32px;margin-bottom:10px;">📋</div>
+      <div style="font-size:14px;font-weight:600;color:white;margin-bottom:4px;">Upload your timesheet</div>
+      <div style="font-size:12px;color:var(--muted);">Photo, spreadsheet, PDF, screenshot — any format</div>
     </div>
     <div class="upload-preview" id="filePreview">
-      <span style="font-size:20px">📄</span>
+      <span style="font-size:20px" id="fileIcon">📄</span>
       <div class="upload-preview-name" id="fileName"></div>
-      <button class="upload-preview-remove" onclick="removeFile()">✕</button>
+      <button class="upload-remove" onclick="removeFile()">✕</button>
     </div>
-    <div class="field" style="margin-top:14px">
-      <label>Or describe hours manually (if no file)</label>
-      <textarea id="manualHours" placeholder="Example: Bobby — Mon 8hrs, Tue 8hrs, Wed 6hrs, Thu 8hrs, Fri 8hrs&#10;Mike — Mon 8hrs, Tue 8hrs, Wed 8hrs, Thu 8hrs, Fri 4hrs&#10;Jake — Mon 8hrs, Tue off, Wed 8hrs, Thu 8hrs, Fri 8hrs"></textarea>
+    <div class="field" style="margin-top:14px;">
+      <label>Or enter/paste hours manually</label>
+      <textarea id="manualHours" placeholder="Example:&#10;Bobby — Mon 8, Tue 8, Wed 6, Thu 8, Fri 8&#10;Mike — Mon 8, Tue 8, Wed 8, Thu 8, Fri 4&#10;Jake — Mon 8, Tue off, Wed 8, Thu 8, Fri 8"></textarea>
     </div>
   </div>
 
+  <!-- PAY PERIOD -->
   <div class="section">
     <div class="section-title">Pay Period</div>
     <div class="form-grid">
-      <div class="field">
-        <label>Week Ending Date *</label>
-        <input type="text" id="weekEnding" placeholder="June 27, 2026"/>
-      </div>
-      <div class="field">
-        <label>Pay Period Start</label>
-        <input type="text" id="periodStart" placeholder="June 21, 2026"/>
-      </div>
-      <div class="field">
-        <label>Company Name *</label>
-        <input type="text" id="companyName" placeholder="Smith Plumbing LLC"/>
-      </div>
-      <div class="field">
-        <label>Output Format</label>
-        <select id="outputFormat">
-          <option value="quickbooks">QuickBooks CSV</option>
-          <option value="excel">Standard Spreadsheet</option>
-          <option value="both">Both formats</option>
+      <div class="field"><label>Company Name *</label><input type="text" id="companyName" placeholder="Smith Plumbing LLC"/></div>
+      <div class="field"><label>Week Ending Date *</label><input type="text" id="weekEnding" placeholder="June 27, 2026"/></div>
+      <div class="field"><label>Pay Period Start</label><input type="text" id="periodStart" placeholder="June 21, 2026"/></div>
+      <div class="field"><label>Overtime Rule</label>
+        <select id="overtimeRule">
+          <option value="federal">Federal — over 40 hrs/week at 1.5x</option>
+          <option value="daily">Daily — over 8 hrs/day at 1.5x</option>
+          <option value="double">Double time over 12 hrs/day</option>
+          <option value="none">No overtime (salaried/contract)</option>
         </select>
       </div>
     </div>
   </div>
 
+  <!-- EMPLOYEE ROSTER -->
   <div class="section">
-    <div class="section-title">Employee Rates</div>
-    <div id="employeeList">
-      <div class="employee-row">
-        <div class="employee-row-grid">
-          <div class="field"><label>Employee Name</label><input type="text" class="emp-name" placeholder="Bobby Smith"/></div>
-          <div class="field"><label>Hourly Rate</label><input type="text" class="emp-rate" placeholder="$28.00"/></div>
-          <div class="field"><label>Job/Trade</label><input type="text" class="emp-job" placeholder="Plumber"/></div>
-          <button class="btn-remove" onclick="removeEmployee(this)">✕</button>
-        </div>
-      </div>
-    </div>
+    <div class="section-title">Employee Roster & Rates</div>
+    <div class="info-box" style="margin-bottom:14px;"><strong>Required for accurate payroll:</strong> Enter each employee's name, rate, and any IDs your payroll software requires. If using ADP, Gusto, or Paychex, include their employee ID/file number so we can map them correctly.</div>
+    <div id="employeeList"></div>
     <button class="btn-add" onclick="addEmployee()">+ Add Employee</button>
   </div>
 
+  <!-- OUTPUT FORMAT -->
+  <div class="section">
+    <div class="section-title">Output Format</div>
+    <div class="format-grid">
+      <div class="format-card selected" id="fmt-quickbooks" onclick="selectFormat('quickbooks')">
+        <div class="format-card-name">QuickBooks</div>
+        <div class="format-card-desc">CSV ready to import into QuickBooks Desktop or Online</div>
+        <div class="format-card-badge">Pre-configured</div>
+      </div>
+      <div class="format-card" id="fmt-adp" onclick="selectFormat('adp')">
+        <div class="format-card-name">ADP Run</div>
+        <div class="format-card-desc">CSV formatted for ADP Run payroll import</div>
+        <div class="format-card-badge">Pre-configured</div>
+      </div>
+      <div class="format-card" id="fmt-gusto" onclick="selectFormat('gusto')">
+        <div class="format-card-name">Gusto</div>
+        <div class="format-card-desc">CSV formatted for Gusto payroll import</div>
+        <div class="format-card-badge">Pre-configured</div>
+      </div>
+      <div class="format-card" id="fmt-paychex" onclick="selectFormat('paychex')">
+        <div class="format-card-name">Paychex</div>
+        <div class="format-card-desc">CSV formatted for Paychex Flex import</div>
+        <div class="format-card-badge">Pre-configured</div>
+      </div>
+      <div class="format-card" id="fmt-standard" onclick="selectFormat('standard')">
+        <div class="format-card-name">Standard</div>
+        <div class="format-card-desc">Clean spreadsheet, not software-specific</div>
+        <div class="format-card-badge">Pre-configured</div>
+      </div>
+      <div class="format-card" id="fmt-custom" onclick="selectFormat('custom')">
+        <div class="format-card-name">Custom</div>
+        <div class="format-card-desc">Pick your own fields and column order</div>
+        <div class="format-card-badge" style="background:var(--amber-dim);color:var(--amber);border-color:var(--amber-border);">Build your own</div>
+      </div>
+    </div>
+
+    <!-- ADP specific fields -->
+    <div class="conditional" id="adpFields">
+      <div class="form-grid">
+        <div class="field"><label>ADP Company Code</label><input type="text" id="adpCompanyCode" placeholder="Your ADP company code"/></div>
+        <div class="field"><label>ADP Batch ID</label><input type="text" id="adpBatchId" placeholder="Leave blank if unknown"/></div>
+      </div>
+      <div class="field" style="margin-top:10px;"><label>Regular Hours Earnings Code</label><input type="text" id="adpRegCode" placeholder="e.g. REG"/></div>
+      <div class="field" style="margin-top:10px;"><label>Overtime Earnings Code</label><input type="text" id="adpOTCode" placeholder="e.g. OT"/></div>
+    </div>
+
+    <!-- Gusto specific -->
+    <div class="conditional" id="gustoFields">
+      <div class="field"><label>Gusto Company ID (Optional)</label><input type="text" id="gustoCompanyId" placeholder="Found in your Gusto settings"/></div>
+    </div>
+
+    <!-- Custom field picker -->
+    <div class="conditional" id="customFields">
+      <div class="field-picker">
+        <div style="font-size:12px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;">Select Fields to Include</div>
+        <div class="field-picker-note">Check the fields you want. The order below is the column order in your output — click a field tag to remove it, then re-add to reorder.</div>
+        <div class="field-columns" id="fieldOptions"></div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:16px;margin-bottom:8px;">Column Order (click × to remove and re-add)</div>
+        <div class="field-order" id="fieldOrder"></div>
+        <div class="order-hint">Fields appear as columns in this order left to right</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADDITIONAL -->
   <div class="section">
     <div class="section-title">Additional Details</div>
     <div class="form-grid">
-      <div class="field">
-        <label>Overtime Rule</label>
-        <select id="overtimeRule">
-          <option value="federal">Federal — over 40hrs/week at 1.5x</option>
-          <option value="daily">Daily — over 8hrs/day at 1.5x</option>
-          <option value="none">No overtime (salaried or contract)</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Any Deductions to Note</label>
-        <input type="text" id="deductions" placeholder="e.g. Tool allowance $50/wk for Bobby"/>
-      </div>
-      <div class="field form-full">
-        <label>Additional Notes</label>
-        <textarea id="notes" placeholder="Anything else — missed days, holiday pay, bonuses, corrections to the uploaded timesheet, etc."></textarea>
-      </div>
+      <div class="field"><label>Deductions to Note</label><input type="text" id="deductions" placeholder="e.g. Tool allowance $50/wk Bobby, Health ins. $85/wk all"/></div>
+      <div class="field"><label>Bonuses or Other Pay</label><input type="text" id="bonuses" placeholder="e.g. Mike — $200 performance bonus"/></div>
+      <div class="field form-full"><label>Additional Notes</label><textarea id="notes" placeholder="Anything else — corrections, missed days, holiday pay, special situations..."></textarea></div>
     </div>
   </div>
 
@@ -182,7 +258,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 
   <div class="result-card" id="resultCard">
     <div class="result-header">
-      <div class="result-title">Your Payroll Summary</div>
+      <div class="result-title">Your Payroll</div>
       <div class="result-badge">✓ Ready to Review</div>
     </div>
     <div class="result-content" id="resultContent"></div>
@@ -196,105 +272,290 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<script>
-let fileData = null, fileName = null, currentResult = null, history = [];
 
+<script>
+// ─── STATE ───────────────────────────────────────────────────────
+let fileData = null, fileName = null, selectedFmt = 'quickbooks';
+let currentResult = null, history = [];
+
+// All available fields for custom picker
+const ALL_FIELDS = [
+  { id:'emp_name',    label:'Employee Name',        default:true },
+  { id:'emp_id',      label:'Employee ID / File #', default:false },
+  { id:'period_start',label:'Pay Period Start',     default:true },
+  { id:'period_end',  label:'Pay Period End',       default:true },
+  { id:'reg_hours',   label:'Regular Hours',        default:true },
+  { id:'ot_hours',    label:'Overtime Hours',       default:true },
+  { id:'dt_hours',    label:'Double Time Hours',    default:false },
+  { id:'pay_rate',    label:'Pay Rate',             default:true },
+  { id:'gross_pay',   label:'Gross Pay',            default:true },
+  { id:'department',  label:'Department',           default:false },
+  { id:'job_code',    label:'Job Code',             default:false },
+  { id:'cost_center', label:'Cost Center',          default:false },
+  { id:'fed_tax',     label:'Federal Tax',          default:false },
+  { id:'state_tax',   label:'State Tax',            default:false },
+  { id:'ss_tax',      label:'Social Security',      default:false },
+  { id:'medicare',    label:'Medicare',             default:false },
+  { id:'retirement',  label:'401k / Retirement',   default:false },
+  { id:'health_ins',  label:'Health Insurance',     default:false },
+  { id:'net_pay',     label:'Net Pay',              default:false },
+  { id:'notes',       label:'Notes',                default:false },
+];
+
+let selectedFields = ALL_FIELDS.filter(f => f.default).map(f => f.id);
+let fieldOrder = [...selectedFields];
+
+// Format configs
+const FORMAT_CONFIGS = {
+  quickbooks: {
+    name: 'QuickBooks CSV',
+    fields: 'Employee Name, Pay Period Start, Pay Period End, Regular Hours, Overtime Hours, Pay Rate, Gross Pay',
+    notes: 'Formatted for QuickBooks payroll import. Employee names must match exactly as entered in QuickBooks.'
+  },
+  adp: {
+    name: 'ADP Run CSV',
+    fields: 'File Number (Employee ID), Company Code, Batch ID, Earnings Code, Hours, Amount',
+    notes: 'ADP Run import format. Requires employee file numbers and company code from your ADP account. Regular hours use earnings code REG, overtime use OT.'
+  },
+  gusto: {
+    name: 'Gusto CSV',
+    fields: 'First Name, Last Name, Employee ID, Regular Hours, Overtime Hours, Gross Pay, Pay Period Start, Pay Period End',
+    notes: 'Formatted for Gusto payroll import. Employee names will be split into first and last name.'
+  },
+  paychex: {
+    name: 'Paychex Flex CSV',
+    fields: 'Employee ID, Employee Name, Regular Hours, Overtime Hours, Pay Rate, Gross Pay, Pay Period',
+    notes: 'Formatted for Paychex Flex import. Requires employee ID numbers from your Paychex account.'
+  },
+  standard: {
+    name: 'Standard Spreadsheet',
+    fields: 'Employee Name, Regular Hours, Overtime Hours, Pay Rate, Regular Pay, Overtime Pay, Gross Pay, Pay Period',
+    notes: 'Clean, readable spreadsheet. Not software-specific. Good for manual entry into any system.'
+  },
+  custom: {
+    name: 'Custom Format',
+    fields: '',
+    notes: 'Your custom field selection'
+  }
+};
+
+// ─── INIT ────────────────────────────────────────────────────────
+window.onload = () => {
+  addEmployee();
+  renderFieldPicker();
+};
+
+// ─── FILE ────────────────────────────────────────────────────────
 function handleFile(file) {
   if (!file) return;
   fileName = file.name;
+  const ext = file.name.split('.').pop().toLowerCase();
+  const iconMap = {png:'🖼️',jpg:'🖼️',jpeg:'🖼️',webp:'🖼️',pdf:'📋',xlsx:'📊',xls:'📊',csv:'📊',doc:'📄',docx:'📄',txt:'📄'};
+  document.getElementById('fileIcon').textContent = iconMap[ext] || '📄';
   document.getElementById('fileName').textContent = file.name;
   document.getElementById('filePreview').style.display = 'flex';
   const reader = new FileReader();
   reader.onload = e => { fileData = e.target.result; };
   reader.readAsDataURL(file);
 }
-function removeFile() { fileData = null; fileName = null; document.getElementById('tsFile').value = ''; document.getElementById('filePreview').style.display = 'none'; }
+function removeFile() {
+  fileData = null; fileName = null;
+  document.getElementById('tsFile').value = '';
+  document.getElementById('filePreview').style.display = 'none';
+}
 
+// ─── EMPLOYEES ───────────────────────────────────────────────────
 function addEmployee() {
   const div = document.createElement('div');
   div.className = 'employee-row';
-  div.innerHTML = `<div class="employee-row-grid">
-    <div class="field"><label>Employee Name</label><input type="text" class="emp-name" placeholder="Employee name"/></div>
-    <div class="field"><label>Hourly Rate</label><input type="text" class="emp-rate" placeholder="$00.00"/></div>
-    <div class="field"><label>Job/Trade</label><input type="text" class="emp-job" placeholder="Trade"/></div>
-    <button class="btn-remove" onclick="removeEmployee(this)">✕</button>
+  div.innerHTML = `<div class="employee-grid">
+    <div class="field"><label>Name *</label><input type="text" class="emp-name" placeholder="Bobby Smith"/></div>
+    <div class="field"><label>Hourly Rate *</label><input type="text" class="emp-rate" placeholder="$28.00"/></div>
+    <div class="field"><label>Employee ID</label><input type="text" class="emp-id" placeholder="ADP/Gusto ID"/></div>
+    <div class="field"><label>Job / Trade</label><input type="text" class="emp-job" placeholder="Plumber"/></div>
+    <button class="btn-remove" onclick="this.closest('.employee-row').remove()">✕</button>
   </div>`;
   document.getElementById('employeeList').appendChild(div);
 }
-function removeEmployee(btn) { btn.closest('.employee-row').remove(); }
 
 function getEmployees() {
-  const rows = document.querySelectorAll('.employee-row');
-  return Array.from(rows).map(r => ({
+  return Array.from(document.querySelectorAll('.employee-row')).map(r => ({
     name: r.querySelector('.emp-name')?.value.trim(),
     rate: r.querySelector('.emp-rate')?.value.trim(),
-    job: r.querySelector('.emp-job')?.value.trim()
+    id:   r.querySelector('.emp-id')?.value.trim(),
+    job:  r.querySelector('.emp-job')?.value.trim(),
   })).filter(e => e.name);
+}
+
+// ─── FORMAT ──────────────────────────────────────────────────────
+function selectFormat(fmt) {
+  selectedFmt = fmt;
+  document.querySelectorAll('.format-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('fmt-' + fmt).classList.add('selected');
+
+  // Show/hide conditional fields
+  ['adpFields','gustoFields','customFields'].forEach(id => {
+    document.getElementById(id).classList.remove('show');
+  });
+  if (fmt === 'adp') document.getElementById('adpFields').classList.add('show');
+  if (fmt === 'gusto') document.getElementById('gustoFields').classList.add('show');
+  if (fmt === 'custom') document.getElementById('customFields').classList.add('show');
+}
+
+// ─── FIELD PICKER ────────────────────────────────────────────────
+function renderFieldPicker() {
+  const optionsEl = document.getElementById('fieldOptions');
+  const orderEl = document.getElementById('fieldOrder');
+
+  optionsEl.innerHTML = ALL_FIELDS.map(f => `
+    <div class="field-option ${selectedFields.includes(f.id) ? 'selected' : ''}" onclick="toggleField('${f.id}', this)">
+      <input type="checkbox" ${selectedFields.includes(f.id) ? 'checked' : ''} onclick="event.stopPropagation()"/>
+      <div class="field-option-label">${f.label}</div>
+    </div>`).join('');
+
+  orderEl.innerHTML = fieldOrder.map(id => {
+    const f = ALL_FIELDS.find(x => x.id === id);
+    return f ? `<div class="order-tag" data-id="${id}">${f.label} <button class="order-tag-remove" onclick="removeFromOrder('${id}')">×</button></div>` : '';
+  }).join('');
+}
+
+function toggleField(id, el) {
+  if (selectedFields.includes(id)) {
+    if (selectedFields.length <= 2) { showToast('Keep at least 2 fields', 'error'); return; }
+    selectedFields = selectedFields.filter(f => f !== id);
+    fieldOrder = fieldOrder.filter(f => f !== id);
+    el.classList.remove('selected');
+    el.querySelector('input').checked = false;
+  } else {
+    selectedFields.push(id);
+    fieldOrder.push(id);
+    el.classList.add('selected');
+    el.querySelector('input').checked = true;
+  }
+  renderFieldOrder();
+}
+
+function removeFromOrder(id) {
+  fieldOrder = fieldOrder.filter(f => f !== id);
+  selectedFields = selectedFields.filter(f => f !== id);
+  renderFieldPicker();
+}
+
+function renderFieldOrder() {
+  const orderEl = document.getElementById('fieldOrder');
+  orderEl.innerHTML = fieldOrder.map(id => {
+    const f = ALL_FIELDS.find(x => x.id === id);
+    return f ? `<div class="order-tag" data-id="${id}">${f.label} <button class="order-tag-remove" onclick="removeFromOrder('${id}')">×</button></div>` : '';
+  }).join('');
 }
 
 function val(id) { return (document.getElementById(id)?.value || '').trim(); }
 
+// ─── GENERATE ────────────────────────────────────────────────────
 async function generate() {
-  if (!val('weekEnding') || !val('companyName')) { showToast('Please fill in required fields', 'error'); return; }
+  if (!val('companyName') || !val('weekEnding')) { showToast('Please fill in company name and week ending date', 'error'); return; }
   const employees = getEmployees();
-  const manualHours = val('manualHours');
-  if (!fileData && !manualHours) { showToast('Please upload a timesheet or enter hours manually', 'error'); return; }
+  if (employees.length === 0) { showToast('Please add at least one employee', 'error'); return; }
+  if (!fileData && !val('manualHours')) { showToast('Please upload a timesheet or enter hours manually', 'error'); return; }
 
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   document.getElementById('resultCard').style.display = 'none';
   document.getElementById('workingCard').style.display = 'block';
-  document.getElementById('workingCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  document.getElementById('workingCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
 
-  const empList = employees.map(e => `${e.name} — ${e.rate}/hr${e.job ? ' (' + e.job + ')' : ''}`).join('\n');
+  const fmtConfig = FORMAT_CONFIGS[selectedFmt];
+  const empList = employees.map(e => `${e.name} — $${e.rate}/hr${e.id ? ' (ID: ' + e.id + ')' : ''}${e.job ? ' (' + e.job + ')' : ''}`).join('\n');
 
-  const prompt = `Compile payroll for ${val('companyName')} for the week ending ${val('weekEnding')}.
+  // Build format-specific instructions
+  let formatInstructions = '';
+  if (selectedFmt === 'adp') {
+    formatInstructions = `ADP RUN IMPORT FORMAT:
+Company Code: ${val('adpCompanyCode') || 'PROVIDED BY CLIENT'}
+Batch ID: ${val('adpBatchId') || 'Leave blank'}
+Regular Hours Code: ${val('adpRegCode') || 'REG'}
+Overtime Code: ${val('adpOTCode') || 'OT'}
+Required columns: File Number, Company Code, Batch ID, Earnings Code, Hours, Dollar Amount
+One row per employee per earnings type (separate rows for REG and OT)`;
+  } else if (selectedFmt === 'gusto') {
+    formatInstructions = `GUSTO IMPORT FORMAT:
+Split employee names into First Name and Last Name columns
+Required columns: First Name, Last Name, Employee ID (if provided), Regular Hours, Overtime Hours, Gross Pay, Pay Period Start, Pay Period End`;
+  } else if (selectedFmt === 'paychex') {
+    formatInstructions = `PAYCHEX FLEX IMPORT FORMAT:
+Required columns: Employee ID, Employee Name, Regular Hours, Overtime Hours, Pay Rate, Gross Pay, Pay Period
+Employee IDs are required for Paychex import`;
+  } else if (selectedFmt === 'custom') {
+    const customFields = fieldOrder.map(id => ALL_FIELDS.find(f => f.id === id)?.label).filter(Boolean);
+    formatInstructions = `CUSTOM FORMAT:
+Output ONLY these columns in this exact order: ${customFields.join(', ')}
+Do not include any other columns.`;
+  } else if (selectedFmt === 'quickbooks') {
+    formatInstructions = `QUICKBOOKS IMPORT FORMAT:
+Required columns: Employee Name, Pay Period Start, Pay Period End, Regular Hours, Overtime Hours, Pay Rate, Gross Pay
+Employee names must match exactly as they appear in QuickBooks`;
+  } else {
+    formatInstructions = `STANDARD SPREADSHEET FORMAT:
+Columns: Employee Name, Regular Hours, Overtime Hours, Pay Rate, Regular Pay, Overtime Pay, Gross Pay, Pay Period Start, Pay Period End
+Include a summary row at the bottom with totals`;
+  }
 
-EMPLOYEE RATES:
-${empList || 'See timesheet for rates'}
+  const prompt = `Compile payroll for ${val('companyName')}.
 
-PAY PERIOD: ${val('periodStart') || 'Start of week'} to ${val('weekEnding')}
+PAY PERIOD: ${val('periodStart') || 'Week of'} to ${val('weekEnding')}
 OVERTIME RULE: ${val('overtimeRule')}
-OUTPUT FORMAT: ${val('outputFormat')}
-${val('deductions') ? 'DEDUCTIONS: ' + val('deductions') : ''}
-${manualHours ? 'HOURS PROVIDED:\n' + manualHours : fileName ? 'Hours are in the uploaded file: ' + fileName : ''}
-${val('notes') ? 'ADDITIONAL NOTES: ' + val('notes') : ''}
 
-Please:
-1. Extract all hours from the timesheet (regular and overtime)
-2. Calculate gross pay for each employee (apply 1.5x for overtime per the stated rule)
-3. Output a clean ${val('outputFormat') === 'quickbooks' ? 'QuickBooks-compatible CSV' : 'spreadsheet'} with columns: Employee Name, Pay Period Start, Pay Period End, Regular Hours, Overtime Hours, Pay Rate, Gross Pay, Job/Trade
-4. Include a summary section showing total payroll, total regular hours, and total overtime hours
-5. Flag any discrepancies or missing data`;
+EMPLOYEE ROSTER:
+${empList}
+
+${val('manualHours') ? 'HOURS PROVIDED:\n' + val('manualHours') : fileName ? 'Hours from uploaded file: ' + fileName : ''}
+${val('deductions') ? '\nDEDUCTIONS: ' + val('deductions') : ''}
+${val('bonuses') ? '\nBONUSES/ADDITIONAL PAY: ' + val('bonuses') : ''}
+${val('notes') ? '\nNOTES: ' + val('notes') : ''}
+
+OUTPUT FORMAT: ${fmtConfig.name}
+${formatInstructions}
+
+INSTRUCTIONS:
+1. Extract all hours from the timesheet for each employee
+2. Calculate regular hours, overtime hours, and gross pay (apply 1.5x for overtime)
+3. Output a complete, clean CSV in the specified format
+4. Add a SUMMARY section at the bottom showing: total employees, total regular hours, total overtime hours, total gross payroll
+5. FLAG any missing data, unclear entries, or discrepancies with a note at the top
+6. If an employee appears in the roster but not the timesheet (or vice versa), flag it
+
+Output the CSV data first, then the summary, then any flags/notes.`;
 
   const userContent = [];
   if (fileData && fileName) {
     const ext = fileName.split('.').pop().toLowerCase();
     if (['png','jpg','jpeg','webp'].includes(ext)) {
-      userContent.push({ type: 'image', source: { type: 'base64', media_type: ext === 'jpg' ? 'image/jpeg' : `image/${ext}`, data: fileData.split(',')[1] } });
+      userContent.push({ type:'image', source:{ type:'base64', media_type: ext==='jpg'?'image/jpeg':`image/${ext}`, data: fileData.split(',')[1] }});
     }
   }
-  userContent.push({ type: 'text', text: prompt });
-
-  history = [{ role: 'user', content: userContent }];
+  userContent.push({ type:'text', text:prompt });
+  history = [{ role:'user', content:userContent }];
 
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 2000,
-        system: 'You are a payroll specialist. Extract hours from any format provided, calculate pay accurately including overtime, and output clean structured data ready for import into QuickBooks or similar software. Always show your math clearly.',
-        messages: history })
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:3000,
+        system:`You are a payroll specialist with deep knowledge of QuickBooks, ADP Run, Gusto, and Paychex Flex import formats. Extract hours from any format, calculate pay accurately including overtime, and output clean structured CSV data ready for import. Always flag missing data clearly. Show totals and verify math.`,
+        messages: history
+      })
     });
     const d = await r.json();
     const result = d.content?.[0]?.text || '';
-    if (!result) throw new Error('No result');
+    if (!result) throw new Error();
     currentResult = result;
-    history.push({ role: 'assistant', content: result });
+    history.push({ role:'assistant', content:result });
     document.getElementById('workingCard').style.display = 'none';
     document.getElementById('resultContent').textContent = result;
     document.getElementById('resultCard').style.display = 'block';
-    document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    document.getElementById('resultCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
   } catch(e) {
     document.getElementById('workingCard').style.display = 'none';
     showToast('Failed. Please try again.', 'error');
@@ -308,21 +569,19 @@ async function revise() {
   if (!feedback) return;
   document.getElementById('resultCard').style.display = 'none';
   document.getElementById('workingCard').style.display = 'block';
-  history.push({ role: 'user', content: feedback });
+  history.push({ role:'user', content: feedback });
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 2000,
-        system: 'You are a payroll specialist. Apply the requested revision and return the complete corrected payroll.',
-        messages: history })
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:3000,
+        system:'Apply the revision and return the complete corrected payroll.',
+        messages:history })
     });
     const d = await r.json();
-    const result = d.content?.[0]?.text || '';
-    currentResult = result;
-    history.push({ role: 'assistant', content: result });
+    currentResult = d.content?.[0]?.text || '';
+    history.push({ role:'assistant', content:currentResult });
     document.getElementById('workingCard').style.display = 'none';
-    document.getElementById('resultContent').textContent = result;
+    document.getElementById('resultContent').textContent = currentResult;
     document.getElementById('resultCard').style.display = 'block';
     document.getElementById('revisionInput').value = '';
   } catch(e) {
@@ -334,11 +593,12 @@ async function revise() {
 
 function download() {
   if (!currentResult) return;
-  const blob = new Blob([currentResult], { type: 'text/csv' });
+  const fmtNames = { quickbooks:'quickbooks', adp:'adp-run', gusto:'gusto', paychex:'paychex', standard:'payroll', custom:'payroll-custom' };
+  const blob = new Blob([currentResult], { type:'text/csv' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `payroll-${val('companyName').replace(/\s+/g,'-')}-${val('weekEnding').replace(/\s+/g,'-')}.csv`;
+  a.download = `${fmtNames[selectedFmt]}-${val('companyName').replace(/\s+/g,'-')}-${val('weekEnding').replace(/[\s,]+/g,'-')}.csv`;
   a.click();
   URL.revokeObjectURL(url);
   showToast('Downloaded! ✓', 'success');
@@ -347,7 +607,7 @@ function download() {
 function showToast(msg, type) {
   const t = document.getElementById('toast');
   t.textContent = msg;
-  t.className = 'toast show' + (type ? ' ' + type : '');
+  t.className = 'toast show' + (type ? ' '+type : '');
   setTimeout(() => t.className = 'toast', 3000);
 }
 </script>
