@@ -1,1 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Payroll Compilation — DeskKit</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--ink:#0A1520;--navy:#0F1E2E;--navy2:#162840;--navy3:#1C3050;--amber:#C8701A;--amber2:#E08930;--amber-dim:rgba(200,112,26,0.1);--amber-border:rgba(200,112,26,0.25);--green:#1A6040;--green2:#22A060;--green-dim:rgba(26,96,64,0.12);--red2:#E05050;--muted:#5A7A9A;--text:#E2EAF2;--text2:#8AAAC8;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;}
+.header{background:var(--navy);border-bottom:1px solid var(--border);padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.header-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:white;text-transform:uppercase;letter-spacing:1px;}
+.header-logo span{color:var(--amber);}
+.header-back{font-size:13px;color:var(--muted);text-decoration:none;}
+.header-back:hover{color:var(--amber);}
+.page{max-width:780px;margin:0 auto;padding:32px 24px 80px;}
+.page-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:white;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.page-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:32px;}
+.section{margin-bottom:28px;}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-full{grid-column:1/-1;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.field input,.field select,.field textarea{background:var(--navy2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border 0.15s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--amber);}
+.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,0.15);}
+.field select option{background:var(--navy2);}
+.field textarea{resize:vertical;min-height:80px;line-height:1.5;}
+.upload-area{border:2px dashed var(--border2);border-radius:10px;padding:28px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;}
+.upload-area:hover{border-color:var(--amber);background:var(--amber-dim);}
+.upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.upload-icon{font-size:32px;margin-bottom:10px;}
+.upload-text{font-size:14px;font-weight:600;color:white;margin-bottom:4px;}
+.upload-sub{font-size:12px;color:var(--muted);}
+.upload-preview{display:none;align-items:center;gap:12px;background:var(--navy2);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;margin-top:10px;}
+.upload-preview-name{font-size:13px;color:var(--text2);flex:1;}
+.upload-preview-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;}
+.upload-preview-remove:hover{color:var(--red2);}
+.employee-row{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;}
+.employee-row-grid{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;align-items:center;}
+.btn-add{background:transparent;border:1px dashed var(--border2);color:var(--muted);border-radius:8px;padding:10px;width:100%;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;margin-top:6px;}
+.btn-add:hover{border-color:var(--amber);color:var(--amber);}
+.btn-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1;padding:4px;}
+.btn-remove:hover{color:var(--red2);}
+.info-box{background:var(--amber-dim);border:1px solid var(--amber-border);border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--text2);line-height:1.6;}
+.info-box strong{color:var(--amber);}
+.submit-btn{width:100%;background:var(--amber);color:white;border:none;border-radius:10px;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.submit-btn:hover{background:var(--amber2);}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.working-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:40px;text-align:center;margin-top:28px;display:none;}
+.spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,0.08);border-top-color:var(--amber);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.working-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:white;text-transform:uppercase;margin-bottom:8px;}
+.working-sub{font-size:13px;color:var(--muted);}
+.result-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:28px;margin-top:28px;display:none;}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.result-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;text-transform:uppercase;}
+.result-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;background:var(--green-dim);color:var(--green2);border:1px solid rgba(26,96,64,0.3);}
+.result-content{background:white;border-radius:10px;padding:24px;margin-bottom:20px;color:#1a2332;font-family:'DM Mono',monospace,sans-serif;font-size:13px;line-height:1.7;white-space:pre-wrap;max-height:500px;overflow-y:auto;}
+.result-actions{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-download{background:var(--green);color:white;border:none;border-radius:10px;padding:12px 22px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+.btn-download:hover{background:var(--green2);}
+.revision-wrap{flex:1;display:flex;gap:8px;}
+.revision-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:13px;outline:none;font-family:'Inter',sans-serif;}
+.revision-input:focus{border-color:var(--amber);}
+.revision-input::placeholder{color:rgba(255,255,255,0.15);}
+.btn-revise{background:var(--navy3);border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.btn-revise:hover{border-color:var(--amber);color:var(--amber);}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy2);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:13px;color:var(--text);z-index:999;opacity:0;transform:translateY(8px);transition:all 0.2s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.error{border-color:rgba(139,26,26,0.4);color:var(--red2);}
+.toast.success{border-color:rgba(26,96,64,0.4);color:var(--green2);}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr;}.employee-row-grid{grid-template-columns:1fr 1fr;}.page{padding:20px 16px 60px;}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-logo">Desk<span>Kit</span></div>
+  <a href="/portal/app" class="header-back">← Back to DeskKit</a>
+</div>
+<div class="page">
+  <div class="page-eyebrow">📊 Featured Task</div>
+  <div class="page-title">Payroll Compilation</div>
+  <div class="page-sub">Upload your timesheet (photo, spreadsheet, or document) and enter your crew's rates. We'll compile everything into a clean QuickBooks-ready CSV. — $35</div>
 
+  <div class="info-box"><strong>Tip:</strong> You can upload a photo of a handwritten timesheet, a whiteboard, a spreadsheet, or any document with your crew's hours. Include any format — we'll figure it out. Add employee rates below so we can calculate gross pay.</div>
+
+  <div class="section">
+    <div class="section-title">Timesheet Upload</div>
+    <div class="upload-area" onclick="document.getElementById('tsFile').click()">
+      <input type="file" id="tsFile" accept=".xlsx,.xls,.csv,.pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp" onchange="handleFile(this.files[0])"/>
+      <div class="upload-icon">📋</div>
+      <div class="upload-text">Upload your timesheet</div>
+      <div class="upload-sub">Photo, spreadsheet, PDF, or document — any format works</div>
+    </div>
+    <div class="upload-preview" id="filePreview">
+      <span style="font-size:20px">📄</span>
+      <div class="upload-preview-name" id="fileName"></div>
+      <button class="upload-preview-remove" onclick="removeFile()">✕</button>
+    </div>
+    <div class="field" style="margin-top:14px">
+      <label>Or describe hours manually (if no file)</label>
+      <textarea id="manualHours" placeholder="Example: Bobby — Mon 8hrs, Tue 8hrs, Wed 6hrs, Thu 8hrs, Fri 8hrs&#10;Mike — Mon 8hrs, Tue 8hrs, Wed 8hrs, Thu 8hrs, Fri 4hrs&#10;Jake — Mon 8hrs, Tue off, Wed 8hrs, Thu 8hrs, Fri 8hrs"></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Pay Period</div>
+    <div class="form-grid">
+      <div class="field">
+        <label>Week Ending Date *</label>
+        <input type="text" id="weekEnding" placeholder="June 27, 2026"/>
+      </div>
+      <div class="field">
+        <label>Pay Period Start</label>
+        <input type="text" id="periodStart" placeholder="June 21, 2026"/>
+      </div>
+      <div class="field">
+        <label>Company Name *</label>
+        <input type="text" id="companyName" placeholder="Smith Plumbing LLC"/>
+      </div>
+      <div class="field">
+        <label>Output Format</label>
+        <select id="outputFormat">
+          <option value="quickbooks">QuickBooks CSV</option>
+          <option value="excel">Standard Spreadsheet</option>
+          <option value="both">Both formats</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Employee Rates</div>
+    <div id="employeeList">
+      <div class="employee-row">
+        <div class="employee-row-grid">
+          <div class="field"><label>Employee Name</label><input type="text" class="emp-name" placeholder="Bobby Smith"/></div>
+          <div class="field"><label>Hourly Rate</label><input type="text" class="emp-rate" placeholder="$28.00"/></div>
+          <div class="field"><label>Job/Trade</label><input type="text" class="emp-job" placeholder="Plumber"/></div>
+          <button class="btn-remove" onclick="removeEmployee(this)">✕</button>
+        </div>
+      </div>
+    </div>
+    <button class="btn-add" onclick="addEmployee()">+ Add Employee</button>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Additional Details</div>
+    <div class="form-grid">
+      <div class="field">
+        <label>Overtime Rule</label>
+        <select id="overtimeRule">
+          <option value="federal">Federal — over 40hrs/week at 1.5x</option>
+          <option value="daily">Daily — over 8hrs/day at 1.5x</option>
+          <option value="none">No overtime (salaried or contract)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Any Deductions to Note</label>
+        <input type="text" id="deductions" placeholder="e.g. Tool allowance $50/wk for Bobby"/>
+      </div>
+      <div class="field form-full">
+        <label>Additional Notes</label>
+        <textarea id="notes" placeholder="Anything else — missed days, holiday pay, bonuses, corrections to the uploaded timesheet, etc."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <button class="submit-btn" id="submitBtn" onclick="generate()">
+    <span>✦</span> Compile My Payroll — $35
+  </button>
+
+  <div class="working-card" id="workingCard">
+    <div class="spinner"></div>
+    <div class="working-title">Compiling Payroll</div>
+    <div class="working-sub">Reading your timesheet and calculating hours, overtime, and gross pay...</div>
+  </div>
+
+  <div class="result-card" id="resultCard">
+    <div class="result-header">
+      <div class="result-title">Your Payroll Summary</div>
+      <div class="result-badge">✓ Ready to Review</div>
+    </div>
+    <div class="result-content" id="resultContent"></div>
+    <div class="result-actions">
+      <button class="btn-download" onclick="download()">↓ Download CSV</button>
+      <div class="revision-wrap">
+        <input class="revision-input" id="revisionInput" placeholder="Something wrong? Tell us what to fix..."/>
+        <button class="btn-revise" onclick="revise()">Revise →</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+let fileData = null, fileName = null, currentResult = null, history = [];
+
+function handleFile(file) {
+  if (!file) return;
+  fileName = file.name;
+  document.getElementById('fileName').textContent = file.name;
+  document.getElementById('filePreview').style.display = 'flex';
+  const reader = new FileReader();
+  reader.onload = e => { fileData = e.target.result; };
+  reader.readAsDataURL(file);
+}
+function removeFile() { fileData = null; fileName = null; document.getElementById('tsFile').value = ''; document.getElementById('filePreview').style.display = 'none'; }
+
+function addEmployee() {
+  const div = document.createElement('div');
+  div.className = 'employee-row';
+  div.innerHTML = `<div class="employee-row-grid">
+    <div class="field"><label>Employee Name</label><input type="text" class="emp-name" placeholder="Employee name"/></div>
+    <div class="field"><label>Hourly Rate</label><input type="text" class="emp-rate" placeholder="$00.00"/></div>
+    <div class="field"><label>Job/Trade</label><input type="text" class="emp-job" placeholder="Trade"/></div>
+    <button class="btn-remove" onclick="removeEmployee(this)">✕</button>
+  </div>`;
+  document.getElementById('employeeList').appendChild(div);
+}
+function removeEmployee(btn) { btn.closest('.employee-row').remove(); }
+
+function getEmployees() {
+  const rows = document.querySelectorAll('.employee-row');
+  return Array.from(rows).map(r => ({
+    name: r.querySelector('.emp-name')?.value.trim(),
+    rate: r.querySelector('.emp-rate')?.value.trim(),
+    job: r.querySelector('.emp-job')?.value.trim()
+  })).filter(e => e.name);
+}
+
+function val(id) { return (document.getElementById(id)?.value || '').trim(); }
+
+async function generate() {
+  if (!val('weekEnding') || !val('companyName')) { showToast('Please fill in required fields', 'error'); return; }
+  const employees = getEmployees();
+  const manualHours = val('manualHours');
+  if (!fileData && !manualHours) { showToast('Please upload a timesheet or enter hours manually', 'error'); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('workingCard').style.display = 'block';
+  document.getElementById('workingCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  const empList = employees.map(e => `${e.name} — ${e.rate}/hr${e.job ? ' (' + e.job + ')' : ''}`).join('\n');
+
+  const prompt = `Compile payroll for ${val('companyName')} for the week ending ${val('weekEnding')}.
+
+EMPLOYEE RATES:
+${empList || 'See timesheet for rates'}
+
+PAY PERIOD: ${val('periodStart') || 'Start of week'} to ${val('weekEnding')}
+OVERTIME RULE: ${val('overtimeRule')}
+OUTPUT FORMAT: ${val('outputFormat')}
+${val('deductions') ? 'DEDUCTIONS: ' + val('deductions') : ''}
+${manualHours ? 'HOURS PROVIDED:\n' + manualHours : fileName ? 'Hours are in the uploaded file: ' + fileName : ''}
+${val('notes') ? 'ADDITIONAL NOTES: ' + val('notes') : ''}
+
+Please:
+1. Extract all hours from the timesheet (regular and overtime)
+2. Calculate gross pay for each employee (apply 1.5x for overtime per the stated rule)
+3. Output a clean ${val('outputFormat') === 'quickbooks' ? 'QuickBooks-compatible CSV' : 'spreadsheet'} with columns: Employee Name, Pay Period Start, Pay Period End, Regular Hours, Overtime Hours, Pay Rate, Gross Pay, Job/Trade
+4. Include a summary section showing total payroll, total regular hours, and total overtime hours
+5. Flag any discrepancies or missing data`;
+
+  const userContent = [];
+  if (fileData && fileName) {
+    const ext = fileName.split('.').pop().toLowerCase();
+    if (['png','jpg','jpeg','webp'].includes(ext)) {
+      userContent.push({ type: 'image', source: { type: 'base64', media_type: ext === 'jpg' ? 'image/jpeg' : `image/${ext}`, data: fileData.split(',')[1] } });
+    }
+  }
+  userContent.push({ type: 'text', text: prompt });
+
+  history = [{ role: 'user', content: userContent }];
+
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 2000,
+        system: 'You are a payroll specialist. Extract hours from any format provided, calculate pay accurately including overtime, and output clean structured data ready for import into QuickBooks or similar software. Always show your math clearly.',
+        messages: history })
+    });
+    const d = await r.json();
+    const result = d.content?.[0]?.text || '';
+    if (!result) throw new Error('No result');
+    currentResult = result;
+    history.push({ role: 'assistant', content: result });
+    document.getElementById('workingCard').style.display = 'none';
+    document.getElementById('resultContent').textContent = result;
+    document.getElementById('resultCard').style.display = 'block';
+    document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } catch(e) {
+    document.getElementById('workingCard').style.display = 'none';
+    showToast('Failed. Please try again.', 'error');
+  }
+  btn.disabled = false;
+  btn.innerHTML = '<span>✦</span> Compile My Payroll — $35';
+}
+
+async function revise() {
+  const feedback = document.getElementById('revisionInput').value.trim();
+  if (!feedback) return;
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('workingCard').style.display = 'block';
+  history.push({ role: 'user', content: feedback });
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 2000,
+        system: 'You are a payroll specialist. Apply the requested revision and return the complete corrected payroll.',
+        messages: history })
+    });
+    const d = await r.json();
+    const result = d.content?.[0]?.text || '';
+    currentResult = result;
+    history.push({ role: 'assistant', content: result });
+    document.getElementById('workingCard').style.display = 'none';
+    document.getElementById('resultContent').textContent = result;
+    document.getElementById('resultCard').style.display = 'block';
+    document.getElementById('revisionInput').value = '';
+  } catch(e) {
+    document.getElementById('workingCard').style.display = 'none';
+    document.getElementById('resultCard').style.display = 'block';
+    showToast('Revision failed.', 'error');
+  }
+}
+
+function download() {
+  if (!currentResult) return;
+  const blob = new Blob([currentResult], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `payroll-${val('companyName').replace(/\s+/g,'-')}-${val('weekEnding').replace(/\s+/g,'-')}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Downloaded! ✓', 'success');
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  setTimeout(() => t.className = 'toast', 3000);
+}
+</script>
+</body>
+</html>
