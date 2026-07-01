@@ -209,7 +209,7 @@ module.exports = async function handler(req, res) {
                 <div style="font-size:24px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$599</div>
               </div>
               <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                All 90 days unlocked from day one. Every doc and calculator included. Saves $298 vs buying phases separately. <strong>$99 credited from Snapshot.</strong>
+                All 90 days unlocked from day one. Every doc and calculator included. Ask Jen AI advisor included. Saves $298 vs buying phases separately. <strong>$99 credited from Snapshot.</strong>
               </div>
               <a href="https://buy.stripe.com/6oU00c1Fy7s0bWT2l8dZ60f" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full Bundle — $599 →</a>
             </div>
