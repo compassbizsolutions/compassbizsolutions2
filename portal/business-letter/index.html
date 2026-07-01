@@ -1,1 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Business Letter — DeskKit</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--ink:#0A1520;--navy:#0F1E2E;--navy2:#162840;--navy3:#1C3050;--amber:#C8701A;--amber2:#E08930;--amber-dim:rgba(200,112,26,0.1);--amber-border:rgba(200,112,26,0.25);--green:#1A6040;--green2:#22A060;--green-dim:rgba(26,96,64,0.12);--red2:#E05050;--muted:#5A7A9A;--text:#E2EAF2;--text2:#8AAAC8;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;}
+.header{background:var(--navy);border-bottom:1px solid var(--border);padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.header-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:white;text-transform:uppercase;letter-spacing:1px;}
+.header-logo span{color:var(--amber);}
+.header-back{font-size:13px;color:var(--muted);text-decoration:none;}
+.header-back:hover{color:var(--amber);}
+.page{max-width:780px;margin:0 auto;padding:32px 24px 80px;}
+.page-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:white;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.page-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:32px;}
+.section{margin-bottom:28px;}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-full{grid-column:1/-1;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.field input,.field select,.field textarea{background:var(--navy2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border 0.15s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--amber);}
+.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,0.15);}
+.field select option{background:var(--navy2);}
+.field textarea{resize:vertical;min-height:120px;line-height:1.5;}
+.tone-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.tone-card{background:var(--navy2);border:2px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all 0.15s;text-align:center;}
+.tone-card:hover{border-color:var(--border2);}
+.tone-card.selected{border-color:var(--amber);background:var(--amber-dim);}
+.tone-card-name{font-size:12px;font-weight:700;color:white;margin-bottom:3px;}
+.tone-card-desc{font-size:10px;color:var(--muted);line-height:1.3;}
+.submit-btn{width:100%;background:var(--amber);color:white;border:none;border-radius:10px;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.submit-btn:hover{background:var(--amber2);}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.working-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:40px;text-align:center;margin-top:28px;display:none;}
+.spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,0.08);border-top-color:var(--amber);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.working-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:white;text-transform:uppercase;margin-bottom:8px;}
+.working-sub{font-size:13px;color:var(--muted);}
+.result-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:28px;margin-top:28px;display:none;}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.result-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;text-transform:uppercase;}
+.result-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;background:var(--green-dim);color:var(--green2);border:1px solid rgba(26,96,64,0.3);}
+.result-content{background:white;border-radius:10px;padding:28px;margin-bottom:20px;color:#1a2332;font-family:Georgia,serif;font-size:14px;line-height:1.8;white-space:pre-wrap;max-height:500px;overflow-y:auto;}
+.result-actions{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-download{background:var(--green);color:white;border:none;border-radius:10px;padding:12px 22px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+.btn-download:hover{background:var(--green2);}
+.revision-wrap{flex:1;display:flex;gap:8px;}
+.revision-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:13px;outline:none;font-family:'Inter',sans-serif;}
+.revision-input:focus{border-color:var(--amber);}
+.revision-input::placeholder{color:rgba(255,255,255,0.15);}
+.btn-revise{background:var(--navy3);border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.btn-revise:hover{border-color:var(--amber);color:var(--amber);}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy2);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:13px;color:var(--text);z-index:999;opacity:0;transform:translateY(8px);transition:all 0.2s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.error{border-color:rgba(139,26,26,0.4);color:var(--red2);}
+.toast.success{border-color:rgba(26,96,64,0.4);color:var(--green2);}
+@media(max-width:600px){.form-grid,.tone-grid{grid-template-columns:1fr 1fr;}.page{padding:20px 16px 60px;}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-logo">Desk<span>Kit</span></div>
+  <a href="/portal/app" class="header-back">← Back to DeskKit</a>
+</div>
+<div class="page">
+  <div class="page-eyebrow">📧 Featured Task</div>
+  <div class="page-title">Business Letter or Email</div>
+  <div class="page-sub">Tell us what you need to say and who you're saying it to. We'll write it professionally so it says exactly what you mean. — $15</div>
 
+  <div class="section">
+    <div class="section-title">Your Business</div>
+    <div class="form-grid">
+      <div class="field"><label>Business Name *</label><input type="text" id="bizName" placeholder="Smith Plumbing LLC"/></div>
+      <div class="field"><label>Your Name *</label><input type="text" id="senderName" placeholder="John Smith"/></div>
+      <div class="field"><label>Your Title</label><input type="text" id="senderTitle" placeholder="Owner"/></div>
+      <div class="field"><label>Phone / Email</label><input type="text" id="senderContact" placeholder="(508) 555-0100 / john@smith.com"/></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Who It's Going To</div>
+    <div class="form-grid">
+      <div class="field"><label>Recipient Name *</label><input type="text" id="recipientName" placeholder="Mike Johnson"/></div>
+      <div class="field"><label>Recipient Company</label><input type="text" id="recipientCompany" placeholder="Johnson Property Management"/></div>
+      <div class="field"><label>Recipient Title</label><input type="text" id="recipientTitle" placeholder="Property Manager"/></div>
+      <div class="field"><label>Format</label>
+        <select id="format">
+          <option value="email">Email</option>
+          <option value="letter">Formal Letter</option>
+          <option value="either">Either works</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">What You Need to Say</div>
+    <div class="field form-full" style="margin-bottom:14px">
+      <label>Purpose of Letter *</label>
+      <select id="purpose">
+        <option value="">Select purpose...</option>
+        <option>Follow up on unpaid invoice</option>
+        <option>Thank a customer</option>
+        <option>Respond to a complaint</option>
+        <option>Request payment or information</option>
+        <option>Introduce my business</option>
+        <option>Propose a service or quote</option>
+        <option>Decline a request</option>
+        <option>Confirm an appointment or agreement</option>
+        <option>Notify of a price change</option>
+        <option>Dispute a charge or situation</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="field form-full">
+      <label>Describe What You Want to Say *</label>
+      <textarea id="message" placeholder="Tell us in plain language what you want to communicate. Don't worry about wording — just tell us the situation and what you want the recipient to know, feel, or do after reading this.&#10;&#10;Example: 'Mike owes me $850 for plumbing work I did in March. He said he'd pay by April 1 and still hasn't. I want to ask him firmly to pay but keep the door open because he's a repeat customer.'"></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Tone</div>
+    <div class="tone-grid">
+      <div class="tone-card" id="tone-professional" onclick="selectTone('professional')"><div class="tone-card-name">Professional</div><div class="tone-card-desc">Formal and polished</div></div>
+      <div class="tone-card selected" id="tone-friendly" onclick="selectTone('friendly')"><div class="tone-card-name">Friendly</div><div class="tone-card-desc">Warm but clear</div></div>
+      <div class="tone-card" id="tone-firm" onclick="selectTone('firm')"><div class="tone-card-name">Firm</div><div class="tone-card-desc">Direct, no fluff</div></div>
+      <div class="tone-card" id="tone-urgent" onclick="selectTone('urgent')"><div class="tone-card-name">Urgent</div><div class="tone-card-desc">Time-sensitive matter</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Additional Details</div>
+    <div class="field">
+      <label>Anything else to include</label>
+      <textarea id="notes" placeholder="Dates, amounts, reference numbers, specific requests, context, or anything else that matters."></textarea>
+    </div>
+  </div>
+
+  <button class="submit-btn" id="submitBtn" onclick="generate()">
+    <span>✦</span> Write My Letter — $15
+  </button>
+
+  <div class="working-card" id="workingCard">
+    <div class="spinner"></div>
+    <div class="working-title">Writing Your Letter</div>
+    <div class="working-sub">Crafting a professional letter based on your details...</div>
+  </div>
+
+  <div class="result-card" id="resultCard">
+    <div class="result-header">
+      <div class="result-title">Your Letter</div>
+      <div class="result-badge">✓ Ready to Review</div>
+    </div>
+    <div class="result-content" id="resultContent"></div>
+    <div class="result-actions">
+      <button class="btn-download" onclick="download()">↓ Download</button>
+      <div class="revision-wrap">
+        <input class="revision-input" id="revisionInput" placeholder="Change something? Tell us..."/>
+        <button class="btn-revise" onclick="revise()">Revise →</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+let selectedTone = 'friendly', currentResult = null, history = [];
+function selectTone(t) { selectedTone = t; document.querySelectorAll('.tone-card').forEach(c => c.classList.remove('selected')); document.getElementById('tone-'+t).classList.add('selected'); }
+function val(id) { return (document.getElementById(id)?.value||'').trim(); }
+async function generate() {
+  if (!val('bizName')||!val('senderName')||!val('recipientName')||!val('message')) { showToast('Please fill in required fields','error'); return; }
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('workingCard').style.display = 'block';
+  document.getElementById('workingCard').scrollIntoView({behavior:'smooth',block:'nearest'});
+  const today = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  const prompt = `Write a ${val('format')||'letter or email'} with a ${selectedTone} tone.
+
+FROM: ${val('senderName')}${val('senderTitle')?', '+val('senderTitle'):''} — ${val('bizName')}
+${val('senderContact')?'Contact: '+val('senderContact'):''}
+TO: ${val('recipientName')}${val('recipientCompany')?', '+val('recipientCompany'):''}${val('recipientTitle')?', '+val('recipientTitle'):''}
+DATE: ${today}
+PURPOSE: ${val('purpose')}
+
+WHAT TO COMMUNICATE:
+${val('message')}
+
+${val('notes')?'ADDITIONAL DETAILS:\n'+val('notes'):''}
+
+Write the complete, ready-to-send letter. Use the actual names and details provided — no placeholders.`;
+
+  history = [{role:'user',content:prompt}];
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,system:'You are a professional business writer. Write clear, effective business letters and emails that accomplish their purpose. Use natural language — not corporate jargon. Always use the actual names and details provided. Never use placeholders.',messages:history})});
+    const d = await r.json();
+    const result = d.content?.[0]?.text||'';
+    if(!result) throw new Error();
+    currentResult = result;
+    history.push({role:'assistant',content:result});
+    document.getElementById('workingCard').style.display='none';
+    document.getElementById('resultContent').textContent=result;
+    document.getElementById('resultCard').style.display='block';
+    document.getElementById('resultCard').scrollIntoView({behavior:'smooth',block:'nearest'});
+  } catch(e) { document.getElementById('workingCard').style.display='none'; showToast('Failed. Please try again.','error'); }
+  btn.disabled=false; btn.innerHTML='<span>✦</span> Write My Letter — $15';
+}
+async function revise() {
+  const feedback = document.getElementById('revisionInput').value.trim();
+  if(!feedback) return;
+  document.getElementById('resultCard').style.display='none';
+  document.getElementById('workingCard').style.display='block';
+  history.push({role:'user',content:feedback});
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,system:'Apply the revision and return the complete revised letter.',messages:history})});
+    const d = await r.json();
+    currentResult = d.content?.[0]?.text||'';
+    history.push({role:'assistant',content:currentResult});
+    document.getElementById('workingCard').style.display='none';
+    document.getElementById('resultContent').textContent=currentResult;
+    document.getElementById('resultCard').style.display='block';
+    document.getElementById('revisionInput').value='';
+  } catch(e) { document.getElementById('workingCard').style.display='none'; document.getElementById('resultCard').style.display='block'; }
+}
+function download() {
+  if(!currentResult) return;
+  const blob = new Blob([currentResult],{type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=`letter-to-${val('recipientName').replace(/\s+/g,'-')}.txt`; a.click();
+  URL.revokeObjectURL(url); showToast('Downloaded! ✓','success');
+}
+function showToast(msg,type) { const t=document.getElementById('toast'); t.textContent=msg; t.className='toast show'+(type?' '+type:''); setTimeout(()=>t.className='toast',3000); }
+</script>
+</body>
+</html>
