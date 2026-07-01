@@ -52,8 +52,8 @@ module.exports = async function handler(req, res) {
 
     const resend = new Resend(process.env.RESEND_API_KEY);
 
-    // Store lead in KV
-    await storeInKV(email, {
+    // Store lead in KV (non-blocking — don't let KV failure stop email)
+    storeInKV(email, {
       name, email, biz, phone, trade,
       top_leak: answers?.leak1 || '',
       source: 'free-diagnostic',
