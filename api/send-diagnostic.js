@@ -232,20 +232,7 @@ module.exports = async function handler(req, res) {
             </div>
           </div>
           <p style="font-size:14px;color:#6B7A90;margin-bottom:4px;">Questions? Reply to this email — I read every one.</p>
-          ${additionalLeaks.length ? `
-          <div style="background:#F4F7FC;border:1px solid #C8D6E8;border-radius:8px;padding:18px 20px;margin:20px 0">
-            <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#5A7291;margin-bottom:6px">WE ALSO FOUND THESE</div>
-            <div style="font-size:13px;color:#5A7291;line-height:1.6;margin-bottom:14px">Your full analysis — including what each of these is costing you and how to fix them — is in your Profit Leak Snapshot.</div>
-            ${additionalLeaks.map(l =>
-              `<div style="padding:7px 0;border-bottom:1px solid #E0E8F4;display:flex;align-items:center;gap:8px">
-                <span style="width:6px;height:6px;min-width:6px;background:#C8701A;border-radius:50%;display:inline-block"></span>
-                <span style="font-size:14px;color:#1B2E4B;font-weight:700">${l.name}</span>
-              </div>`
-            ).join('')}
-            <div style="margin-top:16px;text-align:center">
-              <a href="https://buy.stripe.com/6oU28kfwo27GbWT2l8dZ608" style="display:inline-block;background:#C8701A;color:white;font-weight:700;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">See What These Are Costing You — $99 →</a>
-            </div>
-          </div>` : ''}
+
           <p style="margin:0;color:#3E4E63;font-size:15px;">— Jen, Compass Business Solutions</p>
         </div>
         <div style="text-align:center;padding:16px;font-size:12px;color:#A0ABBE;">
