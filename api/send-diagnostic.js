@@ -1,392 +1,321 @@
 /**
- * /api/stripe-webhook
- * Handles Stripe purchase events
- * On payment: creates customer record in KV, sends welcome/access email
- * Captures email + business name, stores purchase type
+ * /api/send-diagnostic
+ * Sends the free diagnostic report to user + copy to Jen
+ * Stores answers in Vercel KV for future check-ins
+ * Tags user in Mailchimp as "free-diagnostic"
  */
 const { Resend } = require("resend");
-const crypto = require("crypto");
 
-const FIXKIT_URL = process.env.FIXKIT_URL || "https://fixkit.compassbizsolutions.com";
-
-// Map Stripe product IDs to plan types
-const STRATEGY_CALL_LINK  = "https://calendly.com/jvoiselle612-s9gb/strategy-call";
-const WORKING_SESSION_LINK = "https://calendly.com/jvoiselle612-s9gb/working-session";
-
-const PRODUCT_MAP = {
-  // Consulting calls
-  "prod_UNB2oYvnCupMC1": "strategy_call",
-  "prod_UNB3jVNRxpBTgh": "working_session",
-  // Core products
-  "prod_UMpDhh7m3whCEX": "snapshot",
-  "prod_UMpDPKbpZPNnqT": "30day",
-  "prod_UMpDKwYPGVTFjq": "3160",
-  "prod_UMpDvHT8CFxOu1": "6190",
-  "prod_UMpDb1QADgIpr5": "bundle",
-  // Upgrade paths
-  "prod_UMpDobMklPMP6m": "30day",   // snapshot → 30day upgrade
-  "prod_UMpDthf1rnqW0W": "bundle",  // snapshot → bundle upgrade
-};
-
-const PLAN_LABELS = {
-  "strategy_call":   "Strategy Call (30 min)",
-  "working_session": "Working Session (60 min)",
-  "snapshot": "DIY Profit Leak Snapshot",
-  "30day":    "FixKit 30-Day Plan",
-  "3160":     "FixKit Days 31-60",
-  "6190":     "FixKit Days 61-90",
-  "bundle":   "FixKit Complete 30/60/90-Day Bundle",
-};
-
-// Stripe upgrade links for portal upsells
-const UPGRADE_LINKS = {
-  "snapshot": {
-    label30: "Upgrade to FixKit 30-Day — $199",
-    url30:   "https://buy.stripe.com/14AbIUgAs3bK3qn2l8dZ60g",
-    labelBundle: "Upgrade to Full Bundle — $499",
-    urlBundle:   "https://buy.stripe.com/eVq28keskfYw6CzcZMdZ60e",
-  },
-  "30day": {
-    label3160: "Add Days 31-60 — $299",
-    url3160:   "https://buy.stripe.com/aFacMYesk7s06Czf7UdZ60a",
-    labelBundle: "Upgrade to Full Bundle",
-    urlBundle:   "https://buy.stripe.com/6oU00c1Fy7s0bWT2l8dZ60f",
-  },
-  "3160": {
-    label6190: "Add Days 61-90 — $299",
-    url6190:   "https://buy.stripe.com/eVqaEQdog27G0ebe3QdZ60d",
-  },
-};
-
-
-function emailKey(email) {
-  return email.toLowerCase().replace(/[^a-z0-9@._-]/g, "");
-}
-
-async function getFromKV(key) {
-  const url = process.env.lime_KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
-  const token = process.env.lime_KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
-  if (!url || !token) return null;
-  try {
-    const r = await fetch(url + "/get/" + encodeURIComponent(key), {
-      headers: { Authorization: "Bearer " + token }
-    });
-    const d = await r.json();
-    return d.result ? JSON.parse(d.result) : null;
-  } catch(e) { return null; }
-}
-
-async function saveToKV(key, value, ttl) {
-  const url = process.env.lime_KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
-  const token = process.env.lime_KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+async function storeInKV(email, data) {
+  const url = process.env.KV_REST_API_URL;
+  const token = process.env.KV_REST_API_TOKEN;
   if (!url || !token) return;
+  const key = "diagnostic:" + email.toLowerCase().replace(/[^a-z0-9@._-]/g, "");
   await fetch(url + "/set/" + encodeURIComponent(key), {
     method: "POST",
     headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
-    body: JSON.stringify(value)
+    body: JSON.stringify(data)
   });
-  if (ttl) {
-    await fetch(url + "/expire/" + encodeURIComponent(key) + "/" + ttl, {
-      method: "POST", headers: { Authorization: "Bearer " + token }
-    });
-  }
+}
+
+async function tagMailchimp(email, name, trade) {
+  const dc = process.env.MAILCHIMP_DC || "us3";
+  const listId = process.env.MAILCHIMP_AUDIENCE_ID;
+  const apiKey = process.env.MAILCHIMP_API_KEY;
+  if (!apiKey || !listId) return;
+  const url = "https://" + dc + ".api.mailchimp.com/3.0/lists/" + listId + "/members";
+  await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Basic " + Buffer.from("anystring:" + apiKey).toString("base64")
+    },
+    body: JSON.stringify({
+      email_address: email,
+      status: "subscribed",
+      merge_fields: { FNAME: name || "", TRADE: trade || "" },
+      tags: ["free-diagnostic"]
+    })
+  }).catch(function() {});
 }
 
 module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-  // Read raw body from stream (required for Stripe signature verification)
-  // vercel.json sets bodyParser:false for this function
-  const rawBody = await new Promise(function(resolve, reject) {
-    var chunks = [];
-    req.on('data', function(chunk) { chunks.push(chunk); });
-    req.on('end',  function() { resolve(Buffer.concat(chunks)); });
-    req.on('error', reject);
-  });
-
-  // Also parse as JSON for fallback use
-  let parsedBody;
-  try { parsedBody = JSON.parse(rawBody.toString()); } catch(e) { parsedBody = {}; }
-
   try {
-    // Verify Stripe webhook signature
-    const sig = req.headers["stripe-signature"];
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-    let event;
-
-    if (webhookSecret && sig) {
-      try {
-        const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-        event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
-      } catch(e) {
-        console.error("Webhook signature failed:", e.message);
-        return res.status(400).json({ error: "Invalid signature" });
-      }
-    } else {
-      // No signature verification (development/testing)
-      event = parsedBody;
-    }
-
-    // Only handle completed checkouts
-    if (!event || event.type !== "checkout.session.completed") {
-      return res.status(200).json({ received: true });
-    }
-
-    const session = event.data && event.data.object;
-    if (!session) return res.status(200).json({ received: true });
-
-    const customerEmail = session.customer_details && session.customer_details.email;
-    const customerName  = (session.customer_details && session.customer_details.name) || "";
-    const bizName       = (session.metadata && session.metadata.business_name) || "";
-
-    // Get product ID — line_items are NOT in the default webhook payload.
-    // Must retrieve the session with expand to get them.
-    let productId = "";
-
-    // First try metadata (fastest, no extra API call)
-    if (session.metadata && session.metadata.product_id) {
-      productId = session.metadata.product_id;
-    }
-
-    // If no metadata, expand line_items via Stripe API
-    if (!productId) {
-      try {
-        const stripeClient = require("stripe")(process.env.STRIPE_SECRET_KEY);
-        const expanded = await stripeClient.checkout.sessions.retrieve(session.id, {
-          expand: ["line_items.data.price.product"]
-        });
-        console.log("Expanded session line_items:", JSON.stringify(expanded.line_items));
-        if (expanded.line_items && expanded.line_items.data && expanded.line_items.data[0]) {
-          const price = expanded.line_items.data[0].price;
-          productId = (price && price.product && price.product.id) || (price && price.product) || "";
-          console.log("Found productId:", productId);
-        }
-      } catch(e) {
-        console.error("Could not expand line_items:", e.message);
-      }
-    }
-
-    console.log("productId:", productId, "planType:", PRODUCT_MAP[productId] || "NOT FOUND IN MAP");
-
-    const planType  = PRODUCT_MAP[productId] || "";
-    const planLabel = PLAN_LABELS[planType] || "Your Purchase";
-
-    console.log("Stripe purchase:", planType, customerEmail, customerName);
-
-    if (!customerEmail) {
-      console.error("No email on Stripe session:", session.id);
-      return res.status(200).json({ received: true });
-    }
+    const { name, email, biz, phone, trade, answers, report, utm_source, utm_campaign, utm_medium } = req.body;
+    if (!email || !report) return res.status(400).json({ error: "Missing required fields" });
 
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const eKey   = emailKey(customerEmail);
-    const firstName = customerName.split(" ")[0] || "there";
 
-    // ── CONSULTING CALL purchase ──────────────────────────────────────
-    if (planType === "strategy_call" || planType === "working_session") {
-      const callLabel = planType === "strategy_call" ? "Strategy Call (30 min) — $79" : "Working Session (60 min) — $149";
-      const callDuration = planType === "strategy_call" ? "30-minute strategy call" : "60-minute working session";
+    // Store lead in KV
+    await storeInKV(email, {
+      name, email, biz, phone, trade,
+      top_leak: answers?.leak1 || '',
+      source: 'free-diagnostic',
+      utm_source: utm_source || '',
+      utm_campaign: utm_campaign || '',
+      created_at: new Date().toISOString()
+    });
+    const firstName = name || "there";
 
-      await resend.emails.send({
-        from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
-        to: customerEmail,
-        subject: "You're booked — " + callLabel,
-        html: `<div style="font-family:sans-serif;max-width:580px;margin:0 auto;color:#1B2E4B">
-          <div style="background:#1B2E4B;padding:24px;border-radius:8px 8px 0 0">
-            <div style="color:#C8701A;font-size:11px;letter-spacing:3px;font-weight:700">COMPASS BUSINESS SOLUTIONS</div>
-          </div>
-          <div style="background:#F4F7FC;padding:28px;border-radius:0 0 8px 8px;border:1px solid #C8D6E8">
-            <p style="font-size:15px">Hey ${firstName},</p>
-            <p style="font-size:15px;line-height:1.7">Payment received — thank you. You're confirmed for a <strong>${callDuration}</strong>.</p>
-            <p style="font-size:15px;line-height:1.7">Click below to pick your time slot. You'll see my available times and can book whatever works best for you.</p>
-            <div style="text-align:center;margin:24px 0">
-              <a href="${planType === 'strategy_call' ? STRATEGY_CALL_LINK : WORKING_SESSION_LINK}" style="display:inline-block;background:#C8701A;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px">Book Your Time Slot →</a>
-            </div>
-            <p style="font-size:14px;color:#5A7291;line-height:1.7">If none of the available times work for you, reply to this email and we'll find something that does.</p>
-            <p style="font-size:13px;color:#5A7291">Your $${planType === "strategy_call" ? "79" : "149"} is credited toward any Compass project if you decide to engage us after the call.</p>
-            <p style="font-size:14px">— Jen<br>Compass Business Solutions</p>
-          </div>
-        </div>`
-      });
-
-      // Notify Jen
-      await resend.emails.send({
-        from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
-        to: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
-        subject: "📅 New call booked — " + callLabel + " — " + customerEmail,
-        html: "<p><b>New call booking:</b> " + callLabel + "</p><p>Email: " + customerEmail + "</p><p>Name: " + (customerName || "not provided") + "</p>"
-      });
-
-      return res.status(200).json({ received: true });
+    function getTag(text, tag) {
+      const m = text.match(new RegExp("\\[" + tag + "\\]([\\s\\S]*?)(?=\\[|$)"));
+      return m ? m[1].trim() : "";
     }
 
-    // ── SNAPSHOT purchase ──────────────────────────────────────────────
-    if (planType === "snapshot") {
-      const existing = await getFromKV("customer:" + eKey);
-
-      await saveToKV("customer:" + eKey, {
-        ...(existing || {}),
-        email:              customerEmail,
-        name:               customerName,
-        biz:                bizName,
-        plan:               "snapshot",
-        plan_type:          "snapshot",
-        purchases:          ["snapshot"],
-        snapshot_purchased: true,
-        phase_current:      1,
-        intake_complete:    false,
-        purchased_at:       new Date().toISOString(),
-        stripe_session:     session.id,
+    const headline   = getTag(report, "HEADLINE");
+    const whatWeSee  = getTag(report, "WHAT_WE_SEE");
+    const topLeak    = stripThirdBullet(getTag(report, "TOP_LEAK"));
+    const secondLeak = stripThirdBullet(getTag(report, "SECOND_LEAK"));
+    const thirdLeak  = stripThirdBullet(getTag(report, "THIRD_LEAK"));
+    const howWeHelp  = getTag(report, "HOW_WE_HELP");
+    const additionalLeaksRaw = getTag(report, "ADDITIONAL_LEAKS") || "";
+    const additionalLeaks = additionalLeaksRaw
+      .split("\n")
+      .map(l => l.trim())
+      .filter(l => l && /—/.test(l) && !l.toLowerCase().includes("have a specific"))
+      .map(l => {
+        const parts = l.split(" — ");
+        return { name: (parts[0] || "").replace(/^\d+\.\s*/, "").trim(), detail: (parts[1] || "").trim() };
       });
 
-      console.log("Snapshot purchased:", customerEmail);
+    // Hard strip any third bullet from leak blocks regardless of AI output
+    function stripThirdBullet(text) {
+      if (!text) return text;
+      var lines = text.split("\n");
+      var bulletCount = 0;
+      var result = [];
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+        if (/^-\s+/.test(line.trim())) {
+          bulletCount++;
+          if (bulletCount >= 3) continue; // skip 3rd bullet and beyond
+        }
+        result.push(line);
+      }
+      return result.join("\n");
+    }
 
-      // Generate magic link token for passwordless account setup (24hr expiry)
-      const magicToken = require("crypto").randomBytes(32).toString("hex");
-      await saveToKV("magic:" + magicToken, {
-        email: customerEmail,
-        plan: "snapshot",
-        created: new Date().toISOString()
-      }, 60 * 60 * 24); // 24 hour expiry
+    // Two render functions:
+    // renderBoldHeadline = for use inside amber headline (strong stays amber)
+    // renderBold = for use in body text (strong stays navy)
+    function renderBoldHeadline(text) {
+      if (!text) return "";
+      return String(text).replace(/\*\*(.+?)\*\*/g, '<strong style="color:#C8701A;font-weight:700">$1</strong>');
+    }
+    function renderBold(text) {
+      if (!text) return "";
+      return String(text).replace(/\*\*(.+?)\*\*/g, '<strong style="color:#1A2332;font-weight:700">$1</strong>');
+    }
 
-      const setupUrl = FIXKIT_URL + "/create-account?token=" + magicToken + "&email=" + encodeURIComponent(customerEmail);
+    // Convert bullet lines (- item\n- item) to stacked HTML divs + apply bold
+    function renderContent(text) {
+      if (!text) return "";
+      return text.split("\n")
+        .map(function(line) { return line.trim(); })
+        .filter(function(line) { return line.length > 0; })
+        .map(function(line) {
+          var isBullet = /^-\s+/.test(line);
+          var clean    = renderBold(isBullet ? line.replace(/^-\s+/, "") : line);
+          return isBullet
+            ? '<div style="padding:5px 0 5px 18px;position:relative;font-size:15px;color:#1A2332;line-height:1.7;margin-bottom:10px">'
+              + '<span style="position:absolute;left:0;top:10px;width:6px;height:6px;background:#C8701A;border-radius:50%;display:inline-block"></span>&nbsp;&nbsp;'
+              + clean + '</div>'
+            : '<div style="font-size:15px;color:#1A2332;line-height:1.7;margin-bottom:6px">' + clean + '</div>';
+        })
+        .join("");
+    }
 
-      await resend.emails.send({
-        from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
-        to: customerEmail,
-        subject: "You're in — set up your account to get started",
-        html: `<div style="font-family:sans-serif;max-width:580px;margin:0 auto;color:#1B2E4B">
-          <div style="background:#1B2E4B;padding:24px;border-radius:8px 8px 0 0">
-            <div style="color:#C8701A;font-size:11px;letter-spacing:3px;font-weight:700">COMPASS BUSINESS SOLUTIONS</div>
-          </div>
-          <div style="background:#F4F7FC;padding:28px;border-radius:0 0 8px 8px;border:1px solid #C8D6E8">
-            <p style="font-size:15px">Hey ${firstName},</p>
-            <p style="font-size:15px;line-height:1.7">Payment received — you're in. Click below to set up your account and complete your intake form. Takes about 5 minutes and is what we use to build your personalized Profit Leak Snapshot.</p>
-            <div style="text-align:center;margin:24px 0">
-              <a href="${setupUrl}" style="display:inline-block;background:#C8701A;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px">Set Up My Account →</a>
+    const leakBlock = (label, content, color) => !content ? "" : `
+      <div style="background:white;border-left:4px solid ${color};border-radius:0 8px 8px 0;padding:16px 18px;margin-bottom:12px;border:1px solid #D8D4CD;border-left:4px solid ${color};">
+        <div style="font-size:11px;font-weight:bold;color:${color};letter-spacing:2px;margin-bottom:10px;">${label}</div>
+        ${renderContent(content)}
+      </div>`;
+
+    // Check for no admin staff — triggers Business Support upsell
+    const officeStaffVal = answers && (answers.office_staff || answers.admin || "0");
+    const noAdmin = parseInt(officeStaffVal) === 0 ||
+      String(officeStaffVal).toLowerCase().includes("none") ||
+      String(officeStaffVal).trim() === "0" ||
+      !officeStaffVal;
+
+    const html = `
+      <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;color:#1A2332;">
+        <div style="background:#1B2E4B;padding:32px 36px;border-radius:8px 8px 0 0;">
+          <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:3px;margin-bottom:10px;">COMPASS BUSINESS SOLUTIONS — FREE DIAGNOSTIC</div>
+          ${headline ? `<div style="font-size:26px;font-weight:bold;color:#C8701A;line-height:1.3;">${renderBoldHeadline(headline)}</div>` : `<div style="font-size:26px;font-weight:bold;color:#C8701A;">Your Business Diagnostic</div>`}
+          <div style="font-size:15px;color:rgba(255,255,255,0.5);margin-top:8px;">Prepared for ${firstName} — ${biz}</div>
+        </div>
+        <div style="background:#F7F5F2;padding:32px 36px;border-radius:0 0 8px 8px;border:1px solid #D8D4CD;">
+          <p style="font-size:17px;color:#1A2332;font-weight:600;margin-top:0;">Hi ${firstName},</p>
+          <p style="font-size:15px;color:#3E4E63;line-height:1.7;margin-top:0;">Here is your free diagnostic for <strong>${biz}</strong>${trade ? " — " + trade : ""}.</p>
+          ${whatWeSee ? `<div style="background:white;border-radius:8px;padding:18px 20px;margin-bottom:18px;border:1px solid #D8D4CD;">
+            <div style="font-size:11px;font-weight:bold;color:#3D6B9E;letter-spacing:2px;margin-bottom:12px;">WHAT WE SEE</div>
+            ${renderContent(whatWeSee)}
+          </div>` : ""}
+          ${leakBlock("#1 BIGGEST LEAK", topLeak, "#B84C2E")}
+          ${leakBlock("#2 LEAK", secondLeak, "#C8701A")}
+          ${leakBlock("#3 LEAK", thirdLeak, "#A8782A")}
+          ${howWeHelp ? `<p style="font-size:15px;color:#3E4E63;line-height:1.8;margin:20px 0 0;">${renderBold(howWeHelp)}</p>` : ""}
+
+          <!-- What to do next -->
+          <div style="margin:24px 0;">
+            <div style="font-size:12px;font-weight:bold;color:#1A2332;letter-spacing:2px;margin-bottom:18px;">YOUR NEXT STEP — THREE OPTIONS:</div>
+
+            <!-- Snapshot tier -->
+            <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-top:3px solid #1B2E4B;border-radius:8px;padding:18px 20px;margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+                <div>
+                  <div style="font-size:15px;font-weight:bold;color:#1A2332;">DIY Profit Leak Snapshot</div>
+                  <div style="font-size:13px;color:#6B7A90;margin-top:2px;">Your top 3 leaks, the math, what to fix, and the tools to do it.</div>
+                </div>
+                <div style="font-size:24px;font-weight:bold;color:#1B2E4B;flex-shrink:0;margin-left:12px;">$99</div>
+              </div>
+              <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
+                Deep intake → your top 3 leaks with exact math, 2-3 specific fixes for each one, and Fix-It Guides matched to your leaks. Your <strong>$99 is credited</strong> toward any FixKit plan.
+              </div>
+              <a href="https://buy.stripe.com/6oU28kfwo27GbWT2l8dZ608" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My Snapshot — $99 →</a>
             </div>
-            <p style="font-size:13px;color:#5A7291">Use <strong>${customerEmail}</strong> when you sign in — that's the email tied to your purchase.</p>
-            <p style="font-size:13px;color:#5A7291">Once your intake is submitted, you'll receive your Snapshot within 24 hours.</p>
-            <p style="font-size:14px">— Jen<br>Compass Business Solutions</p>
-          </div>
-        </div>`
-      });
 
-      resend.emails.send({
-        from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
-        to: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
-        subject: "💰 New Snapshot purchase — " + customerEmail,
-        html: "<p><b>New Snapshot purchase</b></p><p>Email: " + customerEmail + "</p><p>Name: " + (customerName || "not provided") + "</p><p>Stripe session: " + session.id + "</p>"
+            <!-- 30-Day Plan -->
+            <div style="background:white;border:2px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;position:relative;">
+              <div style="display:inline-block;background:#C8701A;color:white;font-size:10px;font-weight:bold;letter-spacing:1.5px;padding:2px 10px;border-radius:99px;margin-bottom:10px;">MOST POPULAR</div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+                <div>
+                  <div style="font-size:15px;font-weight:bold;color:#1A2332;">FixKit — 30-Day Plan</div>
+                  <div style="font-size:13px;color:#6B7A90;margin-top:2px;">Daily tasks. Built-in calculators. AI support.</div>
+                </div>
+                <div style="font-size:24px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$299</div>
+              </div>
+              <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
+                30 days of daily tasks (15 min/day) built around your specific leaks and your numbers. Calculators pre-loaded. Fix-It Guides matched to your leaks. Ask Jen AI advisor. <strong>$99 credited from Snapshot.</strong>
+              </div>
+              <a href="https://buy.stripe.com/14A28k9809A8gd9gbYdZ609" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the 30-Day Plan — $299 →</a>
+            </div>
+
+            <!-- Full Bundle -->
+            <div style="background:white;border:1px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;position:relative;">
+              <div style="display:inline-block;background:#1B2E4B;color:white;font-size:10px;font-weight:bold;letter-spacing:1.5px;padding:2px 10px;border-radius:99px;margin-bottom:10px;">BEST VALUE — SAVES $298</div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+                <div>
+                  <div style="font-size:15px;font-weight:bold;color:#1A2332;">FixKit — Complete 30/60/90-Day Plan</div>
+                  <div style="font-size:13px;color:#6B7A90;margin-top:2px;">All three phases. Every leak addressed.</div>
+                </div>
+                <div style="font-size:24px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$599</div>
+              </div>
+              <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
+                All 90 days unlocked from day one. Every doc and calculator included. Saves $298 vs buying phases separately. <strong>$99 credited from Snapshot.</strong>
+              </div>
+              <a href="https://buy.stripe.com/6oU00c1Fy7s0bWT2l8dZ60f" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full Bundle — $599 →</a>
+            </div>
+
+            ${noAdmin ? `
+            <!-- No-Admin Upsell -->
+            <div style="background:#EEF3F8;border:1px solid #3D6B9E;border-left:4px solid #3D6B9E;border-radius:8px;padding:18px 20px;margin-bottom:12px;">
+              <div style="font-size:11px;font-weight:bold;color:#3D6B9E;letter-spacing:2px;margin-bottom:8px;">ONE MORE THING</div>
+              <div style="font-size:15px;font-weight:bold;color:#1A2332;margin-bottom:6px;">You're running without admin support</div>
+              <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
+                That means follow-ups, confirmations, invoicing, and outreach are all landing on you. A full-time admin runs $3,000–4,000/month. Our Business Support plans start at $250/month and handle the recurring work for you — done, every week, without you touching it.
+              </div>
+              <a href="https://www.compassbizsolutions.com/pricing" style="display:inline-block;background:#3D6B9E;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">See Business Support Plans →</a>
+            </div>` : ""}
+
+            <!-- Done For You -->
+            <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-radius:8px;padding:16px 18px;text-align:center;">
+              <div style="font-size:14px;color:#6B7A90;margin-bottom:10px;">Rather have us handle it? We scope, build, and implement the systems for you.</div>
+              <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:14px;padding:10px 22px;border-radius:8px;text-decoration:none;">Book a Free Scoping Call →</a>
+            </div>
+          </div>
+          <p style="font-size:14px;color:#6B7A90;margin-bottom:4px;">Questions? Reply to this email — I read every one.</p>
+          ${additionalLeaks.length ? `
+          <div style="background:#F4F7FC;border:1px solid #C8D6E8;border-radius:8px;padding:18px 20px;margin:20px 0">
+            <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#5A7291;margin-bottom:6px">WE ALSO FOUND THESE</div>
+            <div style="font-size:13px;color:#5A7291;line-height:1.6;margin-bottom:14px">Your full analysis — including what each of these is costing you and how to fix them — is in your Profit Leak Snapshot.</div>
+            ${additionalLeaks.map(l =>
+              `<div style="padding:7px 0;border-bottom:1px solid #E0E8F4;display:flex;align-items:center;gap:8px">
+                <span style="width:6px;height:6px;min-width:6px;background:#C8701A;border-radius:50%;display:inline-block"></span>
+                <span style="font-size:14px;color:#1B2E4B;font-weight:700">${l.name}</span>
+              </div>`
+            ).join('')}
+            <div style="margin-top:16px;text-align:center">
+              <a href="https://buy.stripe.com/6oU28kfwo27GbWT2l8dZ608" style="display:inline-block;background:#C8701A;color:white;font-weight:700;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">See What These Are Costing You — $99 →</a>
+            </div>
+          </div>` : ''}
+          <p style="margin:0;color:#3E4E63;font-size:15px;">— Jen, Compass Business Solutions</p>
+        </div>
+        <div style="text-align:center;padding:16px;font-size:12px;color:#A0ABBE;">
+          Compass Business Solutions &nbsp;·&nbsp; compassbizsolutions.com
+        </div>
+      </div>`;
+
+    // Send to user
+    await resend.emails.send({
+      from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
+      to: email,
+      subject: "Your Free Business Diagnostic — " + (biz || "Your Business"),
+      html
+    });
+
+    // Copy to Jen with full answers
+    const answerDump = Object.keys(answers).map(k => k + ": " + answers[k]).join("\n");
+    resend.emails.send({
+      from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
+      to: "jen@compassbizsolutions.com",
+      subject: "New Diagnostic — " + (biz || "Unknown") + " (" + (trade || "Unknown trade") + ") — " + phone,
+      html: "<pre style='font-family:monospace;font-size:13px;line-height:1.6;'>NEW DIAGNOSTIC SUBMISSION\n\nName: " + name + "\nEmail: " + email + "\nBusiness: " + biz + "\nPhone: " + phone + "\nTrade: " + trade + "\n\n--- ANSWERS ---\n" + answerDump + "\n\n--- REPORT ---\n" + report + "</pre>"
+    }).catch(function() {});
+
+    // Store answers in KV for check-ins
+    storeInKV(email, {
+      name, email, biz, phone, trade,
+      answers,
+      report,
+      diagnosticDate: new Date().toISOString(),
+      planPurchased: null
+    }).catch(function() {});
+
+    // Store lead record for admin dashboard
+    const emailKey = email.toLowerCase().replace(/[^a-z0-9@._-]/g, "");
+    const topLeakMatch = report.match(/\[LEAK_RANKING\]\s*1\.\s*([^\n—]+)/);
+    const topLeakText = topLeakMatch ? topLeakMatch[1].trim() : "";
+
+    storeInKV("lead:" + emailKey, {
+      email, name, biz, phone, trade,
+      top_leak: topLeakText,
+      created_at: new Date().toISOString(),
+      utm_source: utm_source || "",
+      utm_campaign: utm_campaign || "",
+      utm_medium: utm_medium || "",
+      source: utm_source || "direct",
+      diagnostic_answers: answers || {},
+      outreach_tags: noAdmin ? ["no_admin_staff"] : [],
+      outreach_opportunity: noAdmin ? "Business Support Services — no admin staff reported" : "",
+    }).catch(function() {});
+
+    // Write to outreach queue if no admin staff
+    if (noAdmin) {
+      storeInKV("outreach:no-admin:" + emailKey, {
+        email, name, biz, trade,
+        plan: "lead",
+        tagged_at: new Date().toISOString(),
+        reason: "Reported 0 office/admin staff on free diagnostic",
+        campaign: "business_support_services",
+        status: "pending",
       }).catch(function() {});
     }
 
-    // ── FIXKIT purchase (30day, bundle, 3160, 6190) ────────────────────
-    else if (planType && planType !== "snapshot") {
-      // Check if customer exists already
-      const existing = await getFromKV("customer:" + eKey);
-      // No auto-generated passwords — customers create their own via the portal
+    // Tag in Mailchimp
+    tagMailchimp(email, name, trade).catch(function() {});
 
-      // Determine what they now have access to
-      let purchases = existing && existing.purchases ? existing.purchases : [];
-      if (!purchases.includes(planType)) purchases.push(planType);
-
-      // Store customer record — preserve existing intake/plan data for upgrades
-      await saveToKV("customer:" + eKey, Object.assign({}, existing || {}, {
-        email:      customerEmail,
-        name:       customerName || (existing && existing.name) || "",
-        biz:        bizName || (existing && existing.biz) || "",
-        plan:       planType,
-        plan_type:  planType,
-        purchases:  purchases,
-        phase_current: existing ? (existing.phase_current || 1) : 1,
-        intake_complete: existing ? (existing.intake_complete || false) : false,
-        snapshot_purchased: planType === "snapshot" || (existing && existing.snapshot_purchased),
-        upgraded_from_snapshot: existing && existing.plan_type === "snapshot",
-        purchased_at: new Date().toISOString(),
-        stripe_session: session.id,
-      }));
-
-      // Trigger phase 2 or 3 generation for phase upgrades (fire and forget)
-      if (planType === "3160" || planType === "6190") {
-        const phaseNum = planType === "3160" ? 2 : 3;
-        const FIXKIT_BASE = process.env.FIXKIT_URL || "https://fixkit.compassbizsolutions.com";
-        fetch(FIXKIT_BASE + "/api/generate-phase", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-admin-token": process.env.JEN_PASSWORD || "compass2026",
-          },
-          body: JSON.stringify({ email: customerEmail, phase: phaseNum })
-        }).then(function(r) {
-          console.log("generate-phase " + phaseNum + " triggered, status:", r.status);
-        }).catch(function(e) {
-          console.error("generate-phase trigger failed:", e.message);
-        });
-      }
-      const portalUrl = FIXKIT_URL;
-
-      // Upgrade links for this plan
-      const upgrades = UPGRADE_LINKS[planType] || {};
-
-      let upgradeHtml = "";
-      if (planType === "30day") {
-        upgradeHtml = `<div style="background:#1B2E4B;border-radius:8px;padding:20px;margin:20px 0">
-          <p style="color:rgba(255,255,255,0.7);font-size:13px;margin:0 0 12px">Keep going? Add Phase 2 when you're ready.</p>
-          <a href="${upgrades.url3160}" style="display:inline-block;background:#C8701A;color:#fff;padding:10px 20px;border-radius:7px;text-decoration:none;font-weight:700;font-size:13px">Add Days 31-60 — $299 →</a>
-        </div>`;
-      } else if (planType === "3160") {
-        upgradeHtml = `<div style="background:#1B2E4B;border-radius:8px;padding:20px;margin:20px 0">
-          <p style="color:rgba(255,255,255,0.7);font-size:13px;margin:0 0 12px">One more phase to go.</p>
-          <a href="${upgrades.url6190}" style="display:inline-block;background:#C8701A;color:#fff;padding:10px 20px;border-radius:7px;text-decoration:none;font-weight:700;font-size:13px">Add Days 61-90 — $299 →</a>
-        </div>`;
-      }
-
-      await resend.emails.send({
-        from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
-        to: customerEmail,
-        subject: "Your FixKit is ready — " + planLabel,
-        html: `<div style="font-family:sans-serif;max-width:580px;margin:0 auto;color:#1B2E4B">
-          <div style="background:#1B2E4B;padding:24px;border-radius:8px 8px 0 0">
-            <div style="color:#C8701A;font-size:11px;letter-spacing:3px;font-weight:700">COMPASS BUSINESS SOLUTIONS</div>
-          </div>
-          <div style="background:#F4F7FC;padding:28px;border-radius:0 0 8px 8px;border:1px solid #C8D6E8">
-            <p style="font-size:15px">Hey ${firstName},</p>
-            <p style="font-size:15px;line-height:1.7">You're in. Your <strong>${planLabel}</strong> is ready.</p>
-            <p style="font-size:15px;line-height:1.7">One thing before you start: don't try to knock it all out at once. One task a day, 15-20 minutes. The plan is built around your numbers so the first week is aimed right at your biggest leak.</p>
-            <div style="text-align:center;margin:24px 0">
-              <a href="${portalUrl}" style="display:inline-block;background:#C8701A;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px">Go to Your FixKit →</a>
-            </div>
-            <p style="font-size:13px;color:#5A7291">Use <strong>${customerEmail}</strong> when you sign in — that's the email tied to your purchase.</p>
-            ${upgradeHtml}
-            <p style="font-size:13px;color:#5A7291;margin-bottom:12px">FixKit includes a free 20-minute strategy call. Book yours here:</p>
-            <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" style="display:inline-block;background:#1B2E4B;color:#fff;padding:8px 18px;border-radius:7px;text-decoration:none;font-weight:600;font-size:13px">Book Your Free 20-Min Call →</a>
-            <p style="font-size:14px">— Jen<br>Compass Business Solutions</p>
-          </div>
-        </div>`
-      });
-
-      // Notify Jen of new purchase
-      await resend.emails.send({
-        from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
-        to: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
-        subject: "🎉 New FixKit purchase — " + planLabel + " — " + customerEmail,
-        html: "<p><b>New purchase:</b> " + planLabel + "</p>"
-          + "<p>Email: " + customerEmail + "</p>"
-          + "<p>Name: " + (customerName || "not provided") + "</p>"
-          + "<p>Business: " + (bizName || "not provided") + "</p>"
-          + "<p>Stripe session: " + session.id + "</p>"
-      });
-    }
-
-    return res.status(200).json({ received: true });
+    return res.status(200).json({ success: true });
 
   } catch(err) {
-    console.error("stripe-webhook error:", err);
-    return res.status(500).json({ error: "Webhook handler failed", detail: err.message });
+    console.error("send-diagnostic error:", err);
+    return res.status(500).json({ error: "Failed", detail: err.message });
   }
 };
-
-// Tell Vercel not to parse the body — required for Stripe signature verification
-module.exports.config = { api: { bodyParser: false } };
