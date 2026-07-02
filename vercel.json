@@ -1,5 +1,9 @@
 {
   "rewrites": [
+{ "source": "/portal/review-responses", "destination": "/portal/review-responses/index.html" },
+{ "source": "/portal/mileage-expense", "destination": "/portal/mileage-expense/index.html" },
+{ "source": "/portal/job-posting", "destination": "/portal/job-posting/index.html" },
+{ "source": "/portal/meeting-notes", "destination": "/portal/meeting-notes/index.html" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/trades", "destination": "/trades/index.html" },
     { "source": "/trades/(.*)", "destination": "/trades/index.html" },
