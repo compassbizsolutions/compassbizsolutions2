@@ -62,6 +62,11 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .btn-pay:hover{background:var(--green2);}
 .btn-pay:disabled{opacity:0.5;cursor:not-allowed;}
 .working-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:40px;text-align:center;margin-top:24px;display:none;}
+.submitted-card{background:var(--navy2);border:1px solid rgba(26,96,64,0.3);border-radius:14px;padding:40px;text-align:center;margin-top:24px;display:none;}
+.submitted-check{width:52px;height:52px;border-radius:50%;background:var(--green-dim);color:var(--green2);font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.submitted-title{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:white;text-transform:uppercase;margin-bottom:10px;}
+.submitted-sub{font-size:13px;color:var(--muted);line-height:1.7;max-width:420px;margin:0 auto;}
+.submitted-sub strong{color:var(--text2);}
 .spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,0.08);border-top-color:var(--amber);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .working-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:white;text-transform:uppercase;margin-bottom:8px;}
@@ -145,6 +150,12 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
     <div class="spinner"></div>
     <div class="working-title">Working On It</div>
     <div class="working-sub" id="workingSub">Compiling your mileage log and calculating deductions...</div>
+  </div>
+
+  <div class="submitted-card" id="submittedCard">
+    <div class="submitted-check">✓</div>
+    <div class="submitted-title">Submitted for Processing</div>
+    <div class="submitted-sub">We've got your task. Finished files are typically ready within 30 minutes to an hour — we'll email you as soon as it's ready. You can also check back anytime under <strong>My Tasks</strong> on your DeskKit dashboard.</div>
   </div>
 
   <div class="result-card" id="resultCard">
@@ -307,20 +318,14 @@ async function analyzeTask() {
 function showAnalysisResult(analysis, desc) {
   const tier = analysis.tier || 'moderate';
   const price = PRICES[tier];
-  const steps = analysis.steps || [];
   const el = document.getElementById('analysisResult');
   el.innerHTML = `
-    <div class="analysis-tier">${TIER_LABELS[tier]}</div>
+    <div class="analysis-tier">${TIER_LABELS[tier].toUpperCase()}</div>
     <div class="analysis-price">$${price}</div>
     <div class="analysis-desc">${TIER_DESCS[tier]}</div>
-    <div class="analysis-breakdown">
-      <div class="analysis-breakdown-title">What We'll Do</div>
-      <div class="analysis-item">${analysis.reason || 'Complete your requested task.'}</div>
-      ${steps.map(s => `<div class="analysis-item">${s}</div>`).join('')}
-    </div>
     <div class="analysis-actions">
-      <button class="btn-confirm" onclick='confirmAndPay("${tier}", ${price})'>Confirm & Pay $${price} →</button>
-      <button class="btn-cancel" onclick="cancelAnalysis()">Change Details</button>
+      <button class="btn-cancel" onclick="cancelAnalysis()">Add More Files First</button>
+      <button class="btn-confirm" onclick='confirmAndPay("${tier}", ${price})'>Accept & Submit — $${price} →</button>
     </div>`;
   el.style.display = 'block';
   el.scrollIntoView({ behavior:'smooth', block:'nearest' });
@@ -406,8 +411,6 @@ async function submitPayment() {
 async function onPaymentConfirmed() {
   const session = getSession();
   document.getElementById('paymentCard').style.display = 'none';
-  document.getElementById('workingCard').style.display = 'block';
-  document.getElementById('workingCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
 
   try {
     const r = await fetch('/api/deskkit-confirm-payment', {
@@ -416,12 +419,20 @@ async function onPaymentConfirmed() {
       body: JSON.stringify({ taskId: currentTaskId, paymentIntentId: pendingPaymentIntentId })
     });
     const d = await r.json();
-    if (!r.ok) { document.getElementById('workingCard').style.display = 'none'; showToast(d.error || 'Could not confirm payment.', 'error'); return; }
-    await doWork(pendingDesc, currentTaskId);
+    if (!r.ok) { showToast(d.error || 'Could not confirm payment.', 'error'); return; }
+    showSubmittedConfirmation();
+    // Generation happens now, in the background — result isn't shown immediately.
+    doWork(pendingDesc, currentTaskId);
   } catch(e) {
-    document.getElementById('workingCard').style.display = 'none';
     showToast('Payment succeeded but something went wrong starting your task. Contact support with task ID: ' + currentTaskId, 'error');
   }
+}
+
+function showSubmittedConfirmation() {
+  document.getElementById('workingCard').style.display = 'none';
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('submittedCard').style.display = 'block';
+  document.getElementById('submittedCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
 
 window.addEventListener('load', async () => {
@@ -446,17 +457,11 @@ async function doWork(desc, taskId) {
       body: JSON.stringify({ taskId, desc, workSystem: "You are DeskKit, an AI back office assistant for small businesses. Read the uploaded mileage log and produce a complete mileage expense report. Output clean CSV format with columns: Date, From, To, Purpose, Miles. End with Total Business Miles and Total Deduction using the current IRS standard mileage rate for business use (state the rate used). Flag any entries with unclear or missing business purpose in a Notes column. Give the complete finished deliverable, not instructions.", files: buildFilesPayload() })
     });
     const d = await r.json();
-    if (!r.ok) {
-      document.getElementById('workingCard').style.display = 'none';
-      showToast(d.error || 'Something went wrong — this has been flagged for manual review. We will follow up.', 'error');
-      return;
-    }
-    resultText = d.result;
-    document.getElementById('workingCard').style.display = 'none';
-    showResult(d.result);
+    if (r.ok) { resultText = d.result; }
+    // Result intentionally not displayed here — the customer reviews it later
+    // via My Tasks on the DeskKit dashboard, or the email notification.
   } catch(e) {
-    document.getElementById('workingCard').style.display = 'none';
-    showToast('Something went wrong. Please contact support with task ID: ' + taskId, 'error');
+    console.error('Generation error:', e);
   }
 }
 
