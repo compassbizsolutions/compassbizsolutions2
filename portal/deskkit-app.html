@@ -158,6 +158,11 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 
 /* WORKING STATE */
 .working-card { background: var(--navy2); border: 1px solid var(--border2); border-radius: 14px; padding: 40px; text-align: center; margin-top: 24px; }
+.submitted-card { background: var(--navy2); border: 1px solid rgba(26,96,64,0.3); border-radius: 14px; padding: 40px; text-align: center; margin-top: 24px; }
+.submitted-check { width: 52px; height: 52px; border-radius: 50%; background: var(--green-dim); color: var(--green2); font-size: 26px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+.submitted-title { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 800; color: white; text-transform: uppercase; margin-bottom: 10px; }
+.submitted-sub { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 420px; margin: 0 auto; }
+.submitted-sub strong { color: var(--text2); }
 .working-spinner { width: 48px; height: 48px; border: 3px solid rgba(255,255,255,0.08); border-top-color: var(--amber); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .working-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: white; text-transform: uppercase; margin-bottom: 8px; }
@@ -369,6 +374,15 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
           <div class="working-step" id="step3"><div class="step-dot"></div>Completing the work</div>
           <div class="working-step" id="step4"><div class="step-dot"></div>Preparing your preview</div>
         </div>
+      </div>
+    </div>
+
+    <!-- SUBMITTED STATE -->
+    <div id="submittedState" style="display:none">
+      <div class="submitted-card">
+        <div class="submitted-check">✓</div>
+        <div class="submitted-title">Submitted for Processing</div>
+        <div class="submitted-sub">We've got your task. Finished files are typically ready within 30 minutes to an hour — we'll email you as soon as it's ready. You can also check back anytime under <strong>My Tasks</strong>.</div>
       </div>
     </div>
 
@@ -606,25 +620,19 @@ function showAnalysisResult(analysis, desc) {
   const price = PRICES[tier];
   const label = TIER_LABELS[tier];
   const tierDesc = TIER_DESCS[tier];
-  const steps = analysis.steps || [];
 
   const html = `
     <div class="analysis-card">
       <div class="analysis-header">
         <div>
-          <div class="analysis-tier">${label}</div>
+          <div class="analysis-tier">${label.toUpperCase()}</div>
           <div class="analysis-price">$${price}</div>
           <div class="analysis-desc">${tierDesc}</div>
         </div>
       </div>
-      <div class="analysis-breakdown">
-        <div class="analysis-breakdown-title">What We'll Do</div>
-        <div class="analysis-item">${analysis.reason || 'Complete your requested task.'}</div>
-        ${steps.map(s => `<div class="analysis-item">${s}</div>`).join('')}
-      </div>
       <div class="analysis-actions">
-        <button class="btn-confirm" onclick="confirmAndPay('${tier}', ${price}, \`${desc.replace(/`/g, "'")}\`)">Confirm & Pay $${price} →</button>
-        <button class="btn-cancel" onclick="cancelAnalysis()">Change Task</button>
+        <button class="btn-cancel" onclick="cancelAnalysis()">Add More Details First</button>
+        <button class="btn-confirm" onclick="confirmAndPay('${tier}', ${price}, \`${desc.replace(/`/g, "'")}\`)">Accept & Submit — $${price} →</button>
       </div>
     </div>`;
 
@@ -743,15 +751,20 @@ async function onPaymentConfirmed() {
 
     if (!r.ok) { showToast(d.error || 'Could not confirm payment.', 'error'); return; }
 
-    document.getElementById('workingState').style.display = 'block';
-    document.getElementById('workingState').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    animateSteps();
-
-    await doWork(pendingTier, pendingDesc, currentTaskId);
+    showSubmittedConfirmation();
+    // Generation happens now, in the background — result isn't shown immediately.
+    doWork(pendingTier, pendingDesc, currentTaskId);
   } catch(e) {
     hideLoader();
     showToast('Payment succeeded but something went wrong starting your task. Contact support with task ID: ' + currentTaskId, 'error');
   }
+}
+
+function showSubmittedConfirmation() {
+  document.getElementById('workingState').style.display = 'none';
+  document.getElementById('previewState').style.display = 'none';
+  document.getElementById('submittedState').style.display = 'block';
+  document.getElementById('submittedState').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // Handle return from a redirect-based payment method (e.g. 3D Secure)
@@ -826,14 +839,11 @@ Be direct and complete. The customer has already paid — give them exactly what
     });
 
     const d = await r.json();
-    if (!r.ok) throw new Error(d.error || 'Generation failed');
-
-    document.getElementById('workingState').style.display = 'none';
-    showPreview(d.result, taskId, desc);
+    // Result intentionally not displayed here — the customer reviews it later
+    // via My Tasks on the DeskKit dashboard, or the email notification.
 
   } catch(e) {
-    document.getElementById('workingState').style.display = 'none';
-    showNeedsReview();
+    console.error('Generation error:', e);
   }
 }
 
