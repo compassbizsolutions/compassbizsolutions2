@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DeskKit — Back Office, Handled</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="/deskkit-config.js"></script>
+<style>
+:root {
+  --ink: #0A1520;
+  --navy: #0F1E2E;
+  --navy2: #162840;
+  --navy3: #1C3050;
+  --amber: #C8701A;
+  --amber2: #E08930;
+  --amber-dim: rgba(200,112,26,0.1);
+  --amber-border: rgba(200,112,26,0.25);
+  --green: #1A6040;
+  --green2: #22A060;
+  --green-dim: rgba(26,96,64,0.12);
+  --red: #8B1A1A;
+  --red2: #E05050;
+  --red-dim: rgba(139,26,26,0.12);
+  --muted: #5A7A9A;
+  --text: #E2EAF2;
+  --text2: #8AAAC8;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: var(--ink); color: var(--text); font-family: 'Inter', sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }
+button, input, textarea, select { font-family: 'Inter', sans-serif; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--navy3); border-radius: 99px; }
+
+/* LOGIN */
+.login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: var(--ink); }
+.login-card { background: var(--navy); border: 1px solid var(--border2); border-radius: 16px; padding: 40px; width: 100%; max-width: 400px; }
+.login-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; color: var(--amber); text-transform: uppercase; margin-bottom: 6px; }
+.login-title { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 900; color: white; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.login-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; line-height: 1.5; }
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+.field input { width: 100%; padding: 11px 14px; background: rgba(255,255,255,0.04); border: 1px solid var(--border2); border-radius: 8px; color: var(--text); font-size: 14px; outline: none; transition: border 0.15s; }
+.field input:focus { border-color: var(--amber); }
+.field input::placeholder { color: rgba(255,255,255,0.15); }
+.btn-amber { background: var(--amber); color: white; border: none; border-radius: 8px; padding: 12px 24px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.15s; width: 100%; margin-top: 4px; }
+.btn-amber:hover { background: var(--amber2); }
+.btn-amber:disabled { opacity: 0.5; cursor: not-allowed; }
+.login-err { background: var(--red-dim); border: 1px solid rgba(139,26,26,0.3); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--red2); margin-bottom: 14px; display: none; }
+.login-footer { font-size: 12px; color: var(--muted); text-align: center; margin-top: 20px; }
+.login-footer a { color: var(--amber); text-decoration: none; }
+
+/* APP LAYOUT */
+.app { display: none; min-height: 100vh; flex-direction: column; }
+
+/* HEADER */
+.header { background: var(--navy); border-bottom: 1px solid var(--border); padding: 0 28px; height: 58px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.header-logo { display: flex; align-items: baseline; gap: 8px; }
+.header-logo-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; color: white; text-transform: uppercase; letter-spacing: 1px; }
+.header-logo-name span { color: var(--amber); }
+.header-logo-by { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.header-user { font-size: 13px; color: var(--text2); }
+.btn-ghost { background: transparent; border: 1px solid var(--border2); color: var(--muted); border-radius: 8px; padding: 7px 14px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.btn-ghost:hover { border-color: var(--amber); color: var(--amber); }
+
+/* TABS */
+.tabs { background: var(--navy); border-bottom: 1px solid var(--border); padding: 0 28px; display: flex; gap: 0; }
+.tab { padding: 14px 20px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; background: none; border-top: none; border-left: none; border-right: none; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--amber); border-bottom-color: var(--amber); font-weight: 600; }
+
+/* CONTENT */
+.content { flex: 1; padding: 32px 28px; max-width: 860px; margin: 0 auto; width: 100%; }
+
+/* SUBMIT TASK */
+.submit-header { margin-bottom: 28px; }
+.submit-header h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.submit-header p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+/* PRICING CARDS */
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
+.price-card { background: var(--navy2); border: 2px solid var(--border); border-radius: 12px; padding: 18px; cursor: pointer; transition: all 0.15s; position: relative; }
+.price-card:hover { border-color: var(--border2); }
+.price-card.selected { border-color: var(--amber); background: var(--amber-dim); }
+.price-card-tier { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--amber); text-transform: uppercase; margin-bottom: 6px; }
+.price-card-amount { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 900; color: white; line-height: 1; margin-bottom: 8px; }
+.price-card-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.price-card-check { position: absolute; top: 12px; right: 12px; width: 20px; height: 20px; border-radius: 50%; background: var(--amber); display: none; align-items: center; justify-content: center; }
+.price-card.selected .price-card-check { display: flex; }
+.price-card-check::after { content: '✓'; font-size: 11px; font-weight: 700; color: white; }
+
+/* AI PRICING NOTE */
+.ai-note { background: var(--navy2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 12px; font-size: 13px; color: var(--text2); line-height: 1.6; }
+.ai-note-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+/* UPLOAD AREA */
+.upload-area { border: 2px dashed var(--border2); border-radius: 12px; padding: 36px; text-align: center; cursor: pointer; transition: all 0.15s; margin-bottom: 20px; position: relative; }
+.upload-area:hover, .upload-area.drag-over { border-color: var(--amber); background: var(--amber-dim); }
+.upload-icon { font-size: 36px; margin-bottom: 12px; }
+.upload-title { font-size: 15px; font-weight: 600; color: white; margin-bottom: 6px; }
+.upload-sub { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+.upload-types { font-size: 11px; color: var(--muted); opacity: 0.7; }
+.upload-input { display: none; }
+.upload-preview { display: flex; align-items: center; gap: 12px; background: var(--navy2); border: 1px solid var(--border2); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; }
+.upload-preview-icon { font-size: 24px; }
+.upload-preview-name { font-size: 13px; font-weight: 600; color: white; flex: 1; }
+.upload-preview-size { font-size: 12px; color: var(--muted); }
+.upload-preview-remove { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 18px; padding: 0; line-height: 1; }
+.upload-preview-remove:hover { color: var(--red2); }
+
+/* TASK DESCRIPTION */
+.task-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; display: block; }
+.task-textarea { width: 100%; background: var(--navy2); border: 1px solid var(--border2); border-radius: 10px; padding: 14px 16px; color: var(--text); font-size: 14px; line-height: 1.6; resize: vertical; min-height: 120px; outline: none; transition: border 0.15s; margin-bottom: 8px; }
+.task-textarea:focus { border-color: var(--amber); }
+.task-textarea::placeholder { color: rgba(255,255,255,0.15); }
+.task-hint { font-size: 12px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
+
+/* FEATURED TASKS */
+.featured-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; display: block; }
+.featured-tasks { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.featured-task { background: var(--navy2); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 12px; color: var(--text2); cursor: pointer; transition: all 0.15s; text-decoration: none; display: inline-block; }
+.featured-task:hover { border-color: var(--amber); color: var(--amber); }
+
+/* ANALYZE BUTTON */
+.analyze-btn { width: 100%; background: var(--amber); color: white; border: none; border-radius: 10px; padding: 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.analyze-btn:hover { background: var(--amber2); }
+.analyze-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ANALYSIS RESULT */
+.analysis-card { background: var(--navy2); border: 1px solid var(--border2); border-radius: 14px; padding: 24px; margin-top: 24px; }
+.analysis-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+.analysis-tier { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--amber); text-transform: uppercase; margin-bottom: 4px; }
+.analysis-price { font-family: 'Barlow Condensed', sans-serif; font-size: 48px; font-weight: 900; color: white; line-height: 1; }
+.analysis-desc { font-size: 13px; color: var(--text2); line-height: 1.6; max-width: 400px; }
+.analysis-breakdown { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 16px; margin-bottom: 20px; }
+.analysis-breakdown-title { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; }
+.analysis-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 13px; color: var(--text2); line-height: 1.5; }
+.analysis-item::before { content: '→'; color: var(--amber); flex-shrink: 0; font-weight: 700; }
+.analysis-actions { display: flex; gap: 12px; }
+.btn-confirm { flex: 1; background: var(--amber); color: white; border: none; border-radius: 10px; padding: 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.15s; }
+.btn-confirm:hover { background: var(--amber2); }
+.btn-cancel { background: transparent; border: 1px solid var(--border2); color: var(--muted); border-radius: 10px; padding: 14px 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.btn-cancel:hover { border-color: var(--red2); color: var(--red2); }
+.payment-card { background: var(--navy2); border: 1px solid var(--border2); border-radius: 14px; padding: 24px; margin-top: 20px; }
+.payment-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+.payment-error { background: rgba(139,26,26,0.1); border: 1px solid rgba(224,80,80,0.3); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--red2); margin-top: 12px; }
+.btn-pay { width: 100%; background: var(--green); color: white; border: none; border-radius: 10px; padding: 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.15s; margin-top: 16px; }
+.btn-pay:hover { background: var(--green2); }
+.btn-pay:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* WORKING STATE */
+.working-card { background: var(--navy2); border: 1px solid var(--border2); border-radius: 14px; padding: 40px; text-align: center; margin-top: 24px; }
+.working-spinner { width: 48px; height: 48px; border: 3px solid rgba(255,255,255,0.08); border-top-color: var(--amber); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.working-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: white; text-transform: uppercase; margin-bottom: 8px; }
+.working-sub { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.working-steps { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; text-align: left; max-width: 320px; margin-left: auto; margin-right: auto; }
+.working-step { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+.working-step.done { color: var(--green2); }
+.working-step.active { color: white; }
+.step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border2); flex-shrink: 0; }
+.working-step.done .step-dot { background: var(--green2); }
+.working-step.active .step-dot { background: var(--amber); }
+
+/* PREVIEW STATE */
+.preview-card { background: var(--navy2); border: 1px solid var(--border2); border-radius: 14px; padding: 24px; margin-top: 24px; }
+.preview-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.preview-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; color: white; text-transform: uppercase; }
+.preview-badge { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 99px; background: var(--green-dim); color: var(--green2); border: 1px solid rgba(26,96,64,0.3); }
+.preview-content { background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; font-size: 13px; color: var(--text2); line-height: 1.8; white-space: pre-wrap; max-height: 400px; overflow-y: auto; font-family: 'Inter', sans-serif; }
+.preview-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-accept { background: var(--green); color: white; border: none; border-radius: 10px; padding: 13px 24px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.15s; }
+.btn-accept:hover { background: var(--green2); }
+.revision-wrap { flex: 1; display: flex; gap: 8px; }
+.revision-input { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border2); border-radius: 8px; padding: 10px 14px; color: var(--text); font-size: 13px; outline: none; }
+.revision-input:focus { border-color: var(--amber); }
+.revision-input::placeholder { color: rgba(255,255,255,0.15); }
+.btn-revise { background: var(--navy3); border: 1px solid var(--border2); color: var(--text); border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+.btn-revise:hover { border-color: var(--amber); color: var(--amber); }
+
+/* TASK HISTORY */
+.tasks-list { display: flex; flex-direction: column; gap: 12px; }
+.task-card { background: var(--navy2); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; }
+.task-card-desc { font-size: 14px; color: white; font-weight: 500; margin-bottom: 6px; line-height: 1.4; }
+.task-card-meta { font-size: 12px; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap; }
+.task-card-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.status-badge { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 99px; letter-spacing: 0.5px; white-space: nowrap; }
+.status-pending { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-border); }
+.status-working { background: rgba(26,96,64,0.1); color: #60D0A0; border: 1px solid rgba(26,96,64,0.3); }
+.status-review { background: rgba(200,112,26,0.15); color: var(--amber2); border: 1px solid rgba(200,112,26,0.3); }
+.status-needs-review { background: var(--red-dim); color: var(--red2); border: 1px solid rgba(139,26,26,0.3); }
+.status-complete { background: var(--green-dim); color: var(--green2); border: 1px solid rgba(26,96,64,0.3); }
+.task-price { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; color: var(--amber); }
+.btn-download { background: var(--green); color: white; border: none; border-radius: 8px; padding: 8px 16px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+.btn-download:hover { background: var(--green2); }
+.btn-view { background: transparent; border: 1px solid var(--border2); color: var(--text2); border-radius: 8px; padding: 7px 14px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.btn-view:hover { border-color: var(--amber); color: var(--amber); }
+
+/* EMPTY STATE */
+.empty { text-align: center; padding: 80px 20px; color: var(--muted); }
+.empty-icon { font-size: 48px; margin-bottom: 16px; }
+.empty-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: white; text-transform: uppercase; margin-bottom: 8px; }
+.empty-sub { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--navy2); border: 1px solid var(--border2); border-radius: 10px; padding: 12px 18px; font-size: 13px; color: var(--text); z-index: 999; opacity: 0; transform: translateY(8px); transition: all 0.2s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.success { border-color: rgba(26,96,64,0.4); color: var(--green2); }
+.toast.error { border-color: rgba(139,26,26,0.4); color: var(--red2); }
+
+/* LOADER OVERLAY */
+.loader-overlay { position: fixed; inset: 0; background: rgba(10,21,32,0.85); display: none; align-items: center; justify-content: center; z-index: 200; }
+.loader-overlay.show { display: flex; }
+.loader-box { background: var(--navy); border: 1px solid var(--border2); border-radius: 16px; padding: 40px; text-align: center; max-width: 320px; }
+.loader-spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.08); border-top-color: var(--amber); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+.loader-text { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+@media (max-width: 600px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+  .content { padding: 20px 16px; }
+  .analysis-actions { flex-direction: column; }
+  .preview-actions { flex-direction: column; }
+  .revision-wrap { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-logo">Compass Business Solutions</div>
+    <div class="login-title">Desk<span style="color:var(--amber)">Kit</span></div>
+    <div class="login-sub">Your back office, handled.</div>
+    <div class="login-err" id="loginErr"></div>
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="loginEmail" placeholder="you@yourbusiness.com" autocomplete="email"/>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="btn-amber" id="loginBtn" onclick="doLogin()">Sign In →</button>
+    <div style="text-align:center;margin-top:12px;">
+      <a href="#" onclick="showForgotPassword()" style="font-size:12px;color:var(--muted);text-decoration:none;">Forgot your password?</a>
+    </div>
+    <div class="login-footer">
+      New here? <a href="/portal/signup">Create an account</a> &nbsp;·&nbsp; <a href="mailto:jen@compassbizsolutions.com">Need help?</a>
+    </div>
+
+    <!-- FORGOT PASSWORD -->
+    <div id="forgotWrap" style="display:none;margin-top:20px;border-top:1px solid var(--border);padding-top:20px;">
+      <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;">Reset your password</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Enter your email and we'll send you a reset link.</div>
+      <div id="resetMsg" style="display:none;font-size:13px;color:var(--green2);margin-bottom:10px;"></div>
+      <div class="field" style="margin-bottom:10px;">
+        <input type="email" id="resetEmail" placeholder="your@email.com" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:13px;outline:none;"/>
+      </div>
+      <button onclick="sendReset()" style="width:100%;background:var(--navy3);border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:10px;font-size:13px;font-weight:600;cursor:pointer;">Send Reset Link →</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+  <div class="header">
+    <div class="header-logo">
+      <div class="header-logo-name">Desk<span>Kit</span></div>
+      <div class="header-logo-by">by Compass</div>
+    </div>
+    <div class="header-right">
+      <div class="header-user" id="headerUser"></div>
+      <button class="btn-ghost" onclick="logout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('submit', this)">Submit Task</button>
+    <button class="tab" onclick="showTab('history', this)">My Tasks</button>
+  </div>
+
+  <!-- SUBMIT TAB -->
+  <div class="content" id="tabSubmit">
+    <div class="submit-header">
+      <h1>What Can We Do For You?</h1>
+      <p>Upload your file or image, describe what you need, and we get it done. You preview and approve before downloading.</p>
+    </div>
+
+    <!-- FEATURED QUICK TASKS -->
+    <span class="featured-label">Quick Start — Common Tasks</span>
+    <div class="featured-tasks">
+      <a class="featured-task" href="/portal/collection-letter">✉️ Collection Letter</a>
+      <a class="featured-task" href="/portal/payroll">📊 Compile Payroll</a>
+      <a class="featured-task" href="/portal/invoices">🧾 Compile Invoices</a>
+      <a class="featured-task" href="/portal/warning-letter">⚠️ Employee Warning Letter</a>
+      <a class="featured-task" href="/portal/business-letter">📧 Write a Letter or Email</a>
+      <a class="featured-task" href="/portal/bank-expense">🏦 Expense Report from Statement</a>
+      <a class="featured-task" href="/portal/followup-letters">📬 Customer Follow-Up Letters</a>
+      <a class="featured-task" href="/portal/job-cost">🧾 Job Cost Report</a>
+      <a class="featured-task" href="/portal/quote-comparison">📐 Compare Material Quotes</a>
+      <a class="featured-task" href="/portal/review-responses">⭐ Review Response Batch</a>
+      <a class="featured-task" href="/portal/mileage-expense">🚗 Mileage to Expense Report</a>
+      <a class="featured-task" href="/portal/job-posting">📢 Job Posting Generator</a>
+      <a class="featured-task" href="/portal/meeting-notes">📝 Meeting Notes to Action Items</a>
+      <div class="featured-task" onclick="setFeatured('Clean up and organize this spreadsheet. Fix formatting, remove duplicates, and make it easy to read.')">🧹 Clean Up Spreadsheet</div>
+      <div class="featured-task" onclick="setFeatured('Summarize this document in plain language. Pull out the key points and action items.')">📄 Summarize Document</div>
+      <div class="featured-task" onclick="setFeatured('Build a report from this data. Make it clear, organized, and easy to read.')">📈 Build a Report</div>
+    </div>
+
+    <!-- UPLOAD -->
+    <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
+      <input type="file" id="fileInput" class="upload-input" onchange="handleFile(this.files[0])" accept=".xlsx,.xls,.csv,.pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp,.gif"/>
+      <div class="upload-icon">📁</div>
+      <div class="upload-title">Drop your file here or click to browse</div>
+      <div class="upload-sub">Spreadsheets, documents, PDFs, or photos of your data</div>
+      <div class="upload-types">.xlsx · .csv · .pdf · .docx · .txt · .png · .jpg · .jpeg</div>
+    </div>
+
+    <div class="upload-preview" id="uploadPreview" style="display:none">
+      <div class="upload-preview-icon" id="previewIcon">📄</div>
+      <div class="upload-preview-name" id="previewName"></div>
+      <div class="upload-preview-size" id="previewSize"></div>
+      <button class="upload-preview-remove" onclick="removeFile()">✕</button>
+    </div>
+
+    <!-- TASK DESCRIPTION -->
+    <span class="task-label">Describe What You Need</span>
+    <textarea class="task-textarea" id="taskDesc" placeholder="Tell us exactly what you want done. The more specific you are, the better the result.&#10;&#10;Example: &quot;Compile payroll for the week ending June 27. Bobby earns $28/hr, Mike earns $24/hr, Jake earns $22/hr. Output as a QuickBooks CSV.&quot;"></textarea>
+    <div class="task-hint">Be specific about format, who it's for, and what you want the end result to look like. Include rates, names, or other details right here.</div>
+
+    <div class="ai-note">
+      <div>We'll review your file and task description, then confirm the price before any work begins. <strong>You approve before we charge anything.</strong> Revisions are included — we work until you're happy.</div>
+    </div>
+
+    <button class="analyze-btn" id="analyzeBtn" onclick="analyzeTask()">
+      Get My Price
+    </button>
+
+    <!-- ANALYSIS RESULT -->
+    <div id="analysisResult" style="display:none"></div>
+
+    <div id="paymentCard" class="payment-card" style="display:none">
+      <div class="payment-card-title">Payment Details</div>
+      <div id="paymentElement"></div>
+      <div id="paymentError" class="payment-error" style="display:none"></div>
+      <button class="btn-pay" id="payBtn" onclick="submitPayment()">Pay <span id="payAmount"></span> →</button>
+      <button class="btn-cancel" style="width:100%;margin-top:8px" onclick="cancelPayment()">Cancel</button>
+    </div>
+
+
+    <!-- WORKING STATE -->
+    <div id="workingState" style="display:none">
+      <div class="working-card">
+        <div class="working-spinner"></div>
+        <div class="working-title">Working On It</div>
+        <div class="working-sub">We're completing your task. This usually takes 30–60 seconds.</div>
+        <div class="working-steps" id="workingSteps">
+          <div class="working-step active" id="step1"><div class="step-dot"></div>Reading your file</div>
+          <div class="working-step" id="step2"><div class="step-dot"></div>Understanding the task</div>
+          <div class="working-step" id="step3"><div class="step-dot"></div>Completing the work</div>
+          <div class="working-step" id="step4"><div class="step-dot"></div>Preparing your preview</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREVIEW STATE -->
+    <div id="previewState" style="display:none"></div>
+  </div>
+
+  <!-- HISTORY TAB -->
+  <div class="content" id="tabHistory" style="display:none">
+    <div class="submit-header">
+      <h1>My Tasks</h1>
+      <p>All your submitted tasks, results, and downloads in one place.</p>
+    </div>
+    <div id="tasksList"></div>
+  </div>
+</div>
+
+<!-- LOADER -->
+<div class="loader-overlay" id="loaderOverlay">
+  <div class="loader-box">
+    <div class="loader-spinner"></div>
+    <div class="loader-text" id="loaderText">Processing...</div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── CONFIG ──────────────────────────────────────────────────────
+// Replace with your actual Stripe publishable key (safe to expose client-side)
+const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+let elements = null;
+let pendingPaymentIntentId = null;
+
+const PRICES = { simple: 15, moderate: 35, complex: 75 };
+const TIER_LABELS = { simple: 'Simple Task', moderate: 'Moderate Task', complex: 'Complex Task' };
+const TIER_DESCS = {
+  simple:   'Quick fixes. Clean up a spreadsheet, format a document, organize a list, basic edits.',
+  moderate: 'Real work. Write a letter or email, put together a report, create a form, summarize a document, compile payroll.',
+  complex:  'Big jobs. Detailed analysis of your numbers, up to 3 related documents, anything that takes real time and thought.'
+};
+
+const SK = 'dk_session';
+let currentFile = null;
+let currentFileData = null;
+let currentAnalysis = null;
+let currentTaskId = null;
+
+// ─── AUTH ────────────────────────────────────────────────────────
+function getSession() {
+  try { return JSON.parse(localStorage.getItem(SK)); } catch(e) { return null; }
+}
+
+function saveSession(s) { localStorage.setItem(SK, JSON.stringify(s)); }
+
+function logout() {
+  localStorage.removeItem(SK);
+  location.reload();
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginErr');
+
+  err.style.display = 'none';
+  if (!email || !password) { showLoginErr('Please enter your email and password.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Signing in...';
+
+  try {
+    const r = await fetch('/api/portal-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const d = await r.json();
+
+    if (!r.ok) { showLoginErr(d.error || 'Login failed.'); btn.disabled = false; btn.textContent = 'Sign In →'; return; }
+
+    saveSession({ token: d.token, email: d.email, name: d.name });
+    initApp(d.name, d.email);
+  } catch(e) {
+    showLoginErr('Connection error. Please try again.');
+    btn.disabled = false;
+    btn.textContent = 'Sign In →';
+  }
+}
+
+function showLoginErr(msg) {
+  const el = document.getElementById('loginErr');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function initApp(name, email) {
+  document.getElementById('loginWrap').style.display = 'none';
+  const app = document.getElementById('app');
+  app.style.display = 'flex';
+  document.getElementById('headerUser').textContent = name || email;
+  loadTaskHistory();
+}
+
+window.onload = () => {
+  const s = getSession();
+  if (s && s.token) initApp(s.name, s.email);
+};
+
+// ─── TABS ────────────────────────────────────────────────────────
+function showTab(tab, btn) {
+  document.getElementById('tabSubmit').style.display = tab === 'submit' ? 'block' : 'none';
+  document.getElementById('tabHistory').style.display = tab === 'history' ? 'block' : 'none';
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (tab === 'history') loadTaskHistory();
+}
+
+// ─── FILE HANDLING ───────────────────────────────────────────────
+function handleFile(file) {
+  if (!file) return;
+  currentFile = file;
+
+  const icons = { 'image': '🖼️', 'pdf': '📋', 'spreadsheet': '📊', 'document': '📄', 'csv': '📊' };
+  const ext = file.name.split('.').pop().toLowerCase();
+  const iconMap = { png:'🖼️', jpg:'🖼️', jpeg:'🖼️', gif:'🖼️', webp:'🖼️', pdf:'📋', xlsx:'📊', xls:'📊', csv:'📊', doc:'📄', docx:'📄', txt:'📄' };
+
+  document.getElementById('uploadArea').style.display = 'none';
+  document.getElementById('previewName').textContent = file.name;
+  document.getElementById('previewSize').textContent = formatBytes(file.size);
+  document.getElementById('previewIcon').textContent = iconMap[ext] || '📄';
+  document.getElementById('uploadPreview').style.display = 'flex';
+
+  // Read file as base64
+  const reader = new FileReader();
+  reader.onload = e => { currentFileData = e.target.result; };
+  reader.readAsDataURL(file);
+}
+
+function removeFile() {
+  currentFile = null;
+  currentFileData = null;
+  document.getElementById('uploadArea').style.display = 'block';
+  document.getElementById('uploadPreview').style.display = 'none';
+  document.getElementById('fileInput').value = '';
+}
+
+function dragOver(e) { e.preventDefault(); document.getElementById('uploadArea').classList.add('drag-over'); }
+function dragLeave(e) { document.getElementById('uploadArea').classList.remove('drag-over'); }
+function dropFile(e) {
+  e.preventDefault();
+  document.getElementById('uploadArea').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) handleFile(file);
+}
+
+function formatBytes(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+  return (b/1048576).toFixed(1) + ' MB';
+}
+
+function setFeatured(text) {
+  document.getElementById('taskDesc').value = text;
+  document.getElementById('taskDesc').focus();
+}
+
+// ─── ANALYZE ─────────────────────────────────────────────────────
+async function analyzeTask() {
+  const desc = document.getElementById('taskDesc').value.trim();
+  if (!desc) { showToast('Please describe what you need done.', 'error'); return; }
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+
+  document.getElementById('analysisResult').style.display = 'none';
+  document.getElementById('workingState').style.display = 'none';
+  document.getElementById('previewState').style.display = 'none';
+
+  const btn = document.getElementById('analyzeBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="working-spinner" style="width:20px;height:20px;border-width:2px;display:inline-block;margin:0"></span> Analyzing...';
+
+  try {
+    const files = [];
+    if (currentFileData && currentFile) {
+      const ext = currentFile.name.split('.').pop().toLowerCase();
+      const imageTypes = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
+      const textTypes = ['csv', 'txt'];
+      const base64 = currentFileData.split(',')[1];
+      if (imageTypes.includes(ext)) {
+        const mediaType = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+        files.push({ name: currentFile.name, mediaType, data: base64 });
+      } else if (ext === 'pdf') {
+        files.push({ name: currentFile.name, mediaType: 'application/pdf', data: base64 });
+      } else if (textTypes.includes(ext)) {
+        try {
+          const textContent = decodeURIComponent(escape(atob(base64)));
+          files.push({ name: currentFile.name, textContent });
+        } catch(e) {
+          files.push({ name: currentFile.name });
+        }
+      } else {
+        files.push({ name: currentFile.name });
+      }
+    }
+
+    const r = await fetch('/api/deskkit-analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({
+        desc,
+        analyzeContext: 'This is a general back-office task for a small trades business (HVAC, plumbing, electrical, landscaping, etc.) — could be a document cleanup, letter, report, form, or summary.',
+        files
+      })
+    });
+
+    const analysis = await r.json();
+    if (!r.ok) { showToast(analysis.error || 'Analysis failed. Please try again.', 'error'); btn.disabled = false; btn.textContent = 'Get My Price'; return; }
+
+    currentAnalysis = analysis;
+    showAnalysisResult(analysis, desc);
+
+  } catch(e) {
+    showToast('Analysis failed. Please try again.', 'error');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Get My Price';
+}
+
+function showAnalysisResult(analysis, desc) {
+  const tier = analysis.tier || 'moderate';
+  const price = PRICES[tier];
+  const label = TIER_LABELS[tier];
+  const tierDesc = TIER_DESCS[tier];
+  const steps = analysis.steps || [];
+
+  const html = `
+    <div class="analysis-card">
+      <div class="analysis-header">
+        <div>
+          <div class="analysis-tier">${label}</div>
+          <div class="analysis-price">$${price}</div>
+          <div class="analysis-desc">${tierDesc}</div>
+        </div>
+      </div>
+      <div class="analysis-breakdown">
+        <div class="analysis-breakdown-title">What We'll Do</div>
+        <div class="analysis-item">${analysis.reason || 'Complete your requested task.'}</div>
+        ${steps.map(s => `<div class="analysis-item">${s}</div>`).join('')}
+      </div>
+      <div class="analysis-actions">
+        <button class="btn-confirm" onclick="confirmAndPay('${tier}', ${price}, \`${desc.replace(/`/g, "'")}\`)">Confirm & Pay $${price} →</button>
+        <button class="btn-cancel" onclick="cancelAnalysis()">Change Task</button>
+      </div>
+    </div>`;
+
+  const el = document.getElementById('analysisResult');
+  el.innerHTML = html;
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function cancelAnalysis() {
+  document.getElementById('analysisResult').style.display = 'none';
+  currentAnalysis = null;
+}
+
+// ─── PAYMENT & WORK ──────────────────────────────────────────────
+let pendingTier = null, pendingDesc = null;
+
+async function confirmAndPay(tier, price, desc) {
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+
+  pendingTier = tier;
+  pendingDesc = desc;
+
+  showLoader('Setting up payment...');
+
+  try {
+    const r = await fetch('/api/deskkit-charge', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.token
+      },
+      body: JSON.stringify({ tier, desc, filename: currentFile?.name || null })
+    });
+
+    const d = await r.json();
+    hideLoader();
+
+    if (!r.ok) { showToast(d.error || 'Could not start payment.', 'error'); return; }
+
+    currentTaskId = d.taskId;
+    pendingPaymentIntentId = d.paymentIntentId;
+
+    // Mount the Stripe Payment Element using the client secret
+    elements = stripe.elements({ clientSecret: d.clientSecret, appearance: {
+      theme: 'night',
+      variables: { colorPrimary: '#C8701A', colorBackground: '#162840', colorText: '#E2EAF2', borderRadius: '8px' }
+    }});
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#paymentElement');
+
+    document.getElementById('analysisResult').style.display = 'none';
+    document.getElementById('payAmount').textContent = '$' + price;
+    document.getElementById('paymentError').style.display = 'none';
+    document.getElementById('paymentCard').style.display = 'block';
+    document.getElementById('paymentCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  } catch(e) {
+    hideLoader();
+    showToast('Something went wrong. Please try again.', 'error');
+  }
+}
+
+function cancelPayment() {
+  document.getElementById('paymentCard').style.display = 'none';
+  document.getElementById('analysisResult').style.display = 'block';
+  elements = null;
+}
+
+async function submitPayment() {
+  if (!elements) return;
+  const btn = document.getElementById('payBtn');
+  const errEl = document.getElementById('paymentError');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+  errEl.style.display = 'none';
+
+  const { error, paymentIntent } = await stripe.confirmPayment({
+    elements,
+    confirmParams: { return_url: window.location.href },
+    redirect: 'if_required'
+  });
+
+  if (error) {
+    errEl.textContent = error.message || 'Payment failed. Please check your card details.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.innerHTML = 'Pay <span id="payAmount">$' + PRICES[pendingTier] + '</span> →';
+    return;
+  }
+
+  if (paymentIntent && paymentIntent.status === 'succeeded') {
+    await onPaymentConfirmed();
+  } else {
+    errEl.textContent = 'Payment did not complete. Please try again.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Pay →';
+  }
+}
+
+async function onPaymentConfirmed() {
+  const session = getSession();
+  document.getElementById('paymentCard').style.display = 'none';
+  showLoader('Confirming payment...');
+
+  try {
+    const r = await fetch('/api/deskkit-confirm-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ taskId: currentTaskId, paymentIntentId: pendingPaymentIntentId })
+    });
+    const d = await r.json();
+    hideLoader();
+
+    if (!r.ok) { showToast(d.error || 'Could not confirm payment.', 'error'); return; }
+
+    document.getElementById('workingState').style.display = 'block';
+    document.getElementById('workingState').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    animateSteps();
+
+    await doWork(pendingTier, pendingDesc, currentTaskId);
+  } catch(e) {
+    hideLoader();
+    showToast('Payment succeeded but something went wrong starting your task. Contact support with task ID: ' + currentTaskId, 'error');
+  }
+}
+
+// Handle return from a redirect-based payment method (e.g. 3D Secure)
+window.addEventListener('load', async () => {
+  const params = new URLSearchParams(window.location.search);
+  const clientSecret = params.get('payment_intent_client_secret');
+  if (!clientSecret) return;
+
+  const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+  if (paymentIntent && paymentIntent.status === 'succeeded') {
+    pendingPaymentIntentId = paymentIntent.id;
+    currentTaskId = paymentIntent.metadata?.taskId || currentTaskId;
+    pendingTier = paymentIntent.metadata?.tier || pendingTier;
+    // Note: pendingDesc isn't recoverable after a redirect — this edge case
+    // (3D Secure cards) will need the task description re-fetched server-side
+    // if doWork requires it. Most cards won't hit this path.
+    await onPaymentConfirmed();
+  }
+  // Clean the URL so a refresh doesn't re-trigger this
+  window.history.replaceState({}, document.title, window.location.pathname);
+});
+
+function animateSteps() {
+  const steps = ['step1', 'step2', 'step3', 'step4'];
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i > 0) document.getElementById(steps[i-1])?.classList.replace('active', 'done');
+    if (i < steps.length) document.getElementById(steps[i])?.classList.add('active');
+    i++;
+    if (i >= steps.length) clearInterval(interval);
+  }, 3000);
+}
+
+async function doWork(tier, desc, taskId) {
+  const session = getSession();
+  try {
+    const files = [];
+    if (currentFileData && currentFile) {
+      const ext = currentFile.name.split('.').pop().toLowerCase();
+      const imageTypes = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
+      const textTypes = ['csv', 'txt'];
+      const base64 = currentFileData.split(',')[1];
+      if (imageTypes.includes(ext)) {
+        const mediaType = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+        files.push({ name: currentFile.name, mediaType, data: base64 });
+      } else if (ext === 'pdf') {
+        files.push({ name: currentFile.name, mediaType: 'application/pdf', data: base64 });
+      } else if (textTypes.includes(ext)) {
+        try {
+          const textContent = decodeURIComponent(escape(atob(base64)));
+          files.push({ name: currentFile.name, textContent });
+        } catch(e) {
+          files.push({ name: currentFile.name });
+        }
+      } else {
+        files.push({ name: currentFile.name });
+      }
+    }
+
+    const workSystem = `You are DeskKit, an AI back office assistant for small trades businesses (HVAC, plumbing, electrical, landscaping, pool service, roofing, etc.).
+
+Complete the requested task fully and professionally. Deliver the actual finished work — not instructions, not explanations of what to do, but the completed deliverable itself.
+
+For payroll/spreadsheet tasks: output the data in a clean, copy-paste ready format. For CSV output, use proper CSV formatting. For documents/letters: write the complete final document. For reports: deliver the complete formatted report.
+
+Be direct and complete. The customer has already paid — give them exactly what they asked for, ready to use.`;
+
+    const r = await fetch('/api/deskkit-generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ taskId, desc, workSystem, files })
+    });
+
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Generation failed');
+
+    document.getElementById('workingState').style.display = 'none';
+    showPreview(d.result, taskId, desc);
+
+  } catch(e) {
+    document.getElementById('workingState').style.display = 'none';
+    showNeedsReview();
+  }
+}
+
+async function requestReviseWork(taskId, feedback, previousResult) {
+  const session = getSession();
+  const r = await fetch('/api/deskkit-generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+    body: JSON.stringify({ taskId, mode: 'revise', feedback, previousResult })
+  });
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.error || 'Revision failed');
+  return d.result;
+}
+
+function showNeedsReview() {
+  const el = document.getElementById('previewState');
+  el.innerHTML = `
+    <div class="preview-card">
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-size:40px;margin-bottom:16px">🔍</div>
+        <div class="preview-title" style="margin-bottom:8px">Needs a Human Touch</div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:20px">This task needs a closer look. Jen will review it personally and get your result to you within 24 hours. No additional charge.</p>
+        <p style="font-size:13px;color:var(--muted)">You'll receive an email at <strong style="color:var(--text)">${getSession()?.email}</strong> when it's ready.</p>
+      </div>
+    </div>`;
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function showPreview(result, taskId, desc) {
+  const el = document.getElementById('previewState');
+  el.innerHTML = `
+    <div class="preview-card">
+      <div class="preview-header">
+        <div class="preview-title">Your Result — Ready to Review</div>
+        <div class="preview-badge">✓ Complete</div>
+      </div>
+      <div class="preview-content" id="previewContent">${escapeHtml(result)}</div>
+      <div class="preview-actions">
+        <button class="btn-accept" onclick="acceptResult('${taskId}')">✓ Accept & Download</button>
+        <div class="revision-wrap">
+          <input class="revision-input" id="revisionInput" placeholder="Not quite right? Tell us what to change..."/>
+          <button class="btn-revise" onclick="requestRevision('${taskId}', \`${desc.replace(/`/g, "'")}\`)">Revise →</button>
+        </div>
+      </div>
+    </div>`;
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+async function requestRevision(taskId, originalDesc) {
+  const feedback = document.getElementById('revisionInput').value.trim();
+  if (!feedback) { showToast('Tell us what to change.', 'error'); return; }
+
+  const currentResult = document.getElementById('previewContent').textContent;
+
+  document.getElementById('previewState').style.display = 'none';
+  document.getElementById('workingState').style.display = 'block';
+  animateSteps();
+
+  try {
+    const result = await requestReviseWork(taskId, feedback, currentResult);
+    document.getElementById('workingState').style.display = 'none';
+    showPreview(result, taskId, originalDesc);
+
+  } catch(e) {
+    document.getElementById('workingState').style.display = 'none';
+    showToast('Revision failed. Please try again.', 'error');
+    document.getElementById('previewState').style.display = 'block';
+  }
+}
+
+function acceptResult(taskId) {
+  const result = document.getElementById('previewContent').textContent;
+
+  // Create downloadable file
+  const blob = new Blob([result], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `deskkit-result-${taskId}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  // Mark as complete
+  markComplete(taskId);
+
+  showToast('Downloaded! Task complete. 🎉', 'success');
+
+  // Reset form
+  setTimeout(() => {
+    removeFile();
+    document.getElementById('taskDesc').value = '';
+    document.getElementById('analysisResult').style.display = 'none';
+    document.getElementById('workingState').style.display = 'none';
+    document.getElementById('previewState').style.display = 'none';
+    currentAnalysis = null;
+    currentTaskId = null;
+  }, 1500);
+}
+
+async function markComplete(taskId) {
+  const session = getSession();
+  try {
+    await fetch('/api/deskkit-save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ taskId, status: 'complete' })
+    });
+  } catch(e) {}
+}
+
+// ─── TASK HISTORY ────────────────────────────────────────────────
+async function loadTaskHistory() {
+  const session = getSession();
+  if (!session) return;
+
+  const el = document.getElementById('tasksList');
+  el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">Loading...</div>';
+
+  try {
+    const r = await fetch('/api/deskkit-tasks', {
+      headers: { 'Authorization': 'Bearer ' + session.token }
+    });
+    const d = await r.json();
+
+    if (!d.tasks || d.tasks.length === 0) {
+      el.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">📭</div>
+          <div class="empty-title">No Tasks Yet</div>
+          <div class="empty-sub">Submit your first task and see the results here.</div>
+          <button class="btn-amber" style="width:auto;padding:12px 28px" onclick="showTab('submit', document.querySelector('.tab'))">Submit a Task →</button>
+        </div>`;
+      return;
+    }
+
+    el.innerHTML = `<div class="tasks-list">${d.tasks.map(t => taskCard(t)).join('')}</div>`;
+  } catch(e) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">Could not load tasks.</div>';
+  }
+}
+
+function taskCard(t) {
+  const statusMap = {
+    pending: ['status-pending', 'Pending'],
+    working: ['status-working', 'Working...'],
+    preview: ['status-review', 'Ready to Review'],
+    needs_review: ['status-needs-review', 'Needs Review'],
+    complete: ['status-complete', 'Complete']
+  };
+  const [cls, label] = statusMap[t.status] || ['status-pending', 'Pending'];
+  const date = t.createdAt ? new Date(t.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+
+  return `
+    <div class="task-card">
+      <div>
+        <div class="task-card-desc">${escapeHtml(t.desc || 'Task')}</div>
+        <div class="task-card-meta">
+          <span>${date}</span>
+          ${t.filename ? `<span>📎 ${escapeHtml(t.filename)}</span>` : ''}
+          <span>${t.tier ? TIER_LABELS[t.tier] : ''}</span>
+        </div>
+      </div>
+      <div class="task-card-right">
+        <span class="status-badge ${cls}">${label}</span>
+        <div class="task-price">$${t.price || 0}</div>
+        ${t.status === 'complete' ? `<button class="btn-download" onclick="downloadTask('${t.id}')">Download</button>` : ''}
+        ${t.status === 'preview' ? `<button class="btn-view" onclick="viewTask('${t.id}')">Review →</button>` : ''}
+      </div>
+    </div>`;
+}
+
+async function downloadTask(taskId) {
+  const session = getSession();
+  try {
+    const r = await fetch(`/api/deskkit-tasks?id=${taskId}`, {
+      headers: { 'Authorization': 'Bearer ' + session.token }
+    });
+    const d = await r.json();
+    if (d.result) {
+      const blob = new Blob([d.result], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `deskkit-${taskId}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  } catch(e) { showToast('Download failed.', 'error'); }
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────
+function showLoader(text) {
+  document.getElementById('loaderText').textContent = text || 'Processing...';
+  document.getElementById('loaderOverlay').classList.add('show');
+}
+
+function hideLoader() {
+  document.getElementById('loaderOverlay').classList.remove('show');
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('loginWrap').style.display !== 'none') doLogin();
+});
+
+function showForgotPassword() {
+  const wrap = document.getElementById('forgotWrap');
+  wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
+  if (wrap.style.display === 'block') {
+    document.getElementById('resetEmail').value = document.getElementById('loginEmail').value;
+    document.getElementById('resetEmail').focus();
+  }
+}
+
+async function sendReset() {
+  const email = document.getElementById('resetEmail').value.trim();
+  if (!email) return;
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  try {
+    await fetch('/api/portal-reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const msg = document.getElementById('resetMsg');
+    msg.textContent = 'Reset link sent! Check your email.';
+    msg.style.display = 'block';
+    btn.textContent = 'Sent ✓';
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = 'Send Reset Link →';
+  }
+}
+
+// Handle password reset from URL
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const resetToken = params.get('reset');
+  if (resetToken) {
+    // Show reset password form
+    document.getElementById('loginWrap').innerHTML = `
+      <div class="login-card">
+        <div class="login-logo">Compass Business Solutions</div>
+        <div class="login-title">Set New <span style="color:var(--amber)">Password</span></div>
+        <div class="login-sub">Enter your new password below.</div>
+        <div class="login-err" id="resetErr" style="display:none"></div>
+        <div class="field">
+          <label>New Password</label>
+          <input type="password" id="newPassword" placeholder="At least 8 characters"/>
+        </div>
+        <div class="field">
+          <label>Confirm Password</label>
+          <input type="password" id="confirmNewPassword" placeholder="Repeat your password"/>
+        </div>
+        <button class="btn-amber" onclick="submitNewPassword('${resetToken}')">Set New Password →</button>
+      </div>`;
+  }
+})();
+
+async function submitNewPassword(token) {
+  const password = document.getElementById('newPassword').value;
+  const confirm = document.getElementById('confirmNewPassword').value;
+  const err = document.getElementById('resetErr');
+  err.style.display = 'none';
+
+  if (password.length < 8) { err.textContent = 'Password must be at least 8 characters.'; err.style.display = 'block'; return; }
+  if (password !== confirm) { err.textContent = 'Passwords do not match.'; err.style.display = 'block'; return; }
+
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  try {
+    const r = await fetch('/api/portal-reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, password })
+    });
+    const d = await r.json();
+    if (!r.ok) { err.textContent = d.error || 'Reset failed.'; err.style.display = 'block'; btn.disabled = false; btn.textContent = 'Set New Password →'; return; }
+    saveSession({ token: d.token, email: d.email, name: d.name });
+    window.location.href = '/portal/app';
+  } catch(e) {
+    err.textContent = 'Connection error. Please try again.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Set New Password →';
+  }
+}
+</script>
+</body>
+</html>
