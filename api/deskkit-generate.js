@@ -2,7 +2,11 @@
  * /api/deskkit-generate
  * POST — do the actual task work server-side (holds the real API key).
  * Requires a valid session AND a task that has already been paid for (status: pending).
+ * Generation happens immediately, but on first generation (not revisions) we schedule
+ * a "your task is ready" email for ~1 hour later rather than revealing the result
+ * to the customer right away.
  */
+const { Resend } = require("resend");
 
 function getKV() {
   return {
@@ -73,10 +77,14 @@ module.exports = async function handler(req, res) {
       if (!desc) return res.status(400).json({ error: "Missing description" });
       const userContent = [];
       (files || []).slice(0, 10).forEach(f => {
-        if (f.mediaType && f.mediaType.startsWith("image/") && f.data) {
+        if (f.mediaType === "application/pdf" && f.data) {
+          userContent.push({ type: "document", source: { type: "base64", media_type: "application/pdf", data: f.data } });
+        } else if (f.mediaType && f.mediaType.startsWith("image/") && f.data) {
           userContent.push({ type: "image", source: { type: "base64", media_type: f.mediaType, data: f.data } });
+        } else if (f.textContent) {
+          userContent.push({ type: "text", text: `File: ${f.name}\n\n${f.textContent}` });
         } else if (f.name) {
-          userContent.push({ type: "text", text: `File: ${f.name}` });
+          userContent.push({ type: "text", text: `File: ${f.name} (content not readable in this format — only filename available)` });
         }
       });
       userContent.push({ type: "text", text: desc });
@@ -119,6 +127,26 @@ module.exports = async function handler(req, res) {
     await saveToKV("deskkit_task:" + taskId, Object.assign({}, task, {
       status: "preview", result, updatedAt: new Date().toISOString()
     }));
+
+    // On first generation (not a revision), schedule a "ready to review" email
+    // for about an hour later instead of exposing the result immediately.
+    if (mode !== "revise") {
+      try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        await resend.emails.send({
+          from: "DeskKit <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
+          to: email,
+          subject: "Your DeskKit task is ready to review",
+          scheduledAt: "in 1 hour",
+          html: `<div style="font-family:sans-serif;max-width:480px;">
+            <h2 style="color:#C8701A;">Your task is complete</h2>
+            <p>Your DeskKit task has been finished and is ready for you to review and download.</p>
+            <p><a href="https://www.compassbizsolutions.com/portal/app" style="display:inline-block;background:#C8701A;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">Review & Download</a></p>
+            <p style="color:#888;font-size:12px;">Log in and check "My Tasks" to see it.</p>
+          </div>`
+        });
+      } catch(emailErr) { console.error("Ready-email error:", emailErr.message); }
+    }
 
     return res.status(200).json({ success: true, result });
 
