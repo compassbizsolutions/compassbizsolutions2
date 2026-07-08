@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Collection Letter — DeskKit</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="/deskkit-config.js"></script>
+<style>
+:root{--ink:#0A1520;--navy:#0F1E2E;--navy2:#162840;--navy3:#1C3050;--amber:#C8701A;--amber2:#E08930;--amber-dim:rgba(200,112,26,0.1);--amber-border:rgba(200,112,26,0.25);--green:#1A6040;--green2:#22A060;--green-dim:rgba(26,96,64,0.12);--red2:#E05050;--red-dim:rgba(224,80,80,0.08);--muted:#5A7A9A;--text:#E2EAF2;--text2:#8AAAC8;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;}
+.header{background:var(--navy);border-bottom:1px solid var(--border);padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.header-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:white;text-transform:uppercase;letter-spacing:1px;}
+.header-logo span{color:var(--amber);}
+.header-back{font-size:13px;color:var(--muted);text-decoration:none;}
+.header-back:hover{color:var(--amber);}
+.page{max-width:820px;margin:0 auto;padding:32px 24px 80px;}
+.page-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:white;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.page-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:32px;}
+.section{margin-bottom:28px;}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.form-full{grid-column:1/-1;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.field input,.field select,.field textarea{background:var(--navy2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border 0.15s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--amber);}
+.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,0.15);}
+.field select option{background:var(--navy2);}
+.field textarea{resize:vertical;min-height:80px;line-height:1.5;}
+
+/* BUNDLE SELECTOR */
+.bundle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px;}
+.bundle-card{background:var(--navy2);border:2px solid var(--border);border-radius:12px;padding:16px 14px;cursor:pointer;transition:all 0.15s;position:relative;}
+.bundle-card:hover{border-color:var(--border2);}
+.bundle-card.selected{border-color:var(--amber);background:var(--amber-dim);}
+.bundle-badge{position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--amber);color:white;font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 8px;border-radius:99px;white-space:nowrap;}
+.bundle-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:white;text-transform:uppercase;margin-bottom:4px;}
+.bundle-price{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--amber);line-height:1;margin-bottom:6px;}
+.bundle-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+.bundle-check{position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;background:var(--amber);display:none;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;}
+.bundle-card.selected .bundle-check{display:flex;}
+
+/* LOGO UPLOAD */
+.logo-upload{border:2px dashed var(--border2);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;}
+.logo-upload:hover{border-color:var(--amber);background:var(--amber-dim);}
+.logo-upload input{display:none;}
+.logo-preview{display:none;align-items:center;gap:12px;background:var(--navy2);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;}
+.logo-preview img{max-height:50px;max-width:140px;object-fit:contain;}
+.logo-preview-name{font-size:13px;color:var(--text2);flex:1;}
+.logo-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;}
+.logo-remove:hover{color:var(--red2);}
+
+/* UPLOAD AREA */
+.upload-area{border:2px dashed var(--border2);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;}
+.upload-area:hover{border-color:var(--amber);background:var(--amber-dim);}
+.upload-area input{display:none;}
+.upload-preview-row{display:flex;align-items:center;gap:10px;background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-top:8px;}
+.upload-preview-row-name{font-size:13px;color:var(--text2);flex:1;}
+.upload-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;}
+.upload-remove:hover{color:var(--red2);}
+
+/* RECIPIENT MANAGEMENT */
+.recipient-card{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;}
+.recipient-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.recipient-num{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--amber);text-transform:uppercase;}
+.recipient-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;}
+.recipient-remove:hover{color:var(--red2);}
+.letter-select-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.letter-toggle{background:var(--navy3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.15s;}
+.letter-toggle.active{background:var(--amber-dim);border-color:var(--amber);color:var(--amber);}
+.btn-add-recipient{background:transparent;border:1px dashed var(--border2);color:var(--muted);border-radius:8px;padding:12px;width:100%;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;margin-top:4px;}
+.btn-add-recipient:hover{border-color:var(--amber);color:var(--amber);}
+.recipient-count{font-size:12px;color:var(--muted);}
+.recipient-count.warn{color:var(--red2);}
+
+/* CONDITIONAL INPUTS */
+.conditional{display:none;margin-top:10px;}
+.conditional.show{display:block;}
+.inline-row{display:flex;gap:10px;align-items:flex-end;}
+.inline-row .field{flex:1;}
+
+/* TONE SELECTOR */
+.tone-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.tone-card{background:var(--navy2);border:2px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.15s;text-align:center;}
+.tone-card.sel-firm{border-color:var(--amber);background:var(--amber-dim);}
+.tone-card-name{font-size:13px;font-weight:700;color:white;margin-bottom:4px;}
+.tone-card-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+
+/* OPTIONS */
+.check-group{display:flex;flex-direction:column;gap:12px;}
+.check-item{display:flex;align-items:flex-start;gap:10px;}
+.check-item input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:2px;accent-color:var(--amber);cursor:pointer;}
+.check-item-label{font-size:13px;color:var(--text2);line-height:1.5;cursor:pointer;}
+.check-item-label strong{color:var(--text);}
+.check-item-label .legal{font-size:11px;color:var(--muted);display:block;margin-top:3px;font-style:italic;}
+
+/* OUTPUT OPTIONS */
+.output-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.output-card{background:var(--navy2);border:2px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.15s;}
+.output-card.selected{border-color:var(--amber);background:var(--amber-dim);}
+.output-card-name{font-size:13px;font-weight:700;color:white;margin-bottom:4px;}
+.output-card-desc{font-size:12px;color:var(--muted);line-height:1.4;}
+.output-card-price{font-size:11px;color:var(--amber);margin-top:6px;font-weight:600;}
+
+/* PRICE SUMMARY */
+.price-summary{background:var(--navy2);border:1px solid var(--border2);border-radius:12px;padding:20px;margin-bottom:24px;}
+.price-summary-title{font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;}
+.price-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text2);margin-bottom:8px;}
+.price-row.total{font-size:16px;font-weight:700;color:white;border-top:1px solid var(--border);padding-top:10px;margin-top:4px;}
+.price-row.total span:last-child{color:var(--amber);font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;}
+
+/* LEGAL */
+.legal-box{background:rgba(200,112,26,0.06);border:1px solid var(--amber-border);border-radius:10px;padding:16px 18px;margin-bottom:24px;}
+.legal-box-title{font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;}
+.legal-box-text{font-size:12px;color:var(--muted);line-height:1.7;}
+
+/* SUBMIT */
+.submit-btn{width:100%;background:var(--amber);color:white;border:none;border-radius:10px;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.submit-btn:hover{background:var(--amber2);}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+/* WORKING */
+.working-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:40px;text-align:center;margin-top:28px;display:none;}
+.spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,0.08);border-top-color:var(--amber);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.working-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:white;text-transform:uppercase;margin-bottom:8px;}
+.working-sub{font-size:13px;color:var(--muted);line-height:1.6;}
+.progress-bar{height:4px;background:var(--navy3);border-radius:99px;margin-top:20px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--amber);border-radius:99px;transition:width 0.5s ease;width:0%;}
+
+/* RESULT */
+.result-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:28px;margin-top:28px;display:none;}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
+.result-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;text-transform:uppercase;}
+.result-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;background:var(--green-dim);color:var(--green2);border:1px solid rgba(26,96,64,0.3);}
+.letter-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.letter-tab{background:var(--navy3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.15s;}
+.letter-tab.active{background:var(--amber-dim);border-color:var(--amber);color:var(--amber);}
+.result-content{background:white;border-radius:10px;padding:28px;margin-bottom:20px;color:#1a2332;font-family:Georgia,serif;font-size:13px;line-height:1.8;white-space:pre-wrap;max-height:500px;overflow-y:auto;}
+.result-actions{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-download{background:var(--green);color:white;border:none;border-radius:10px;padding:12px 22px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+.btn-download:hover{background:var(--green2);}
+.payment-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:24px;margin-top:20px;display:none;}
+.payment-card-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+.payment-error{background:rgba(139,26,26,0.1);border:1px solid rgba(224,80,80,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red2);margin-top:12px;display:none;}
+.btn-pay{width:100%;background:var(--green);color:white;border:none;border-radius:10px;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;margin-top:16px;}
+.btn-pay:hover{background:var(--green2);}
+.btn-pay:disabled{opacity:0.5;cursor:not-allowed;}
+.btn-cancel-pay{background:var(--navy3);border:1px solid var(--border2);color:var(--muted);border-radius:10px;padding:14px 20px;font-size:13px;font-weight:600;cursor:pointer;width:100%;margin-top:8px;}
+.btn-cancel-pay:hover{border-color:var(--amber);color:var(--amber);}
+.revision-wrap{flex:1;display:flex;gap:8px;}
+.revision-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:13px;outline:none;font-family:'Inter',sans-serif;}
+.revision-input:focus{border-color:var(--amber);}
+.revision-input::placeholder{color:rgba(255,255,255,0.15);}
+.btn-revise{background:var(--navy3);border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.btn-revise:hover{border-color:var(--amber);color:var(--amber);}
+
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy2);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:13px;color:var(--text);z-index:999;opacity:0;transform:translateY(8px);transition:all 0.2s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.error{border-color:rgba(139,26,26,0.4);color:var(--red2);}
+.toast.success{border-color:rgba(26,96,64,0.4);color:var(--green2);}
+
+@media(max-width:640px){.bundle-grid{grid-template-columns:1fr 1fr;}.form-grid,.form-grid-3,.tone-grid,.output-options{grid-template-columns:1fr;}.page{padding:20px 16px 60px;}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-logo">Desk<span>Kit</span></div>
+  <a href="/portal/app" class="header-back">← Back to DeskKit</a>
+</div>
+
+<div class="page">
+  <div class="page-eyebrow">✉️ Featured Task</div>
+  <div class="page-title">Collection Letter</div>
+  <div class="page-sub">Generate professional collection letters for one or many recipients. Fill out your business info, add who owes you, and we'll produce ready-to-send letters. Pricing is determined by the number of recipients.</div>
+
+  <!-- BUNDLE SELECTOR -->
+  <div class="section">
+    <div class="section-title">Choose Your Bundle</div>
+    <div class="bundle-grid">
+      <div class="bundle-card selected" id="bundle-single" onclick="selectBundle('single',15,1)">
+        <div class="bundle-check">✓</div>
+        <div class="bundle-name">Single</div>
+        <div class="bundle-price">$15</div>
+        <div class="bundle-desc">1 recipient<br/>1 letter</div>
+      </div>
+      <div class="bundle-card" id="bundle-triple" onclick="selectBundle('triple',35,1)">
+        <div class="bundle-check">✓</div>
+        <div class="bundle-name">Triple</div>
+        <div class="bundle-price">$35</div>
+        <div class="bundle-desc">1 recipient<br/>All 3 letters (Firm + Final + Warning)</div>
+      </div>
+      <div class="bundle-card" id="bundle-starter" onclick="selectBundle('starter',49,5)">
+        <div class="bundle-check">✓</div>
+        <div class="bundle-name">Starter</div>
+        <div class="bundle-price">$49</div>
+        <div class="bundle-desc">Up to 5 recipients<br/>Choose 1–3 letters each</div>
+      </div>
+      <div class="bundle-card" id="bundle-business" onclick="selectBundle('business',89,15)">
+        <div class="bundle-badge">Most Popular</div>
+        <div class="bundle-check">✓</div>
+        <div class="bundle-name">Business</div>
+        <div class="bundle-price">$89</div>
+        <div class="bundle-desc">Up to 15 recipients<br/>Choose 1–3 letters each</div>
+      </div>
+      <div class="bundle-card" id="bundle-bulk" onclick="selectBundle('bulk',149,30)">
+        <div class="bundle-check">✓</div>
+        <div class="bundle-name">Bulk</div>
+        <div class="bundle-price">$149</div>
+        <div class="bundle-desc">Up to 30 recipients<br/>Choose 1–3 letters each</div>
+      </div>
+      <div class="bundle-card" id="bundle-enterprise" onclick="selectBundle('enterprise',249,50)">
+        <div class="bundle-check">✓</div>
+        <div class="bundle-name">Enterprise</div>
+        <div class="bundle-price">$249</div>
+        <div class="bundle-desc">Up to 50 recipients<br/>Choose 1–3 letters each</div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px;">Need more than 50? Submit multiple transactions. Maximum 50 recipients per order.</div>
+  </div>
+
+  <!-- YOUR BUSINESS -->
+  <div class="section">
+    <div class="section-title">
+      Your Business
+      <span style="font-size:11px;font-weight:500;color:var(--muted);text-transform:none;letter-spacing:0">This info will appear on every letter</span>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Business Logo (Optional)</div>
+      <div class="logo-upload" id="logoUpload" onclick="document.getElementById('logoInput').click()">
+        <input type="file" id="logoInput" accept="image/*" onchange="handleLogo(this.files[0])"/>
+        <div style="font-size:28px;margin-bottom:8px">🏢</div>
+        <div style="font-size:13px;color:var(--text2);">Upload your logo — appears at top of every letter</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">PNG, JPG, SVG</div>
+      </div>
+      <div class="logo-preview" id="logoPreview">
+        <img id="logoImg" src="" alt="Logo"/>
+        <div class="logo-preview-name" id="logoName"></div>
+        <button class="logo-remove" onclick="removeLogo()">✕</button>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="field"><label>Business Name *</label><input type="text" id="bizName" placeholder="Smith Plumbing LLC" oninput="updateSummary()"/></div>
+      <div class="field"><label>Owner / Contact Name *</label><input type="text" id="ownerName" placeholder="John Smith"/></div>
+      <div class="field"><label>Street Address</label><input type="text" id="bizAddress" placeholder="123 Main St"/></div>
+      <div class="field"><label>City, State, ZIP</label><input type="text" id="bizCity" placeholder="Boston, MA 02101"/></div>
+      <div class="field"><label>Phone</label><input type="text" id="bizPhone" placeholder="(508) 555-0100"/></div>
+      <div class="field"><label>Email</label><input type="email" id="bizEmail" placeholder="john@smithplumbing.com"/></div>
+      <div class="field"><label>Website (Optional)</label><input type="text" id="bizWebsite" placeholder="smithplumbing.com"/></div>
+      <div class="field"><label>Letter Date</label><input type="text" id="letterDate" placeholder="July 1, 2026"/></div>
+    </div>
+
+    <!-- Business info upload option -->
+    <div style="margin-top:14px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Or upload your business info</div>
+      <div class="upload-area" onclick="document.getElementById('bizInfoFile').click()" style="padding:16px;">
+        <input type="file" id="bizInfoFile" accept=".png,.jpg,.jpeg,.webp,.pdf,.doc,.docx,.txt" onchange="handleBizFile(this.files[0])"/>
+        <div style="font-size:12px;color:var(--muted);">Upload a photo, screenshot, or document with your business info and we'll pull it from there</div>
+      </div>
+      <div class="upload-preview-row" id="bizFilePreview" style="display:none">
+        <span>📄</span>
+        <div class="upload-preview-row-name" id="bizFileName"></div>
+        <button class="upload-remove" onclick="removeBizFile()">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECIPIENTS -->
+  <div class="section">
+    <div class="section-title">
+      Recipients
+      <span class="recipient-count" id="recipientCount">0 / 1</span>
+    </div>
+
+    <!-- BULK UPLOAD -->
+    <div style="margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Import All Recipients at Once (Optional)</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.6;">Upload your accounts receivable list — spreadsheet, CSV, photo of a printout, or screenshot. We'll parse it and fill in the recipient cards automatically. You can review and edit before generating.</div>
+      <div class="upload-area" onclick="document.getElementById('bulkFile').click()" style="margin-bottom:10px;">
+        <input type="file" id="bulkFile" accept=".xlsx,.xls,.csv,.pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp" onchange="handleBulkUpload(this.files[0])"/>
+        <div style="font-size:28px;margin-bottom:8px;">📋</div>
+        <div style="font-size:14px;font-weight:600;color:white;margin-bottom:4px;">Upload your AR list or debtor spreadsheet</div>
+        <div style="font-size:12px;color:var(--muted);">Spreadsheet, CSV, PDF, photo, or screenshot — any format</div>
+      </div>
+      <div class="upload-preview-row" id="bulkFilePreview" style="display:none;">
+        <span>📄</span>
+        <div class="upload-preview-row-name" id="bulkFileName"></div>
+        <button class="upload-remove" onclick="removeBulkFile()">✕</button>
+      </div>
+      <button class="btn-add-recipient" id="parseBtn" onclick="parseBulkFile()" style="display:none;border-color:var(--amber);color:var(--amber);">Parse File & Import Recipients</button>
+      <div id="parseStatus" style="font-size:13px;color:var(--muted);margin-top:8px;display:none;"></div>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;">Or Add Recipients Manually</div>
+    <div id="recipientList"></div>
+    <button class="btn-add-recipient" id="addRecipientBtn" onclick="addRecipient()">+ Add Recipient</button>
+  </div>
+
+  <!-- DEFAULT DEBT SETTINGS -->
+  <div class="section">
+    <div class="section-title">Default Debt Settings
+      <span style="font-size:11px;font-weight:500;color:var(--muted);text-transform:none;letter-spacing:0">Applied to all recipients unless overridden per recipient</span>
+    </div>
+    <div class="form-grid">
+      <div class="field"><label>Services Provided *</label><textarea id="defaultServices" placeholder="Describe the work done — e.g. Plumbing repair and water heater replacement at customer's property."></textarea></div>
+      <div class="field"><label>Payment Methods Accepted</label><textarea id="paymentMethods" placeholder="Check payable to Smith Plumbing, Venmo @SmithPlumbing, cash, or bank transfer."></textarea></div>
+      <div class="field"><label>Payment Deadline</label><input type="text" id="paymentDeadline" placeholder="30 days from date of this letter"/></div>
+      <div class="field"><label>Make Checks Payable To</label><input type="text" id="checksTo" placeholder="Smith Plumbing LLC"/></div>
+    </div>
+  </div>
+
+  <!-- LETTER OPTIONS -->
+  <div class="section">
+    <div class="section-title">Letter Options</div>
+    <div class="check-group">
+
+      <label class="check-item">
+        <input type="checkbox" id="optCollections" checked onchange="updateSummary()"/>
+        <div class="check-item-label">
+          <strong>Collections agency / credit report warning</strong>
+          <span class="legal">Failure to pay may result in referral to a professional collections agency, which may affect the recipient's credit report. Only include if you intend to take this action.</span>
+        </div>
+      </label>
+
+      <label class="check-item">
+        <input type="checkbox" id="optInterest" onchange="toggleConditional('interestFields', this.checked); updateSummary()"/>
+        <div class="check-item-label">
+          <strong>Include interest on overdue balance</strong>
+          <span class="legal">Only include if your original agreement included an interest clause.</span>
+        </div>
+      </label>
+      <div class="conditional" id="interestFields">
+        <div class="inline-row" style="margin-left:26px;">
+          <div class="field">
+            <label>Interest Rate</label>
+            <select id="interestRate">
+              <option value="1.5">1.5% per month</option>
+              <option value="2">2% per month</option>
+              <option value="3">3% per month</option>
+              <option value="18">18% per year</option>
+              <option value="24">24% per year</option>
+              <option value="custom">Custom rate</option>
+            </select>
+          </div>
+          <div class="field" id="customInterestField" style="display:none">
+            <label>Custom Rate</label>
+            <input type="text" id="customInterest" placeholder="e.g. 1.75% per month"/>
+          </div>
+          <div class="field">
+            <label>Interest Period</label>
+            <select id="interestPeriod">
+              <option value="monthly">Per month</option>
+              <option value="annually">Per year</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <label class="check-item">
+        <input type="checkbox" id="optLateFee" onchange="toggleConditional('lateFeeFields', this.checked); updateSummary()"/>
+        <div class="check-item-label">
+          <strong>Include late fees</strong>
+          <span class="legal">Only include if your original agreement included a late fee provision.</span>
+        </div>
+      </label>
+      <div class="conditional" id="lateFeeFields">
+        <div class="inline-row" style="margin-left:26px;">
+          <div class="field">
+            <label>Late Fee Type</label>
+            <select id="lateFeeType" onchange="toggleLateFeeInput()">
+              <option value="flat">Flat amount</option>
+              <option value="percent">Percentage of balance</option>
+            </select>
+          </div>
+          <div class="field" id="lateFeeFlat">
+            <label>Amount</label>
+            <input type="text" id="lateFeeAmount" placeholder="$25.00"/>
+          </div>
+          <div class="field" id="lateFeePercent" style="display:none">
+            <label>Percentage</label>
+            <input type="text" id="lateFeePercent2" placeholder="5%"/>
+          </div>
+        </div>
+      </div>
+
+      <label class="check-item">
+        <input type="checkbox" id="optPaymentPlan" onchange="updateSummary()"/>
+        <div class="check-item-label">
+          <strong>Offer a payment plan option</strong>
+          <span class="legal">Invites the debtor to contact you to arrange a payment plan. Can increase likelihood of collection.</span>
+        </div>
+      </label>
+
+      <label class="check-item">
+        <input type="checkbox" id="optSmallClaims" onchange="updateSummary()"/>
+        <div class="check-item-label">
+          <strong>Small claims court warning</strong>
+          <span class="legal">States that unpaid balances may be pursued in Massachusetts Small Claims Court (limit $7,000). Only include if you intend to file.</span>
+        </div>
+      </label>
+
+    </div>
+  </div>
+
+  <!-- OUTPUT OPTIONS -->
+  <div class="section">
+    <div class="section-title">Output Format</div>
+    <div class="output-options">
+      <div class="output-card selected" id="out-combined" onclick="selectOutput('combined')">
+        <div class="output-card-name">📄 Combined PDF</div>
+        <div class="output-card-desc">All letters in one PDF, one letter per page. Easiest to manage and print.</div>
+        <div class="output-card-price">Included in bundle price</div>
+      </div>
+      <div class="output-card" id="out-separate" onclick="selectOutput('separate')">
+        <div class="output-card-name">📁 Separate Files</div>
+        <div class="output-card-desc">One file per letter. Easier to email individually.</div>
+        <div class="output-card-price" id="separatePrice">+ $1 per letter additional</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADDITIONAL NOTES -->
+  <div class="section">
+    <div class="section-title">Additional Notes</div>
+    <div class="field">
+      <label>Anything else</label>
+      <textarea id="additionalNotes" placeholder="Any other context, exceptions, or specific language you want included across all letters."></textarea>
+    </div>
+  </div>
+
+  <!-- PRICE SUMMARY -->
+  <div class="price-summary" id="priceSummary">
+    <div class="price-summary-title">Order Summary</div>
+    <div class="price-row"><span id="summaryBundle">Single bundle</span><span id="summaryBundlePrice">$15</span></div>
+    <div class="price-row" id="separateRow" style="display:none"><span id="summarySeperateLabel">Separate files</span><span id="summarySeparatePrice">$0</span></div>
+    <div class="price-row total"><span>Total</span><span id="summaryTotal">$15</span></div>
+  </div>
+
+  <!-- LEGAL -->
+  <div class="legal-box">
+    <div class="legal-box-title">⚖️ Important — Please Read</div>
+    <div class="legal-box-text">
+      This tool generates general-purpose collection letters. It is not legal advice. Massachusetts debt collection laws (940 CMR 7.00, MGL c. 93A) apply to consumer debts. Only include threats of legal action or collections referral if you actually intend to take those steps. MA statute of limitations on contract debts is 6 years. For significant debts or complex situations, consult a Massachusetts attorney. Pricing for this service is determined automatically based on task complexity.
+    </div>
+  </div>
+
+  <div class="payment-card" id="paymentCard">
+    <div class="payment-card-title">Payment Details</div>
+    <div id="paymentElement"></div>
+    <div class="payment-error" id="paymentError"></div>
+    <button class="btn-pay" id="payBtn" onclick="submitPayment()">Pay <span id="payAmount"></span> →</button>
+    <button class="btn-cancel-pay" onclick="cancelPayment()">Cancel</button>
+  </div>
+
+  <button class="submit-btn" id="submitBtn" onclick="generate()">
+    Generate My Letters — <span id="btnPrice">$15</span>
+  </button>
+
+  <!-- WORKING -->
+  <div class="working-card" id="workingCard">
+    <div class="spinner"></div>
+    <div class="working-title">Generating Your Letters</div>
+    <div class="working-sub" id="workingSub">Writing professional collection letters for your recipients...</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-card" id="resultCard">
+    <div class="result-header">
+      <div class="result-title">Your Collection Letters</div>
+      <div class="result-badge">✓ Ready to Review</div>
+    </div>
+    <div class="letter-tabs" id="letterTabs"></div>
+    <div class="result-content" id="resultContent"></div>
+    <div class="result-actions">
+      <button class="btn-download" onclick="downloadAll()">↓ Download All Letters</button>
+      <div class="revision-wrap">
+        <input class="revision-input" id="revisionInput" placeholder="Something to change? Tell us..."/>
+        <button class="btn-revise" onclick="revise()">Revise →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Note: deskkit-charge.js charges by raw server-side amount lookup (BUNDLE_PRICES),
+// not Stripe Price IDs, so no product/price IDs are needed here — just the
+// publishable key for Stripe Elements to collect card details.
+const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+let elements = null;
+let pendingPaymentIntentId = null;
+
+const SK = 'dk_session';
+function getSession() { try { return JSON.parse(localStorage.getItem(SK)); } catch(e) { return null; } }
+
+// ─── STATE ───────────────────────────────────────────────────────
+let selectedBundle = { id:'single', price:15, maxRecipients:1 };
+let selectedOutput = 'combined';
+let logoData = null;
+let bizFileData = null;
+let recipients = [];
+let generatedLetters = [];
+let currentTaskId = null;
+let currentLetterIdx = 0;
+let revisionHistory = [];
+
+// Bundle config
+const BUNDLES = {
+  single:     { price:15,  max:1,  label:'Single (1 recipient, 1 letter)' },
+  triple:     { price:35,  max:1,  label:'Triple (1 recipient, all 3 letters)' },
+  starter:    { price:49,  max:5,  label:'Starter (up to 5 recipients)' },
+  business:   { price:89,  max:15, label:'Business (up to 15 recipients)' },
+  bulk:       { price:149, max:30, label:'Bulk (up to 30 recipients)' },
+  enterprise: { price:249, max:50, label:'Enterprise (up to 50 recipients)' },
+};
+
+// ─── INIT ────────────────────────────────────────────────────────
+window.onload = () => {
+  const s = getSession();
+  if (!s || !s.token) {
+    window.location.href = '/portal/app';
+    return;
+  }
+  addRecipient();
+  updateSummary();
+  const today = new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  document.getElementById('letterDate').placeholder = today;
+  document.getElementById('interestRate').addEventListener('change', function() {
+    document.getElementById('customInterestField').style.display = this.value === 'custom' ? 'block' : 'none';
+  });
+};
+
+// ─── BUNDLE ──────────────────────────────────────────────────────
+function selectBundle(id, price, max) {
+  selectedBundle = { id, price, max };
+  document.querySelectorAll('.bundle-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('bundle-' + id).classList.add('selected');
+
+  // Enforce recipient limit
+  while (recipients.length > max) removeLastRecipient();
+
+  // Show/hide add button
+  document.getElementById('addRecipientBtn').style.display = recipients.length >= max ? 'none' : 'block';
+
+  // Triple bundle — auto-select all 3 letters for recipient
+  if (id === 'triple' && recipients.length > 0) {
+    const r = recipients[0];
+    r.letters = ['firm', 'final', 'warning'];
+    renderRecipients();
+  }
+
+  updateSummary();
+}
+
+// ─── OUTPUT ──────────────────────────────────────────────────────
+function selectOutput(out) {
+  selectedOutput = out;
+  document.querySelectorAll('.output-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('out-' + out).classList.add('selected');
+  updateSummary();
+}
+
+// ─── LOGO ────────────────────────────────────────────────────────
+function handleLogo(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    logoData = e.target.result;
+    document.getElementById('logoUpload').style.display = 'none';
+    document.getElementById('logoImg').src = logoData;
+    document.getElementById('logoName').textContent = file.name;
+    document.getElementById('logoPreview').style.display = 'flex';
+  };
+  reader.readAsDataURL(file);
+}
+function removeLogo() {
+  logoData = null;
+  document.getElementById('logoInput').value = '';
+  document.getElementById('logoUpload').style.display = 'block';
+  document.getElementById('logoPreview').style.display = 'none';
+}
+
+function handleBizFile(file) {
+  if (!file) return;
+  bizFileData = file;
+  document.getElementById('bizFileName').textContent = file.name;
+  document.getElementById('bizFilePreview').style.display = 'flex';
+}
+function removeBizFile() {
+  bizFileData = null;
+  document.getElementById('bizInfoFile').value = '';
+  document.getElementById('bizFilePreview').style.display = 'none';
+}
+
+// ─── RECIPIENTS ──────────────────────────────────────────────────
+function addRecipient() {
+  if (recipients.length >= selectedBundle.max) { showToast('Bundle limit reached. Upgrade to add more recipients.', 'error'); return; }
+  const id = 'r' + Date.now();
+  recipients.push({ id, name:'', company:'', address:'', invoices:'', amount:'', paid:'', balance:'', serviceDate:'', letters:['firm'] });
+  renderRecipients();
+  updateSummary();
+}
+
+function removeLastRecipient() {
+  recipients.pop();
+  renderRecipients();
+  updateSummary();
+}
+
+function removeRecipient(id) {
+  recipients = recipients.filter(r => r.id !== id);
+  renderRecipients();
+  updateSummary();
+}
+
+function renderRecipients() {
+  const el = document.getElementById('recipientList');
+  el.innerHTML = recipients.map((r, i) => `
+    <div class="recipient-card" id="card-${r.id}">
+      <div class="recipient-header">
+        <div class="recipient-num">Recipient ${i+1}</div>
+        ${recipients.length > 1 ? `<button class="recipient-remove" onclick="removeRecipient('${r.id}')">✕ Remove</button>` : ''}
+      </div>
+      <div class="form-grid" style="margin-bottom:12px">
+        <div class="field"><label>Debtor Name *</label><input type="text" value="${r.name}" onchange="updateRecipient('${r.id}','name',this.value)" placeholder="Mike Johnson"/></div>
+        <div class="field"><label>Company (if any)</label><input type="text" value="${r.company}" onchange="updateRecipient('${r.id}','company',this.value)" placeholder="Johnson Rentals LLC"/></div>
+        <div class="field form-full"><label>Debtor Address</label><input type="text" value="${r.address}" onchange="updateRecipient('${r.id}','address',this.value)" placeholder="456 Oak Ave, Worcester MA 01601"/></div>
+        <div class="field"><label>Invoice Number(s)</label><input type="text" value="${r.invoices}" onchange="updateRecipient('${r.id}','invoices',this.value)" placeholder="INV-1042"/></div>
+        <div class="field"><label>Date Services Provided</label><input type="text" value="${r.serviceDate}" onchange="updateRecipient('${r.id}','serviceDate',this.value)" placeholder="March 15, 2026"/></div>
+        <div class="field"><label>Amount Owed *</label><input type="text" value="${r.amount}" onchange="updateRecipient('${r.id}','amount',this.value)" placeholder="$1,250.00"/></div>
+        <div class="field"><label>Amount Paid</label><input type="text" value="${r.paid}" onchange="updateRecipient('${r.id}','paid',this.value)" placeholder="$0 (leave blank if none)"/></div>
+        <div class="field"><label>Balance Due *</label><input type="text" value="${r.balance}" onchange="updateRecipient('${r.id}','balance',this.value)" placeholder="$1,250.00"/></div>
+      </div>
+      ${selectedBundle.id !== 'single' ? `
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Letters to Generate</div>
+      <div class="letter-select-row">
+        <div class="letter-toggle ${r.letters.includes('firm')?'active':''}" onclick="toggleLetter('${r.id}','firm',this)">Firm First Notice</div>
+        <div class="letter-toggle ${r.letters.includes('final')?'active':''}" onclick="toggleLetter('${r.id}','final',this)">Final Notice</div>
+        <div class="letter-toggle ${r.letters.includes('warning')?'active':''}" onclick="toggleLetter('${r.id}','warning',this)">Final Warning</div>
+      </div>` : ''}
+    </div>`).join('');
+
+  // Update count
+  const max = selectedBundle.max;
+  const el2 = document.getElementById('recipientCount');
+  el2.textContent = `${recipients.length} / ${max}`;
+  el2.className = 'recipient-count' + (recipients.length >= max ? ' warn' : '');
+  document.getElementById('addRecipientBtn').style.display = recipients.length >= max ? 'none' : 'block';
+}
+
+function updateRecipient(id, field, value) {
+  const r = recipients.find(x => x.id === id);
+  if (r) { r[field] = value; updateSummary(); }
+}
+
+function toggleLetter(recipientId, letterType, el) {
+  const r = recipients.find(x => x.id === recipientId);
+  if (!r) return;
+  if (r.letters.includes(letterType)) {
+    if (r.letters.length === 1) { showToast('At least one letter type required', 'error'); return; }
+    r.letters = r.letters.filter(l => l !== letterType);
+    el.classList.remove('active');
+  } else {
+    r.letters.push(letterType);
+    el.classList.add('active');
+  }
+  updateSummary();
+}
+
+// ─── CONDITIONALS ────────────────────────────────────────────────
+function toggleConditional(id, show) {
+  document.getElementById(id).classList.toggle('show', show);
+}
+
+function toggleLateFeeInput() {
+  const type = document.getElementById('lateFeeType').value;
+  document.getElementById('lateFeeFlat').style.display = type === 'flat' ? 'block' : 'none';
+  document.getElementById('lateFeePercent').style.display = type === 'percent' ? 'block' : 'none';
+}
+
+// ─── SUMMARY ─────────────────────────────────────────────────────
+function updateSummary() {
+  const bundle = BUNDLES[selectedBundle.id];
+  let totalLetters = recipients.reduce((s, r) => s + (r.letters?.length || 1), 0);
+  let separateCost = selectedOutput === 'separate' ? totalLetters : 0;
+  let total = bundle.price + separateCost;
+
+  document.getElementById('summaryBundle').textContent = bundle.label;
+  document.getElementById('summaryBundlePrice').textContent = '$' + bundle.price;
+  document.getElementById('btnPrice').textContent = '$' + total;
+
+  if (selectedOutput === 'separate' && separateCost > 0) {
+    document.getElementById('separateRow').style.display = 'flex';
+    document.getElementById('summarySeperateLabel').textContent = `Separate files (${totalLetters} letters × $1)`;
+    document.getElementById('summarySeparatePrice').textContent = '+$' + separateCost;
+  } else {
+    document.getElementById('separateRow').style.display = 'none';
+  }
+
+  document.getElementById('summaryTotal').textContent = '$' + total;
+}
+
+function val(id) { return (document.getElementById(id)?.value || '').trim(); }
+function checked(id) { return document.getElementById(id)?.checked; }
+
+// ─── GENERATE ────────────────────────────────────────────────────
+async function generate() {
+  // Validate
+  if (!val('bizName') || !val('ownerName')) { showToast('Please enter your business name and contact name', 'error'); return; }
+  if (recipients.length === 0) { showToast('Please add at least one recipient', 'error'); return; }
+
+  const missingRecipient = recipients.find(r => !r.name || !r.balance);
+  if (missingRecipient) { showToast('Please fill in name and balance due for all recipients', 'error'); return; }
+
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+
+  const bundle = BUNDLES[selectedBundle.id];
+  const totalLetters = recipients.reduce((s, r) => s + (r.letters?.length || 1), 0);
+  const desc = `Collection Letter — ${bundle.label} — ${recipients.length} recipient(s), ${totalLetters} letter(s) — Business: ${val('bizName')}`;
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+
+  try {
+    const r = await fetch('/api/deskkit-charge', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ tier: selectedBundle.id, desc, filename: null, kind: 'collection_letter' })
+    });
+    const d = await r.json();
+    if (!r.ok) { showToast(d.error || 'Could not start payment.', 'error'); btn.disabled = false; return; }
+
+    currentTaskId = d.taskId;
+    pendingPaymentIntentId = d.paymentIntentId;
+
+    elements = stripe.elements({ clientSecret: d.clientSecret, appearance: {
+      theme: 'night',
+      variables: { colorPrimary: '#C8701A', colorBackground: '#162840', colorText: '#E2EAF2', borderRadius: '8px' }
+    }});
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#paymentElement');
+
+    document.getElementById('payAmount').textContent = '$' + bundle.price;
+    document.getElementById('paymentError').style.display = 'none';
+    document.getElementById('paymentCard').style.display = 'block';
+    document.getElementById('paymentCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
+    btn.disabled = false;
+  } catch(e) {
+    showToast('Something went wrong. Please try again.', 'error');
+    btn.disabled = false;
+  }
+}
+
+function cancelPayment() {
+  document.getElementById('paymentCard').style.display = 'none';
+  elements = null;
+}
+
+async function submitPayment() {
+  if (!elements) return;
+  const btn = document.getElementById('payBtn');
+  const errEl = document.getElementById('paymentError');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+  errEl.style.display = 'none';
+
+  const { error, paymentIntent } = await stripe.confirmPayment({
+    elements,
+    confirmParams: { return_url: window.location.href },
+    redirect: 'if_required'
+  });
+
+  if (error) {
+    errEl.textContent = error.message || 'Payment failed. Please check your card details.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Pay →';
+    return;
+  }
+
+  if (paymentIntent && paymentIntent.status === 'succeeded') {
+    await onPaymentConfirmed();
+  } else {
+    errEl.textContent = 'Payment did not complete. Please try again.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Pay →';
+  }
+}
+
+async function onPaymentConfirmed() {
+  const session = getSession();
+  document.getElementById('paymentCard').style.display = 'none';
+
+  try {
+    const r = await fetch('/api/deskkit-confirm-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ taskId: currentTaskId, paymentIntentId: pendingPaymentIntentId })
+    });
+    const d = await r.json();
+    if (!r.ok) { showToast(d.error || 'Could not confirm payment.', 'error'); return; }
+    await runGeneration();
+  } catch(e) {
+    showToast('Payment succeeded but something went wrong starting your letters. Contact support with task ID: ' + currentTaskId, 'error');
+  }
+}
+
+window.addEventListener('load', async () => {
+  const params = new URLSearchParams(window.location.search);
+  const clientSecret = params.get('payment_intent_client_secret');
+  if (!clientSecret) return;
+  const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+  if (paymentIntent && paymentIntent.status === 'succeeded') {
+    pendingPaymentIntentId = paymentIntent.id;
+    currentTaskId = paymentIntent.metadata?.taskId || currentTaskId;
+    await onPaymentConfirmed();
+  }
+  window.history.replaceState({}, document.title, window.location.pathname);
+});
+
+async function runGeneration() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('workingCard').style.display = 'block';
+  document.getElementById('workingCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+  generatedLetters = [];
+  const totalLetters = recipients.reduce((s, r) => s + (r.letters?.length || 1), 0);
+  let done = 0;
+
+  // Build business info
+  const bizInfo = `
+Business: ${val('bizName')}
+Contact: ${val('ownerName')}
+${val('bizAddress') ? 'Address: ' + val('bizAddress') : ''}
+${val('bizCity') ? val('bizCity') : ''}
+${val('bizPhone') ? 'Phone: ' + val('bizPhone') : ''}
+${val('bizEmail') ? 'Email: ' + val('bizEmail') : ''}
+${val('bizWebsite') ? 'Website: ' + val('bizWebsite') : ''}`.trim();
+
+  const today = val('letterDate') || new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+
+  // Build options string
+  const optionsList = [];
+  if (checked('optCollections')) optionsList.push('Include a clear statement that failure to pay may result in referral to a professional collections agency, which may negatively affect their credit report');
+  if (checked('optInterest')) {
+    const rate = document.getElementById('interestRate').value === 'custom' ? val('customInterest') : document.getElementById('interestRate').options[document.getElementById('interestRate').selectedIndex].text;
+    optionsList.push(`Include reference to interest accruing at ${rate} per the original agreement`);
+  }
+  if (checked('optLateFee')) {
+    const type = document.getElementById('lateFeeType').value;
+    const feeAmt = type === 'flat' ? val('lateFeeAmount') : val('lateFeePercent2');
+    optionsList.push(`Include reference to late fee of ${feeAmt} per the original agreement`);
+  }
+  if (checked('optPaymentPlan')) optionsList.push('Include offer to contact us to arrange a payment plan');
+  if (checked('optSmallClaims')) optionsList.push('Include statement that unpaid balance may be pursued in Massachusetts Small Claims Court (limit $7,000)');
+
+  const toneDescriptions = {
+    firm: 'FIRM FIRST NOTICE — Professional and direct. Assumes this may be an oversight. Sets a clear deadline. Maintains a respectful but serious tone.',
+    final: 'FINAL NOTICE — Serious and urgent. Makes clear this is a last attempt before escalation. No ambiguity about the consequences.',
+    warning: 'FINAL WARNING — Last communication before legal or collections action. Firm, direct, and unmistakably clear about next steps.'
+  };
+
+  const genSession = getSession();
+
+  // Generate letters one by one
+  for (const recipient of recipients) {
+    const letters = recipient.letters || ['firm'];
+    for (const letterType of letters) {
+      document.getElementById('workingSub').textContent = `Writing ${toneDescriptions[letterType].split('—')[0].trim()} for ${recipient.name}...`;
+      document.getElementById('progressFill').style.width = Math.round((done / totalLetters) * 100) + '%';
+
+      const prompt = `Generate a professional debt collection letter.
+
+TONE: ${toneDescriptions[letterType]}
+
+CREDITOR (SENDER):
+${bizInfo}
+
+RECIPIENT (DEBTOR):
+Name: ${recipient.name}
+${recipient.company ? 'Company: ' + recipient.company : ''}
+${recipient.address ? 'Address: ' + recipient.address : ''}
+
+DEBT DETAILS:
+${recipient.invoices ? 'Invoice(s): ' + recipient.invoices : ''}
+${recipient.serviceDate ? 'Date of Service: ' + recipient.serviceDate : ''}
+Amount Originally Owed: ${recipient.amount}
+${recipient.paid ? 'Amount Paid: ' + recipient.paid : ''}
+Balance Due: ${recipient.balance}
+Services: ${val('defaultServices') || 'Professional services rendered'}
+Payment Deadline: ${val('paymentDeadline') || '30 days from date of letter'}
+Payment Methods: ${val('paymentMethods') || 'Contact us to arrange payment'}
+${val('checksTo') ? 'Make checks payable to: ' + val('checksTo') : ''}
+
+DATE: ${today}
+
+REQUIRED OPTIONS:
+${optionsList.length > 0 ? optionsList.map((o,i) => `${i+1}. ${o}`).join('\n') : 'Standard collection notice language only'}
+
+${val('additionalNotes') ? 'ADDITIONAL NOTES: ' + val('additionalNotes') : ''}
+
+FORMAT: Complete professional letter with full letterhead, date, RE: line, body paragraphs, closing, and signature. Include MA law notice: "You have 30 days from receipt of this letter to dispute this debt in writing." No placeholders — use actual information provided.`;
+
+      try {
+        const r = await fetch('/api/deskkit-generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + genSession.token },
+          body: JSON.stringify({
+            taskId: currentTaskId,
+            desc: prompt,
+            workSystem: 'You are a professional debt collection letter writer. Write clear, legally appropriate, professional collection letters. Use factual language. Never use emotional or threatening language. Always use the actual names and details provided — never placeholders. Format with proper letterhead, date, reference line, body, and signature block.'
+          })
+        });
+        const d = await r.json();
+        const letter = r.ok ? (d.result || '') : '';
+        generatedLetters.push({ recipient: recipient.name, type: letterType, content: letter || `ERROR: Could not generate letter for ${recipient.name}. Please try again.` });
+      } catch(e) {
+        generatedLetters.push({ recipient: recipient.name, type: letterType, content: `ERROR: Could not generate letter for ${recipient.name}. Please try again.` });
+      }
+
+      done++;
+    }
+  }
+
+  // Save the full combined set of letters as the task's final result
+  try {
+    const combinedResult = generatedLetters.map((l, i) =>
+      `${'='.repeat(60)}\nLETTER ${i+1}: ${l.recipient.toUpperCase()} — ${l.type.toUpperCase()}\n${'='.repeat(60)}\n\n${l.content}`
+    ).join('\n\n\n');
+    await fetch('/api/deskkit-save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + genSession.token },
+      body: JSON.stringify({ taskId: currentTaskId, result: combinedResult, status: 'preview' })
+    });
+  } catch(e) { console.error('Save error:', e); }
+
+  document.getElementById('progressFill').style.width = '100%';
+  setTimeout(() => {
+    document.getElementById('workingCard').style.display = 'none';
+    showResults();
+  }, 500);
+
+  btn.disabled = false;
+  btn.innerHTML = `Generate My Letters — <span id="btnPrice">$${BUNDLES[selectedBundle.id].price}</span>`;
+}
+
+function showResults() {
+  const tabs = document.getElementById('letterTabs');
+  const content = document.getElementById('resultContent');
+
+  tabs.innerHTML = generatedLetters.map((l, i) => `
+    <div class="letter-tab ${i === 0 ? 'active' : ''}" onclick="showLetter(${i}, this)">
+      ${l.recipient} — ${l.type === 'firm' ? 'Firm' : l.type === 'final' ? 'Final' : 'Warning'}
+    </div>`).join('');
+
+  content.textContent = generatedLetters[0]?.content || '';
+  currentLetterIdx = 0;
+  revisionHistory = generatedLetters.map(l => [{ role: 'user', content: l.content }, { role: 'assistant', content: l.content }]);
+
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function showLetter(idx, el) {
+  currentLetterIdx = idx;
+  document.querySelectorAll('.letter-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('resultContent').textContent = generatedLetters[idx]?.content || '';
+}
+
+async function revise() {
+  const feedback = document.getElementById('revisionInput').value.trim();
+  if (!feedback) return;
+  const letter = generatedLetters[currentLetterIdx];
+  if (!letter) return;
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('workingCard').style.display = 'block';
+  document.getElementById('workingSub').textContent = `Revising letter for ${letter.recipient}...`;
+
+  try {
+    const r = await fetch('/api/deskkit-generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({
+        taskId: currentTaskId,
+        mode: 'revise',
+        feedback,
+        previousResult: letter.content
+      })
+    });
+    const d = await r.json();
+    if (!r.ok) { document.getElementById('workingCard').style.display = 'none'; document.getElementById('resultCard').style.display = 'block'; showToast(d.error || 'Revision failed. Please try again.', 'error'); return; }
+    const revised = d.result;
+    generatedLetters[currentLetterIdx].content = revised;
+
+    // Keep the saved combined result in sync with this revision
+    const combinedResult = generatedLetters.map((l, i) =>
+      `${'='.repeat(60)}\nLETTER ${i+1}: ${l.recipient.toUpperCase()} — ${l.type.toUpperCase()}\n${'='.repeat(60)}\n\n${l.content}`
+    ).join('\n\n\n');
+    fetch('/api/deskkit-save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ taskId: currentTaskId, result: combinedResult, status: 'preview' })
+    }).catch(() => {});
+
+    document.getElementById('workingCard').style.display = 'none';
+    document.getElementById('resultContent').textContent = revised;
+    document.getElementById('resultCard').style.display = 'block';
+    document.getElementById('revisionInput').value = '';
+    showToast('Revised!', 'success');
+  } catch(e) {
+    document.getElementById('workingCard').style.display = 'none';
+    document.getElementById('resultCard').style.display = 'block';
+    showToast('Revision failed. Please try again.', 'error');
+  }
+}
+
+function downloadAll() {
+  const combined = generatedLetters.map((l, i) =>
+    `${'='.repeat(60)}\nLETTER ${i+1}: ${l.recipient.toUpperCase()} — ${l.type.toUpperCase()}\n${'='.repeat(60)}\n\n${l.content}`
+  ).join('\n\n\n');
+
+  const blob = new Blob([combined], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `collection-letters-${val('bizName').replace(/\s+/g,'-')}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('All letters downloaded! ✓', 'success');
+}
+
+// ─── BULK UPLOAD ─────────────────────────────────────────────────
+let bulkFileData = null;
+let bulkFile = null;
+
+function handleBulkUpload(file) {
+  if (!file) return;
+  bulkFile = file;
+  document.getElementById('bulkFileName').textContent = file.name;
+  document.getElementById('bulkFilePreview').style.display = 'flex';
+  document.getElementById('parseBtn').style.display = 'block';
+
+  const reader = new FileReader();
+  reader.onload = e => { bulkFileData = e.target.result; };
+  reader.readAsDataURL(file);
+}
+
+function removeBulkFile() {
+  bulkFile = null;
+  bulkFileData = null;
+  document.getElementById('bulkFile').value = '';
+  document.getElementById('bulkFilePreview').style.display = 'none';
+  document.getElementById('parseBtn').style.display = 'none';
+  document.getElementById('parseStatus').style.display = 'none';
+}
+
+async function parseBulkFile() {
+  if (!bulkFile || !bulkFileData) return;
+
+  const status = document.getElementById('parseStatus');
+  const btn = document.getElementById('parseBtn');
+  btn.disabled = true;
+  btn.textContent = 'Parsing...';
+  status.style.display = 'block';
+  status.textContent = 'Reading your file and extracting debtor information...';
+
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+
+  const files = [];
+  const ext = bulkFile.name.split('.').pop().toLowerCase();
+  const imageTypes = ['png','jpg','jpeg','webp'];
+  if (imageTypes.includes(ext)) {
+    const mediaType = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+    files.push({ mediaType, data: bulkFileData.split(',')[1] });
+  }
+
+  const userText = `Parse this accounts receivable / debtor list and extract all debtor records. Return ONLY a JSON array (no markdown, no explanation) in this exact format:
+[
+  {
+    "name": "Full name of debtor",
+    "company": "Company name if any, or empty string",
+    "address": "Full address if available, or empty string",
+    "invoices": "Invoice numbers if available, or empty string",
+    "amount": "Original amount owed with dollar sign",
+    "paid": "Amount paid if any, or empty string",
+    "balance": "Balance due with dollar sign",
+    "serviceDate": "Date of service if available, or empty string"
+  }
+]
+
+Extract every debtor record you can find. If a field is not present in the file, use an empty string. Return only valid JSON array.`;
+
+  try {
+    const r = await fetch('/api/deskkit-assist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({
+        systemPrompt: 'You are a data extraction specialist. Extract structured debtor/accounts receivable data from any document format. Return only valid JSON arrays. No markdown, no explanation, just the JSON.',
+        userText,
+        files,
+        maxTokens: 4000
+      })
+    });
+
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Could not parse the file');
+    const text = d.text || '';
+
+    let parsed;
+    try {
+      parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
+    } catch(e) {
+      throw new Error('Could not parse the extracted data');
+    }
+
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      throw new Error('No debtor records found in the file');
+    }
+
+    // Check bundle limit
+    const max = selectedBundle.max;
+    if (parsed.length > max) {
+      status.textContent = `Found ${parsed.length} records but your bundle allows ${max}. Only the first ${max} will be imported. Upgrade your bundle to include more.`;
+      parsed = parsed.slice(0, max);
+    } else {
+      status.textContent = `✓ Found ${parsed.length} debtor record${parsed.length > 1 ? 's' : ''}. Review below and generate when ready.`;
+      status.style.color = 'var(--green2)';
+    }
+
+    // Populate recipients
+    recipients = parsed.map(p => ({
+      id: 'r' + Date.now() + Math.random().toString(36).slice(2),
+      name: p.name || '',
+      company: p.company || '',
+      address: p.address || '',
+      invoices: p.invoices || '',
+      amount: p.amount || '',
+      paid: p.paid || '',
+      balance: p.balance || '',
+      serviceDate: p.serviceDate || '',
+      letters: ['firm']
+    }));
+
+    renderRecipients();
+    updateSummary();
+
+  } catch(e) {
+    status.textContent = '⚠️ ' + (e.message || 'Could not parse file. Please check the format or enter recipients manually.');
+    status.style.color = 'var(--red2)';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Parse File & Import Recipients';
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  setTimeout(() => t.className = 'toast', 3000);
+}
+</script>
+</body>
+</html>
