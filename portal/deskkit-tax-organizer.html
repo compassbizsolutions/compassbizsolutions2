@@ -119,7 +119,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
   <div class="section">
     <div class="field">
       <label>Describe What You Need</label>
-      <textarea id="taskDesc" placeholder="Note the tax year, entity type, or anything specific you want organized separately.">Organize these documents into a clean, categorized summary sorted by date and document type (receipt, statement, 1099, invoice, other). Group expenses into standard Schedule C categories. Flag anything unclear, missing a date, or possibly personal so it can be double-checked. This is for organizing records only, not tax advice or filing.</textarea>
+      <textarea id="taskDesc" placeholder="Note the tax year, entity type, or anything specific you want organized separately."></textarea>
     </div>
   </div>
 
@@ -229,11 +229,19 @@ function removeFileAt(i) {
 
 function val(id) { return (document.getElementById(id)?.value || '').trim(); }
 
+const DEFAULT_TASK_INSTRUCTIONS = "Organize these documents into a clean, categorized summary sorted by date and document type (receipt, statement, 1099, invoice, other). Group expenses into standard Schedule C categories. Flag anything unclear, missing a date, or possibly personal so it can be double-checked. This is for organizing records only, not tax advice or filing.";
+
 function buildFullDescription() {
   let extra = [];
   const ty = val('fTaxYear2'); if (ty) extra.push('Tax Year: ' + ty); const et = val('fEntityType'); if (et) extra.push('Entity Type: ' + et);
-  const base = val('taskDesc');
-  return (extra.length ? extra.join('\n') + '\n\n' : '') + base;
+  const userNotes = val('taskDesc');
+
+  let desc = DEFAULT_TASK_INSTRUCTIONS;
+  if (extra.length) desc += '\n\n' + extra.join('\n');
+  if (userNotes) {
+    desc += '\n\nAdditional instructions from the customer — these take priority and override the default instructions above if there is any conflict:\n' + userNotes;
+  }
+  return desc;
 }
 
 function buildFilesPayload() {
