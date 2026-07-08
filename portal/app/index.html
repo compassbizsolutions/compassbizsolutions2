@@ -128,6 +128,10 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 .featured-tasks { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
 .featured-task { background: var(--navy2); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 12px; color: var(--text2); cursor: pointer; transition: all 0.15s; text-decoration: none; display: inline-block; }
 .featured-task:hover { border-color: var(--amber); color: var(--amber); }
+.category-select-wrap { margin-bottom: 12px; }
+.category-select { background: var(--navy2); border: 1px solid var(--border2); border-radius: 8px; padding: 8px 14px; font-size: 13px; color: var(--text); font-family: 'Inter', sans-serif; cursor: pointer; outline: none; }
+.category-select:focus { border-color: var(--amber); }
+.featured-task.cat-hidden { display: none; }
 
 /* ANALYZE BUTTON */
 .analyze-btn { width: 100%; background: var(--amber); color: white; border: none; border-radius: 10px; padding: 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 10px; }
@@ -297,24 +301,35 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 
     <!-- FEATURED QUICK TASKS -->
     <span class="featured-label">Quick Start — Common Tasks</span>
-    <div class="featured-tasks">
-      <a class="featured-task" href="/portal/collection-letter">✉️ Collection Letter</a>
-      <a class="featured-task" href="/portal/payroll">📊 Compile Payroll</a>
-      <a class="featured-task" href="/portal/invoices">🧾 Compile Invoices</a>
-      <a class="featured-task" href="/portal/warning-letter">⚠️ Employee Warning Letter</a>
-      <a class="featured-task" href="/portal/business-letter">📧 Write a Letter or Email</a>
-      <a class="featured-task" href="/portal/bank-expense">🏦 Expense Report from Statement</a>
-      <a class="featured-task" href="/portal/followup-letters">📬 Customer Follow-Up Letters</a>
-      <a class="featured-task" href="/portal/job-cost">🧾 Job Cost Report</a>
-      <a class="featured-task" href="/portal/quote-comparison">📐 Compare Material Quotes</a>
-      <a class="featured-task" href="/portal/review-responses">⭐ Review Response Batch</a>
-      <a class="featured-task" href="/portal/mileage-expense">🚗 Mileage to Expense Report</a>
-      <a class="featured-task" href="/portal/job-posting">📢 Job Posting Generator</a>
-      <a class="featured-task" href="/portal/meeting-notes">📝 Meeting Notes to Action Items</a>
-      <div class="featured-task" onclick="setFeatured('Clean up and organize this spreadsheet. Fix formatting, remove duplicates, and make it easy to read.')">🧹 Clean Up Spreadsheet</div>
-      <div class="featured-task" onclick="setFeatured('Summarize this document in plain language. Pull out the key points and action items.')">📄 Summarize Document</div>
-      <div class="featured-task" onclick="setFeatured('Build a report from this data. Make it clear, organized, and easy to read.')">📈 Build a Report</div>
+    <div class="category-select-wrap">
+      <select id="taskCategory" class="category-select" onchange="filterTasksByCategory()">
+        <option value="all">All Categories</option>
+        <option value="financial">Financial</option>
+        <option value="hr">HR &amp; Hiring</option>
+        <option value="customer">Customer &amp; Communication</option>
+        <option value="documents">Documents &amp; Operations</option>
+      </select>
     </div>
+    <div class="featured-tasks">
+      <a class="featured-task" data-cat="customer" href="/portal/collection-letter">Collection Letter</a>
+      <a class="featured-task" data-cat="financial" href="/portal/payroll">Compile Payroll</a>
+      <a class="featured-task" data-cat="financial" href="/portal/invoices">Compile Invoices</a>
+      <a class="featured-task" data-cat="hr" href="/portal/warning-letter">Employee Warning Letter</a>
+      <a class="featured-task" data-cat="customer" href="/portal/business-letter">Write a Letter or Email</a>
+      <a class="featured-task" data-cat="financial" href="/portal/bank-expense">Expense Report from Statement</a>
+      <a class="featured-task" data-cat="customer" href="/portal/followup-letters">Customer Follow-Up Letters</a>
+      <a class="featured-task" data-cat="financial" href="/portal/job-cost">Job Cost Report</a>
+      <a class="featured-task" data-cat="financial" href="/portal/quote-comparison">Compare Material Quotes</a>
+      <a class="featured-task" data-cat="customer" href="/portal/review-responses">Review Response Batch</a>
+      <a class="featured-task" data-cat="financial" href="/portal/mileage-expense">Mileage to Expense Report</a>
+      <a class="featured-task" data-cat="hr" href="/portal/job-posting">Job Posting Generator</a>
+      <a class="featured-task" data-cat="documents" href="/portal/meeting-notes">Meeting Notes to Action Items</a>
+      <a class="featured-task" data-cat="financial" href="/portal/tax-organizer">Tax Document Organizer</a>
+      <div class="featured-task" data-cat="documents" onclick="setFeatured('Clean up and organize this spreadsheet. Fix formatting, remove duplicates, and make it easy to read.')">Clean Up Spreadsheet</div>
+      <div class="featured-task" data-cat="documents" onclick="setFeatured('Summarize this document in plain language. Pull out the key points and action items.')">Summarize Document</div>
+      <div class="featured-task" data-cat="documents" onclick="setFeatured('Build a report from this data. Make it clear, organized, and easy to read.')">Build a Report</div>
+    </div>
+
 
     <!-- UPLOAD -->
     <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
@@ -536,6 +551,14 @@ function formatBytes(b) {
 function setFeatured(text) {
   document.getElementById('taskDesc').value = text;
   document.getElementById('taskDesc').focus();
+}
+
+function filterTasksByCategory() {
+  const selected = document.getElementById('taskCategory').value;
+  document.querySelectorAll('.featured-task').forEach(el => {
+    const cat = el.getAttribute('data-cat');
+    el.classList.toggle('cat-hidden', selected !== 'all' && cat !== selected);
+  });
 }
 
 // ─── ANALYZE ─────────────────────────────────────────────────────
