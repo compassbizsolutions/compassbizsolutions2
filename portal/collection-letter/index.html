@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Collection Letter — DeskKit</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="/deskkit-config.js"></script>
 <style>
 :root{--ink:#0A1520;--navy:#0F1E2E;--navy2:#162840;--navy3:#1C3050;--amber:#C8701A;--amber2:#E08930;--amber-dim:rgba(200,112,26,0.1);--amber-border:rgba(200,112,26,0.25);--green:#1A6040;--green2:#22A060;--green-dim:rgba(26,96,64,0.12);--red2:#E05050;--red-dim:rgba(224,80,80,0.08);--muted:#5A7A9A;--text:#E2EAF2;--text2:#8AAAC8;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -143,6 +145,14 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .result-actions{display:flex;gap:12px;flex-wrap:wrap;}
 .btn-download{background:var(--green);color:white;border:none;border-radius:10px;padding:12px 22px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
 .btn-download:hover{background:var(--green2);}
+.payment-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:24px;margin-top:20px;display:none;}
+.payment-card-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+.payment-error{background:rgba(139,26,26,0.1);border:1px solid rgba(224,80,80,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red2);margin-top:12px;display:none;}
+.btn-pay{width:100%;background:var(--green);color:white;border:none;border-radius:10px;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;margin-top:16px;}
+.btn-pay:hover{background:var(--green2);}
+.btn-pay:disabled{opacity:0.5;cursor:not-allowed;}
+.btn-cancel-pay{background:var(--navy3);border:1px solid var(--border2);color:var(--muted);border-radius:10px;padding:14px 20px;font-size:13px;font-weight:600;cursor:pointer;width:100%;margin-top:8px;}
+.btn-cancel-pay:hover{border-color:var(--amber);color:var(--amber);}
 .revision-wrap{flex:1;display:flex;gap:8px;}
 .revision-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:13px;outline:none;font-family:'Inter',sans-serif;}
 .revision-input:focus{border-color:var(--amber);}
@@ -284,7 +294,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
         <div class="upload-preview-row-name" id="bulkFileName"></div>
         <button class="upload-remove" onclick="removeBulkFile()">✕</button>
       </div>
-      <button class="btn-add-recipient" id="parseBtn" onclick="parseBulkFile()" style="display:none;border-color:var(--amber);color:var(--amber);">✦ Parse File & Import Recipients</button>
+      <button class="btn-add-recipient" id="parseBtn" onclick="parseBulkFile()" style="display:none;border-color:var(--amber);color:var(--amber);">Parse File & Import Recipients</button>
       <div id="parseStatus" style="font-size:13px;color:var(--muted);margin-top:8px;display:none;"></div>
     </div>
 
@@ -441,8 +451,16 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
     </div>
   </div>
 
+  <div class="payment-card" id="paymentCard">
+    <div class="payment-card-title">Payment Details</div>
+    <div id="paymentElement"></div>
+    <div class="payment-error" id="paymentError"></div>
+    <button class="btn-pay" id="payBtn" onclick="submitPayment()">Pay <span id="payAmount"></span> →</button>
+    <button class="btn-cancel-pay" onclick="cancelPayment()">Cancel</button>
+  </div>
+
   <button class="submit-btn" id="submitBtn" onclick="generate()">
-    <span>✦</span> Generate My Letters — <span id="btnPrice">$15</span>
+    Generate My Letters — <span id="btnPrice">$15</span>
   </button>
 
   <!-- WORKING -->
@@ -474,6 +492,16 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 <div class="toast" id="toast"></div>
 
 <script>
+// Note: deskkit-charge.js charges by raw server-side amount lookup (BUNDLE_PRICES),
+// not Stripe Price IDs, so no product/price IDs are needed here — just the
+// publishable key for Stripe Elements to collect card details.
+const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+let elements = null;
+let pendingPaymentIntentId = null;
+
+const SK = 'dk_session';
+function getSession() { try { return JSON.parse(localStorage.getItem(SK)); } catch(e) { return null; } }
+
 // ─── STATE ───────────────────────────────────────────────────────
 let selectedBundle = { id:'single', price:15, maxRecipients:1 };
 let selectedOutput = 'combined';
@@ -481,6 +509,7 @@ let logoData = null;
 let bizFileData = null;
 let recipients = [];
 let generatedLetters = [];
+let currentTaskId = null;
 let currentLetterIdx = 0;
 let revisionHistory = [];
 
@@ -496,6 +525,11 @@ const BUNDLES = {
 
 // ─── INIT ────────────────────────────────────────────────────────
 window.onload = () => {
+  const s = getSession();
+  if (!s || !s.token) {
+    window.location.href = '/portal/app';
+    return;
+  }
   addRecipient();
   updateSummary();
   const today = new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
@@ -687,6 +721,115 @@ async function generate() {
   const missingRecipient = recipients.find(r => !r.name || !r.balance);
   if (missingRecipient) { showToast('Please fill in name and balance due for all recipients', 'error'); return; }
 
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+
+  const bundle = BUNDLES[selectedBundle.id];
+  const totalLetters = recipients.reduce((s, r) => s + (r.letters?.length || 1), 0);
+  const desc = `Collection Letter — ${bundle.label} — ${recipients.length} recipient(s), ${totalLetters} letter(s) — Business: ${val('bizName')}`;
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+
+  try {
+    const r = await fetch('/api/deskkit-charge', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ tier: selectedBundle.id, desc, filename: null, kind: 'collection_letter' })
+    });
+    const d = await r.json();
+    if (!r.ok) { showToast(d.error || 'Could not start payment.', 'error'); btn.disabled = false; return; }
+
+    currentTaskId = d.taskId;
+    pendingPaymentIntentId = d.paymentIntentId;
+
+    elements = stripe.elements({ clientSecret: d.clientSecret, appearance: {
+      theme: 'night',
+      variables: { colorPrimary: '#C8701A', colorBackground: '#162840', colorText: '#E2EAF2', borderRadius: '8px' }
+    }});
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#paymentElement');
+
+    document.getElementById('payAmount').textContent = '$' + bundle.price;
+    document.getElementById('paymentError').style.display = 'none';
+    document.getElementById('paymentCard').style.display = 'block';
+    document.getElementById('paymentCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
+    btn.disabled = false;
+  } catch(e) {
+    showToast('Something went wrong. Please try again.', 'error');
+    btn.disabled = false;
+  }
+}
+
+function cancelPayment() {
+  document.getElementById('paymentCard').style.display = 'none';
+  elements = null;
+}
+
+async function submitPayment() {
+  if (!elements) return;
+  const btn = document.getElementById('payBtn');
+  const errEl = document.getElementById('paymentError');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+  errEl.style.display = 'none';
+
+  const { error, paymentIntent } = await stripe.confirmPayment({
+    elements,
+    confirmParams: { return_url: window.location.href },
+    redirect: 'if_required'
+  });
+
+  if (error) {
+    errEl.textContent = error.message || 'Payment failed. Please check your card details.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Pay →';
+    return;
+  }
+
+  if (paymentIntent && paymentIntent.status === 'succeeded') {
+    await onPaymentConfirmed();
+  } else {
+    errEl.textContent = 'Payment did not complete. Please try again.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Pay →';
+  }
+}
+
+async function onPaymentConfirmed() {
+  const session = getSession();
+  document.getElementById('paymentCard').style.display = 'none';
+
+  try {
+    const r = await fetch('/api/deskkit-confirm-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ taskId: currentTaskId, paymentIntentId: pendingPaymentIntentId })
+    });
+    const d = await r.json();
+    if (!r.ok) { showToast(d.error || 'Could not confirm payment.', 'error'); return; }
+    await runGeneration();
+  } catch(e) {
+    showToast('Payment succeeded but something went wrong starting your letters. Contact support with task ID: ' + currentTaskId, 'error');
+  }
+}
+
+window.addEventListener('load', async () => {
+  const params = new URLSearchParams(window.location.search);
+  const clientSecret = params.get('payment_intent_client_secret');
+  if (!clientSecret) return;
+  const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+  if (paymentIntent && paymentIntent.status === 'succeeded') {
+    pendingPaymentIntentId = paymentIntent.id;
+    currentTaskId = paymentIntent.metadata?.taskId || currentTaskId;
+    await onPaymentConfirmed();
+  }
+  window.history.replaceState({}, document.title, window.location.pathname);
+});
+
+async function runGeneration() {
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   document.getElementById('resultCard').style.display = 'none';
@@ -730,6 +873,8 @@ ${val('bizWebsite') ? 'Website: ' + val('bizWebsite') : ''}`.trim();
     warning: 'FINAL WARNING — Last communication before legal or collections action. Firm, direct, and unmistakably clear about next steps.'
   };
 
+  const genSession = getSession();
+
   // Generate letters one by one
   for (const recipient of recipients) {
     const letters = recipient.letters || ['firm'];
@@ -770,19 +915,18 @@ ${val('additionalNotes') ? 'ADDITIONAL NOTES: ' + val('additionalNotes') : ''}
 FORMAT: Complete professional letter with full letterhead, date, RE: line, body paragraphs, closing, and signature. Include MA law notice: "You have 30 days from receipt of this letter to dispute this debt in writing." No placeholders — use actual information provided.`;
 
       try {
-        const r = await fetch('https://api.anthropic.com/v1/messages', {
+        const r = await fetch('/api/deskkit-generate', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + genSession.token },
           body: JSON.stringify({
-            model: 'claude-sonnet-4-6',
-            max_tokens: 1500,
-            system: 'You are a professional debt collection letter writer. Write clear, legally appropriate, professional collection letters. Use factual language. Never use emotional or threatening language. Always use the actual names and details provided — never placeholders. Format with proper letterhead, date, reference line, body, and signature block.',
-            messages: [{ role: 'user', content: prompt }]
+            taskId: currentTaskId,
+            desc: prompt,
+            workSystem: 'You are a professional debt collection letter writer. Write clear, legally appropriate, professional collection letters. Use factual language. Never use emotional or threatening language. Always use the actual names and details provided — never placeholders. Format with proper letterhead, date, reference line, body, and signature block.'
           })
         });
         const d = await r.json();
-        const letter = d.content?.[0]?.text || '';
-        generatedLetters.push({ recipient: recipient.name, type: letterType, content: letter });
+        const letter = r.ok ? (d.result || '') : '';
+        generatedLetters.push({ recipient: recipient.name, type: letterType, content: letter || `ERROR: Could not generate letter for ${recipient.name}. Please try again.` });
       } catch(e) {
         generatedLetters.push({ recipient: recipient.name, type: letterType, content: `ERROR: Could not generate letter for ${recipient.name}. Please try again.` });
       }
@@ -791,6 +935,18 @@ FORMAT: Complete professional letter with full letterhead, date, RE: line, body 
     }
   }
 
+  // Save the full combined set of letters as the task's final result
+  try {
+    const combinedResult = generatedLetters.map((l, i) =>
+      `${'='.repeat(60)}\nLETTER ${i+1}: ${l.recipient.toUpperCase()} — ${l.type.toUpperCase()}\n${'='.repeat(60)}\n\n${l.content}`
+    ).join('\n\n\n');
+    await fetch('/api/deskkit-save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + genSession.token },
+      body: JSON.stringify({ taskId: currentTaskId, result: combinedResult, status: 'preview' })
+    });
+  } catch(e) { console.error('Save error:', e); }
+
   document.getElementById('progressFill').style.width = '100%';
   setTimeout(() => {
     document.getElementById('workingCard').style.display = 'none';
@@ -798,7 +954,7 @@ FORMAT: Complete professional letter with full letterhead, date, RE: line, body 
   }, 500);
 
   btn.disabled = false;
-  btn.innerHTML = `<span>✦</span> Generate My Letters — <span id="btnPrice">$${BUNDLES[selectedBundle.id].price}</span>`;
+  btn.innerHTML = `Generate My Letters — <span id="btnPrice">$${BUNDLES[selectedBundle.id].price}</span>`;
 }
 
 function showResults() {
@@ -830,29 +986,39 @@ async function revise() {
   if (!feedback) return;
   const letter = generatedLetters[currentLetterIdx];
   if (!letter) return;
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
 
   document.getElementById('resultCard').style.display = 'none';
   document.getElementById('workingCard').style.display = 'block';
   document.getElementById('workingSub').textContent = `Revising letter for ${letter.recipient}...`;
 
-  const history = [
-    { role: 'user', content: `Here is the current letter:\n\n${letter.content}\n\nRevision request: ${feedback}` }
-  ];
-
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
+    const r = await fetch('/api/deskkit-generate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1500,
-        system: 'Apply the requested revision to this collection letter and return the complete revised letter.',
-        messages: history
+        taskId: currentTaskId,
+        mode: 'revise',
+        feedback,
+        previousResult: letter.content
       })
     });
     const d = await r.json();
-    const revised = d.content?.[0]?.text || '';
+    if (!r.ok) { document.getElementById('workingCard').style.display = 'none'; document.getElementById('resultCard').style.display = 'block'; showToast(d.error || 'Revision failed. Please try again.', 'error'); return; }
+    const revised = d.result;
     generatedLetters[currentLetterIdx].content = revised;
+
+    // Keep the saved combined result in sync with this revision
+    const combinedResult = generatedLetters.map((l, i) =>
+      `${'='.repeat(60)}\nLETTER ${i+1}: ${l.recipient.toUpperCase()} — ${l.type.toUpperCase()}\n${'='.repeat(60)}\n\n${l.content}`
+    ).join('\n\n\n');
+    fetch('/api/deskkit-save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ taskId: currentTaskId, result: combinedResult, status: 'preview' })
+    }).catch(() => {});
+
     document.getElementById('workingCard').style.display = 'none';
     document.getElementById('resultContent').textContent = revised;
     document.getElementById('resultCard').style.display = 'block';
@@ -915,22 +1081,18 @@ async function parseBulkFile() {
   status.style.display = 'block';
   status.textContent = 'Reading your file and extracting debtor information...';
 
-  const userContent = [];
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
 
-  // If image, send as image
+  const files = [];
   const ext = bulkFile.name.split('.').pop().toLowerCase();
   const imageTypes = ['png','jpg','jpeg','webp'];
   if (imageTypes.includes(ext)) {
     const mediaType = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
-    userContent.push({
-      type: 'image',
-      source: { type: 'base64', media_type: mediaType, data: bulkFileData.split(',')[1] }
-    });
+    files.push({ mediaType, data: bulkFileData.split(',')[1] });
   }
 
-  userContent.push({
-    type: 'text',
-    text: `Parse this accounts receivable / debtor list and extract all debtor records. Return ONLY a JSON array (no markdown, no explanation) in this exact format:
+  const userText = `Parse this accounts receivable / debtor list and extract all debtor records. Return ONLY a JSON array (no markdown, no explanation) in this exact format:
 [
   {
     "name": "Full name of debtor",
@@ -944,23 +1106,23 @@ async function parseBulkFile() {
   }
 ]
 
-Extract every debtor record you can find. If a field is not present in the file, use an empty string. Return only valid JSON array.`
-  });
+Extract every debtor record you can find. If a field is not present in the file, use an empty string. Return only valid JSON array.`;
 
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
+    const r = await fetch('/api/deskkit-assist', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 4000,
-        system: 'You are a data extraction specialist. Extract structured debtor/accounts receivable data from any document format. Return only valid JSON arrays. No markdown, no explanation, just the JSON.',
-        messages: [{ role: 'user', content: userContent }]
+        systemPrompt: 'You are a data extraction specialist. Extract structured debtor/accounts receivable data from any document format. Return only valid JSON arrays. No markdown, no explanation, just the JSON.',
+        userText,
+        files,
+        maxTokens: 4000
       })
     });
 
     const d = await r.json();
-    const text = d.content?.[0]?.text || '';
+    if (!r.ok) throw new Error(d.error || 'Could not parse the file');
+    const text = d.text || '';
 
     let parsed;
     try {
@@ -1006,7 +1168,7 @@ Extract every debtor record you can find. If a field is not present in the file,
   }
 
   btn.disabled = false;
-  btn.textContent = '✦ Parse File & Import Recipients';
+  btn.textContent = 'Parse File & Import Recipients';
 }
 
 function showToast(msg, type) {
