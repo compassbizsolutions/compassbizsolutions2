@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Review Response Batch — DeskKit</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="/deskkit-config.js"></script>
 <style>
 :root{--ink:#0A1520;--navy:#0F1E2E;--navy2:#162840;--navy3:#1C3050;--amber:#C8701A;--amber2:#E08930;--amber-dim:rgba(200,112,26,0.1);--amber-border:rgba(200,112,26,0.25);--green:#1A6040;--green2:#22A060;--green-dim:rgba(26,96,64,0.12);--red:#8B1A1A;--red2:#E05050;--red-dim:rgba(139,26,26,0.12);--muted:#5A7A9A;--text:#E2EAF2;--text2:#8AAAC8;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -53,6 +55,12 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .btn-confirm:hover{background:var(--green2);}
 .btn-cancel{background:var(--navy3);border:1px solid var(--border2);color:var(--muted);border-radius:10px;padding:14px 20px;font-size:13px;font-weight:600;cursor:pointer;}
 .btn-cancel:hover{border-color:var(--amber);color:var(--amber);}
+.payment-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:24px;margin-top:20px;display:none;}
+.payment-card-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+.payment-error{background:rgba(139,26,26,0.1);border:1px solid rgba(224,80,80,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red2);margin-top:12px;display:none;}
+.btn-pay{width:100%;background:var(--green);color:white;border:none;border-radius:10px;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;margin-top:16px;}
+.btn-pay:hover{background:var(--green2);}
+.btn-pay:disabled{opacity:0.5;cursor:not-allowed;}
 .working-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:40px;text-align:center;margin-top:24px;display:none;}
 .spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,0.08);border-top-color:var(--amber);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -92,23 +100,19 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
   <div class="section">
     <div class="section-title">Upload Your File</div>
     <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-      <input type="file" id="fileInput" accept=".pdf,.csv,.xlsx,.xls,.png,.jpg,.jpeg,.webp,.doc,.docx,.txt" onchange="handleFile(this.files[0])"/>
+      <input type="file" id="fileInput" accept=".pdf,.csv,.xlsx,.xls,.png,.jpg,.jpeg,.webp,.doc,.docx,.txt"  onchange="handleFiles(this.files)"/>
       <div style="font-size:28px;margin-bottom:8px;">⭐</div>
       <div style="font-size:14px;font-weight:600;color:white;margin-bottom:4px;">Upload your reviews</div>
       <div style="font-size:12px;color:var(--muted);">Screenshot, exported list, spreadsheet, or copy/paste into the description below</div>
+      
     </div>
-    <div class="upload-preview-row" id="filePreview" style="display:none;">
-      <span>📄</span>
-      <div class="upload-preview-row-name" id="fileName"></div>
-      <button class="upload-remove" onclick="removeFile()">✕</button>
-    </div>
+    <div id="fileList"></div>
   </div>
 
   <div class="section">
     <div class="section-title">Details</div>
     <div class="form-grid">
-      <div class="field"><label>Business Name</label><input type="text" id="fBizName" placeholder="Smith Plumbing LLC"/></div>
-      <div class="field"><label>Response Tone</label><select id="fTone"><option>Friendly & warm</option><option>Professional & formal</option><option>Casual & personal</option></select></div>
+      <div class="field"><label>Business Name</label><input type="text" id="fBizName" placeholder="Smith Plumbing LLC"/></div><div class="field"><label>Response Tone</label><select id="fTone"><option>Friendly and warm</option><option>Professional and formal</option><option>Casual and personal</option></select></div>
     </div>
   </div>
 
@@ -120,14 +124,22 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
   </div>
 
   <div class="info-box">
-    <strong>How pricing works:</strong> Our AI reads your file and details, then tells you the complexity and price before doing any work — Simple ($15), Moderate ($35), or Complex ($75). You confirm before we charge anything. Revisions are included — we work until you're happy.
+    <strong>How pricing works:</strong> We review your file and details, then confirm the price before any work begins — Simple ($15), Moderate ($35), or Complex ($75). You approve before we charge anything. Revisions are included — we work until you're happy.
   </div>
 
   <button class="analyze-btn" id="analyzeBtn" onclick="analyzeTask()">
-    <span>✦</span> Get My Price
+    Get My Price
   </button>
 
   <div class="analysis-card" id="analysisResult"></div>
+
+  <div class="payment-card" id="paymentCard">
+    <div class="payment-card-title">Payment Details</div>
+    <div id="paymentElement"></div>
+    <div class="payment-error" id="paymentError"></div>
+    <button class="btn-pay" id="payBtn" onclick="submitPayment()">Pay <span id="payAmount"></span> →</button>
+    <button class="btn-cancel" style="width:100%;margin-top:8px" onclick="cancelPayment()">Cancel</button>
+  </div>
 
   <div class="working-card" id="workingCard">
     <div class="spinner"></div>
@@ -143,6 +155,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
     <div class="result-content" id="resultContent"></div>
     <div class="result-actions">
       <button class="btn-download" onclick="downloadResult()">↓ Download All Responses</button>
+      
       <div class="revision-wrap">
         <input class="revision-input" id="revisionInput" placeholder="Something to change? Tell us..."/>
         <button class="btn-revise" onclick="revise()">Revise →</button>
@@ -157,16 +170,21 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 const SK = 'dk_session';
 function getSession() { try { return JSON.parse(localStorage.getItem(SK)); } catch(e) { return null; } }
 
-const PRICES = { simple: 15, moderate: 35, complex: 75 };
-const TIER_LABELS = { simple: 'Simple Task', moderate: 'Moderate Task', complex: 'Complex Task' };
+const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+let elements = null;
+let pendingPaymentIntentId = null;
+
+const PRICES = { simple: 15, moderate: 35, complex: 75, bulk: 125 };
+const TIER_LABELS = { simple: 'Simple Task', moderate: 'Moderate Task', complex: 'Complex Task', bulk: 'Bulk Task' };
 const TIER_DESCS = {
   simple: 'Quick turnaround — clean formatting and organization.',
   moderate: 'Real work — analysis, calculation, and a finished deliverable.',
-  complex: 'Detailed work involving multiple documents or significant judgment.'
+  complex: 'Detailed work involving multiple documents or significant judgment.',
+  bulk: 'High-volume work — a large batch of documents or transactions to process.'
 };
 
-let currentFile = null;
-let currentFileData = null;
+let currentFiles = [];
+let currentFilesData = [];
 let currentAnalysis = null;
 let currentTaskId = null;
 let resultText = '';
@@ -178,34 +196,63 @@ window.onload = () => {
   }
 };
 
-function handleFile(file) {
-  if (!file) return;
-  currentFile = file;
-  document.getElementById('fileName').textContent = file.name;
-  document.getElementById('filePreview').style.display = 'flex';
-  const reader = new FileReader();
-  reader.onload = e => { currentFileData = e.target.result; };
-  reader.readAsDataURL(file);
-}
-function removeFile() {
-  currentFile = null; currentFileData = null;
+function handleFiles(fileList) {
+  const files = Array.from(fileList || []);
+  if (!files.length) return;
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      currentFiles.push(file);
+      currentFilesData.push(e.target.result);
+      renderFileList();
+    };
+    reader.readAsDataURL(file);
+  });
   document.getElementById('fileInput').value = '';
-  document.getElementById('filePreview').style.display = 'none';
+}
+
+function renderFileList() {
+  const el = document.getElementById('fileList');
+  el.innerHTML = currentFiles.map((f, i) => `
+    <div class="upload-preview-row">
+      <span>📄</span>
+      <div class="upload-preview-row-name">${f.name}</div>
+      <button class="upload-remove" onclick="removeFileAt(${i})">✕</button>
+    </div>`).join('');
+}
+
+function removeFileAt(i) {
+  currentFiles.splice(i, 1);
+  currentFilesData.splice(i, 1);
+  renderFileList();
 }
 
 function val(id) { return (document.getElementById(id)?.value || '').trim(); }
 
 function buildFullDescription() {
   let extra = [];
-  const biz = val('fBizName'); if (biz) extra.push('Business Name: ' + biz);
-  const tone = val('fTone'); if (tone) extra.push('Tone: ' + tone);
+  const biz = val('fBizName'); if (biz) extra.push('Business Name: ' + biz); const tone = val('fTone'); if (tone) extra.push('Tone: ' + tone);
   const base = val('taskDesc');
   return (extra.length ? extra.join('\n') + '\n\n' : '') + base;
+}
+
+function buildFilesPayload() {
+  return currentFiles.map((file, i) => {
+    const ext = file.name.split('.').pop().toLowerCase();
+    const imageTypes = ['png','jpg','jpeg','gif','webp'];
+    if (imageTypes.includes(ext)) {
+      const mediaType = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+      return { name: file.name, mediaType, data: currentFilesData[i].split(',')[1] };
+    }
+    return { name: file.name };
+  });
 }
 
 async function analyzeTask() {
   const desc = buildFullDescription();
   if (!desc) { showToast('Please describe what you need done.', 'error'); return; }
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
 
   document.getElementById('analysisResult').style.display = 'none';
   document.getElementById('workingCard').style.display = 'none';
@@ -216,39 +263,20 @@ async function analyzeTask() {
   btn.textContent = 'Analyzing...';
 
   try {
-    const userContent = [];
-    if (currentFileData && currentFile) {
-      const ext = currentFile.name.split('.').pop().toLowerCase();
-      const imageTypes = ['png','jpg','jpeg','gif','webp'];
-      if (imageTypes.includes(ext)) {
-        const mediaType = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
-        userContent.push({ type:'image', source:{ type:'base64', media_type:mediaType, data:currentFileData.split(',')[1] } });
-      } else {
-        userContent.push({ type:'text', text:`File uploaded: ${currentFile.name}` });
-      }
-    }
-    userContent.push({ type:'text', text:`Task request: ${desc}\n\nAnalyze this task and respond ONLY with a JSON object (no markdown, no backticks) in this exact format:\n{"tier":"simple|moderate|complex","reason":"one sentence why","steps":["step 1","step 2","step 3"]}` });
-
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'claude-sonnet-4-6', max_tokens:500,
-        system: `You are a task complexity analyzer for DeskKit, an AI back office service for small trades businesses. This task is drafting responses to a batch of customer reviews. Classify into exactly one tier: simple ($15, under 15 min), moderate ($35, 15-45 min), complex ($75, 45+ min or multiple documents/significant judgment). Respond ONLY with valid JSON, no markdown.`,
-        messages:[{ role:'user', content:userContent }]
-      })
+    const r = await fetch('/api/deskkit-analyze', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
+      body: JSON.stringify({ desc, analyzeContext: "This task is drafting responses to a batch of customer reviews.", files: buildFilesPayload() })
     });
-    const data = await response.json();
-    const text = data.content?.[0]?.text || '';
-    let analysis;
-    try { analysis = JSON.parse(text.replace(/```json|```/g,'').trim()); }
-    catch(e) { analysis = { tier:'moderate', reason:'Standard task requiring analysis and completion.', steps:['Read and analyze your file','Complete the requested work','Prepare your deliverable'] }; }
+    const analysis = await r.json();
+    if (!r.ok) { showToast(analysis.error || 'Analysis failed. Please try again.', 'error'); btn.disabled = false; btn.textContent = 'Get My Price'; return; }
     currentAnalysis = analysis;
     showAnalysisResult(analysis, desc);
   } catch(e) {
     showToast('Analysis failed. Please try again.', 'error');
   }
   btn.disabled = false;
-  btn.innerHTML = '<span>✦</span> Get My Price';
+  btn.textContent = 'Get My Price';
 }
 
 function showAnalysisResult(analysis, desc) {
@@ -275,93 +303,150 @@ function showAnalysisResult(analysis, desc) {
 
 function cancelAnalysis() { document.getElementById('analysisResult').style.display = 'none'; }
 
+let pendingDesc = null;
+
 async function confirmAndPay(tier, price) {
   const session = getSession();
   if (!session) { showToast('Please log in again.', 'error'); return; }
   const desc = buildFullDescription();
+  pendingDesc = desc;
 
   document.getElementById('analysisResult').style.display = 'none';
-  document.getElementById('workingCard').style.display = 'block';
-  document.getElementById('workingCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
 
   try {
     const r = await fetch('/api/deskkit-charge', {
       method:'POST',
       headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
-      body: JSON.stringify({ tier, price, desc, filename: currentFile?.name || null })
+      body: JSON.stringify({ tier, desc, filename: currentFiles.length ? (currentFiles.length === 1 ? currentFiles[0].name : `${currentFiles.length} files`) : null })
     });
     const d = await r.json();
-    if (!r.ok) { document.getElementById('workingCard').style.display = 'none'; showToast(d.error || 'Payment failed.', 'error'); return; }
+    if (!r.ok) { showToast(d.error || 'Could not start payment.', 'error'); return; }
     currentTaskId = d.taskId;
-    await doWork(desc, d.taskId);
+    pendingPaymentIntentId = d.paymentIntentId;
+
+    elements = stripe.elements({ clientSecret: d.clientSecret, appearance: {
+      theme: 'night',
+      variables: { colorPrimary: '#C8701A', colorBackground: '#162840', colorText: '#E2EAF2', borderRadius: '8px' }
+    }});
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#paymentElement');
+
+    document.getElementById('payAmount').textContent = '$' + price;
+    document.getElementById('paymentError').style.display = 'none';
+    document.getElementById('paymentCard').style.display = 'block';
+    document.getElementById('paymentCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
   } catch(e) {
-    document.getElementById('workingCard').style.display = 'none';
     showToast('Something went wrong. Please try again.', 'error');
   }
 }
 
-async function doWork(desc, taskId) {
-  try {
-    const userContent = [];
-    if (currentFileData && currentFile) {
-      const ext = currentFile.name.split('.').pop().toLowerCase();
-      const imageTypes = ['png','jpg','jpeg','gif','webp'];
-      if (imageTypes.includes(ext)) {
-        const mediaType = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
-        userContent.push({ type:'image', source:{ type:'base64', media_type:mediaType, data:currentFileData.split(',')[1] } });
-      } else {
-        userContent.push({ type:'text', text:`File: ${currentFile.name}` });
-      }
-    }
-    userContent.push({ type:'text', text: desc });
+function cancelPayment() {
+  document.getElementById('paymentCard').style.display = 'none';
+  document.getElementById('analysisResult').style.display = 'block';
+  elements = null;
+}
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'claude-sonnet-4-6', max_tokens:4000,
-        system: `You are DeskKit, an AI back office assistant for small businesses. Read the uploaded reviews and write a complete, professional response to each one. Separate each response clearly with a header showing the reviewer name (or Review 1, Review 2, etc. if no name given) and star rating if available. Match tone to the review — grateful for positive, calm and solution-focused for negative. Never sound defensive or scripted. Give the complete finished deliverable for every review provided.`,
-        messages:[{ role:'user', content:userContent }]
-      })
-    });
-    const data = await response.json();
-    const result = data.content?.[0]?.text || '';
-    if (!result) throw new Error('No result from AI');
+async function submitPayment() {
+  if (!elements) return;
+  const btn = document.getElementById('payBtn');
+  const errEl = document.getElementById('paymentError');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+  errEl.style.display = 'none';
 
-    resultText = result;
-    await saveTaskResult(taskId, result);
-    document.getElementById('workingCard').style.display = 'none';
-    showResult(result);
-  } catch(e) {
-    document.getElementById('workingCard').style.display = 'none';
-    await flagForReview(taskId, desc, e.message);
-    showToast('Something went wrong — this has been flagged for manual review. We will follow up.', 'error');
+  const { error, paymentIntent } = await stripe.confirmPayment({
+    elements,
+    confirmParams: { return_url: window.location.href },
+    redirect: 'if_required'
+  });
+
+  if (error) {
+    errEl.textContent = error.message || 'Payment failed. Please check your card details.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Pay →';
+    return;
+  }
+
+  if (paymentIntent && paymentIntent.status === 'succeeded') {
+    await onPaymentConfirmed();
+  } else {
+    errEl.textContent = 'Payment did not complete. Please try again.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Pay →';
   }
 }
 
-async function saveTaskResult(taskId, result) {
+async function onPaymentConfirmed() {
   const session = getSession();
+  document.getElementById('paymentCard').style.display = 'none';
+  document.getElementById('workingCard').style.display = 'block';
+  document.getElementById('workingCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
+
   try {
-    await fetch('/api/deskkit-save', {
+    const r = await fetch('/api/deskkit-confirm-payment', {
       method:'POST',
       headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
-      body: JSON.stringify({ taskId, result, status:'preview' })
+      body: JSON.stringify({ taskId: currentTaskId, paymentIntentId: pendingPaymentIntentId })
     });
-  } catch(e) { console.error('Save error:', e); }
+    const d = await r.json();
+    if (!r.ok) { document.getElementById('workingCard').style.display = 'none'; showToast(d.error || 'Could not confirm payment.', 'error'); return; }
+    await doWork(pendingDesc, currentTaskId);
+  } catch(e) {
+    document.getElementById('workingCard').style.display = 'none';
+    showToast('Payment succeeded but something went wrong starting your task. Contact support with task ID: ' + currentTaskId, 'error');
+  }
 }
 
-async function flagForReview(taskId, desc, error) {
+window.addEventListener('load', async () => {
+  const params = new URLSearchParams(window.location.search);
+  const clientSecret = params.get('payment_intent_client_secret');
+  if (!clientSecret) return;
+  const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+  if (paymentIntent && paymentIntent.status === 'succeeded') {
+    pendingPaymentIntentId = paymentIntent.id;
+    currentTaskId = paymentIntent.metadata?.taskId || currentTaskId;
+    await onPaymentConfirmed();
+  }
+  window.history.replaceState({}, document.title, window.location.pathname);
+});
+
+async function doWork(desc, taskId) {
   const session = getSession();
   try {
-    await fetch('/api/deskkit-save', {
+    const r = await fetch('/api/deskkit-generate', {
       method:'POST',
       headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
-      body: JSON.stringify({ taskId, status:'needs_review', error, desc })
+      body: JSON.stringify({ taskId, desc, workSystem: "You are DeskKit, an AI back office assistant for small businesses. Read the uploaded reviews and write a complete, professional response to each one. Separate each response clearly with a header showing the reviewer name (or Review 1, Review 2, etc if no name given) and star rating if available. Match tone to the review, grateful for positive, calm and solution-focused for negative. Never sound defensive or scripted. Give the complete finished deliverable for every review provided.", files: buildFilesPayload() })
     });
-  } catch(e) { console.error('Flag error:', e); }
+    const d = await r.json();
+    if (!r.ok) {
+      document.getElementById('workingCard').style.display = 'none';
+      showToast(d.error || 'Something went wrong — this has been flagged for manual review. We will follow up.', 'error');
+      return;
+    }
+    resultText = d.result;
+    document.getElementById('workingCard').style.display = 'none';
+    showResult(d.result);
+  } catch(e) {
+    document.getElementById('workingCard').style.display = 'none';
+    showToast('Something went wrong. Please contact support with task ID: ' + taskId, 'error');
+  }
 }
+
+const QBO_DELIMITER = '===QUICKBOOKS_CSV===';
+let qboText = '';
 
 function showResult(result) {
-  document.getElementById('resultContent').textContent = result;
+  if (result.includes(QBO_DELIMITER)) {
+    const parts = result.split(QBO_DELIMITER);
+    document.getElementById('resultContent').textContent = parts[0].trim();
+    qboText = parts[1] ? parts[1].trim() : '';
+  } else {
+    document.getElementById('resultContent').textContent = result;
+    qboText = '';
+  }
   document.getElementById('resultCard').style.display = 'block';
   document.getElementById('resultCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
@@ -369,24 +454,22 @@ function showResult(result) {
 async function revise() {
   const feedback = val('revisionInput');
   if (!feedback) return;
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
   document.getElementById('resultCard').style.display = 'none';
   document.getElementById('workingCard').style.display = 'block';
   document.getElementById('workingSub').textContent = 'Revising based on your feedback...';
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'claude-sonnet-4-6', max_tokens:4000,
-        system: 'Apply the requested revision and return the complete revised deliverable.',
-        messages:[{ role:'user', content:`Here is the current result:\n\n${resultText}\n\nRevision request: ${feedback}` }]
-      })
+    const r = await fetch('/api/deskkit-generate', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
+      body: JSON.stringify({ taskId: currentTaskId, mode:'revise', feedback, previousResult: resultText })
     });
-    const data = await response.json();
-    const revised = data.content?.[0]?.text || '';
-    resultText = revised;
-    if (currentTaskId) await saveTaskResult(currentTaskId, revised);
+    const d = await r.json();
+    if (!r.ok) { document.getElementById('workingCard').style.display = 'none'; document.getElementById('resultCard').style.display = 'block'; showToast(d.error || 'Revision failed. Please try again.', 'error'); return; }
+    resultText = d.result;
     document.getElementById('workingCard').style.display = 'none';
-    showResult(revised);
+    showResult(d.result);
     document.getElementById('revisionInput').value = '';
     showToast('Revised!', 'success');
   } catch(e) {
@@ -397,7 +480,8 @@ async function revise() {
 }
 
 function downloadResult() {
-  const blob = new Blob([resultText], { type: 'text/plain' });
+  const reportContent = resultText.includes(QBO_DELIMITER) ? resultText.split(QBO_DELIMITER)[0].trim() : resultText;
+  const blob = new Blob([reportContent], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -405,6 +489,18 @@ function downloadResult() {
   a.click();
   URL.revokeObjectURL(url);
   showToast('Downloaded! ✓', 'success');
+}
+
+function downloadQBOFile() {
+  if (!qboText) { showToast('QuickBooks file not available for this result.', 'error'); return; }
+  const blob = new Blob([qboText], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'quickbooks-export.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('QuickBooks CSV downloaded! ✓', 'success');
 }
 
 function showToast(msg, type) {
