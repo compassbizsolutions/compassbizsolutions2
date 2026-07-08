@@ -143,6 +143,7 @@ module.exports = async function handler(req, res) {
             <p>Your DeskKit task has been finished and is ready for you to review and download.</p>
             <p><a href="https://www.compassbizsolutions.com/portal/app" style="display:inline-block;background:#C8701A;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">Review & Download</a></p>
             <p style="color:#888;font-size:12px;">Log in and check "My Tasks" to see it.</p>
+            <p style="margin-top:24px;color:#555;font-size:13px;">Best,<br/>Compass Business Solutions</p>
           </div>`
         });
       } catch(emailErr) { console.error("Ready-email error:", emailErr.message); }
