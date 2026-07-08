@@ -119,7 +119,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
   <div class="section">
     <div class="field">
       <label>Describe What You Need</label>
-      <textarea id="taskDesc" placeholder="Describe the role, pay range, schedule, and what kind of person you're looking for.">Write a complete, appealing job posting for this role. Include a short intro about the company, a clear list of responsibilities, required and preferred qualifications, pay range and schedule, and a strong call to action to apply. Keep the tone welcoming and straightforward, avoid corporate jargon.</textarea>
+      <textarea id="taskDesc" placeholder="Describe the role, pay range, schedule, and what kind of person you're looking for."></textarea>
     </div>
   </div>
 
@@ -229,11 +229,19 @@ function removeFileAt(i) {
 
 function val(id) { return (document.getElementById(id)?.value || '').trim(); }
 
+const DEFAULT_TASK_INSTRUCTIONS = "Write a complete, appealing job posting for this role. Include a short intro about the company, a clear list of responsibilities, required and preferred qualifications, pay range and schedule, and a strong call to action to apply. Keep the tone welcoming and straightforward, avoid corporate jargon.";
+
 function buildFullDescription() {
   let extra = [];
   const jt = val('fJobTitle'); if (jt) extra.push('Job Title: ' + jt); const biz2 = val('fBizName2'); if (biz2) extra.push('Business Name: ' + biz2); const pay = val('fPayRange'); if (pay) extra.push('Pay Range: ' + pay); const sched = val('fSchedule'); if (sched) extra.push('Schedule: ' + sched);
-  const base = val('taskDesc');
-  return (extra.length ? extra.join('\n') + '\n\n' : '') + base;
+  const userNotes = val('taskDesc');
+
+  let desc = DEFAULT_TASK_INSTRUCTIONS;
+  if (extra.length) desc += '\n\n' + extra.join('\n');
+  if (userNotes) {
+    desc += '\n\nAdditional instructions from the customer — these take priority and override the default instructions above if there is any conflict:\n' + userNotes;
+  }
+  return desc;
 }
 
 function buildFilesPayload() {
