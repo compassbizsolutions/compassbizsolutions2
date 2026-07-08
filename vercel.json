@@ -1,9 +1,5 @@
 {
   "rewrites": [
-{ "source": "/portal/review-responses", "destination": "/portal/review-responses/index.html" },
-{ "source": "/portal/mileage-expense", "destination": "/portal/mileage-expense/index.html" },
-{ "source": "/portal/job-posting", "destination": "/portal/job-posting/index.html" },
-{ "source": "/portal/meeting-notes", "destination": "/portal/meeting-notes/index.html" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/trades", "destination": "/trades/index.html" },
     { "source": "/trades/(.*)", "destination": "/trades/index.html" },
@@ -16,6 +12,15 @@
     { "source": "/portal/business-letter", "destination": "/portal/business-letter/index.html" },
     { "source": "/portal/signup", "destination": "/portal/signup/index.html" },
     { "source": "/portal/pricing", "destination": "/portal/pricing/index.html" },
+    { "source": "/portal/review-responses", "destination": "/portal/review-responses/index.html" },
+    { "source": "/portal/mileage-expense", "destination": "/portal/mileage-expense/index.html" },
+    { "source": "/portal/job-posting", "destination": "/portal/job-posting/index.html" },
+    { "source": "/portal/meeting-notes", "destination": "/portal/meeting-notes/index.html" },
+    { "source": "/portal/bank-expense", "destination": "/portal/bank-expense/index.html" },
+    { "source": "/portal/followup-letters", "destination": "/portal/followup-letters/index.html" },
+    { "source": "/portal/job-cost", "destination": "/portal/job-cost/index.html" },
+    { "source": "/portal/quote-comparison", "destination": "/portal/quote-comparison/index.html" },
+    { "source": "/portal/tax-organizer", "destination": "/portal/tax-organizer/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "functions": {
@@ -29,7 +34,11 @@
     "api/deskkit-save.js": { "maxDuration": 15 },
     "api/deskkit-tasks.js": { "maxDuration": 15 },
     "api/portal-reset.js": { "maxDuration": 15 },
-    "api/portal-signup.js": { "maxDuration": 15 }
+    "api/portal-signup.js": { "maxDuration": 15 },
+    "api/deskkit-confirm-payment.js": { "maxDuration": 15 },
+    "api/deskkit-analyze.js": { "maxDuration": 30 },
+    "api/deskkit-generate.js": { "maxDuration": 60 },
+    "api/deskkit-assist.js": { "maxDuration": 30 }
   },
   "env": {
     "SITE_URL": "https://www.compassbizsolutions.com"
