@@ -1260,6 +1260,25 @@ function splitResultSections(text) {
   return { main: text, notes: '', qbo: '' };
 }
 
+// Tools that always produce structured data — never guess, always force Excel/CSV
+const ALWAYS_CSV_TOOLS = [
+  'Compile Payroll', 'Compile Invoices', 'Job Cost Report', 'Material Quote Comparison',
+  'Applicant Screening & Comparison', 'Expense Report from Statements', 'Tax Document Organizer',
+  'Mileage Log to Expense Report', 'Clean Up Spreadsheet'
+];
+// Tools that always produce prose — never guess, always force Word
+const ALWAYS_WORD_TOOLS = [
+  'Collection Letter', 'Employee Warning Letter', 'Write a Letter or Email',
+  'Customer Follow-Up Letters', 'Review Response Batch', 'Job Posting Generator',
+  'Meeting Notes to Action Items', 'Summarize Document'
+];
+
+function resolveIsCSV(toolName, text) {
+  if (ALWAYS_CSV_TOOLS.includes(toolName)) return true;
+  if (ALWAYS_WORD_TOOLS.includes(toolName)) return false;
+  return looksLikeCSV(text); // fall back to guessing only for general/ambiguous tools
+}
+
 function looksLikeCSV(text) {
   const lines = text.trim().split('\n').filter(l => l.trim());
   if (lines.length < 2) return false;
@@ -1324,6 +1343,7 @@ function renderTaskModal(t) {
     document.getElementById('taskModalBody').dataset.mainResult = main;
     document.getElementById('taskModalBody').dataset.qboResult = qbo;
     document.getElementById('taskModalBody').dataset.notesResult = notes;
+    document.getElementById('taskModalBody').dataset.toolName = t.toolName || '';
 
     body.innerHTML = `
       <div class="preview-header">
@@ -1333,7 +1353,7 @@ function renderTaskModal(t) {
       ${renderResultContent(main)}
       ${notes ? `<div class="result-notes"><div class="result-notes-title">Notes</div>${escapeHtml(notes)}</div>` : ''}
       <div class="preview-actions">
-        <button class="btn-accept" onclick="acceptResultFromModal('${t.id}')">✓ Accept & Download ${looksLikeCSV(main) ? '(Excel)' : '(Word)'}</button>
+        <button class="btn-accept" onclick="acceptResultFromModal('${t.id}')">✓ Accept & Download ${resolveIsCSV(t.toolName, main) ? '(Excel)' : '(Word)'}</button>
         ${qbo ? `<button class="btn-accept" style="background:var(--navy3);border:1px solid var(--border2);" onclick="downloadQBOFromModal('${t.id}')">↓ QuickBooks CSV</button>` : ''}
         <div class="revision-wrap">
           <input class="revision-input" id="modalRevisionInput" placeholder="Not quite right? Tell us what to change..."/>
@@ -1352,7 +1372,8 @@ function closeTaskModal() {
 async function acceptResultFromModal(taskId) {
   const session = getSession();
   const resultText = document.getElementById('taskModalBody').dataset.mainResult || '';
-  const isCSV = looksLikeCSV(resultText);
+  const toolName = document.getElementById('taskModalBody').dataset.toolName || '';
+  const isCSV = resolveIsCSV(toolName, resultText);
 
   try {
     await fetch('/api/deskkit-save', {
