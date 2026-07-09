@@ -85,6 +85,10 @@
       "destination": "/portal/deskkit-tax-organizer.html"
     },
     {
+      "source": "/portal/applicant-screening",
+      "destination": "/portal/deskkit-applicant-screening.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
