@@ -6,6 +6,7 @@
 <title>DeskKit — Back Office, Handled</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://js.stripe.com/v3/"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="/deskkit-config.js"></script>
 <style>
 :root {
@@ -1230,7 +1231,7 @@ function renderTaskModal(t) {
       </div>
       ${renderResultContent(main)}
       <div class="preview-actions">
-        <button class="btn-accept" onclick="acceptResultFromModal('${t.id}')">✓ Accept & Download</button>
+        <button class="btn-accept" onclick="acceptResultFromModal('${t.id}')">✓ Accept & Download ${looksLikeCSV(main) ? '(Excel)' : '(Word)'}</button>
         ${qbo ? `<button class="btn-accept" style="background:var(--navy3);border:1px solid var(--border2);" onclick="downloadQBOFromModal('${t.id}')">↓ QuickBooks CSV</button>` : ''}
         <div class="revision-wrap">
           <input class="revision-input" id="modalRevisionInput" placeholder="Not quite right? Tell us what to change..."/>
@@ -1259,17 +1260,57 @@ async function acceptResultFromModal(taskId) {
     });
   } catch(e) { console.error('Accept error:', e); }
 
-  const blob = new Blob([resultText], { type: isCSV ? 'text/csv' : 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `deskkit-${taskId}.${isCSV ? 'csv' : 'txt'}`;
-  a.click();
-  URL.revokeObjectURL(url);
+  if (isCSV) {
+    downloadAsExcel(resultText, `deskkit-${taskId}.xlsx`);
+  } else {
+    downloadAsWord(resultText, `deskkit-${taskId}.doc`);
+  }
 
   closeTaskModal();
   showToast('Downloaded! ✓', 'success');
   loadTaskHistory();
+}
+
+function downloadAsExcel(csvText, filename) {
+  const rows = csvText.trim().split('\n').filter(l => l.trim()).map(parseCSVLine);
+  const worksheet = XLSX.utils.aoa_to_sheet(rows);
+
+  // Auto-size columns roughly based on content length
+  const colWidths = rows[0].map((_, colIdx) => {
+    const maxLen = Math.max(...rows.map(r => (r[colIdx] || '').toString().length));
+    return { wch: Math.min(Math.max(maxLen + 2, 10), 50) };
+  });
+  worksheet['!cols'] = colWidths;
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Report');
+  XLSX.writeFile(workbook, filename);
+}
+
+function downloadAsWord(text, filename) {
+  // Wrap plain text in a minimal HTML document with a Word-compatible MIME type.
+  // Word opens this natively with proper formatting, unlike a raw .txt file.
+  const escapedParagraphs = text.split('\n').map(line =>
+    line.trim() === ''
+      ? '<p>&nbsp;</p>'
+      : `<p style="margin:0 0 10px 0;">${escapeHtml(line)}</p>`
+  ).join('');
+
+  const html = `<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="utf-8"><title>Document</title></head>
+<body style="font-family:Calibri,Arial,sans-serif;font-size:11pt;line-height:1.5;">
+${escapedParagraphs}
+</body>
+</html>`;
+
+  const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 function downloadQBOFromModal(taskId) {
