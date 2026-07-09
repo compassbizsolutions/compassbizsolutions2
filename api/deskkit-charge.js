@@ -68,7 +68,7 @@ module.exports = async function handler(req, res) {
     const email = await validateSession(sessionToken);
     if (!email) return res.status(401).json({ error: "Unauthorized" });
 
-    const { tier, price, desc, filename, kind, promoCode, toolName } = req.body || {};
+    const { tier, price, desc, filename, kind, promoCode, toolName, toolPath } = req.body || {};
     if (!tier || !desc) return res.status(400).json({ error: "Missing required fields" });
 
     // Determine which pricing table applies and validate the tier/bundle server-side
@@ -169,6 +169,7 @@ module.exports = async function handler(req, res) {
       tier,
       kind: isBundle ? "collection_letter" : "task",
       toolName: toolName || "General Task",
+      toolPath: toolPath || "/portal/app",
       price: amountCents / 100,
       originalPrice: originalAmountCents / 100,
       promo: appliedPromo,
