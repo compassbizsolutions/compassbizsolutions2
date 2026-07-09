@@ -427,6 +427,7 @@ async function confirmAndPay(tier, price) {
     document.getElementById('payAmount').textContent = '$' + chargeAmount;
     document.getElementById('paymentError').style.display = 'none';
     document.getElementById('paymentCard').style.display = 'block';
+    document.getElementById('analyzeBtn').style.display = 'none';
     document.getElementById('paymentCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
   } catch(e) {
     showToast('Something went wrong. Please try again.', 'error');
@@ -436,6 +437,7 @@ async function confirmAndPay(tier, price) {
 function cancelPayment() {
   document.getElementById('paymentCard').style.display = 'none';
   document.getElementById('analysisResult').style.display = 'block';
+  document.getElementById('analyzeBtn').style.display = 'flex';
   elements = null;
 }
 
@@ -496,6 +498,10 @@ function showSubmittedConfirmation() {
   document.getElementById('resultCard').style.display = 'none';
   document.getElementById('submittedCard').style.display = 'block';
   document.getElementById('submittedCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+  setTimeout(() => {
+    window.location.href = '/portal/app?tab=history';
+  }, 2200);
 }
 
 window.addEventListener('load', async () => {
