@@ -719,7 +719,7 @@ INSTRUCTIONS:
 2. Calculate regular hours, overtime hours, and gross pay (apply 1.5x for overtime)
 3. Output ONLY the clean CSV data in the exact specified format above — column headers and data rows only, ready to import directly
 4. If the selected format is Standard Spreadsheet or Custom, you may add a final total row using the same columns (not a separate paragraph)
-5. Do NOT include: narrative explanation, summary paragraph, markdown headers (##), bold text (**), bullet points, horizontal rules (---), code fences (\`\`\`), or any section titled "Notes" or "Flags." None of that. Just the CSV.
+5. Do NOT include: narrative explanation, summary paragraph, markdown headers (##), bold text (**), bullet points, horizontal rules (---), code fences (\`\`\`), a title row, a "Generated:" date line, or any section titled "Notes" or "Flags." None of that. The column header row is the first line of your response.
 6. If — and only if — something genuinely blocks the file from being usable (a missing rate, missing hours for a roster employee, a real format conflict), put ONE line, under 12 words, in plain text as the very first line, then a blank line, then the CSV. Example of the ONLY acceptable style: "Missing: Bobby's hourly rate." Nothing longer, nothing formatted, nothing explaining why or what to do about it.
 7. If there is nothing to flag, skip step 6 entirely — the CSV header row is the first line of your response.
 
