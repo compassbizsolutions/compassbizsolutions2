@@ -207,6 +207,8 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 .preview-badge { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 99px; background: var(--green-dim); color: var(--green2); border: 1px solid rgba(31,122,77,0.3); }
 .preview-content { background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; font-size: 13px; color: var(--text2); line-height: 1.8; white-space: pre-wrap; max-height: 400px; overflow-y: auto; font-family: 'Inter', sans-serif; }
 .csv-table-wrap { background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 10px; padding: 4px; margin-bottom: 20px; max-height: 400px; overflow: auto; }
+.result-notes { background: var(--amber-dim); border: 1px solid var(--amber-border); border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; font-size: 13px; color: var(--text2); line-height: 1.7; white-space: pre-wrap; }
+.result-notes-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--amber); text-transform: uppercase; margin-bottom: 8px; }
 .csv-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .csv-table th { background: var(--navy3); color: var(--text2); text-align: left; padding: 8px 12px; position: sticky; top: 0; font-weight: 700; white-space: nowrap; }
 .csv-table td { padding: 7px 12px; color: var(--text2); border-top: 1px solid var(--border); white-space: nowrap; }
@@ -1244,13 +1246,18 @@ async function viewTask(taskId) {
 }
 
 const QBO_DELIMITER_MODAL = '===QUICKBOOKS_CSV===';
+const NOTES_DELIMITER_MODAL = '===NOTES===';
 
-function splitQBOResult(text) {
+function splitResultSections(text) {
   if (text.includes(QBO_DELIMITER_MODAL)) {
     const parts = text.split(QBO_DELIMITER_MODAL);
-    return { main: parts[0].trim(), qbo: parts[1] ? parts[1].trim() : '' };
+    return { main: parts[0].trim(), notes: '', qbo: parts[1] ? parts[1].trim() : '' };
   }
-  return { main: text, qbo: '' };
+  if (text.includes(NOTES_DELIMITER_MODAL)) {
+    const parts = text.split(NOTES_DELIMITER_MODAL);
+    return { main: parts[0].trim(), notes: parts[1] ? parts[1].trim() : '', qbo: '' };
+  }
+  return { main: text, notes: '', qbo: '' };
 }
 
 function looksLikeCSV(text) {
@@ -1312,10 +1319,11 @@ function renderTaskModal(t) {
         This task needs a closer look. Jen will review it personally and get your result to you within 24 hours. No additional charge.
       </p>`;
   } else {
-    const { main, qbo } = splitQBOResult(t.result || '');
-    // Stash both parts on the modal element for the accept/download handlers to use
+    const { main, notes, qbo } = splitResultSections(t.result || '');
+    // Stash all parts on the modal element for the accept/download handlers to use
     document.getElementById('taskModalBody').dataset.mainResult = main;
     document.getElementById('taskModalBody').dataset.qboResult = qbo;
+    document.getElementById('taskModalBody').dataset.notesResult = notes;
 
     body.innerHTML = `
       <div class="preview-header">
@@ -1323,6 +1331,7 @@ function renderTaskModal(t) {
         <div class="preview-badge">✓ Complete</div>
       </div>
       ${renderResultContent(main)}
+      ${notes ? `<div class="result-notes"><div class="result-notes-title">Notes</div>${escapeHtml(notes)}</div>` : ''}
       <div class="preview-actions">
         <button class="btn-accept" onclick="acceptResultFromModal('${t.id}')">✓ Accept & Download ${looksLikeCSV(main) ? '(Excel)' : '(Word)'}</button>
         ${qbo ? `<button class="btn-accept" style="background:var(--navy3);border:1px solid var(--border2);" onclick="downloadQBOFromModal('${t.id}')">↓ QuickBooks CSV</button>` : ''}
@@ -1426,9 +1435,12 @@ async function reviseFromModal(taskId) {
   const body = document.getElementById('taskModalBody');
   const mainResult = body.dataset.mainResult || '';
   const qboResult = body.dataset.qboResult || '';
-  // Send the full original text (with QuickBooks section, if any) so the AI
-  // knows to preserve that structure in its revision.
-  const previousResult = qboResult ? `${mainResult}\n\n${QBO_DELIMITER_MODAL}\n\n${qboResult}` : mainResult;
+  const notesResult = body.dataset.notesResult || '';
+  // Send the full original text (with whichever section delimiter was used, if any)
+  // so the AI knows to preserve that structure in its revision.
+  let previousResult = mainResult;
+  if (qboResult) previousResult = `${mainResult}\n\n${QBO_DELIMITER_MODAL}\n\n${qboResult}`;
+  else if (notesResult) previousResult = `${mainResult}\n\n${NOTES_DELIMITER_MODAL}\n\n${notesResult}`;
 
   body.innerHTML = `<div style="text-align:center;padding:40px;"><div class="loader-spinner" style="margin:0 auto 16px;"></div><div style="color:var(--muted);font-size:13px;">Revising based on your feedback...</div></div>`;
 
