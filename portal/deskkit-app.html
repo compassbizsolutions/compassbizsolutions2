@@ -50,7 +50,7 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 .field label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
 .field input { width: 100%; padding: 11px 14px; background: rgba(255,255,255,0.04); border: 1px solid var(--border2); border-radius: 8px; color: var(--text); font-size: 14px; outline: none; transition: border 0.15s; }
 .field input:focus { border-color: var(--amber); }
-.field input::placeholder { color: rgba(255,255,255,0.15); }
+.field input::placeholder { color: var(--muted); }
 .btn-amber { background: var(--amber); color: white; border: none; border-radius: 8px; padding: 12px 24px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.15s; width: 100%; margin-top: 4px; }
 .btn-amber:hover { background: var(--amber2); }
 .btn-amber:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -130,7 +130,7 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 .task-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; display: block; }
 .task-textarea { width: 100%; background: var(--navy2); border: 1px solid var(--border2); border-radius: 10px; padding: 14px 16px; color: var(--text); font-size: 14px; line-height: 1.6; resize: vertical; min-height: 120px; outline: none; transition: border 0.15s; margin-bottom: 8px; }
 .task-textarea:focus { border-color: var(--amber); }
-.task-textarea::placeholder { color: rgba(255,255,255,0.15); }
+.task-textarea::placeholder { color: var(--muted); }
 .task-hint { font-size: 12px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
 
 /* FEATURED TASKS */
@@ -165,7 +165,7 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 .promo-row { margin-bottom: 14px; }
 .promo-input { width: 100%; background: var(--navy3); border: 1px solid var(--border2); border-radius: 8px; padding: 9px 12px; color: var(--text); font-size: 13px; font-family: 'Inter', sans-serif; outline: none; }
 .promo-input:focus { border-color: var(--amber); }
-.promo-input::placeholder { color: rgba(255,255,255,0.2); }
+.promo-input::placeholder { color: var(--muted); }
 .btn-confirm { flex: 1; background: var(--amber); color: white; border: none; border-radius: 10px; padding: 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.15s; }
 .btn-confirm:hover { background: var(--amber2); }
 .btn-cancel { background: transparent; border: 1px solid var(--border2); color: var(--muted); border-radius: 10px; padding: 14px 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
@@ -213,7 +213,7 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 .revision-wrap { flex: 1; display: flex; gap: 8px; }
 .revision-input { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border2); border-radius: 8px; padding: 10px 14px; color: var(--text); font-size: 13px; outline: none; }
 .revision-input:focus { border-color: var(--amber); }
-.revision-input::placeholder { color: rgba(255,255,255,0.15); }
+.revision-input::placeholder { color: var(--muted); }
 .btn-revise { background: var(--navy3); border: 1px solid var(--border2); color: var(--text); border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
 .btn-revise:hover { border-color: var(--amber); color: var(--amber); }
 
@@ -370,14 +370,12 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
     <!-- UPLOAD -->
     <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
       <input type="file" id="fileInput" class="upload-input" onchange="handleFile(this.files[0])" accept=".xlsx,.xls,.csv,.pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp,.gif"/>
-      <div class="upload-icon">📁</div>
       <div class="upload-title">Drop your file here or click to browse</div>
       <div class="upload-sub">Spreadsheets, documents, PDFs, or photos of your data</div>
       <div class="upload-types">.xlsx · .csv · .pdf · .docx · .txt · .png · .jpg · .jpeg</div>
     </div>
 
     <div class="upload-preview" id="uploadPreview" style="display:none">
-      <div class="upload-preview-icon" id="previewIcon">📄</div>
       <div class="upload-preview-name" id="previewName"></div>
       <div class="upload-preview-size" id="previewSize"></div>
       <button class="upload-preview-remove" onclick="removeFile()">✕</button>
@@ -625,14 +623,9 @@ function handleFile(file) {
   if (!file) return;
   currentFile = file;
 
-  const icons = { 'image': '🖼️', 'pdf': '📋', 'spreadsheet': '📊', 'document': '📄', 'csv': '📊' };
-  const ext = file.name.split('.').pop().toLowerCase();
-  const iconMap = { png:'🖼️', jpg:'🖼️', jpeg:'🖼️', gif:'🖼️', webp:'🖼️', pdf:'📋', xlsx:'📊', xls:'📊', csv:'📊', doc:'📄', docx:'📄', txt:'📄' };
-
   document.getElementById('uploadArea').style.display = 'none';
   document.getElementById('previewName').textContent = file.name;
   document.getElementById('previewSize').textContent = formatBytes(file.size);
-  document.getElementById('previewIcon').textContent = iconMap[ext] || '📄';
   document.getElementById('uploadPreview').style.display = 'flex';
 
   // Read file as base64
@@ -1007,7 +1000,6 @@ function showNeedsReview() {
   el.innerHTML = `
     <div class="preview-card">
       <div style="text-align:center;padding:20px 0">
-        <div style="font-size:40px;margin-bottom:16px">🔍</div>
         <div class="preview-title" style="margin-bottom:8px">Needs a Human Touch</div>
         <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:20px">This task needs a closer look. Jen will review it personally and get your result to you within 24 hours. No additional charge.</p>
         <p style="font-size:13px;color:var(--muted)">You'll receive an email at <strong style="color:var(--text)">${getSession()?.email}</strong> when it's ready.</p>
@@ -1075,7 +1067,7 @@ function acceptResult(taskId) {
   // Mark as complete
   markComplete(taskId);
 
-  showToast('Downloaded! Task complete. 🎉', 'success');
+  showToast('Downloaded! Task complete.', 'success');
 
   // Reset form
   setTimeout(() => {
@@ -1164,9 +1156,9 @@ function renderCurrentSubTab() {
 
   if (filtered.length === 0) {
     const emptyMessages = {
-      pending: ['📋', 'No Pending Payments', "Tasks you start but don't finish paying for within 72 hours show up here — after that, you'll need to resubmit."],
-      review: ['📭', 'Nothing to Review Yet', 'Tasks that are ready for you to review and download will show up here.'],
-      completed: ['✓', 'No Completed Tasks Yet', 'Tasks you\'ve reviewed and finished will show up here.']
+      pending: ['', 'No Pending Payments', "Tasks you start but don't finish paying for within 72 hours show up here — after that, you'll need to resubmit."],
+      review: ['', 'Nothing to Review Yet', 'Tasks that are ready for you to review and download will show up here.'],
+      completed: ['', 'No Completed Tasks Yet', 'Tasks you\'ve reviewed and finished will show up here.']
     };
     const [icon, title, sub] = emptyMessages[currentSubTab];
     el.innerHTML = `
@@ -1200,7 +1192,7 @@ function taskCard(t) {
         <div class="task-card-meta">
           <span>${date}</span>
           <span>${escapeHtml(t.toolName || 'General Task')}</span>
-          ${t.filename ? `<span>📎 ${escapeHtml(t.filename)}</span>` : ''}
+          ${t.filename ? `<span>${escapeHtml(t.filename)}</span>` : ''}
           <span>${t.tier ? TIER_LABELS[t.tier] : ''}</span>
         </div>
       </div>
