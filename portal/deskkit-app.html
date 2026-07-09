@@ -1208,6 +1208,12 @@ function renderCurrentSubTab() {
   el.innerHTML = `<div class="tasks-list">${filtered.map(t => taskCard(t)).join('')}</div>`;
 }
 
+function shortDescFor(t) {
+  if (t.toolName && t.toolName !== 'General Task') return t.toolName;
+  const raw = (t.desc || 'Task').trim();
+  return raw.length > 70 ? raw.slice(0, 70) + '...' : raw;
+}
+
 function taskCard(t) {
   const statusMap = {
     pending_payment: ['status-pending', 'Awaiting Payment'],
@@ -1223,10 +1229,9 @@ function taskCard(t) {
   return `
     <div class="task-card">
       <div>
-        <div class="task-card-desc">${escapeHtml(t.desc || 'Task')}</div>
+        <div class="task-card-desc">${escapeHtml(shortDescFor(t))}</div>
         <div class="task-card-meta">
           <span>${date}</span>
-          <span>${escapeHtml(t.toolName || 'General Task')}</span>
           ${t.filename ? `<span>${escapeHtml(t.filename)}</span>` : ''}
           <span>${t.tier ? TIER_LABELS[t.tier] : ''}</span>
         </div>
