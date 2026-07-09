@@ -1,44 +1,146 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/trades", "destination": "/trades/index.html" },
-    { "source": "/trades/(.*)", "destination": "/trades/index.html" },
-    { "source": "/portal/app", "destination": "/portal/deskkit-app.html" },
-    { "source": "/portal/app/(.*)", "destination": "/portal/deskkit-app.html" },
-    { "source": "/portal/collection-letter", "destination": "/portal/deskkit-collection-letter.html" },
-    { "source": "/portal/payroll", "destination": "/portal/payroll/index.html" },
-    { "source": "/portal/invoices", "destination": "/portal/invoices/index.html" },
-    { "source": "/portal/warning-letter", "destination": "/portal/warning-letter/index.html" },
-    { "source": "/portal/business-letter", "destination": "/portal/business-letter/index.html" },
-    { "source": "/portal/signup", "destination": "/portal/signup/index.html" },
-    { "source": "/portal/pricing", "destination": "/portal/pricing/index.html" },
-    { "source": "/portal/review-responses", "destination": "/portal/deskkit-review-responses.html" },
-    { "source": "/portal/mileage-expense", "destination": "/portal/deskkit-mileage-expense.html" },
-    { "source": "/portal/job-posting", "destination": "/portal/deskkit-job-posting.html" },
-    { "source": "/portal/meeting-notes", "destination": "/portal/deskkit-meeting-notes.html" },
-    { "source": "/portal/bank-expense", "destination": "/portal/deskkit-bank-expense.html" },
-    { "source": "/portal/followup-letters", "destination": "/portal/deskkit-followup-letters.html" },
-    { "source": "/portal/job-cost", "destination": "/portal/deskkit-job-cost.html" },
-    { "source": "/portal/quote-comparison", "destination": "/portal/deskkit-quote-comparison.html" },
-    { "source": "/portal/tax-organizer", "destination": "/portal/deskkit-tax-organizer.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/trades",
+      "destination": "/trades/index.html"
+    },
+    {
+      "source": "/trades/(.*)",
+      "destination": "/trades/index.html"
+    },
+    {
+      "source": "/portal/app",
+      "destination": "/portal/deskkit-app.html"
+    },
+    {
+      "source": "/portal/app/(.*)",
+      "destination": "/portal/deskkit-app.html"
+    },
+    {
+      "source": "/portal/collection-letter",
+      "destination": "/portal/deskkit-collection-letter.html"
+    },
+    {
+      "source": "/portal/payroll",
+      "destination": "/portal/payroll/index.html"
+    },
+    {
+      "source": "/portal/invoices",
+      "destination": "/portal/invoices/index.html"
+    },
+    {
+      "source": "/portal/warning-letter",
+      "destination": "/portal/warning-letter/index.html"
+    },
+    {
+      "source": "/portal/business-letter",
+      "destination": "/portal/business-letter/index.html"
+    },
+    {
+      "source": "/portal/signup",
+      "destination": "/portal/signup/index.html"
+    },
+    {
+      "source": "/portal/pricing",
+      "destination": "/portal/pricing/index.html"
+    },
+    {
+      "source": "/portal/review-responses",
+      "destination": "/portal/deskkit-review-responses.html"
+    },
+    {
+      "source": "/portal/mileage-expense",
+      "destination": "/portal/deskkit-mileage-expense.html"
+    },
+    {
+      "source": "/portal/job-posting",
+      "destination": "/portal/deskkit-job-posting.html"
+    },
+    {
+      "source": "/portal/meeting-notes",
+      "destination": "/portal/deskkit-meeting-notes.html"
+    },
+    {
+      "source": "/portal/bank-expense",
+      "destination": "/portal/deskkit-bank-expense.html"
+    },
+    {
+      "source": "/portal/followup-letters",
+      "destination": "/portal/deskkit-followup-letters.html"
+    },
+    {
+      "source": "/portal/job-cost",
+      "destination": "/portal/deskkit-job-cost.html"
+    },
+    {
+      "source": "/portal/quote-comparison",
+      "destination": "/portal/deskkit-quote-comparison.html"
+    },
+    {
+      "source": "/portal/tax-organizer",
+      "destination": "/portal/deskkit-tax-organizer.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ],
   "functions": {
-    "api/paddle-webhook.js": { "maxDuration": 60 },
-    "api/send-full-report.js": { "maxDuration": 60 },
-    "api/send-diagnostic.js": { "maxDuration": 30 },
-    "api/send-checkin.js": { "maxDuration": 15 },
-    "api/send-plan.js": { "maxDuration": 60 },
-    "api/generate-checklist.js": { "maxDuration": 30 },
-    "api/deskkit-charge.js": { "maxDuration": 30 },
-    "api/deskkit-save.js": { "maxDuration": 15 },
-    "api/deskkit-tasks.js": { "maxDuration": 15 },
-    "api/portal-reset.js": { "maxDuration": 15 },
-    "api/portal-signup.js": { "maxDuration": 15 },
-    "api/deskkit-confirm-payment.js": { "maxDuration": 15 },
-    "api/deskkit-analyze.js": { "maxDuration": 30 },
-    "api/deskkit-generate.js": { "maxDuration": 60 },
-    "api/deskkit-assist.js": { "maxDuration": 30 }
+    "api/paddle-webhook.js": {
+      "maxDuration": 60
+    },
+    "api/send-full-report.js": {
+      "maxDuration": 60
+    },
+    "api/send-diagnostic.js": {
+      "maxDuration": 30
+    },
+    "api/send-checkin.js": {
+      "maxDuration": 15
+    },
+    "api/send-plan.js": {
+      "maxDuration": 60
+    },
+    "api/generate-checklist.js": {
+      "maxDuration": 30
+    },
+    "api/deskkit-charge.js": {
+      "maxDuration": 30
+    },
+    "api/deskkit-save.js": {
+      "maxDuration": 15
+    },
+    "api/deskkit-tasks.js": {
+      "maxDuration": 15
+    },
+    "api/portal-reset.js": {
+      "maxDuration": 15
+    },
+    "api/portal-signup.js": {
+      "maxDuration": 15
+    },
+    "api/deskkit-confirm-payment.js": {
+      "maxDuration": 15
+    },
+    "api/deskkit-analyze.js": {
+      "maxDuration": 30
+    },
+    "api/deskkit-generate.js": {
+      "maxDuration": 60
+    },
+    "api/deskkit-assist.js": {
+      "maxDuration": 30
+    },
+    "api/deskkit-validate-promo.js": {
+      "maxDuration": 15
+    },
+    "api/deskkit-resume-payment.js": {
+      "maxDuration": 15
+    }
   },
   "env": {
     "SITE_URL": "https://www.compassbizsolutions.com"
