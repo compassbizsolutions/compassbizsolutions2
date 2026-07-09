@@ -138,10 +138,14 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 .featured-tasks { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
 .featured-task { background: var(--navy2); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 12px; color: var(--text2); cursor: pointer; transition: all 0.15s; text-decoration: none; display: inline-block; }
 .featured-task:hover { border-color: var(--amber); color: var(--amber); }
-.category-select-wrap { margin-bottom: 12px; }
-.category-select { background: var(--navy2); border: 1px solid var(--border2); border-radius: 8px; padding: 8px 14px; font-size: 13px; color: var(--text); font-family: 'Inter', sans-serif; cursor: pointer; outline: none; }
-.category-select:focus { border-color: var(--amber); }
-.featured-task.cat-hidden { display: none; }
+.category-dropdowns { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; position: relative; }
+.category-dropdown { position: relative; }
+.category-dropdown-btn { background: var(--navy2); border: 1px solid var(--border2); border-radius: 8px; padding: 9px 16px; font-size: 13px; font-weight: 600; color: var(--text); font-family: 'Inter', sans-serif; cursor: pointer; }
+.category-dropdown-btn:hover { border-color: var(--amber); color: var(--amber); }
+.category-dropdown-panel { display: none; position: absolute; top: calc(100% + 6px); left: 0; background: var(--navy2); border: 1px solid var(--border2); border-radius: 10px; padding: 8px; min-width: 260px; z-index: 20; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+.category-dropdown-panel.open { display: flex; flex-direction: column; gap: 2px; }
+.category-dropdown-panel a { padding: 9px 12px; border-radius: 6px; font-size: 13px; color: var(--text2); text-decoration: none; }
+.category-dropdown-panel a:hover { background: var(--amber-dim); color: var(--amber); }
 .other-task-link { margin-bottom: 24px; }
 .other-task-link a { font-size: 13px; color: var(--muted); text-decoration: none; border-bottom: 1px dashed var(--border2); padding-bottom: 1px; }
 .other-task-link a:hover { color: var(--amber); border-bottom-color: var(--amber); }
@@ -334,34 +338,45 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 
     <!-- FEATURED QUICK TASKS -->
     <span class="featured-label">Quick Start — Common Tasks</span>
-    <div class="category-select-wrap">
-      <select id="taskCategory" class="category-select" onchange="filterTasksByCategory()">
-        <option value="all">All Categories</option>
-        <option value="financial">Financial</option>
-        <option value="hr">HR &amp; Hiring</option>
-        <option value="customer">Customer &amp; Communication</option>
-        <option value="documents">Documents &amp; Operations</option>
-      </select>
-    </div>
-    <div class="featured-tasks">
-      <a class="featured-task" data-cat="customer" href="/portal/collection-letter">Collection Letter</a>
-      <a class="featured-task" data-cat="financial" href="/portal/payroll">Compile Payroll</a>
-      <a class="featured-task" data-cat="financial" href="/portal/invoices">Compile Invoices</a>
-      <a class="featured-task" data-cat="hr" href="/portal/warning-letter">Employee Warning Letter</a>
-      <a class="featured-task" data-cat="customer" href="/portal/business-letter">Write a Letter or Email</a>
-      <a class="featured-task" data-cat="financial" href="/portal/bank-expense">Expense Report from Statement</a>
-      <a class="featured-task" data-cat="customer" href="/portal/followup-letters">Customer Follow-Up Letters</a>
-      <a class="featured-task" data-cat="financial" href="/portal/job-cost">Job Cost Report</a>
-      <a class="featured-task" data-cat="financial" href="/portal/quote-comparison">Compare Material Quotes</a>
-      <a class="featured-task" data-cat="customer" href="/portal/review-responses">Review Response Batch</a>
-      <a class="featured-task" data-cat="financial" href="/portal/mileage-expense">Mileage to Expense Report</a>
-      <a class="featured-task" data-cat="hr" href="/portal/job-posting">Job Posting Generator</a>
-      <a class="featured-task" data-cat="hr" href="/portal/applicant-screening">Applicant Screening & Comparison</a>
-      <a class="featured-task" data-cat="documents" href="/portal/meeting-notes">Meeting Notes to Action Items</a>
-      <a class="featured-task" data-cat="financial" href="/portal/tax-organizer">Tax Document Organizer</a>
-      <a class="featured-task" data-cat="documents" href="/portal/cleanup-spreadsheet">Clean Up Spreadsheet</a>
-      <a class="featured-task" data-cat="documents" href="/portal/summarize-document">Summarize Document</a>
-      <a class="featured-task" data-cat="documents" href="/portal/build-report">Build a Report</a>
+    <div class="category-dropdowns">
+      <div class="category-dropdown">
+        <button class="category-dropdown-btn" onclick="toggleCategoryDropdown('financial')">Financial ▾</button>
+        <div class="category-dropdown-panel" id="cat-financial">
+          <a href="/portal/payroll" title="Upload a timesheet and employee roster, get payroll compiled and ready for QuickBooks, ADP, Gusto, or Paychex import.">Compile Payroll</a>
+          <a href="/portal/invoices" title="Upload your invoices and get them organized into a clean, sortable compilation with totals and overdue flags.">Compile Invoices</a>
+          <a href="/portal/bank-expense" title="Upload a bank or credit card statement and get a categorized expense report, plus a QuickBooks-ready file.">Expense Report from Statement</a>
+          <a href="/portal/job-cost" title="Upload receipts and costs for a job, tell us what you charged, and get a clean profit/loss breakdown.">Job Cost Report</a>
+          <a href="/portal/quote-comparison" title="Upload quotes from multiple suppliers and get a side-by-side comparison showing the cheapest option.">Compare Material Quotes</a>
+          <a href="/portal/mileage-expense" title="Upload a mileage log and get a tax-ready expense report using the current IRS mileage rate.">Mileage to Expense Report</a>
+          <a href="/portal/tax-organizer" title="Upload receipts and statements, get them organized by category for your tax professional, plus a QuickBooks file.">Tax Document Organizer</a>
+        </div>
+      </div>
+      <div class="category-dropdown">
+        <button class="category-dropdown-btn" onclick="toggleCategoryDropdown('hr')">HR &amp; Hiring ▾</button>
+        <div class="category-dropdown-panel" id="cat-hr">
+          <a href="/portal/warning-letter" title="Fill in the details and get a professional, documented employee warning letter, ready for your records.">Employee Warning Letter</a>
+          <a href="/portal/job-posting" title="Describe the role and get a complete, ready-to-post job listing for Indeed, Facebook, or anywhere else.">Job Posting Generator</a>
+          <a href="/portal/applicant-screening" title="Upload resumes and a job description, get a side-by-side candidate comparison with interview recommendations.">Applicant Screening &amp; Comparison</a>
+        </div>
+      </div>
+      <div class="category-dropdown">
+        <button class="category-dropdown-btn" onclick="toggleCategoryDropdown('customer')">Customer &amp; Communication ▾</button>
+        <div class="category-dropdown-panel" id="cat-customer">
+          <a href="/portal/collection-letter" title="Generate professional collection letters for one or many customers who owe you money.">Collection Letter</a>
+          <a href="/portal/business-letter" title="Tell us what you need to say and who to, and we'll write a professional letter or email that says exactly what you mean.">Write a Letter or Email</a>
+          <a href="/portal/followup-letters" title="Upload your customer list and get personalized follow-up letters reminding them it's time for service.">Customer Follow-Up Letters</a>
+          <a href="/portal/review-responses" title="Upload your Google or Yelp reviews and get a professional response drafted for every one of them.">Review Response Batch</a>
+        </div>
+      </div>
+      <div class="category-dropdown">
+        <button class="category-dropdown-btn" onclick="toggleCategoryDropdown('documents')">Documents &amp; Operations ▾</button>
+        <div class="category-dropdown-panel" id="cat-documents">
+          <a href="/portal/meeting-notes" title="Upload rough meeting notes and get a clean summary with action items, owners, and deadlines.">Meeting Notes to Action Items</a>
+          <a href="/portal/cleanup-spreadsheet" title="Upload a messy spreadsheet and get it back cleaned up — consistent formatting, duplicates removed.">Clean Up Spreadsheet</a>
+          <a href="/portal/summarize-document" title="Upload a document and get a plain-language summary with the key points and action items pulled out.">Summarize Document</a>
+          <a href="/portal/build-report" title="Upload your data and get a clear, organized report that's easy to read and ready to share.">Build a Report</a>
+        </div>
+      </div>
     </div>
     <div class="other-task-link">
       <a href="#" onclick="scrollToDescribe(); return false;">Don't see what you need? Describe your task below ↓</a>
@@ -662,13 +677,18 @@ function setFeatured(text) {
   document.getElementById('taskDesc').focus();
 }
 
-function filterTasksByCategory() {
-  const selected = document.getElementById('taskCategory').value;
-  document.querySelectorAll('.featured-task').forEach(el => {
-    const cat = el.getAttribute('data-cat');
-    el.classList.toggle('cat-hidden', selected !== 'all' && cat !== selected);
-  });
+function toggleCategoryDropdown(cat) {
+  const panel = document.getElementById('cat-' + cat);
+  const isOpen = panel.classList.contains('open');
+  document.querySelectorAll('.category-dropdown-panel').forEach(p => p.classList.remove('open'));
+  if (!isOpen) panel.classList.add('open');
 }
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.category-dropdown')) {
+    document.querySelectorAll('.category-dropdown-panel').forEach(p => p.classList.remove('open'));
+  }
+});
 
 function scrollToDescribe() {
   const el = document.getElementById('taskDesc');
