@@ -65,7 +65,8 @@ module.exports = async function handler(req, res) {
         price: t.price,
         filename: t.filename,
         status: t.status,
-        createdAt: t.createdAt
+        createdAt: t.createdAt,
+        toolName: t.toolName || "General Task"
       }))
     });
 
