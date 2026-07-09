@@ -294,7 +294,7 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 
   <div class="tabs">
     <button class="tab active" onclick="showTab('submit', this)">Submit Task</button>
-    <button class="tab" onclick="showTab('history', this)">My Tasks</button>
+    <button class="tab" id="myTasksTabBtn" onclick="showTab('history', this)">My Tasks</button>
   </div>
 
   <!-- SUBMIT TAB -->
@@ -496,6 +496,12 @@ function initApp(name, email) {
 window.onload = () => {
   const s = getSession();
   if (s && s.token) initApp(s.name, s.email);
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('tab') === 'history') {
+    showTab('history', document.getElementById('myTasksTabBtn'));
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
 };
 
 // ─── TABS ────────────────────────────────────────────────────────
@@ -698,6 +704,7 @@ async function confirmAndPay(tier, price, desc) {
     document.getElementById('payAmount').textContent = '$' + chargeAmount;
     document.getElementById('paymentError').style.display = 'none';
     document.getElementById('paymentCard').style.display = 'block';
+    document.getElementById('analyzeBtn').style.display = 'none';
     document.getElementById('paymentCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   } catch(e) {
@@ -709,6 +716,7 @@ async function confirmAndPay(tier, price, desc) {
 function cancelPayment() {
   document.getElementById('paymentCard').style.display = 'none';
   document.getElementById('analysisResult').style.display = 'block';
+  document.getElementById('analyzeBtn').style.display = 'flex';
   elements = null;
 }
 
@@ -774,6 +782,11 @@ function showSubmittedConfirmation() {
   document.getElementById('previewState').style.display = 'none';
   document.getElementById('submittedState').style.display = 'block';
   document.getElementById('submittedState').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  setTimeout(() => {
+    document.getElementById('submittedState').style.display = 'none';
+    showTab('history', document.getElementById('myTasksTabBtn'));
+  }, 2200);
 }
 
 // Handle return from a redirect-based payment method (e.g. 3D Secure)
