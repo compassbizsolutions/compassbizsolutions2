@@ -219,8 +219,54 @@ window.onload = () => {
   const s = getSession();
   if (!s || !s.token) {
     window.location.href = '/portal/app';
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const resumeId = params.get('resume');
+  if (resumeId) {
+    resumePendingTask(resumeId);
   }
 };
+
+async function resumePendingTask(taskId) {
+  const session = getSession();
+  document.getElementById('analyzeBtn').style.display = 'none';
+
+  try {
+    const r = await fetch('/api/deskkit-resume-payment', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
+      body: JSON.stringify({ taskId })
+    });
+    const d = await r.json();
+    if (!r.ok) {
+      showToast(d.error || 'Could not resume this task.', 'error');
+      document.getElementById('analyzeBtn').style.display = 'flex';
+      return;
+    }
+
+    currentTaskId = d.taskId;
+    pendingDesc = d.desc;
+    pendingPaymentIntentId = d.paymentIntentId;
+
+    elements = stripe.elements({ clientSecret: d.clientSecret, appearance: {
+      theme: 'night',
+      variables: { colorPrimary: '#C8701A', colorBackground: '#162840', colorText: '#E2EAF2', borderRadius: '8px' }
+    }});
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#paymentElement');
+
+    document.getElementById('payAmount').textContent = '$' + d.price;
+    document.getElementById('paymentError').style.display = 'none';
+    document.getElementById('paymentCard').style.display = 'block';
+    document.getElementById('paymentCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
+    showToast('Picking up where you left off — same price as before.', 'success');
+  } catch(e) {
+    showToast('Could not resume this task. Please start fresh.', 'error');
+    document.getElementById('analyzeBtn').style.display = 'flex';
+  }
+}
 
 function handleFiles(fileList) {
   const files = Array.from(fileList || []);
@@ -413,7 +459,7 @@ async function confirmAndPay(tier, price) {
     const r = await fetch('/api/deskkit-charge', {
       method:'POST',
       headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
-      body: JSON.stringify({ tier, desc, filename: currentFiles.length ? (currentFiles.length === 1 ? currentFiles[0].name : `${currentFiles.length} files`) : null, promoCode: promoCode || undefined, toolName: "Tax Document Organizer" })
+      body: JSON.stringify({ tier, desc, filename: currentFiles.length ? (currentFiles.length === 1 ? currentFiles[0].name : `${currentFiles.length} files`) : null, promoCode: promoCode || undefined, toolName: "Tax Document Organizer", toolPath: "/portal/tax-organizer" })
     });
     const d = await r.json();
     if (!r.ok) { showToast(d.error || 'Could not start payment.', 'error'); document.getElementById('analysisResult').style.display = 'block'; return; }
