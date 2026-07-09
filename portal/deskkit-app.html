@@ -7,6 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://js.stripe.com/v3/"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.15.0/dist/mermaid.min.js"></script>
 <script src="/deskkit-config.js"></script>
 <style>
 :root {
@@ -209,6 +211,13 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 .csv-table-wrap { background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 10px; padding: 4px; margin-bottom: 20px; max-height: 400px; overflow: auto; }
 .result-notes { background: var(--amber-dim); border: 1px solid var(--amber-border); border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; font-size: 13px; color: var(--text2); line-height: 1.7; white-space: pre-wrap; }
 .result-notes-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--amber); text-transform: uppercase; margin-bottom: 8px; }
+.slide-preview-wrap { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; }
+.slide-preview-card { background: rgba(0,0,0,0.15); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.slide-preview-num { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+.slide-preview-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.slide-preview-bullets { margin: 0; padding-left: 20px; font-size: 13px; color: var(--text2); line-height: 1.7; }
+.mermaid-preview-wrap { background: rgba(0,0,0,0.1); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 20px; max-height: 450px; overflow: auto; text-align: center; }
+.mermaid-preview-wrap svg { max-width: 100%; height: auto; }
 .csv-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .csv-table th { background: var(--navy3); color: var(--text2); text-align: left; padding: 8px 12px; position: sticky; top: 0; font-weight: 700; white-space: nowrap; }
 .csv-table td { padding: 7px 12px; color: var(--text2); border-top: 1px solid var(--border); white-space: nowrap; }
@@ -377,6 +386,10 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
           <a href="/portal/cleanup-spreadsheet" title="Upload a messy spreadsheet and get it back cleaned up — consistent formatting, duplicates removed.">Clean Up Spreadsheet</a>
           <a href="/portal/summarize-document" title="Upload a document and get a plain-language summary with the key points and action items pulled out.">Summarize Document</a>
           <a href="/portal/build-report" title="Upload your data and get a clear, organized report that's easy to read and ready to share.">Build a Report</a>
+          <a href="/portal/task-breakdown" title="Upload a project description and get a complete task breakdown with owners, priorities, and deadlines.">Project Task Breakdown</a>
+          <a href="/portal/runbook" title="Upload rough process notes and get a clean, properly formatted runbook or SOP document.">Documentation &amp; Runbook Builder</a>
+          <a href="/portal/powerpoint" title="Describe the presentation you need and get a complete, ready-to-use PowerPoint deck built for you.">PowerPoint Creation</a>
+          <a href="/portal/process-map" title="Describe your process step by step and get a clean visual flowchart.">Process Map Builder</a>
         </div>
       </div>
     </div>
@@ -1264,14 +1277,19 @@ function splitResultSections(text) {
 const ALWAYS_CSV_TOOLS = [
   'Compile Payroll', 'Compile Invoices', 'Job Cost Report', 'Material Quote Comparison',
   'Applicant Screening & Comparison', 'Expense Report from Statements', 'Tax Document Organizer',
-  'Mileage Log to Expense Report', 'Clean Up Spreadsheet'
+  'Mileage Log to Expense Report', 'Clean Up Spreadsheet', 'Project Task Breakdown'
 ];
 // Tools that always produce prose — never guess, always force Word
 const ALWAYS_WORD_TOOLS = [
   'Collection Letter', 'Employee Warning Letter', 'Write a Letter or Email',
   'Customer Follow-Up Letters', 'Review Response Batch', 'Job Posting Generator',
-  'Meeting Notes to Action Items', 'Summarize Document'
+  'Meeting Notes to Action Items', 'Summarize Document', 'Documentation & Runbook Builder'
 ];
+
+// Tools that produce a real PowerPoint file (structured JSON internally)
+const ALWAYS_PPTX_TOOLS = ['PowerPoint Creation'];
+// Tools that produce a Mermaid flowchart diagram
+const ALWAYS_MERMAID_TOOLS = ['Process Map Builder'];
 
 function resolveIsCSV(toolName, text) {
   if (ALWAYS_CSV_TOOLS.includes(toolName)) return true;
@@ -1342,7 +1360,54 @@ function renderAsTable(csvText) {
     </div>`;
 }
 
+function cleanAIJson(text) {
+  return text.replace(/```json\s*\n?/gi, '').replace(/```\s*/g, '').trim();
+}
+
+function cleanMermaidCode(text) {
+  return text.replace(/```mermaid\s*\n?/gi, '').replace(/```\s*/g, '').trim();
+}
+
+function renderPptxPreview(text) {
+  let parsed;
+  try {
+    parsed = JSON.parse(cleanAIJson(text));
+  } catch(e) {
+    return `<div class="preview-content" style="white-space:pre-wrap;">${escapeHtml(text)}</div>`;
+  }
+  const slidesHtml = (parsed.slides || []).map((s, i) => `
+    <div class="slide-preview-card">
+      <div class="slide-preview-num">Slide ${i + 1}</div>
+      <div class="slide-preview-title">${escapeHtml(s.title || '')}</div>
+      ${s.bullets && s.bullets.length ? `<ul class="slide-preview-bullets">${s.bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>` : ''}
+    </div>`).join('');
+  return `<div class="slide-preview-wrap">${slidesHtml}</div>`;
+}
+
+function renderMermaidPreview() {
+  return `<div class="mermaid-preview-wrap" id="mermaidPreviewContainer"><div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">Rendering diagram...</div></div>`;
+}
+
+async function renderMermaidDiagram(mermaidText) {
+  try {
+    mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+    const code = cleanMermaidCode(mermaidText);
+    const { svg } = await mermaid.render('mermaidPreviewSvg', code);
+    const container = document.getElementById('mermaidPreviewContainer');
+    if (container) container.innerHTML = svg;
+  } catch(e) {
+    const container = document.getElementById('mermaidPreviewContainer');
+    if (container) container.innerHTML = `<div style="color:var(--red2);font-size:13px;padding:12px;">Could not render this diagram.</div>`;
+  }
+}
+
 function renderResultContent(text, toolName) {
+  if (ALWAYS_PPTX_TOOLS.includes(toolName)) {
+    return renderPptxPreview(text);
+  }
+  if (ALWAYS_MERMAID_TOOLS.includes(toolName)) {
+    return renderMermaidPreview();
+  }
   if (resolveIsCSV(toolName, text)) {
     return renderAsTable(text);
   }
@@ -1376,13 +1441,21 @@ function renderTaskModal(t) {
       ${renderResultContent(main, t.toolName)}
       ${notes ? `<div class="result-notes"><div class="result-notes-title">Notes</div>${escapeHtml(notes)}</div>` : ''}
       <div class="preview-actions">
-        <button class="btn-accept" onclick="acceptResultFromModal('${t.id}')">✓ Accept & Download ${resolveIsCSV(t.toolName, main) ? '(Excel)' : '(Word)'}</button>
+        <button class="btn-accept" onclick="acceptResultFromModal('${t.id}')">✓ Accept & Download ${
+          ALWAYS_PPTX_TOOLS.includes(t.toolName) ? '(PowerPoint)' :
+          ALWAYS_MERMAID_TOOLS.includes(t.toolName) ? '(Image)' :
+          resolveIsCSV(t.toolName, main) ? '(Excel)' : '(Word)'
+        }</button>
         ${qbo ? `<button class="btn-accept" style="background:var(--navy3);border:1px solid var(--border2);" onclick="downloadQBOFromModal('${t.id}')">↓ QuickBooks CSV</button>` : ''}
         <div class="revision-wrap">
           <input class="revision-input" id="modalRevisionInput" placeholder="Not quite right? Tell us what to change..."/>
           <button class="btn-revise" onclick="reviseFromModal('${t.id}')">Revise →</button>
         </div>
       </div>`;
+
+    if (ALWAYS_MERMAID_TOOLS.includes(t.toolName)) {
+      renderMermaidDiagram(main);
+    }
   }
 
   document.getElementById('taskModalOverlay').classList.add('show');
@@ -1396,7 +1469,6 @@ async function acceptResultFromModal(taskId) {
   const session = getSession();
   const resultText = document.getElementById('taskModalBody').dataset.mainResult || '';
   const toolName = document.getElementById('taskModalBody').dataset.toolName || '';
-  const isCSV = resolveIsCSV(toolName, resultText);
 
   try {
     await fetch('/api/deskkit-save', {
@@ -1406,7 +1478,11 @@ async function acceptResultFromModal(taskId) {
     });
   } catch(e) { console.error('Accept error:', e); }
 
-  if (isCSV) {
+  if (ALWAYS_PPTX_TOOLS.includes(toolName)) {
+    downloadAsPptx(resultText, `deskkit-${taskId}.pptx`);
+  } else if (ALWAYS_MERMAID_TOOLS.includes(toolName)) {
+    downloadMermaidAsPng(`deskkit-${taskId}.png`);
+  } else if (resolveIsCSV(toolName, resultText)) {
     downloadAsExcel(resultText, `deskkit-${taskId}.xlsx`);
   } else {
     downloadAsWord(resultText, `deskkit-${taskId}.doc`);
@@ -1415,6 +1491,80 @@ async function acceptResultFromModal(taskId) {
   closeTaskModal();
   showToast('Downloaded! ✓', 'success');
   loadTaskHistory();
+}
+
+function downloadAsPptx(jsonText, filename) {
+  let parsed;
+  try {
+    parsed = JSON.parse(cleanAIJson(jsonText));
+  } catch(e) {
+    showToast('Could not read the presentation data.', 'error');
+    return;
+  }
+
+  const pres = new PptxGenJS();
+  pres.defineLayout({ name: 'DESKKIT', width: 10, height: 5.625 });
+  pres.layout = 'DESKKIT';
+
+  (parsed.slides || []).forEach((s, i) => {
+    const slide = pres.addSlide();
+    const isTitleSlide = i === 0 && (!s.bullets || s.bullets.length === 0);
+    if (isTitleSlide) {
+      slide.background = { color: '1A4D8F' };
+      slide.addText(s.title || parsed.title || 'Presentation', {
+        x: 0.5, y: 2.2, w: 9, h: 1.2, fontSize: 36, bold: true, color: 'FFFFFF', align: 'center'
+      });
+    } else {
+      slide.addText(s.title || '', {
+        x: 0.5, y: 0.4, w: 9, h: 0.8, fontSize: 28, bold: true, color: '1A4D8F'
+      });
+      if (s.bullets && s.bullets.length) {
+        slide.addText(
+          s.bullets.map(b => ({ text: b, options: { bullet: true, breakLine: true } })),
+          { x: 0.7, y: 1.4, w: 8.6, h: 3.8, fontSize: 18, color: '1A2B4A' }
+        );
+      }
+    }
+  });
+
+  pres.writeFile({ fileName: filename });
+}
+
+function downloadMermaidAsPng(filename) {
+  const svgEl = document.querySelector('#mermaidPreviewContainer svg');
+  if (!svgEl) { showToast('Diagram not ready yet — please try again in a moment.', 'error'); return; }
+
+  const svgData = new XMLSerializer().serializeToString(svgEl);
+  const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(svgBlob);
+  const img = new Image();
+  img.onload = () => {
+    const scale = 2;
+    const w = img.width || 900;
+    const h = img.height || 600;
+    const canvas = document.createElement('canvas');
+    canvas.width = w * scale;
+    canvas.height = h * scale;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.scale(scale, scale);
+    ctx.drawImage(img, 0, 0);
+    canvas.toBlob(blob => {
+      const pngUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = pngUrl;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(pngUrl);
+      URL.revokeObjectURL(url);
+    });
+  };
+  img.onerror = () => {
+    showToast('Could not convert the diagram to an image.', 'error');
+    URL.revokeObjectURL(url);
+  };
+  img.src = url;
 }
 
 function downloadAsExcel(csvText, filename) {
