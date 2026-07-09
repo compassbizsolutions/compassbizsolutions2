@@ -413,7 +413,7 @@ async function confirmAndPay(tier, price) {
     const r = await fetch('/api/deskkit-charge', {
       method:'POST',
       headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
-      body: JSON.stringify({ tier, desc, filename: currentFiles.length ? (currentFiles.length === 1 ? currentFiles[0].name : `${currentFiles.length} files`) : null, promoCode: promoCode || undefined })
+      body: JSON.stringify({ tier, desc, filename: currentFiles.length ? (currentFiles.length === 1 ? currentFiles[0].name : `${currentFiles.length} files`) : null, promoCode: promoCode || undefined, toolName: "Mileage Log to Expense Report" })
     });
     const d = await r.json();
     if (!r.ok) { showToast(d.error || 'Could not start payment.', 'error'); document.getElementById('analysisResult').style.display = 'block'; return; }
