@@ -686,12 +686,13 @@ INSTRUCTIONS:
 2. Calculate regular hours, overtime hours, and gross pay (apply 1.5x for overtime)
 3. Output ONLY the clean CSV data in the exact specified format above — column headers and data rows only, ready to import directly
 4. If the selected format is Standard Spreadsheet or Custom, you may add a final total row using the same columns (not a separate paragraph)
-5. Do not include any narrative explanation, summary paragraph, or flagged notes — just the finished file
+5. Do not include any narrative explanation, summary paragraph, headers, or markdown formatting — just the finished file
+6. If something is missing or blocks the file from being usable (a rate, an employee's hours, mismatched format fields), note it in ONE short plain line at the very top, like "Missing: Bobby's rate" or "Note: ADP format selected but no employee IDs provided." No bold text, no headers, no multi-sentence explanations — just the short flag itself, or nothing at all if there's nothing to flag.
 
 Give the complete finished deliverable, not instructions.`;
 
   pendingDesc = prompt;
-  pendingWorkSystem = `You are a payroll specialist with deep knowledge of QuickBooks, ADP Run, Gusto, and Paychex Flex import formats. Extract hours from any format, calculate pay accurately including overtime, and output ONLY clean structured CSV data ready for import — no narrative text, no summary paragraphs, no commentary. If a final total row fits the same columns, include it; otherwise just the data rows.`;
+  pendingWorkSystem = `You are a payroll specialist with deep knowledge of QuickBooks, ADP Run, Gusto, and Paychex Flex import formats. Extract hours from any format, calculate pay accurately including overtime, and output ONLY clean structured CSV data ready for import — no narrative text, no summary paragraphs, no markdown headers, no bold callouts. If something blocks the file from being complete or usable, flag it in one short plain sentence at the top — nothing more.`;
 
   const promoCode = val('promoCodeInput');
   const btn = document.getElementById('submitBtn');
@@ -835,10 +836,20 @@ async function doWork() {
   const userContent = [];
   if (fileData && fileName) {
     const ext = fileName.split('.').pop().toLowerCase();
+    const base64 = fileData.split(',')[1];
     if (['png','jpg','jpeg','webp'].includes(ext)) {
-      userContent.push({ name: fileName, mediaType: ext === 'jpg' ? 'image/jpeg' : `image/${ext}`, data: fileData.split(',')[1] });
+      userContent.push({ name: fileName, mediaType: ext === 'jpg' ? 'image/jpeg' : `image/${ext}`, data: base64 });
     } else if (ext === 'pdf') {
-      userContent.push({ name: fileName, mediaType: 'application/pdf', data: fileData.split(',')[1] });
+      userContent.push({ name: fileName, mediaType: 'application/pdf', data: base64 });
+    } else if (['csv','txt'].includes(ext)) {
+      try {
+        const textContent = decodeURIComponent(escape(atob(base64)));
+        userContent.push({ name: fileName, textContent });
+      } catch(e) {
+        userContent.push({ name: fileName });
+      }
+    } else {
+      userContent.push({ name: fileName });
     }
   }
   try {
