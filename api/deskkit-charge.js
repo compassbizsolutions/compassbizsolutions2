@@ -88,17 +88,30 @@ module.exports = async function handler(req, res) {
     let appliedPromo = null;
     if (promoCode) {
       const promoResponse = await fetch(
-        `https://api.stripe.com/v1/promotion_codes?code=${encodeURIComponent(promoCode)}&active=true&limit=1`,
+        `https://api.stripe.com/v1/promotion_codes?code=${encodeURIComponent(promoCode)}&active=true&limit=1&expand[]=data.coupon`,
         { headers: { Authorization: "Bearer " + stripeKey } }
       );
       const promoData = await promoResponse.json();
-      const match = promoData.data && promoData.data[0];
 
+      if (promoData.error) {
+        console.error("Stripe promotion_codes error:", promoData.error);
+        return res.status(400).json({ error: "Could not look up that promo code. Please try again." });
+      }
+
+      const match = promoData.data && promoData.data[0];
       if (!match) {
         return res.status(400).json({ error: "That promo code isn't valid or has expired." });
       }
 
-      const coupon = match.coupon;
+      // Coupon data can live directly on the promotion code, or nested under a
+      // "promotion" field depending on API version — check both rather than
+      // assuming one shape.
+      const coupon = match.coupon || (match.promotion && match.promotion.coupon);
+      if (!coupon) {
+        console.error("Promo code matched but no coupon data found:", JSON.stringify(match));
+        return res.status(400).json({ error: "That promo code couldn't be applied. Please contact support." });
+      }
+
       if (coupon.percent_off) {
         amountCents = Math.round(amountCents * (1 - coupon.percent_off / 100));
         appliedPromo = { code: promoCode, percentOff: coupon.percent_off };
