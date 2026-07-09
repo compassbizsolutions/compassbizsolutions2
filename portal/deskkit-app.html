@@ -145,6 +145,10 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 .analysis-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 13px; color: var(--text2); line-height: 1.5; }
 .analysis-item::before { content: '→'; color: var(--amber); flex-shrink: 0; font-weight: 700; }
 .analysis-actions { display: flex; gap: 12px; }
+.promo-row { margin-bottom: 14px; }
+.promo-input { width: 100%; background: var(--navy3); border: 1px solid var(--border2); border-radius: 8px; padding: 9px 12px; color: var(--text); font-size: 13px; font-family: 'Inter', sans-serif; outline: none; }
+.promo-input:focus { border-color: var(--amber); }
+.promo-input::placeholder { color: rgba(255,255,255,0.2); }
 .btn-confirm { flex: 1; background: var(--amber); color: white; border: none; border-radius: 10px; padding: 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.15s; }
 .btn-confirm:hover { background: var(--amber2); }
 .btn-cancel { background: transparent; border: 1px solid var(--border2); color: var(--muted); border-radius: 10px; padding: 14px 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
@@ -630,6 +634,9 @@ function showAnalysisResult(analysis, desc) {
           <div class="analysis-desc">${tierDesc}</div>
         </div>
       </div>
+      <div class="promo-row">
+        <input type="text" id="promoCodeInput" class="promo-input" placeholder="Promo code (optional)"/>
+      </div>
       <div class="analysis-actions">
         <button class="btn-cancel" onclick="cancelAnalysis()">Add More Details First</button>
         <button class="btn-confirm" onclick="confirmAndPay('${tier}', ${price}, \`${desc.replace(/`/g, "'")}\`)">Accept & Submit — $${price} →</button>
@@ -656,6 +663,7 @@ async function confirmAndPay(tier, price, desc) {
 
   pendingTier = tier;
   pendingDesc = desc;
+  const promoCode = document.getElementById('promoCodeInput')?.value.trim();
 
   showLoader('Setting up payment...');
 
@@ -666,7 +674,7 @@ async function confirmAndPay(tier, price, desc) {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + session.token
       },
-      body: JSON.stringify({ tier, desc, filename: currentFile?.name || null })
+      body: JSON.stringify({ tier, desc, filename: currentFile?.name || null, promoCode: promoCode || undefined })
     });
 
     const d = await r.json();
@@ -685,8 +693,9 @@ async function confirmAndPay(tier, price, desc) {
     const paymentElement = elements.create('payment');
     paymentElement.mount('#paymentElement');
 
+    const chargeAmount = d.amountCharged != null ? d.amountCharged : price;
     document.getElementById('analysisResult').style.display = 'none';
-    document.getElementById('payAmount').textContent = '$' + price;
+    document.getElementById('payAmount').textContent = '$' + chargeAmount;
     document.getElementById('paymentError').style.display = 'none';
     document.getElementById('paymentCard').style.display = 'block';
     document.getElementById('paymentCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
