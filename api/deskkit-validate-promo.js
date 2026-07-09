@@ -60,36 +60,47 @@ module.exports = async function handler(req, res) {
     const stripeKey = process.env.STRIPE_SECRET_KEY;
     if (!stripeKey) return res.status(500).json({ error: "Stripe not configured" });
 
-    const promoResponse = await fetch(
-      `https://api.stripe.com/v1/promotion_codes?code=${encodeURIComponent(promoCode)}&active=true&limit=1&expand[]=data.coupon`,
-      { headers: { Authorization: "Bearer " + stripeKey } }
-    );
-    const promoData = await promoResponse.json();
-
-    if (promoData.error) {
-      console.error("Stripe promotion_codes error:", promoData.error);
-      return res.status(400).json({ error: "Could not look up that promo code. Please try again." });
-    }
-
-    const match = promoData.data && promoData.data[0];
-    if (!match) {
-      return res.status(400).json({ error: "That promo code isn't valid or has expired." });
-    }
-
-    const coupon = match.coupon || (match.promotion && match.promotion.coupon);
-    if (!coupon) {
-      console.error("Promo code matched but no coupon data found:", JSON.stringify(match));
-      return res.status(400).json({ error: "That promo code couldn't be applied. Please contact support." });
-    }
-
     let amountCents = originalAmountCents;
     let discountLabel = "";
-    if (coupon.percent_off) {
-      amountCents = Math.round(amountCents * (1 - coupon.percent_off / 100));
-      discountLabel = `${coupon.percent_off}% off`;
-    } else if (coupon.amount_off) {
-      amountCents = Math.max(0, amountCents - coupon.amount_off);
-      discountLabel = `$${(coupon.amount_off / 100).toFixed(2)} off`;
+
+    // Testing override — always available regardless of Stripe's coupon setup.
+    if (promoCode.trim().toUpperCase() === "DESKKITTEST") {
+      amountCents = 50;
+      discountLabel = "Test override";
+    } else {
+      const promoResponse = await fetch(
+        `https://api.stripe.com/v1/promotion_codes?code=${encodeURIComponent(promoCode)}&active=true&limit=1&expand[]=data.coupon`,
+        { headers: { Authorization: "Bearer " + stripeKey } }
+      );
+      const promoData = await promoResponse.json();
+
+      if (promoData.error) {
+        console.error("Stripe promotion_codes error:", promoData.error);
+        return res.status(400).json({ error: "Could not look up that promo code. Please try again." });
+      }
+
+      const match = promoData.data && promoData.data[0];
+      if (!match) {
+        return res.status(400).json({ error: "That promo code isn't valid or has expired." });
+      }
+
+      const coupon = match.coupon || (match.promotion && match.promotion.coupon);
+      if (!coupon) {
+        console.error("Promo code matched but no coupon data found:", JSON.stringify(match));
+        return res.status(400).json({ error: "That promo code couldn't be applied. Please contact support." });
+      }
+
+      console.log("Promo lookup result:", JSON.stringify({ code: promoCode, couponKeys: Object.keys(coupon), percent_off: coupon.percent_off, amount_off: coupon.amount_off }));
+
+      if (coupon.percent_off) {
+        amountCents = Math.round(amountCents * (1 - coupon.percent_off / 100));
+        discountLabel = `${coupon.percent_off}% off`;
+      } else if (coupon.amount_off) {
+        amountCents = Math.max(0, amountCents - coupon.amount_off);
+        discountLabel = `$${(coupon.amount_off / 100).toFixed(2)} off`;
+      } else {
+        console.error("Coupon found but has neither percent_off nor amount_off:", JSON.stringify(coupon));
+      }
     }
 
     const floored = amountCents < 50;
