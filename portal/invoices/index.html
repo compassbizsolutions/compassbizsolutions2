@@ -328,7 +328,7 @@ INCLUDE: ${includes.join(', ')}
 ${val('manualData') ? '\nINVOICE DATA:\n' + val('manualData') : files.length > 0 ? '\nFiles uploaded: ' + files.map(f => f.name).join(', ') : ''}
 ${val('notes') ? '\nNOTES: ' + val('notes') : ''}
 
-Output ONLY the clean CSV compilation with proper column headers and data rows — no narrative explanation or commentary, just the finished file.`;
+Output ONLY the clean CSV compilation — the very first line of your response must be the column header row itself. Do not add a title row, a "Generated:" date line, markdown code fences, or any text before the header row. No narrative explanation or commentary either — just the finished file.`;
 
   pendingDesc = prompt;
   pendingWorkSystem = 'You are a bookkeeping specialist. Extract invoice data from any format, organize it into a clean structured compilation, and calculate totals accurately. Output ONLY clean CSV data ready for use — no narrative text, no commentary, just the finished file.';
