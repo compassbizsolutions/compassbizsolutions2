@@ -68,7 +68,7 @@ module.exports = async function handler(req, res) {
     const email = await validateSession(sessionToken);
     if (!email) return res.status(401).json({ error: "Unauthorized" });
 
-    const { tier, price, desc, filename, kind } = req.body || {};
+    const { tier, price, desc, filename, kind, promoCode } = req.body || {};
     if (!tier || !desc) return res.status(400).json({ error: "Missing required fields" });
 
     // Determine which pricing table applies and validate the tier/bundle server-side
@@ -76,10 +76,41 @@ module.exports = async function handler(req, res) {
     const isBundle = kind === "collection_letter";
     const priceTable = isBundle ? BUNDLE_PRICES : TIER_PRICES;
     if (!priceTable.hasOwnProperty(tier)) return res.status(400).json({ error: "Invalid tier" });
-    const amountCents = priceTable[tier];
+    let amountCents = priceTable[tier];
+    const originalAmountCents = amountCents;
 
     const stripeKey = process.env.STRIPE_SECRET_KEY;
     if (!stripeKey) return res.status(500).json({ error: "Stripe not configured" });
+
+    // Look up and apply a promo code, if one was given. Stripe doesn't auto-apply
+    // promotion codes to a raw PaymentIntent (that's only automatic with Checkout
+    // Sessions/Subscriptions), so we validate it and compute the discount ourselves.
+    let appliedPromo = null;
+    if (promoCode) {
+      const promoResponse = await fetch(
+        `https://api.stripe.com/v1/promotion_codes?code=${encodeURIComponent(promoCode)}&active=true&limit=1`,
+        { headers: { Authorization: "Bearer " + stripeKey } }
+      );
+      const promoData = await promoResponse.json();
+      const match = promoData.data && promoData.data[0];
+
+      if (!match) {
+        return res.status(400).json({ error: "That promo code isn't valid or has expired." });
+      }
+
+      const coupon = match.coupon;
+      if (coupon.percent_off) {
+        amountCents = Math.round(amountCents * (1 - coupon.percent_off / 100));
+        appliedPromo = { code: promoCode, percentOff: coupon.percent_off };
+      } else if (coupon.amount_off) {
+        amountCents = Math.max(0, amountCents - coupon.amount_off);
+        appliedPromo = { code: promoCode, amountOff: coupon.amount_off };
+      }
+
+      // Stripe requires at least $0.50 USD for any card charge — floor it here
+      // rather than letting the PaymentIntent call fail with an opaque error.
+      if (amountCents < 50) amountCents = 50;
+    }
 
     const taskId = "dsk_" + Date.now().toString(36) + crypto.randomBytes(4).toString("hex");
 
@@ -99,7 +130,8 @@ module.exports = async function handler(req, res) {
         "metadata[taskId]": taskId,
         "metadata[email]": email,
         "metadata[tier]": tier,
-        "metadata[kind]": isBundle ? "collection_letter" : "task"
+        "metadata[kind]": isBundle ? "collection_letter" : "task",
+        "metadata[promoCode]": promoCode || ""
       })
     });
 
@@ -113,6 +145,8 @@ module.exports = async function handler(req, res) {
       tier,
       kind: isBundle ? "collection_letter" : "task",
       price: amountCents / 100,
+      originalPrice: originalAmountCents / 100,
+      promo: appliedPromo,
       desc,
       filename: filename || null,
       status: "pending_payment",
@@ -130,7 +164,9 @@ module.exports = async function handler(req, res) {
       success: true,
       taskId,
       clientSecret: paymentData.client_secret,
-      paymentIntentId: paymentData.id
+      paymentIntentId: paymentData.id,
+      amountCharged: amountCents / 100,
+      promoApplied: appliedPromo
     });
 
   } catch(err) {
