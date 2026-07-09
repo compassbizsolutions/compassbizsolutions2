@@ -200,8 +200,10 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
   <div class="section">
     <div class="section-title">Employee Roster & Rates</div>
     <div class="info-box" style="margin-bottom:14px;"><strong>Required for accurate payroll:</strong> Enter each employee's name, rate, and any IDs your payroll software requires. If using ADP, Gusto, or Paychex, include their employee ID/file number so we can map them correctly.</div>
+    <div id="rosterStatus" style="font-size:12px;color:var(--green2);margin-bottom:10px;display:none;">✓ Saved roster loaded — just update hours and go.</div>
     <div id="employeeList"></div>
     <button class="btn-add" onclick="addEmployee()">+ Add Employee</button>
+    <button class="btn-add" style="background:var(--amber-dim);border-color:var(--amber-border);color:var(--amber);" onclick="saveRosterProfile()">Save This Roster for Next Time</button>
   </div>
 
   <!-- OUTPUT FORMAT -->
@@ -406,13 +408,79 @@ const FORMAT_CONFIGS = {
 window.onload = () => {
   const s = getSession();
   if (!s || !s.token) { window.location.href = '/portal/app'; return; }
-  addEmployee();
   renderFieldPicker();
+  loadRosterProfile();
 
   const params = new URLSearchParams(window.location.search);
   const resumeId = params.get('resume');
   if (resumeId) resumePendingTask(resumeId);
 };
+
+async function loadRosterProfile() {
+  const session = getSession();
+  try {
+    const r = await fetch('/api/deskkit-profile?type=payroll', {
+      headers: { 'Authorization': 'Bearer ' + session.token }
+    });
+    const d = await r.json();
+    if (d.profile) {
+      document.getElementById('companyName').value = d.profile.companyName || '';
+      if (d.profile.overtimeRule) document.getElementById('overtimeRule').value = d.profile.overtimeRule;
+
+      document.getElementById('employeeList').innerHTML = '';
+      (d.profile.employees || []).forEach(emp => {
+        addEmployee();
+        const rows = document.querySelectorAll('.employee-row');
+        const row = rows[rows.length - 1];
+        row.querySelector('.emp-name').value = emp.name || '';
+        row.querySelector('.emp-rate').value = emp.rate || '';
+        row.querySelector('.emp-id').value = emp.id || '';
+        row.querySelector('.emp-job').value = emp.job || '';
+      });
+      if (document.querySelectorAll('.employee-row').length === 0) addEmployee();
+
+      if (d.profile.selectedFmt) selectFormat(d.profile.selectedFmt);
+      if (d.profile.adpCompanyCode) document.getElementById('adpCompanyCode').value = d.profile.adpCompanyCode;
+      if (d.profile.adpBatchId) document.getElementById('adpBatchId').value = d.profile.adpBatchId;
+      if (d.profile.adpRegCode) document.getElementById('adpRegCode').value = d.profile.adpRegCode;
+      if (d.profile.adpOTCode) document.getElementById('adpOTCode').value = d.profile.adpOTCode;
+
+      document.getElementById('rosterStatus').style.display = 'block';
+    } else {
+      addEmployee();
+    }
+  } catch(e) {
+    addEmployee();
+  }
+}
+
+async function saveRosterProfile() {
+  const session = getSession();
+  const employees = getEmployees();
+  if (employees.length === 0) { showToast('Add at least one employee first.', 'error'); return; }
+
+  const profile = {
+    companyName: val('companyName'),
+    overtimeRule: val('overtimeRule'),
+    employees,
+    selectedFmt,
+    adpCompanyCode: val('adpCompanyCode'),
+    adpBatchId: val('adpBatchId'),
+    adpRegCode: val('adpRegCode'),
+    adpOTCode: val('adpOTCode'),
+  };
+
+  try {
+    await fetch('/api/deskkit-profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ type: 'payroll', data: profile })
+    });
+    showToast('Roster saved — next time it\'ll be ready to go.', 'success');
+  } catch(e) {
+    showToast('Could not save roster. Please try again.', 'error');
+  }
+}
 
 async function resumePendingTask(taskId) {
   const session = getSession();
