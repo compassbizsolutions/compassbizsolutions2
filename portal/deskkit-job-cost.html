@@ -576,7 +576,7 @@ async function doWork(desc, taskId) {
     const r = await fetch('/api/deskkit-generate', {
       method:'POST',
       headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
-      body: JSON.stringify({ taskId, desc, workSystem: "You are DeskKit, an AI back office assistant for small trades businesses. Read the uploaded receipts/costs and produce a complete job cost report. Output clean CSV format with columns: Item, Category, Cost. Include a labor line if hours/rate provided. End with Total Cost, Amount Charged to Customer, and Profit/Loss. Give the complete finished deliverable, not instructions.", files: buildFilesPayload() })
+      body: JSON.stringify({ taskId, desc, workSystem: "You are DeskKit, an AI back office assistant for small trades businesses. Read the uploaded receipts/costs and produce a complete job cost report. Your response must have exactly two sections separated by a line containing only ===NOTES=== (with no other text on that line). SECTION 1 (before the delimiter): ONLY the clean CSV data with columns Item, Category, Cost. Include a labor line if hours/rate provided. No narrative text mixed in \u2014 this section must be a valid CSV file on its own. SECTION 2 (after the delimiter): Total Cost, Amount Charged to Customer, and Profit/Loss, as plain narrative notes. Give the complete finished deliverable, not instructions.", files: buildFilesPayload() })
     });
     const d = await r.json();
     if (r.ok) { resultText = d.result; }
