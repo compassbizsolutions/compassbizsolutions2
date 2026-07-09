@@ -1305,8 +1305,31 @@ function parseCSVLine(line) {
   return cells.map(c => c.trim().replace(/^"|"$/g, ''));
 }
 
+function extractCleanCSV(text) {
+  // Strip markdown code fences if the AI wrapped the CSV in one
+  let cleaned = text.replace(/```csv\s*\n?/gi, '').replace(/```\s*/g, '');
+  const lines = cleaned.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  if (lines.length < 2) return cleaned;
+
+  // Find the real header row — the line whose comma count best matches the
+  // most subsequent lines, skipping any title/date preamble before it
+  let headerIdx = 0;
+  let bestScore = -1;
+  for (let i = 0; i < Math.min(lines.length, 5); i++) {
+    const count = (lines[i].match(/,/g) || []).length;
+    if (count === 0) continue;
+    let matches = 0;
+    for (let j = i + 1; j < Math.min(lines.length, i + 9); j++) {
+      const c2 = (lines[j].match(/,/g) || []).length;
+      if (Math.abs(c2 - count) <= 1) matches++;
+    }
+    if (matches > bestScore) { bestScore = matches; headerIdx = i; }
+  }
+  return lines.slice(headerIdx).join('\n');
+}
+
 function renderAsTable(csvText) {
-  const lines = csvText.trim().split('\n').filter(l => l.trim());
+  const lines = extractCleanCSV(csvText).trim().split('\n').filter(l => l.trim());
   const rows = lines.map(parseCSVLine);
   const header = rows[0];
   const body = rows.slice(1);
@@ -1395,7 +1418,7 @@ async function acceptResultFromModal(taskId) {
 }
 
 function downloadAsExcel(csvText, filename) {
-  const rows = csvText.trim().split('\n').filter(l => l.trim()).map(parseCSVLine);
+  const rows = extractCleanCSV(csvText).trim().split('\n').filter(l => l.trim()).map(parseCSVLine);
   const worksheet = XLSX.utils.aoa_to_sheet(rows);
 
   // Auto-size columns roughly based on content length
