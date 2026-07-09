@@ -276,6 +276,8 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
         <div class="upload-preview-row-name" id="bizFileName"></div>
         <button class="upload-remove" onclick="removeBizFile()">✕</button>
       </div>
+      <button class="btn-add-recipient" id="bizParseBtn" style="display:none;border-color:var(--amber);color:var(--amber);margin-top:8px;" onclick="parseBizFile()">Extract Business Info</button>
+      <div id="bizParseStatus" style="display:none;font-size:12px;color:var(--muted);margin-top:8px;"></div>
     </div>
   </div>
 
@@ -511,6 +513,7 @@ function getSession() { try { return JSON.parse(localStorage.getItem(SK)); } cat
 let selectedBundle = { id:'single', price:15, maxRecipients:1 };
 let selectedOutput = 'combined';
 let logoData = null;
+let bizFile = null;
 let bizFileData = null;
 let recipients = [];
 let generatedLetters = [];
@@ -641,14 +644,103 @@ function removeLogo() {
 
 function handleBizFile(file) {
   if (!file) return;
-  bizFileData = file;
+  bizFile = file;
   document.getElementById('bizFileName').textContent = file.name;
   document.getElementById('bizFilePreview').style.display = 'flex';
+  document.getElementById('bizParseBtn').style.display = 'block';
+
+  const reader = new FileReader();
+  reader.onload = e => { bizFileData = e.target.result; };
+  reader.readAsDataURL(file);
 }
 function removeBizFile() {
+  bizFile = null;
   bizFileData = null;
   document.getElementById('bizInfoFile').value = '';
   document.getElementById('bizFilePreview').style.display = 'none';
+  document.getElementById('bizParseBtn').style.display = 'none';
+  document.getElementById('bizParseStatus').style.display = 'none';
+}
+
+async function parseBizFile() {
+  if (!bizFile || !bizFileData) return;
+
+  const status = document.getElementById('bizParseStatus');
+  const btn = document.getElementById('bizParseBtn');
+  btn.disabled = true;
+  btn.textContent = 'Reading...';
+  status.style.display = 'block';
+  status.textContent = 'Reading your file and pulling out business details...';
+
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+
+  const files = [];
+  const ext = bizFile.name.split('.').pop().toLowerCase();
+  const imageTypes = ['png','jpg','jpeg','webp'];
+  const base64 = bizFileData.split(',')[1];
+  if (imageTypes.includes(ext)) {
+    const mediaType = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+    files.push({ name: bizFile.name, mediaType, data: base64 });
+  } else if (ext === 'pdf') {
+    files.push({ name: bizFile.name, mediaType: 'application/pdf', data: base64 });
+  } else if (['csv','txt'].includes(ext)) {
+    try {
+      const textContent = decodeURIComponent(escape(atob(base64)));
+      files.push({ name: bizFile.name, textContent });
+    } catch(e) {
+      files.push({ name: bizFile.name });
+    }
+  } else {
+    files.push({ name: bizFile.name });
+  }
+
+  const userText = `Extract business contact information from this file. Return ONLY a JSON object (no markdown, no explanation) in this exact format:
+{
+  "bizName": "Business name",
+  "ownerName": "Owner or contact name",
+  "bizAddress": "Street address, or empty string",
+  "bizCity": "City, State ZIP, or empty string",
+  "bizPhone": "Phone number, or empty string",
+  "bizEmail": "Email address, or empty string",
+  "bizWebsite": "Website, or empty string"
+}
+If a field isn't present in the file, use an empty string. Return only valid JSON.`;
+
+  try {
+    const r = await fetch('/api/deskkit-assist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({
+        systemPrompt: 'You are a data extraction specialist. Extract business contact information from any document format. Return only valid JSON, no markdown, no explanation.',
+        userText,
+        files,
+        maxTokens: 1000
+      })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Could not read the file');
+    const text = d.text || '';
+
+    let parsed;
+    try {
+      parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
+    } catch(e) {
+      throw new Error('Could not extract business info from that file');
+    }
+
+    ['bizName','ownerName','bizAddress','bizCity','bizPhone','bizEmail','bizWebsite'].forEach(id => {
+      if (parsed[id]) document.getElementById(id).value = parsed[id];
+    });
+    updateSummary();
+
+    status.textContent = '✓ Business info filled in below — please double check it.';
+    btn.style.display = 'none';
+  } catch(e) {
+    status.textContent = e.message || 'Could not read that file. Please enter your business info manually.';
+  }
+  btn.disabled = false;
+  btn.textContent = 'Extract Business Info';
 }
 
 // ─── RECIPIENTS ──────────────────────────────────────────────────
@@ -1158,9 +1250,21 @@ async function parseBulkFile() {
   const files = [];
   const ext = bulkFile.name.split('.').pop().toLowerCase();
   const imageTypes = ['png','jpg','jpeg','webp'];
+  const base64 = bulkFileData.split(',')[1];
   if (imageTypes.includes(ext)) {
     const mediaType = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
-    files.push({ mediaType, data: bulkFileData.split(',')[1] });
+    files.push({ name: bulkFile.name, mediaType, data: base64 });
+  } else if (ext === 'pdf') {
+    files.push({ name: bulkFile.name, mediaType: 'application/pdf', data: base64 });
+  } else if (['csv','txt'].includes(ext)) {
+    try {
+      const textContent = decodeURIComponent(escape(atob(base64)));
+      files.push({ name: bulkFile.name, textContent });
+    } catch(e) {
+      files.push({ name: bulkFile.name });
+    }
+  } else {
+    files.push({ name: bulkFile.name });
   }
 
   const userText = `Parse this accounts receivable / debtor list and extract all debtor records. Return ONLY a JSON array (no markdown, no explanation) in this exact format:
