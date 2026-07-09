@@ -52,9 +52,16 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .analysis-item::before{content:'—';position:absolute;left:0;color:var(--amber);}
 .analysis-actions{display:flex;gap:10px;}
 .promo-row{margin-bottom:14px;}
-.promo-input{width:100%;background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;outline:none;}
+.promo-input-row{display:flex;gap:8px;}
+.promo-input{flex:1;background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;outline:none;}
 .promo-input:focus{border-color:var(--amber);}
 .promo-input::placeholder{color:rgba(255,255,255,0.2);}
+.btn-apply-promo{background:var(--navy3);border:1px solid var(--border2);color:var(--text2);border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.btn-apply-promo:hover{border-color:var(--amber);color:var(--amber);}
+.btn-apply-promo:disabled{opacity:0.5;cursor:not-allowed;}
+.promo-result{font-size:12px;margin-top:8px;display:none;}
+.promo-result.success{color:var(--green2);display:block;}
+.promo-result.error{color:var(--red2);display:block;}
 .btn-confirm{flex:1;background:var(--green);color:white;border:none;border-radius:10px;padding:14px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
 .btn-confirm:hover{background:var(--green2);}
 .btn-cancel{background:var(--navy3);border:1px solid var(--border2);color:var(--muted);border-radius:10px;padding:14px 20px;font-size:13px;font-weight:600;cursor:pointer;}
@@ -328,7 +335,11 @@ function showAnalysisResult(analysis, desc) {
     <div class="analysis-price">$${price}</div>
     <div class="analysis-desc">${TIER_DESCS[tier]}</div>
     <div class="promo-row">
-      <input type="text" id="promoCodeInput" class="promo-input" placeholder="Promo code (optional)"/>
+      <div class="promo-input-row">
+        <input type="text" id="promoCodeInput" class="promo-input" placeholder="Promo code (optional)"/>
+        <button type="button" class="btn-apply-promo" onclick="applyPromoCode('${tier}')">Apply</button>
+      </div>
+      <div class="promo-result" id="promoResult"></div>
     </div>
     <div class="analysis-actions">
       <button class="btn-cancel" onclick="cancelAnalysis()">Add More Files First</button>
@@ -341,13 +352,56 @@ function showAnalysisResult(analysis, desc) {
 function cancelAnalysis() { document.getElementById('analysisResult').style.display = 'none'; }
 
 let pendingDesc = null;
+let verifiedPromoCode = null;
+
+async function applyPromoCode(tier) {
+  const promoCode = val('promoCodeInput');
+  const resultEl = document.getElementById('promoResult');
+  if (!promoCode) { resultEl.className = 'promo-result error'; resultEl.textContent = 'Enter a code first.'; return; }
+
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+
+  const btn = document.querySelector('.btn-apply-promo');
+  btn.disabled = true;
+  btn.textContent = 'Checking...';
+
+  try {
+    const r = await fetch('/api/deskkit-validate-promo', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
+      body: JSON.stringify({ tier, promoCode })
+    });
+    const d = await r.json();
+
+    if (!r.ok) {
+      resultEl.className = 'promo-result error';
+      resultEl.textContent = d.error || 'Could not apply that code.';
+      verifiedPromoCode = null;
+    } else {
+      resultEl.className = 'promo-result success';
+      resultEl.textContent = `✓ ${d.discountLabel} applied — new price: $${d.discountedPrice}${d.flooredToMinimum ? ' (Stripe minimum)' : ''}`;
+      verifiedPromoCode = promoCode;
+      document.querySelector('.analysis-price').textContent = '$' + d.discountedPrice;
+      const confirmBtn = document.querySelector('.btn-confirm');
+      confirmBtn.textContent = `Accept & Submit — $${d.discountedPrice} →`;
+    }
+  } catch(e) {
+    resultEl.className = 'promo-result error';
+    resultEl.textContent = 'Something went wrong checking that code.';
+    verifiedPromoCode = null;
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Apply';
+}
 
 async function confirmAndPay(tier, price) {
   const session = getSession();
   if (!session) { showToast('Please log in again.', 'error'); return; }
   const desc = buildFullDescription();
   pendingDesc = desc;
-  const promoCode = val('promoCodeInput');
+  const promoCode = verifiedPromoCode || val('promoCodeInput');
 
   document.getElementById('analysisResult').style.display = 'none';
 
