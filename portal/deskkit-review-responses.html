@@ -51,6 +51,10 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .analysis-item{font-size:13px;color:var(--text2);line-height:1.7;padding-left:14px;position:relative;}
 .analysis-item::before{content:'—';position:absolute;left:0;color:var(--amber);}
 .analysis-actions{display:flex;gap:10px;}
+.promo-row{margin-bottom:14px;}
+.promo-input{width:100%;background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;outline:none;}
+.promo-input:focus{border-color:var(--amber);}
+.promo-input::placeholder{color:rgba(255,255,255,0.2);}
 .btn-confirm{flex:1;background:var(--green);color:white;border:none;border-radius:10px;padding:14px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
 .btn-confirm:hover{background:var(--green2);}
 .btn-cancel{background:var(--navy3);border:1px solid var(--border2);color:var(--muted);border-radius:10px;padding:14px 20px;font-size:13px;font-weight:600;cursor:pointer;}
@@ -323,6 +327,9 @@ function showAnalysisResult(analysis, desc) {
     <div class="analysis-tier">${TIER_LABELS[tier].toUpperCase()}</div>
     <div class="analysis-price">$${price}</div>
     <div class="analysis-desc">${TIER_DESCS[tier]}</div>
+    <div class="promo-row">
+      <input type="text" id="promoCodeInput" class="promo-input" placeholder="Promo code (optional)"/>
+    </div>
     <div class="analysis-actions">
       <button class="btn-cancel" onclick="cancelAnalysis()">Add More Files First</button>
       <button class="btn-confirm" onclick='confirmAndPay("${tier}", ${price})'>Accept & Submit — $${price} →</button>
@@ -340,6 +347,7 @@ async function confirmAndPay(tier, price) {
   if (!session) { showToast('Please log in again.', 'error'); return; }
   const desc = buildFullDescription();
   pendingDesc = desc;
+  const promoCode = val('promoCodeInput');
 
   document.getElementById('analysisResult').style.display = 'none';
 
@@ -347,10 +355,10 @@ async function confirmAndPay(tier, price) {
     const r = await fetch('/api/deskkit-charge', {
       method:'POST',
       headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
-      body: JSON.stringify({ tier, desc, filename: currentFiles.length ? (currentFiles.length === 1 ? currentFiles[0].name : `${currentFiles.length} files`) : null })
+      body: JSON.stringify({ tier, desc, filename: currentFiles.length ? (currentFiles.length === 1 ? currentFiles[0].name : `${currentFiles.length} files`) : null, promoCode: promoCode || undefined })
     });
     const d = await r.json();
-    if (!r.ok) { showToast(d.error || 'Could not start payment.', 'error'); return; }
+    if (!r.ok) { showToast(d.error || 'Could not start payment.', 'error'); document.getElementById('analysisResult').style.display = 'block'; return; }
     currentTaskId = d.taskId;
     pendingPaymentIntentId = d.paymentIntentId;
 
@@ -361,7 +369,8 @@ async function confirmAndPay(tier, price) {
     const paymentElement = elements.create('payment');
     paymentElement.mount('#paymentElement');
 
-    document.getElementById('payAmount').textContent = '$' + price;
+    const chargeAmount = d.amountCharged != null ? d.amountCharged : price;
+    document.getElementById('payAmount').textContent = '$' + chargeAmount;
     document.getElementById('paymentError').style.display = 'none';
     document.getElementById('paymentCard').style.display = 'block';
     document.getElementById('paymentCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
