@@ -209,6 +209,13 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
   <!-- OUTPUT FORMAT -->
   <div class="section">
     <div class="section-title">Output Format</div>
+
+    <div id="formatSummary" style="display:none;background:var(--amber-dim);border:1px solid var(--amber-border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:13px;color:var(--text);">Using <strong id="formatSummaryName">QuickBooks</strong> — saved with your roster</div>
+      <button type="button" style="background:none;border:none;color:var(--amber);font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline;" onclick="showFormatPicker()">Change</button>
+    </div>
+
+    <div id="formatPickerWrap">
     <div class="format-grid">
       <div class="format-card selected" id="fmt-quickbooks" onclick="selectFormat('quickbooks')">
         <div class="format-card-name">QuickBooks</div>
@@ -267,6 +274,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
         <div class="field-order" id="fieldOrder"></div>
         <div class="order-hint">Fields appear as columns in this order left to right</div>
       </div>
+    </div>
     </div>
   </div>
 
@@ -439,7 +447,10 @@ async function loadRosterProfile() {
       });
       if (document.querySelectorAll('.employee-row').length === 0) addEmployee();
 
-      if (d.profile.selectedFmt) selectFormat(d.profile.selectedFmt);
+      if (d.profile.selectedFmt) {
+        selectFormat(d.profile.selectedFmt);
+        showFormatSummary();
+      }
       if (d.profile.adpCompanyCode) document.getElementById('adpCompanyCode').value = d.profile.adpCompanyCode;
       if (d.profile.adpBatchId) document.getElementById('adpBatchId').value = d.profile.adpBatchId;
       if (d.profile.adpRegCode) document.getElementById('adpRegCode').value = d.profile.adpRegCode;
@@ -486,6 +497,7 @@ async function saveRosterProfile() {
       body: JSON.stringify({ type: 'payroll', data: profile })
     });
     showToast('Roster saved — next time it\'ll be ready to go.', 'success');
+    showFormatSummary();
   } catch(e) {
     showToast('Could not save roster. Please try again.', 'error');
   }
@@ -578,6 +590,17 @@ function selectFormat(fmt) {
   if (fmt === 'adp') document.getElementById('adpFields').classList.add('show');
   if (fmt === 'gusto') document.getElementById('gustoFields').classList.add('show');
   if (fmt === 'custom') document.getElementById('customFields').classList.add('show');
+}
+
+function showFormatSummary() {
+  document.getElementById('formatPickerWrap').style.display = 'none';
+  document.getElementById('formatSummaryName').textContent = FORMAT_CONFIGS[selectedFmt]?.name || selectedFmt;
+  document.getElementById('formatSummary').style.display = 'flex';
+}
+
+function showFormatPicker() {
+  document.getElementById('formatSummary').style.display = 'none';
+  document.getElementById('formatPickerWrap').style.display = 'block';
 }
 
 // ─── FIELD PICKER ────────────────────────────────────────────────
