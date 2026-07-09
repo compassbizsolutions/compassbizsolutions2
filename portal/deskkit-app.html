@@ -194,6 +194,11 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 .preview-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; color: white; text-transform: uppercase; }
 .preview-badge { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 99px; background: var(--green-dim); color: var(--green2); border: 1px solid rgba(26,96,64,0.3); }
 .preview-content { background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; font-size: 13px; color: var(--text2); line-height: 1.8; white-space: pre-wrap; max-height: 400px; overflow-y: auto; font-family: 'Inter', sans-serif; }
+.csv-table-wrap { background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 10px; padding: 4px; margin-bottom: 20px; max-height: 400px; overflow: auto; }
+.csv-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.csv-table th { background: var(--navy3); color: var(--text2); text-align: left; padding: 8px 12px; position: sticky; top: 0; font-weight: 700; white-space: nowrap; }
+.csv-table td { padding: 7px 12px; color: var(--text2); border-top: 1px solid var(--border); white-space: nowrap; }
+.csv-table tr:hover td { background: rgba(255,255,255,0.02); }
 .preview-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 .btn-accept { background: var(--green); color: white; border: none; border-radius: 10px; padding: 13px 24px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.15s; }
 .btn-accept:hover { background: var(--green2); }
@@ -1144,6 +1149,63 @@ async function viewTask(taskId) {
   }
 }
 
+const QBO_DELIMITER_MODAL = '===QUICKBOOKS_CSV===';
+
+function splitQBOResult(text) {
+  if (text.includes(QBO_DELIMITER_MODAL)) {
+    const parts = text.split(QBO_DELIMITER_MODAL);
+    return { main: parts[0].trim(), qbo: parts[1] ? parts[1].trim() : '' };
+  }
+  return { main: text, qbo: '' };
+}
+
+function looksLikeCSV(text) {
+  const lines = text.trim().split('\n').filter(l => l.trim());
+  if (lines.length < 2) return false;
+  const commaCounts = lines.slice(0, Math.min(lines.length, 8)).map(l => (l.match(/,/g) || []).length);
+  const firstCount = commaCounts[0];
+  if (firstCount === 0) return false;
+  // Most sampled lines should have a similar, non-zero number of commas
+  const consistent = commaCounts.filter(c => Math.abs(c - firstCount) <= 1).length;
+  return consistent >= commaCounts.length * 0.7;
+}
+
+function parseCSVLine(line) {
+  // Simple CSV split — handles basic quoted fields, good enough for our own
+  // AI-generated CSV output which doesn't use complex escaping.
+  const cells = [];
+  let cur = '', inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQuotes = !inQuotes; }
+    else if (c === ',' && !inQuotes) { cells.push(cur); cur = ''; }
+    else { cur += c; }
+  }
+  cells.push(cur);
+  return cells.map(c => c.trim().replace(/^"|"$/g, ''));
+}
+
+function renderAsTable(csvText) {
+  const lines = csvText.trim().split('\n').filter(l => l.trim());
+  const rows = lines.map(parseCSVLine);
+  const header = rows[0];
+  const body = rows.slice(1);
+  return `
+    <div class="csv-table-wrap">
+      <table class="csv-table">
+        <thead><tr>${header.map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead>
+        <tbody>${body.map(r => `<tr>${r.map(c => `<td>${escapeHtml(c)}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table>
+    </div>`;
+}
+
+function renderResultContent(text) {
+  if (looksLikeCSV(text)) {
+    return renderAsTable(text);
+  }
+  return `<div class="preview-content" id="modalPreviewContent" style="white-space:pre-wrap;">${escapeHtml(text)}</div>`;
+}
+
 function renderTaskModal(t) {
   const body = document.getElementById('taskModalBody');
 
@@ -1156,14 +1218,20 @@ function renderTaskModal(t) {
         This task needs a closer look. Jen will review it personally and get your result to you within 24 hours. No additional charge.
       </p>`;
   } else {
+    const { main, qbo } = splitQBOResult(t.result || '');
+    // Stash both parts on the modal element for the accept/download handlers to use
+    document.getElementById('taskModalBody').dataset.mainResult = main;
+    document.getElementById('taskModalBody').dataset.qboResult = qbo;
+
     body.innerHTML = `
       <div class="preview-header">
         <div class="preview-title">Your Result — Ready to Review</div>
         <div class="preview-badge">✓ Complete</div>
       </div>
-      <div class="preview-content" id="modalPreviewContent">${escapeHtml(t.result || '')}</div>
+      ${renderResultContent(main)}
       <div class="preview-actions">
         <button class="btn-accept" onclick="acceptResultFromModal('${t.id}')">✓ Accept & Download</button>
+        ${qbo ? `<button class="btn-accept" style="background:var(--navy3);border:1px solid var(--border2);" onclick="downloadQBOFromModal('${t.id}')">↓ QuickBooks CSV</button>` : ''}
         <div class="revision-wrap">
           <input class="revision-input" id="modalRevisionInput" placeholder="Not quite right? Tell us what to change..."/>
           <button class="btn-revise" onclick="reviseFromModal('${t.id}')">Revise →</button>
@@ -1180,7 +1248,8 @@ function closeTaskModal() {
 
 async function acceptResultFromModal(taskId) {
   const session = getSession();
-  const resultText = document.getElementById('modalPreviewContent').textContent;
+  const resultText = document.getElementById('taskModalBody').dataset.mainResult || '';
+  const isCSV = looksLikeCSV(resultText);
 
   try {
     await fetch('/api/deskkit-save', {
@@ -1190,11 +1259,11 @@ async function acceptResultFromModal(taskId) {
     });
   } catch(e) { console.error('Accept error:', e); }
 
-  const blob = new Blob([resultText], { type: 'text/plain' });
+  const blob = new Blob([resultText], { type: isCSV ? 'text/csv' : 'text/plain' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `deskkit-${taskId}.txt`;
+  a.download = `deskkit-${taskId}.${isCSV ? 'csv' : 'txt'}`;
   a.click();
   URL.revokeObjectURL(url);
 
@@ -1203,12 +1272,30 @@ async function acceptResultFromModal(taskId) {
   loadTaskHistory();
 }
 
+function downloadQBOFromModal(taskId) {
+  const qboText = document.getElementById('taskModalBody').dataset.qboResult || '';
+  if (!qboText) return;
+  const blob = new Blob([qboText], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `deskkit-${taskId}-quickbooks.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('QuickBooks CSV downloaded! ✓', 'success');
+}
+
 async function reviseFromModal(taskId) {
   const feedback = document.getElementById('modalRevisionInput').value.trim();
   if (!feedback) { showToast('Tell us what to change.', 'error'); return; }
 
-  const previousResult = document.getElementById('modalPreviewContent').textContent;
   const body = document.getElementById('taskModalBody');
+  const mainResult = body.dataset.mainResult || '';
+  const qboResult = body.dataset.qboResult || '';
+  // Send the full original text (with QuickBooks section, if any) so the AI
+  // knows to preserve that structure in its revision.
+  const previousResult = qboResult ? `${mainResult}\n\n${QBO_DELIMITER_MODAL}\n\n${qboResult}` : mainResult;
+
   body.innerHTML = `<div style="text-align:center;padding:40px;"><div class="loader-spinner" style="margin:0 auto 16px;"></div><div style="color:var(--muted);font-size:13px;">Revising based on your feedback...</div></div>`;
 
   try {
