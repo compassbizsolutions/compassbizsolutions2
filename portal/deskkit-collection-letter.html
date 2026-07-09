@@ -188,6 +188,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
   <div class="page-title">Collection Letter</div>
   <div class="page-sub">Generate professional collection letters for one or many recipients. Fill out your business info, add who owes you, and we'll produce ready-to-send letters. Pricing is determined by the number of recipients.</div>
 
+  <div id="taskForm">
   <!-- BUNDLE SELECTOR -->
   <div class="section">
     <div class="section-title">Choose Your Bundle</div>
@@ -458,6 +459,11 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
     </div>
   </div>
 
+  <button class="submit-btn" id="submitBtn" onclick="generate()">
+    Generate My Letters — <span id="btnPrice">$15</span>
+  </button>
+  </div>
+
   <div class="payment-card" id="paymentCard">
     <div class="payment-card-title">Payment Details</div>
     <div id="paymentElement"></div>
@@ -465,10 +471,6 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
     <button class="btn-pay" id="payBtn" onclick="submitPayment()">Pay <span id="payAmount"></span> →</button>
     <button class="btn-cancel-pay" onclick="cancelPayment()">Cancel</button>
   </div>
-
-  <button class="submit-btn" id="submitBtn" onclick="generate()">
-    Generate My Letters — <span id="btnPrice">$15</span>
-  </button>
 
   <!-- WORKING -->
   <div class="working-card" id="workingCard">
@@ -556,7 +558,7 @@ window.onload = () => {
 async function resumePendingTask(taskId) {
   isResuming = true;
   const session = getSession();
-  document.getElementById('submitBtn').style.display = 'none';
+  document.getElementById('taskForm').style.display = 'none';
 
   try {
     const r = await fetch('/api/deskkit-resume-payment', {
@@ -567,7 +569,7 @@ async function resumePendingTask(taskId) {
     const d = await r.json();
     if (!r.ok) {
       showToast(d.error || 'Could not resume this task.', 'error');
-      document.getElementById('submitBtn').style.display = 'block';
+      document.getElementById('taskForm').style.display = 'block';
       return;
     }
 
@@ -967,11 +969,13 @@ async function onPaymentConfirmed() {
       // summary — payment is done, but they need to re-enter recipients before
       // we can actually generate the letters. Don't charge them again.
       paymentAlreadyConfirmed = true;
+      document.getElementById('taskForm').style.display = 'block';
       document.getElementById('submitBtn').style.display = 'flex';
       document.getElementById('submitBtn').innerHTML = 'Generate My Letters — Paid ✓';
       showToast('Payment confirmed! Please re-enter your recipient details below, then click Generate — no additional charge.', 'success');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
+      document.getElementById('taskForm').style.display = 'none';
       await runGeneration();
     }
   } catch(e) {
