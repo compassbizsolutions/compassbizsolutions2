@@ -12,17 +12,17 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;}
 .header{background:var(--navy);border-bottom:1px solid var(--border);padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;}
-.header-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:white;text-transform:uppercase;letter-spacing:1px;}
+.header-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:1px;}
 .header-logo span{color:var(--amber);}
 .header-back{font-size:13px;color:var(--muted);text-decoration:none;}
 .header-back:hover{color:var(--amber);}
 .header-links{display:flex;align-items:center;gap:20px;}
 .page{max-width:820px;margin:0 auto;padding:32px 24px 80px;}
 .page-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;}
-.page-title{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:white;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
 .page-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:32px;}
 .section{margin-bottom:28px;}
-.section-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
 .form-full{grid-column:1/-1;}
@@ -40,7 +40,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .bundle-card:hover{border-color:var(--border2);}
 .bundle-card.selected{border-color:var(--amber);background:var(--amber-dim);}
 .bundle-badge{position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--amber);color:white;font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 8px;border-radius:99px;white-space:nowrap;}
-.bundle-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:white;text-transform:uppercase;margin-bottom:4px;}
+.bundle-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--text);text-transform:uppercase;margin-bottom:4px;}
 .bundle-price{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--amber);line-height:1;margin-bottom:6px;}
 .bundle-desc{font-size:11px;color:var(--muted);line-height:1.4;}
 .bundle-check{position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;background:var(--amber);display:none;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;}
@@ -89,7 +89,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .tone-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
 .tone-card{background:var(--navy2);border:2px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.15s;text-align:center;}
 .tone-card.sel-firm{border-color:var(--amber);background:var(--amber-dim);}
-.tone-card-name{font-size:13px;font-weight:700;color:white;margin-bottom:4px;}
+.tone-card-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
 .tone-card-desc{font-size:11px;color:var(--muted);line-height:1.4;}
 
 /* OPTIONS */
@@ -104,7 +104,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .output-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .output-card{background:var(--navy2);border:2px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.15s;}
 .output-card.selected{border-color:var(--amber);background:var(--amber-dim);}
-.output-card-name{font-size:13px;font-weight:700;color:white;margin-bottom:4px;}
+.output-card-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
 .output-card-desc{font-size:12px;color:var(--muted);line-height:1.4;}
 .output-card-price{font-size:11px;color:var(--amber);margin-top:6px;font-weight:600;}
 
@@ -112,7 +112,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .price-summary{background:var(--navy2);border:1px solid var(--border2);border-radius:12px;padding:20px;margin-bottom:24px;}
 .price-summary-title{font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;}
 .price-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text2);margin-bottom:8px;}
-.price-row.total{font-size:16px;font-weight:700;color:white;border-top:1px solid var(--border);padding-top:10px;margin-top:4px;}
+.price-row.total{font-size:16px;font-weight:700;color:var(--text);border-top:1px solid var(--border);padding-top:10px;margin-top:4px;}
 .price-row.total span:last-child{color:var(--amber);font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;}
 
 /* LEGAL */
@@ -129,7 +129,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .working-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:40px;text-align:center;margin-top:28px;display:none;}
 .spinner{width:40px;height:40px;border:3px solid rgba(0,0,0,0.08);border-top-color:var(--amber);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.working-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:white;text-transform:uppercase;margin-bottom:8px;}
+.working-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--text);text-transform:uppercase;margin-bottom:8px;}
 .working-sub{font-size:13px;color:var(--muted);line-height:1.6;}
 .progress-bar{height:4px;background:var(--navy3);border-radius:99px;margin-top:20px;overflow:hidden;}
 .progress-fill{height:100%;background:var(--amber);border-radius:99px;transition:width 0.5s ease;width:0%;}
@@ -137,7 +137,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 /* RESULT */
 .result-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:28px;margin-top:28px;display:none;}
 .result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
-.result-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;text-transform:uppercase;}
+.result-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--text);text-transform:uppercase;}
 .result-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;background:var(--green-dim);color:var(--green2);border:1px solid rgba(31,122,77,0.3);}
 .letter-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
 .letter-tab{background:var(--navy3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.15s;}
@@ -147,7 +147,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .btn-download{background:var(--green);color:white;border:none;border-radius:10px;padding:12px 22px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
 .btn-download:hover{background:var(--green2);}
 .payment-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:24px;margin-top:20px;display:none;}
-.payment-card-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+.payment-card-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
 .payment-error{background:rgba(180,35,24,0.1);border:1px solid rgba(217,45,32,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red2);margin-top:12px;display:none;}
 .btn-pay{width:100%;background:var(--green);color:white;border:none;border-radius:10px;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;margin-top:16px;}
 .btn-pay:hover{background:var(--green2);}
@@ -287,7 +287,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
       <div style="font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.6;">Upload your accounts receivable list — spreadsheet, CSV, photo of a printout, or screenshot. We'll parse it and fill in the recipient cards automatically. You can review and edit before generating.</div>
       <div class="upload-area" onclick="document.getElementById('bulkFile').click()" style="margin-bottom:10px;">
         <input type="file" id="bulkFile" accept=".xlsx,.xls,.csv,.pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp" onchange="handleBulkUpload(this.files[0])"/>
-        <div style="font-size:14px;font-weight:600;color:white;margin-bottom:4px;">Upload your AR list or debtor spreadsheet</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">Upload your AR list or debtor spreadsheet</div>
         <div style="font-size:12px;color:var(--muted);">Spreadsheet, CSV, PDF, photo, or screenshot — any format</div>
       </div>
       <div class="upload-preview-row" id="bulkFilePreview" style="display:none;">
