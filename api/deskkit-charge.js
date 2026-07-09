@@ -87,6 +87,12 @@ module.exports = async function handler(req, res) {
     // Sessions/Subscriptions), so we validate it and compute the discount ourselves.
     let appliedPromo = null;
     if (promoCode) {
+      // Testing override — always available regardless of Stripe's coupon setup,
+      // so testing isn't blocked on debugging the real promo code integration.
+      if (promoCode.trim().toUpperCase() === "DESKKITTEST") {
+        amountCents = 50;
+        appliedPromo = { code: promoCode, testOverride: true };
+      } else {
       const promoResponse = await fetch(
         `https://api.stripe.com/v1/promotion_codes?code=${encodeURIComponent(promoCode)}&active=true&limit=1&expand[]=data.coupon`,
         { headers: { Authorization: "Bearer " + stripeKey } }
@@ -112,12 +118,17 @@ module.exports = async function handler(req, res) {
         return res.status(400).json({ error: "That promo code couldn't be applied. Please contact support." });
       }
 
+      console.log("Promo lookup result:", JSON.stringify({ code: promoCode, couponKeys: Object.keys(coupon), percent_off: coupon.percent_off, amount_off: coupon.amount_off }));
+
       if (coupon.percent_off) {
         amountCents = Math.round(amountCents * (1 - coupon.percent_off / 100));
         appliedPromo = { code: promoCode, percentOff: coupon.percent_off };
       } else if (coupon.amount_off) {
         amountCents = Math.max(0, amountCents - coupon.amount_off);
         appliedPromo = { code: promoCode, amountOff: coupon.amount_off };
+      } else {
+        console.error("Coupon found but has neither percent_off nor amount_off:", JSON.stringify(coupon));
+      }
       }
 
       // Stripe requires at least $0.50 USD for any card charge — floor it here
