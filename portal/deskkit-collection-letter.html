@@ -739,7 +739,7 @@ async function generate() {
     const r = await fetch('/api/deskkit-charge', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
-      body: JSON.stringify({ tier: selectedBundle.id, desc, filename: null, kind: 'collection_letter' })
+      body: JSON.stringify({ tier: selectedBundle.id, desc, filename: null, kind: 'collection_letter', toolName: 'Collection Letter' })
     });
     const d = await r.json();
     if (!r.ok) { showToast(d.error || 'Could not start payment.', 'error'); btn.disabled = false; return; }
