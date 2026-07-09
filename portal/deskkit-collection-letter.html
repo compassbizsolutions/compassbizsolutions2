@@ -8,7 +8,7 @@
 <script src="https://js.stripe.com/v3/"></script>
 <script src="/deskkit-config.js"></script>
 <style>
-:root{--ink:#0A1520;--navy:#0F1E2E;--navy2:#162840;--navy3:#1C3050;--amber:#C8701A;--amber2:#E08930;--amber-dim:rgba(200,112,26,0.1);--amber-border:rgba(200,112,26,0.25);--green:#1A6040;--green2:#22A060;--green-dim:rgba(26,96,64,0.12);--red2:#E05050;--red-dim:rgba(224,80,80,0.08);--muted:#5A7A9A;--text:#E2EAF2;--text2:#8AAAC8;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);}
+:root{--ink:#F5F6F8;--navy:#FFFFFF;--navy2:#FFFFFF;--navy3:#EEF1F5;--amber:#1A4D8F;--amber2:#2C64AC;--amber-dim:rgba(26,77,143,0.08);--amber-border:rgba(26,77,143,0.25);--green:#1F7A4D;--green2:#259960;--green-dim:rgba(31,122,77,0.1);--red2:#D92D20;--red-dim:rgba(180,35,24,0.08);--muted:#6B7280;--text:#1A2B4A;--text2:#4B5875;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;}
 .header{background:var(--navy);border-bottom:1px solid var(--border);padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;}
@@ -116,7 +116,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .price-row.total span:last-child{color:var(--amber);font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;}
 
 /* LEGAL */
-.legal-box{background:rgba(200,112,26,0.06);border:1px solid var(--amber-border);border-radius:10px;padding:16px 18px;margin-bottom:24px;}
+.legal-box{background:rgba(26,77,143,0.06);border:1px solid var(--amber-border);border-radius:10px;padding:16px 18px;margin-bottom:24px;}
 .legal-box-title{font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;}
 .legal-box-text{font-size:12px;color:var(--muted);line-height:1.7;}
 
@@ -127,7 +127,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 
 /* WORKING */
 .working-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:40px;text-align:center;margin-top:28px;display:none;}
-.spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,0.08);border-top-color:var(--amber);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
+.spinner{width:40px;height:40px;border:3px solid rgba(0,0,0,0.08);border-top-color:var(--amber);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .working-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:white;text-transform:uppercase;margin-bottom:8px;}
 .working-sub{font-size:13px;color:var(--muted);line-height:1.6;}
@@ -138,7 +138,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .result-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:28px;margin-top:28px;display:none;}
 .result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
 .result-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;text-transform:uppercase;}
-.result-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;background:var(--green-dim);color:var(--green2);border:1px solid rgba(26,96,64,0.3);}
+.result-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;background:var(--green-dim);color:var(--green2);border:1px solid rgba(31,122,77,0.3);}
 .letter-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
 .letter-tab{background:var(--navy3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.15s;}
 .letter-tab.active{background:var(--amber-dim);border-color:var(--amber);color:var(--amber);}
@@ -148,14 +148,14 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .btn-download:hover{background:var(--green2);}
 .payment-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:24px;margin-top:20px;display:none;}
 .payment-card-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:white;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
-.payment-error{background:rgba(139,26,26,0.1);border:1px solid rgba(224,80,80,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red2);margin-top:12px;display:none;}
+.payment-error{background:rgba(180,35,24,0.1);border:1px solid rgba(217,45,32,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red2);margin-top:12px;display:none;}
 .btn-pay{width:100%;background:var(--green);color:white;border:none;border-radius:10px;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;margin-top:16px;}
 .btn-pay:hover{background:var(--green2);}
 .btn-pay:disabled{opacity:0.5;cursor:not-allowed;}
 .btn-cancel-pay{background:var(--navy3);border:1px solid var(--border2);color:var(--muted);border-radius:10px;padding:14px 20px;font-size:13px;font-weight:600;cursor:pointer;width:100%;margin-top:8px;}
 .btn-cancel-pay:hover{border-color:var(--amber);color:var(--amber);}
 .revision-wrap{flex:1;display:flex;gap:8px;}
-.revision-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:13px;outline:none;font-family:'Inter',sans-serif;}
+.revision-input{flex:1;background:rgba(0,0,0,0.04);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:13px;outline:none;font-family:'Inter',sans-serif;}
 .revision-input:focus{border-color:var(--amber);}
 .revision-input::placeholder{color:var(--muted);}
 .btn-revise{background:var(--navy3);border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
@@ -163,8 +163,8 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 
 .toast{position:fixed;bottom:24px;right:24px;background:var(--navy2);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:13px;color:var(--text);z-index:999;opacity:0;transform:translateY(8px);transition:all 0.2s;pointer-events:none;}
 .toast.show{opacity:1;transform:translateY(0);}
-.toast.error{border-color:rgba(139,26,26,0.4);color:var(--red2);}
-.toast.success{border-color:rgba(26,96,64,0.4);color:var(--green2);}
+.toast.error{border-color:rgba(180,35,24,0.4);color:var(--red2);}
+.toast.success{border-color:rgba(31,122,77,0.4);color:var(--green2);}
 
 @media(max-width:640px){.bundle-grid{grid-template-columns:1fr 1fr;}.form-grid,.form-grid-3,.tone-grid,.output-options{grid-template-columns:1fr;}.page{padding:20px 16px 60px;}}
 </style>
@@ -567,8 +567,8 @@ async function resumePendingTask(taskId) {
     pendingPaymentIntentId = d.paymentIntentId;
 
     elements = stripe.elements({ clientSecret: d.clientSecret, appearance: {
-      theme: 'night',
-      variables: { colorPrimary: '#C8701A', colorBackground: '#162840', colorText: '#E2EAF2', borderRadius: '8px' }
+      theme: 'stripe',
+      variables: { colorPrimary: '#1A4D8F', colorBackground: '#FFFFFF', colorText: '#1A2B4A', borderRadius: '8px' }
     }});
     const paymentElement = elements.create('payment');
     paymentElement.mount('#paymentElement');
@@ -795,8 +795,8 @@ async function generate() {
     pendingPaymentIntentId = d.paymentIntentId;
 
     elements = stripe.elements({ clientSecret: d.clientSecret, appearance: {
-      theme: 'night',
-      variables: { colorPrimary: '#C8701A', colorBackground: '#162840', colorText: '#E2EAF2', borderRadius: '8px' }
+      theme: 'stripe',
+      variables: { colorPrimary: '#1A4D8F', colorBackground: '#FFFFFF', colorText: '#1A2B4A', borderRadius: '8px' }
     }});
     const paymentElement = elements.create('payment');
     paymentElement.mount('#paymentElement');
