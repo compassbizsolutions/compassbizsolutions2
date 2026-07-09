@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Employee Warning Letter — DeskKit</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="/deskkit-config.js"></script>
 <style>
 :root{--ink:#F5F6F8;--navy:#FFFFFF;--navy2:#FFFFFF;--navy3:#EEF1F5;--amber:#1A4D8F;--amber2:#2C64AC;--amber-dim:rgba(26,77,143,0.08);--amber-border:rgba(26,77,143,0.25);--green:#1F7A4D;--green2:#259960;--green-dim:rgba(31,122,77,0.1);--red2:#D92D20;--muted:#6B7280;--text:#1A2B4A;--text2:#4B5875;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -49,6 +51,28 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .submit-btn:hover{background:var(--amber2);}
 .submit-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .working-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:40px;text-align:center;margin-top:28px;display:none;}
+.payment-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:24px;margin-top:20px;display:none;}
+.payment-card-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+.payment-error{background:rgba(217,45,32,0.1);border:1px solid rgba(217,45,32,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red2);margin-top:12px;display:none;}
+.btn-pay{width:100%;background:var(--green);color:white;border:none;border-radius:10px;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;margin-top:16px;}
+.btn-pay:hover{background:var(--green2);}
+.btn-cancel-pay{background:var(--navy3);border:1px solid var(--border2);color:var(--muted);border-radius:10px;padding:14px 20px;font-size:13px;font-weight:600;cursor:pointer;width:100%;margin-top:8px;}
+.btn-cancel-pay:hover{border-color:var(--amber);color:var(--amber);}
+.submitted-card{background:var(--navy2);border:1px solid rgba(31,122,77,0.3);border-radius:14px;padding:40px;text-align:center;margin-top:28px;display:none;}
+.submitted-check{width:52px;height:52px;border-radius:50%;background:var(--green-dim);color:var(--green2);font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.submitted-title{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--text);text-transform:uppercase;margin-bottom:10px;}
+.submitted-sub{font-size:13px;color:var(--muted);line-height:1.7;max-width:420px;margin:0 auto;}
+.submitted-sub strong{color:var(--text2);}
+.promo-row{margin-bottom:14px;}
+.promo-input-row{display:flex;gap:8px;}
+.promo-input{flex:1;background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;outline:none;}
+.promo-input:focus{border-color:var(--amber);}
+.promo-input::placeholder{color:var(--muted);}
+.btn-apply-promo{background:var(--navy3);border:1px solid var(--border2);color:var(--text2);border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.btn-apply-promo:hover{border-color:var(--amber);color:var(--amber);}
+.promo-result{font-size:12px;margin-top:8px;display:none;}
+.promo-result.success{color:var(--green2);display:block;}
+.promo-result.error{color:var(--red2);display:block;}
 .spinner{width:40px;height:40px;border:3px solid rgba(0,0,0,0.08);border-top-color:var(--amber);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .working-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--text);text-transform:uppercase;margin-bottom:8px;}
@@ -233,14 +257,36 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
     <div class="legal-box-text">This letter is for documentation and communication purposes. Employment law varies by state and situation. For serious issues (discrimination claims, FMLA, ADA, potential lawsuits), consult an employment attorney before issuing. Massachusetts is an at-will employment state, but documentation is still critical protection for your business.</div>
   </div>
 
+  <div class="promo-row">
+    <div class="promo-input-row">
+      <input type="text" id="promoCodeInput" class="promo-input" placeholder="Promo code (optional)"/>
+      <button type="button" class="btn-apply-promo" onclick="applyPromoCode()">Apply</button>
+    </div>
+    <div class="promo-result" id="promoResult"></div>
+  </div>
+
   <button class="submit-btn" id="submitBtn" onclick="generate()">
-    <span>✦</span> Generate Warning Letter — $35
+    Generate Warning Letter — <span id="btnPriceLabel">$35</span>
   </button>
+
+  <div class="payment-card" id="paymentCard">
+    <div class="payment-card-title">Payment Details</div>
+    <div id="paymentElement"></div>
+    <div class="payment-error" id="paymentError"></div>
+    <button class="btn-pay" id="payBtn" onclick="submitPayment()">Pay <span id="payAmount"></span> →</button>
+    <button class="btn-cancel-pay" onclick="cancelPayment()">Cancel</button>
+  </div>
 
   <div class="working-card" id="workingCard">
     <div class="spinner"></div>
     <div class="working-title">Writing Your Letter</div>
     <div class="working-sub">Generating a professional, documented warning letter...</div>
+  </div>
+
+  <div class="submitted-card" id="submittedCard">
+    <div class="submitted-check">✓</div>
+    <div class="submitted-title">Submitted for Processing</div>
+    <div class="submitted-sub">We've got your warning letter task. Finished files are typically ready within 30 minutes to an hour — we'll email you as soon as it's ready. You can also check back anytime under <strong>My Tasks</strong>.</div>
   </div>
 
   <div class="result-card" id="resultCard">
@@ -260,7 +306,56 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 </div>
 <div class="toast" id="toast"></div>
 <script>
+const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+let elements = null;
+let pendingPaymentIntentId = null;
+let currentTaskId = null;
+let pendingDesc = null, pendingWorkSystem = null;
+
+function getSession() { try { return JSON.parse(localStorage.getItem('dk_session')); } catch(e) { return null; } }
+
 let selectedSev = 'written', currentResult = null, history = [];
+
+window.onload = () => {
+  const s = getSession();
+  if (!s || !s.token) { window.location.href = '/portal/app'; return; }
+
+  const params = new URLSearchParams(window.location.search);
+  const resumeId = params.get('resume');
+  if (resumeId) resumePendingTask(resumeId);
+};
+
+async function resumePendingTask(taskId) {
+  const session = getSession();
+  document.getElementById('submitBtn').style.display = 'none';
+  try {
+    const r = await fetch('/api/deskkit-resume-payment', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
+      body: JSON.stringify({ taskId })
+    });
+    const d = await r.json();
+    if (!r.ok) { showToast(d.error || 'Could not resume this task.', 'error'); document.getElementById('submitBtn').style.display = 'flex'; return; }
+
+    currentTaskId = d.taskId;
+    pendingPaymentIntentId = d.paymentIntentId;
+    pendingDesc = d.desc;
+
+    elements = stripe.elements({ clientSecret: d.clientSecret, appearance: {
+      theme: 'stripe',
+      variables: { colorPrimary: '#1A4D8F', colorBackground: '#FFFFFF', colorText: '#1A2B4A', borderRadius: '8px' }
+    }});
+    elements.create('payment').mount('#paymentElement');
+    document.getElementById('payAmount').textContent = '$' + d.price;
+    document.getElementById('paymentError').style.display = 'none';
+    document.getElementById('paymentCard').style.display = 'block';
+    document.getElementById('paymentCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
+    showToast('Picking up where you left off — same price as before.', 'success');
+  } catch(e) {
+    showToast('Could not resume this task. Please start fresh.', 'error');
+    document.getElementById('submitBtn').style.display = 'flex';
+  }
+}
 
 function selectSev(sev) {
   selectedSev = sev;
@@ -277,11 +372,8 @@ async function generate() {
     if (!val(id)) { showToast('Please fill in all required fields', 'error'); document.getElementById(id).focus(); return; }
   }
 
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  document.getElementById('resultCard').style.display = 'none';
-  document.getElementById('workingCard').style.display = 'block';
-  document.getElementById('workingCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
 
   const sevLabels = { verbal: 'Verbal Warning (documented)', written: 'Written Warning', final: 'Final Written Warning' };
   const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
@@ -325,31 +417,152 @@ ${val('notes') ? 'ADDITIONAL NOTES: ' + val('notes') : ''}
 
 FORMAT: Professional business letter. Factual, documented, clear. Not punitive in tone — firm and professional. State facts only. Include all relevant dates. End with signature lines for both manager and employee.`;
 
-  history = [{ role: 'user', content: prompt }];
+  pendingDesc = prompt;
+  pendingWorkSystem = 'You are an HR documentation specialist. Write professional, factual employee warning letters that are clear, documented, and legally sound. Use factual language only. Never use emotional or accusatory language. Always include specific dates, behaviors, and expectations.';
+
+  const promoCode = val('promoCodeInput');
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
 
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
+    const r = await fetch('/api/deskkit-charge', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 2000,
-        system: 'You are an HR documentation specialist. Write professional, factual employee warning letters that are clear, documented, and legally sound. Use factual language only. Never use emotional or accusatory language. Always include specific dates, behaviors, and expectations.',
-        messages: history })
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({
+        tier: 'moderate', desc: prompt, filename: null,
+        toolName: 'Employee Warning Letter', toolPath: '/portal/warning-letter', promoCode: promoCode || undefined
+      })
     });
     const d = await r.json();
-    const result = d.content?.[0]?.text || '';
-    if (!result) throw new Error();
-    currentResult = result;
-    history.push({ role: 'assistant', content: result });
-    document.getElementById('workingCard').style.display = 'none';
-    document.getElementById('resultContent').textContent = result;
-    document.getElementById('resultCard').style.display = 'block';
-    document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (!r.ok) { showToast(d.error || 'Could not start payment.', 'error'); btn.disabled = false; return; }
+
+    currentTaskId = d.taskId;
+    pendingPaymentIntentId = d.paymentIntentId;
+
+    elements = stripe.elements({ clientSecret: d.clientSecret, appearance: {
+      theme: 'stripe',
+      variables: { colorPrimary: '#1A4D8F', colorBackground: '#FFFFFF', colorText: '#1A2B4A', borderRadius: '8px' }
+    }});
+    elements.create('payment').mount('#paymentElement');
+
+    const chargeAmount = d.amountCharged != null ? d.amountCharged : 35;
+    document.getElementById('payAmount').textContent = '$' + chargeAmount;
+    document.getElementById('paymentError').style.display = 'none';
+    document.getElementById('paymentCard').style.display = 'block';
+    document.getElementById('paymentCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
   } catch(e) {
-    document.getElementById('workingCard').style.display = 'none';
-    showToast('Failed. Please try again.', 'error');
+    showToast('Something went wrong. Please try again.', 'error');
   }
   btn.disabled = false;
-  btn.innerHTML = '<span>✦</span> Generate Warning Letter — $35';
+}
+
+function cancelPayment() {
+  document.getElementById('paymentCard').style.display = 'none';
+  document.getElementById('submitBtn').style.display = 'flex';
+  elements = null;
+}
+
+async function applyPromoCode() {
+  const promoCode = val('promoCodeInput');
+  const resultEl = document.getElementById('promoResult');
+  if (!promoCode) { resultEl.className = 'promo-result error'; resultEl.textContent = 'Enter a code first.'; return; }
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+  try {
+    const r = await fetch('/api/deskkit-validate-promo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ tier: 'moderate', promoCode })
+    });
+    const d = await r.json();
+    if (!r.ok) {
+      resultEl.className = 'promo-result error';
+      resultEl.textContent = d.error || 'Could not apply that code.';
+    } else {
+      resultEl.className = 'promo-result success';
+      resultEl.textContent = `✓ ${d.discountLabel} applied — new price: $${d.discountedPrice}${d.flooredToMinimum ? ' (Stripe minimum)' : ''}`;
+      document.getElementById('btnPriceLabel').textContent = '$' + d.discountedPrice;
+    }
+  } catch(e) {
+    resultEl.className = 'promo-result error';
+    resultEl.textContent = 'Something went wrong checking that code.';
+  }
+}
+
+async function submitPayment() {
+  if (!elements) return;
+  const btn = document.getElementById('payBtn');
+  const errEl = document.getElementById('paymentError');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+  errEl.style.display = 'none';
+
+  const { error, paymentIntent } = await stripe.confirmPayment({
+    elements, confirmParams: { return_url: window.location.href }, redirect: 'if_required'
+  });
+
+  if (error) {
+    errEl.textContent = error.message || 'Payment failed. Please check your card details.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Pay →';
+    return;
+  }
+  if (paymentIntent && paymentIntent.status === 'succeeded') {
+    await onPaymentConfirmed();
+  } else {
+    errEl.textContent = 'Payment did not complete. Please try again.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Pay →';
+  }
+}
+
+async function onPaymentConfirmed() {
+  const session = getSession();
+  document.getElementById('paymentCard').style.display = 'none';
+  try {
+    const r = await fetch('/api/deskkit-confirm-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ taskId: currentTaskId, paymentIntentId: pendingPaymentIntentId })
+    });
+    const d = await r.json();
+    if (!r.ok) { showToast(d.error || 'Could not confirm payment.', 'error'); return; }
+
+    document.getElementById('submittedCard').style.display = 'block';
+    document.getElementById('submittedCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
+    doWork();
+  } catch(e) {
+    showToast('Payment succeeded but something went wrong starting your task. Contact support with task ID: ' + currentTaskId, 'error');
+  }
+}
+
+window.addEventListener('load', async () => {
+  const params = new URLSearchParams(window.location.search);
+  const clientSecret = params.get('payment_intent_client_secret');
+  if (!clientSecret) return;
+  const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+  if (paymentIntent && paymentIntent.status === 'succeeded') {
+    pendingPaymentIntentId = paymentIntent.id;
+    currentTaskId = paymentIntent.metadata?.taskId || currentTaskId;
+    await onPaymentConfirmed();
+  }
+  window.history.replaceState({}, document.title, window.location.pathname);
+});
+
+async function doWork() {
+  const session = getSession();
+  try {
+    const r = await fetch('/api/deskkit-generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ taskId: currentTaskId, desc: pendingDesc, workSystem: pendingWorkSystem, files: [] })
+    });
+    await r.json();
+  } catch(e) {
+    console.error('Generation error:', e);
+  }
 }
 
 async function revise() {
