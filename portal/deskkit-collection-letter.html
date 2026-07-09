@@ -30,7 +30,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .field label{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
 .field input,.field select,.field textarea{background:var(--navy2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border 0.15s;}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--amber);}
-.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,0.15);}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted);}
 .field select option{background:var(--navy2);}
 .field textarea{resize:vertical;min-height:80px;line-height:1.5;}
 
@@ -157,7 +157,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .revision-wrap{flex:1;display:flex;gap:8px;}
 .revision-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:13px;outline:none;font-family:'Inter',sans-serif;}
 .revision-input:focus{border-color:var(--amber);}
-.revision-input::placeholder{color:rgba(255,255,255,0.15);}
+.revision-input::placeholder{color:var(--muted);}
 .btn-revise{background:var(--navy3);border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
 .btn-revise:hover{border-color:var(--amber);color:var(--amber);}
 
@@ -179,7 +179,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 </div>
 
 <div class="page">
-  <div class="page-eyebrow">✉️ Featured Task</div>
+  <div class="page-eyebrow">Featured Task</div>
   <div class="page-title">Collection Letter</div>
   <div class="page-sub">Generate professional collection letters for one or many recipients. Fill out your business info, add who owes you, and we'll produce ready-to-send letters. Pricing is determined by the number of recipients.</div>
 
@@ -239,7 +239,6 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
       <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Business Logo (Optional)</div>
       <div class="logo-upload" id="logoUpload" onclick="document.getElementById('logoInput').click()">
         <input type="file" id="logoInput" accept="image/*" onchange="handleLogo(this.files[0])"/>
-        <div style="font-size:28px;margin-bottom:8px">🏢</div>
         <div style="font-size:13px;color:var(--text2);">Upload your logo — appears at top of every letter</div>
         <div style="font-size:11px;color:var(--muted);margin-top:4px;">PNG, JPG, SVG</div>
       </div>
@@ -269,7 +268,6 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
         <div style="font-size:12px;color:var(--muted);">Upload a photo, screenshot, or document with your business info and we'll pull it from there</div>
       </div>
       <div class="upload-preview-row" id="bizFilePreview" style="display:none">
-        <span>📄</span>
         <div class="upload-preview-row-name" id="bizFileName"></div>
         <button class="upload-remove" onclick="removeBizFile()">✕</button>
       </div>
@@ -289,12 +287,10 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
       <div style="font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.6;">Upload your accounts receivable list — spreadsheet, CSV, photo of a printout, or screenshot. We'll parse it and fill in the recipient cards automatically. You can review and edit before generating.</div>
       <div class="upload-area" onclick="document.getElementById('bulkFile').click()" style="margin-bottom:10px;">
         <input type="file" id="bulkFile" accept=".xlsx,.xls,.csv,.pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp" onchange="handleBulkUpload(this.files[0])"/>
-        <div style="font-size:28px;margin-bottom:8px;">📋</div>
         <div style="font-size:14px;font-weight:600;color:white;margin-bottom:4px;">Upload your AR list or debtor spreadsheet</div>
         <div style="font-size:12px;color:var(--muted);">Spreadsheet, CSV, PDF, photo, or screenshot — any format</div>
       </div>
       <div class="upload-preview-row" id="bulkFilePreview" style="display:none;">
-        <span>📄</span>
         <div class="upload-preview-row-name" id="bulkFileName"></div>
         <button class="upload-remove" onclick="removeBulkFile()">✕</button>
       </div>
@@ -418,12 +414,12 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
     <div class="section-title">Output Format</div>
     <div class="output-options">
       <div class="output-card selected" id="out-combined" onclick="selectOutput('combined')">
-        <div class="output-card-name">📄 Combined PDF</div>
+        <div class="output-card-name">Combined PDF</div>
         <div class="output-card-desc">All letters in one PDF, one letter per page. Easiest to manage and print.</div>
         <div class="output-card-price">Included in bundle price</div>
       </div>
       <div class="output-card" id="out-separate" onclick="selectOutput('separate')">
-        <div class="output-card-name">📁 Separate Files</div>
+        <div class="output-card-name">Separate Files</div>
         <div class="output-card-desc">One file per letter. Easier to email individually.</div>
         <div class="output-card-price" id="separatePrice">+ $1 per letter additional</div>
       </div>
@@ -449,7 +445,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 
   <!-- LEGAL -->
   <div class="legal-box">
-    <div class="legal-box-title">⚖️ Important — Please Read</div>
+    <div class="legal-box-title">Important — Please Read</div>
     <div class="legal-box-text">
       This tool generates general-purpose collection letters. It is not legal advice. Massachusetts debt collection laws (940 CMR 7.00, MGL c. 93A) apply to consumer debts. Only include threats of legal action or collections referral if you actually intend to take those steps. MA statute of limitations on contract debts is 6 years. For significant debts or complex situations, consult a Massachusetts attorney. Pricing for this service is determined automatically based on task complexity.
     </div>
@@ -1233,7 +1229,7 @@ Extract every debtor record you can find. If a field is not present in the file,
     updateSummary();
 
   } catch(e) {
-    status.textContent = '⚠️ ' + (e.message || 'Could not parse file. Please check the format or enter recipients manually.');
+    status.textContent = e.message || 'Could not parse file. Please check the format or enter recipients manually.';
     status.style.color = 'var(--red2)';
   }
 
