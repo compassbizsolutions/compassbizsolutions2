@@ -106,6 +106,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
   <div class="page-title">Business Letter or Email</div>
   <div class="page-sub">Tell us what you need to say and who you're saying it to. We'll write it professionally so it says exactly what you mean. — $15</div>
 
+  <div id="taskForm">
   <div class="section">
     <div class="section-title">Your Business</div>
     <div class="form-grid">
@@ -186,6 +187,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
   <button class="submit-btn" id="submitBtn" onclick="generate()">
     Write My Letter — <span id="btnPriceLabel">$15</span>
   </button>
+  </div>
 
   <div class="payment-card" id="paymentCard">
     <div class="payment-card-title">Payment Details</div>
@@ -247,7 +249,7 @@ window.onload = () => {
 
 async function resumePendingTask(taskId) {
   const session = getSession();
-  document.getElementById('submitBtn').style.display = 'none';
+  document.getElementById('taskForm').style.display = 'none';
   try {
     const r = await fetch('/api/deskkit-resume-payment', {
       method:'POST',
@@ -255,7 +257,7 @@ async function resumePendingTask(taskId) {
       body: JSON.stringify({ taskId })
     });
     const d = await r.json();
-    if (!r.ok) { showToast(d.error || 'Could not resume this task.', 'error'); document.getElementById('submitBtn').style.display = 'flex'; return; }
+    if (!r.ok) { showToast(d.error || 'Could not resume this task.', 'error'); document.getElementById('taskForm').style.display = 'block'; return; }
 
     currentTaskId = d.taskId;
     pendingPaymentIntentId = d.paymentIntentId;
@@ -411,6 +413,7 @@ async function onPaymentConfirmed() {
     const d = await r.json();
     if (!r.ok) { showToast(d.error || 'Could not confirm payment.', 'error'); return; }
 
+    document.getElementById('taskForm').style.display = 'none';
     document.getElementById('submittedCard').style.display = 'block';
     document.getElementById('submittedCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
     doWork();
