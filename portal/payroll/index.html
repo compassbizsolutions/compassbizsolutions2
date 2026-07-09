@@ -444,6 +444,12 @@ async function loadRosterProfile() {
       if (d.profile.adpBatchId) document.getElementById('adpBatchId').value = d.profile.adpBatchId;
       if (d.profile.adpRegCode) document.getElementById('adpRegCode').value = d.profile.adpRegCode;
       if (d.profile.adpOTCode) document.getElementById('adpOTCode').value = d.profile.adpOTCode;
+      if (d.profile.gustoCompanyId) document.getElementById('gustoCompanyId').value = d.profile.gustoCompanyId;
+      if (d.profile.selectedFields && d.profile.selectedFields.length) {
+        selectedFields = d.profile.selectedFields;
+        fieldOrder = d.profile.fieldOrder || d.profile.selectedFields;
+        renderFieldPicker();
+      }
 
       document.getElementById('rosterStatus').style.display = 'block';
     } else {
@@ -468,6 +474,9 @@ async function saveRosterProfile() {
     adpBatchId: val('adpBatchId'),
     adpRegCode: val('adpRegCode'),
     adpOTCode: val('adpOTCode'),
+    gustoCompanyId: val('gustoCompanyId'),
+    selectedFields,
+    fieldOrder,
   };
 
   try {
@@ -644,6 +653,7 @@ Required columns: File Number, Company Code, Batch ID, Earnings Code, Hours, Dol
 One row per employee per earnings type (separate rows for REG and OT)`;
   } else if (selectedFmt === 'gusto') {
     formatInstructions = `GUSTO IMPORT FORMAT:
+${val('gustoCompanyId') ? 'Gusto Company ID: ' + val('gustoCompanyId') : ''}
 Split employee names into First Name and Last Name columns
 Required columns: First Name, Last Name, Employee ID (if provided), Regular Hours, Overtime Hours, Gross Pay, Pay Period Start, Pay Period End`;
   } else if (selectedFmt === 'paychex') {
@@ -686,13 +696,14 @@ INSTRUCTIONS:
 2. Calculate regular hours, overtime hours, and gross pay (apply 1.5x for overtime)
 3. Output ONLY the clean CSV data in the exact specified format above — column headers and data rows only, ready to import directly
 4. If the selected format is Standard Spreadsheet or Custom, you may add a final total row using the same columns (not a separate paragraph)
-5. Do not include any narrative explanation, summary paragraph, headers, or markdown formatting — just the finished file
-6. If something is missing or blocks the file from being usable (a rate, an employee's hours, mismatched format fields), note it in ONE short plain line at the very top, like "Missing: Bobby's rate" or "Note: ADP format selected but no employee IDs provided." No bold text, no headers, no multi-sentence explanations — just the short flag itself, or nothing at all if there's nothing to flag.
+5. Do NOT include: narrative explanation, summary paragraph, markdown headers (##), bold text (**), bullet points, horizontal rules (---), code fences (\`\`\`), or any section titled "Notes" or "Flags." None of that. Just the CSV.
+6. If — and only if — something genuinely blocks the file from being usable (a missing rate, missing hours for a roster employee, a real format conflict), put ONE line, under 12 words, in plain text as the very first line, then a blank line, then the CSV. Example of the ONLY acceptable style: "Missing: Bobby's hourly rate." Nothing longer, nothing formatted, nothing explaining why or what to do about it.
+7. If there is nothing to flag, skip step 6 entirely — the CSV header row is the first line of your response.
 
 Give the complete finished deliverable, not instructions.`;
 
   pendingDesc = prompt;
-  pendingWorkSystem = `You are a payroll specialist with deep knowledge of QuickBooks, ADP Run, Gusto, and Paychex Flex import formats. Extract hours from any format, calculate pay accurately including overtime, and output ONLY clean structured CSV data ready for import — no narrative text, no summary paragraphs, no markdown headers, no bold callouts. If something blocks the file from being complete or usable, flag it in one short plain sentence at the top — nothing more.`;
+  pendingWorkSystem = `You are a payroll specialist with deep knowledge of QuickBooks, ADP Run, Gusto, and Paychex Flex import formats. Extract hours from any format, calculate pay accurately including overtime, and output ONLY clean structured CSV data ready for import. Never use markdown formatting, headers, bold text, or bullet points in your response — plain CSV only. At most one plain-text line under 12 words at the very top if something is genuinely missing or blocks the file; otherwise the response starts directly with the CSV header row.`;
 
   const promoCode = val('promoCodeInput');
   const btn = document.getElementById('submitBtn');
