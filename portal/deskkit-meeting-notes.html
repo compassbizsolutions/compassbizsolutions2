@@ -12,8 +12,10 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;}
 .header{background:var(--navy);border-bottom:1px solid var(--border);padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;}
-.header-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:1px;}
-.header-logo span{color:var(--amber);}
+.header-logo{display:flex;align-items:baseline;gap:8px;}
+.header-logo-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:1px;}
+.header-logo-name span{color:var(--amber);}
+.header-logo-by{font-size:11px;color:var(--muted);letter-spacing:1px;}
 .header-back{font-size:13px;color:var(--muted);text-decoration:none;}
 .header-back:hover{color:var(--amber);}
 .header-links{display:flex;align-items:center;gap:20px;}
@@ -105,7 +107,10 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 </head>
 <body>
 <div class="header">
-  <div class="header-logo">Desk<span>Kit</span></div>
+  <div class="header-logo">
+    <div class="header-logo-name">Desk<span>Kit</span></div>
+    <div class="header-logo-by">by Compass</div>
+  </div>
   <div class="header-links">
     <a href="/portal/app?tab=history" class="header-back">My Tasks</a>
     <a href="/portal/app" class="header-back">← Back to DeskKit</a>
