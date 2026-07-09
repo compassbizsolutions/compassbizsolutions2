@@ -541,7 +541,52 @@ window.onload = () => {
   document.getElementById('interestRate').addEventListener('change', function() {
     document.getElementById('customInterestField').style.display = this.value === 'custom' ? 'block' : 'none';
   });
+
+  const params = new URLSearchParams(window.location.search);
+  const resumeId = params.get('resume');
+  if (resumeId) {
+    resumePendingTask(resumeId);
+  }
 };
+
+async function resumePendingTask(taskId) {
+  isResuming = true;
+  const session = getSession();
+  document.getElementById('submitBtn').style.display = 'none';
+
+  try {
+    const r = await fetch('/api/deskkit-resume-payment', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
+      body: JSON.stringify({ taskId })
+    });
+    const d = await r.json();
+    if (!r.ok) {
+      showToast(d.error || 'Could not resume this task.', 'error');
+      document.getElementById('submitBtn').style.display = 'block';
+      return;
+    }
+
+    currentTaskId = d.taskId;
+    pendingPaymentIntentId = d.paymentIntentId;
+
+    elements = stripe.elements({ clientSecret: d.clientSecret, appearance: {
+      theme: 'night',
+      variables: { colorPrimary: '#C8701A', colorBackground: '#162840', colorText: '#E2EAF2', borderRadius: '8px' }
+    }});
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#paymentElement');
+
+    document.getElementById('payAmount').textContent = '$' + d.price;
+    document.getElementById('paymentError').style.display = 'none';
+    document.getElementById('paymentCard').style.display = 'block';
+    document.getElementById('paymentCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
+    showToast('Picking up where you left off — same price as before.', 'success');
+  } catch(e) {
+    showToast('Could not resume this task. Please start fresh.', 'error');
+    document.getElementById('submitBtn').style.display = 'block';
+  }
+}
 
 // ─── BUNDLE ──────────────────────────────────────────────────────
 function selectBundle(id, price, max) {
@@ -725,6 +770,12 @@ async function generate() {
   const missingRecipient = recipients.find(r => !r.name || !r.balance);
   if (missingRecipient) { showToast('Please fill in name and balance due for all recipients', 'error'); return; }
 
+  // If they already paid via a resumed task, skip charging again — just generate.
+  if (paymentAlreadyConfirmed) {
+    await runGeneration();
+    return;
+  }
+
   const session = getSession();
   if (!session) { showToast('Please log in again.', 'error'); return; }
 
@@ -739,7 +790,7 @@ async function generate() {
     const r = await fetch('/api/deskkit-charge', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
-      body: JSON.stringify({ tier: selectedBundle.id, desc, filename: null, kind: 'collection_letter', toolName: 'Collection Letter' })
+      body: JSON.stringify({ tier: selectedBundle.id, desc, filename: null, kind: 'collection_letter', toolName: 'Collection Letter', toolPath: '/portal/collection-letter' })
     });
     const d = await r.json();
     if (!r.ok) { showToast(d.error || 'Could not start payment.', 'error'); btn.disabled = false; return; }
@@ -802,6 +853,9 @@ async function submitPayment() {
   }
 }
 
+let isResuming = false;
+let paymentAlreadyConfirmed = false;
+
 async function onPaymentConfirmed() {
   const session = getSession();
   document.getElementById('paymentCard').style.display = 'none';
@@ -814,9 +868,21 @@ async function onPaymentConfirmed() {
     });
     const d = await r.json();
     if (!r.ok) { showToast(d.error || 'Could not confirm payment.', 'error'); return; }
-    await runGeneration();
+
+    if (isResuming) {
+      // Recipient details aren't saved server-side, only the price/description
+      // summary — payment is done, but they need to re-enter recipients before
+      // we can actually generate the letters. Don't charge them again.
+      paymentAlreadyConfirmed = true;
+      document.getElementById('submitBtn').style.display = 'flex';
+      document.getElementById('submitBtn').innerHTML = 'Generate My Letters — Paid ✓';
+      showToast('Payment confirmed! Please re-enter your recipient details below, then click Generate — no additional charge.', 'success');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      await runGeneration();
+    }
   } catch(e) {
-    showToast('Payment succeeded but something went wrong starting your letters. Contact support with task ID: ' + currentTaskId, 'error');
+    showToast('Payment succeeded but something went wrong. Contact support with task ID: ' + currentTaskId, 'error');
   }
 }
 
