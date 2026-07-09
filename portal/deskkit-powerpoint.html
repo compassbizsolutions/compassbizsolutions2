@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PowerPoint Creation — DeskKit</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="/deskkit-config.js"></script>
+<style>
+:root{--ink:#F5F6F8;--navy:#FFFFFF;--navy2:#FFFFFF;--navy3:#EEF1F5;--amber:#1A4D8F;--amber2:#2C64AC;--amber-dim:rgba(26,77,143,0.08);--amber-border:rgba(26,77,143,0.25);--green:#1F7A4D;--green2:#259960;--green-dim:rgba(31,122,77,0.1);--red:#B42318;--red2:#D92D20;--red-dim:rgba(180,35,24,0.08);--muted:#6B7280;--text:#1A2B4A;--text2:#4B5875;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;}
+.header{background:var(--navy);border-bottom:1px solid var(--border);padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.header-logo{display:flex;align-items:baseline;gap:8px;}
+.header-logo-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:1px;}
+.header-logo-name span{color:var(--amber);}
+.header-logo-by{font-size:11px;color:var(--muted);letter-spacing:1px;}
+.header-back{font-size:13px;color:var(--muted);text-decoration:none;}
+.header-back:hover{color:var(--amber);}
+.header-links{display:flex;align-items:center;gap:20px;}
+.page{max-width:780px;margin:0 auto;padding:32px 24px 80px;}
+.page-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:8px;}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.page-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:32px;}
+.section{margin-bottom:28px;}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-full{grid-column:1/-1;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.field input,.field select,.field textarea{background:var(--navy2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border 0.15s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--amber);}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted);}
+.field textarea{resize:vertical;min-height:90px;line-height:1.5;}
+.upload-area{border:2px dashed var(--border2);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;}
+.upload-area:hover{border-color:var(--amber);background:var(--amber-dim);}
+.upload-area input{display:none;}
+.upload-preview-row{display:flex;align-items:center;gap:10px;background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-top:10px;}
+.upload-preview-row-name{font-size:13px;color:var(--text2);flex:1;}
+.upload-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;}
+.upload-remove:hover{color:var(--red2);}
+.info-box{background:rgba(26,77,143,0.06);border:1px solid var(--amber-border);border-radius:10px;padding:14px 16px;margin-bottom:24px;font-size:12px;color:var(--muted);line-height:1.7;}
+.info-box strong{color:var(--text2);}
+.analyze-btn{width:100%;background:var(--amber);color:white;border:none;border-radius:10px;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.analyze-btn:hover{background:var(--amber2);}
+.analyze-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.analysis-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:24px;margin-top:20px;display:none;}
+.analysis-tier{font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--amber);text-transform:uppercase;margin-bottom:4px;}
+.analysis-price{font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;color:var(--text);line-height:1;margin-bottom:6px;}
+.analysis-desc{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.analysis-breakdown{background:var(--navy3);border-radius:10px;padding:14px 16px;margin-bottom:18px;}
+.analysis-breakdown-title{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+.analysis-item{font-size:13px;color:var(--text2);line-height:1.7;padding-left:14px;position:relative;}
+.analysis-item::before{content:'—';position:absolute;left:0;color:var(--amber);}
+.analysis-actions{display:flex;gap:10px;}
+.promo-row{margin-bottom:14px;}
+.promo-input-row{display:flex;gap:8px;}
+.promo-input{flex:1;background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;outline:none;}
+.promo-input:focus{border-color:var(--amber);}
+.promo-input::placeholder{color:var(--muted);}
+.btn-apply-promo{background:var(--navy3);border:1px solid var(--border2);color:var(--text2);border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.btn-apply-promo:hover{border-color:var(--amber);color:var(--amber);}
+.btn-apply-promo:disabled{opacity:0.5;cursor:not-allowed;}
+.promo-result{font-size:12px;margin-top:8px;display:none;}
+.promo-result.success{color:var(--green2);display:block;}
+.promo-result.error{color:var(--red2);display:block;}
+.btn-confirm{flex:1;background:var(--green);color:white;border:none;border-radius:10px;padding:14px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+.btn-confirm:hover{background:var(--green2);}
+.btn-cancel{background:var(--navy3);border:1px solid var(--border2);color:var(--muted);border-radius:10px;padding:14px 20px;font-size:13px;font-weight:600;cursor:pointer;}
+.btn-cancel:hover{border-color:var(--amber);color:var(--amber);}
+.payment-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:24px;margin-top:20px;display:none;}
+.payment-card-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+.payment-error{background:rgba(180,35,24,0.1);border:1px solid rgba(217,45,32,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red2);margin-top:12px;display:none;}
+.btn-pay{width:100%;background:var(--green);color:white;border:none;border-radius:10px;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;margin-top:16px;}
+.btn-pay:hover{background:var(--green2);}
+.btn-pay:disabled{opacity:0.5;cursor:not-allowed;}
+.working-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:40px;text-align:center;margin-top:24px;display:none;}
+.submitted-card{background:var(--navy2);border:1px solid rgba(31,122,77,0.3);border-radius:14px;padding:40px;text-align:center;margin-top:24px;display:none;}
+.submitted-check{width:52px;height:52px;border-radius:50%;background:var(--green-dim);color:var(--green2);font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.submitted-title{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--text);text-transform:uppercase;margin-bottom:10px;}
+.submitted-sub{font-size:13px;color:var(--muted);line-height:1.7;max-width:420px;margin:0 auto;}
+.submitted-sub strong{color:var(--text2);}
+.spinner{width:40px;height:40px;border:3px solid rgba(0,0,0,0.08);border-top-color:var(--amber);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.working-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--text);text-transform:uppercase;margin-bottom:8px;}
+.working-sub{font-size:13px;color:var(--muted);}
+.result-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:28px;margin-top:24px;display:none;}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.result-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--text);text-transform:uppercase;}
+.result-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;background:var(--green-dim);color:var(--green2);border:1px solid rgba(31,122,77,0.3);}
+.result-content{background:white;border-radius:10px;padding:24px;margin-bottom:18px;color:#1a2332;font-family:'Courier New',monospace;font-size:12px;line-height:1.7;white-space:pre-wrap;max-height:460px;overflow-y:auto;}
+.result-actions{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-download{background:var(--green);color:white;border:none;border-radius:10px;padding:12px 22px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+.btn-download:hover{background:var(--green2);}
+.revision-wrap{flex:1;display:flex;gap:8px;min-width:220px;}
+.revision-input{flex:1;background:rgba(0,0,0,0.04);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:13px;outline:none;}
+.revision-input:focus{border-color:var(--amber);}
+.btn-revise{background:var(--navy3);border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.btn-revise:hover{border-color:var(--amber);color:var(--amber);}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy2);border:1px solid var(--border2);border-radius:10px;padding:12px 18px;font-size:13px;color:var(--text);z-index:999;opacity:0;transform:translateY(8px);transition:all 0.2s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.error{border-color:rgba(180,35,24,0.4);color:var(--red2);}
+.toast.success{border-color:rgba(31,122,77,0.4);color:var(--green2);}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr;}.page{padding:20px 16px 60px;}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-logo">
+    <div class="header-logo-name">Desk<span>Kit</span></div>
+    <div class="header-logo-by">by Compass</div>
+  </div>
+  <div class="header-links">
+    <a href="/portal/app?tab=history" class="header-back">My Tasks</a>
+    <a href="/portal/app" class="header-back">← Back to DeskKit</a>
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-eyebrow">Featured Task</div>
+  <div class="page-title">PowerPoint Creation</div>
+  <div class="page-sub">Describe the presentation you need and get a complete, ready-to-use PowerPoint deck built for you.</div>
+
+  <div id="taskForm">
+  <div class="section">
+    <div class="section-title">Upload Your File(s)</div>
+    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+      <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.xls,.png,.jpg,.jpeg,.webp" multiple onchange="handleFiles(this.files)"/>
+      <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;">Upload source content (optional)</div>
+      <div style="font-size:12px;color:var(--muted);">Notes, data, an old deck to update, or reference material to build slides from</div>
+      <div style="font-size:11px;color:var(--amber);margin-top:6px;">You can select multiple files, or click again to add more batches</div>
+    </div>
+    <div id="fileList"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Details</div>
+    <div class="form-grid">
+      <div class="field"><label>Presentation Topic</label><input type="text" id="fPptTopic" placeholder="Q3 Sales Review"/></div><div class="field"><label>Audience</label><input type="text" id="fPptAudience" placeholder="Team, clients, investors"/></div><div class="field"><label>Approximate Slide Count</label><input type="text" id="fPptSlideCount" placeholder="10"/></div><div class="field"><label>Tone</label><select id="fPptTone"><option>Professional</option><option>Casual</option><option>Persuasive/Sales</option><option>Educational</option></select></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="field">
+      <label>Describe What You Need</label>
+      <textarea id="taskDesc" placeholder="Key points to include, order of topics, or anything specific for each slide."></textarea>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>How pricing works:</strong> We review your file and details, then confirm the price before any work begins — Simple ($15), Moderate ($35), or Complex ($75). You approve before we charge anything. Revisions are included — we work until you're happy.
+  </div>
+
+  <button class="analyze-btn" id="analyzeBtn" onclick="analyzeTask()">
+    Get My Price
+  </button>
+
+  <div class="analysis-card" id="analysisResult"></div>
+  </div>
+
+  <div class="payment-card" id="paymentCard">
+    <div class="payment-card-title">Payment Details</div>
+    <div id="paymentElement"></div>
+    <div class="payment-error" id="paymentError"></div>
+    <button class="btn-pay" id="payBtn" onclick="submitPayment()">Pay <span id="payAmount"></span> →</button>
+    <button class="btn-cancel" style="width:100%;margin-top:8px" onclick="cancelPayment()">Cancel</button>
+  </div>
+
+  <div class="working-card" id="workingCard">
+    <div class="spinner"></div>
+    <div class="working-title">Working On It</div>
+    <div class="working-sub" id="workingSub">Building your presentation...</div>
+  </div>
+
+  <div class="submitted-card" id="submittedCard">
+    <div class="submitted-check">✓</div>
+    <div class="submitted-title">Submitted for Processing</div>
+    <div class="submitted-sub">We've got your task. Finished files are typically ready within 30 minutes to an hour — we'll email you as soon as it's ready. You can also check back anytime under <strong>My Tasks</strong> on your DeskKit dashboard.</div>
+  </div>
+
+  <div class="result-card" id="resultCard">
+    <div class="result-header">
+      <div class="result-title">Your Presentation</div>
+      <div class="result-badge">✓ Ready to Review</div>
+    </div>
+    <div class="result-content" id="resultContent"></div>
+    <div class="result-actions">
+      <button class="btn-download" onclick="downloadResult()">↓ Download Presentation</button>
+      
+      <div class="revision-wrap">
+        <input class="revision-input" id="revisionInput" placeholder="Something to change? Tell us..."/>
+        <button class="btn-revise" onclick="revise()">Revise →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SK = 'dk_session';
+function getSession() { try { return JSON.parse(localStorage.getItem(SK)); } catch(e) { return null; } }
+
+const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+let elements = null;
+let pendingPaymentIntentId = null;
+
+const PRICES = { simple: 15, moderate: 35, complex: 75, bulk: 125 };
+const TIER_LABELS = { simple: 'Simple Task', moderate: 'Moderate Task', complex: 'Complex Task', bulk: 'Bulk Task' };
+const TIER_DESCS = {
+  simple: 'Quick turnaround — clean formatting and organization.',
+  moderate: 'Real work — analysis, calculation, and a finished deliverable.',
+  complex: 'Detailed work involving multiple documents or significant judgment.',
+  bulk: 'High-volume work — a large batch of documents or transactions to process.'
+};
+
+let currentFiles = [];
+let currentFilesData = [];
+let currentAnalysis = null;
+let currentTaskId = null;
+let resultText = '';
+
+window.onload = () => {
+  const s = getSession();
+  if (!s || !s.token) {
+    window.location.href = '/portal/app';
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const resumeId = params.get('resume');
+  if (resumeId) {
+    resumePendingTask(resumeId);
+  }
+};
+
+async function resumePendingTask(taskId) {
+  const session = getSession();
+  document.getElementById('taskForm').style.display = 'none';
+
+  try {
+    const r = await fetch('/api/deskkit-resume-payment', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
+      body: JSON.stringify({ taskId })
+    });
+    const d = await r.json();
+    if (!r.ok) {
+      showToast(d.error || 'Could not resume this task.', 'error');
+      document.getElementById('taskForm').style.display = 'block';
+      return;
+    }
+
+    currentTaskId = d.taskId;
+    pendingDesc = d.desc;
+    pendingPaymentIntentId = d.paymentIntentId;
+
+    elements = stripe.elements({ clientSecret: d.clientSecret, appearance: {
+      theme: 'stripe',
+      variables: { colorPrimary: '#1A4D8F', colorBackground: '#FFFFFF', colorText: '#1A2B4A', borderRadius: '8px' }
+    }});
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#paymentElement');
+
+    document.getElementById('payAmount').textContent = '$' + d.price;
+    document.getElementById('paymentError').style.display = 'none';
+    document.getElementById('paymentCard').style.display = 'block';
+    document.getElementById('paymentCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
+    showToast('Picking up where you left off — same price as before.', 'success');
+  } catch(e) {
+    showToast('Could not resume this task. Please start fresh.', 'error');
+    document.getElementById('analyzeBtn').style.display = 'flex';
+  }
+}
+
+function handleFiles(fileList) {
+  const files = Array.from(fileList || []);
+  if (!files.length) return;
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      currentFiles.push(file);
+      currentFilesData.push(e.target.result);
+      renderFileList();
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('fileInput').value = '';
+}
+
+function renderFileList() {
+  const el = document.getElementById('fileList');
+  el.innerHTML = currentFiles.map((f, i) => `
+    <div class="upload-preview-row">
+      <div class="upload-preview-row-name">${f.name}</div>
+      <button class="upload-remove" onclick="removeFileAt(${i})">✕</button>
+    </div>`).join('');
+}
+
+function removeFileAt(i) {
+  currentFiles.splice(i, 1);
+  currentFilesData.splice(i, 1);
+  renderFileList();
+}
+
+function val(id) { return (document.getElementById(id)?.value || '').trim(); }
+
+const DEFAULT_TASK_INSTRUCTIONS = "Build a complete, professional presentation based on the topic, audience, and slide count below (and any uploaded source material). Each slide should have a clear title and 3-5 concise bullet points. Include a title slide and, if appropriate, a closing/summary slide.";
+
+function buildFullDescription() {
+  let extra = [];
+  const pt = val('fPptTopic'); if (pt) extra.push('Presentation Topic: ' + pt); const pa = val('fPptAudience'); if (pa) extra.push('Audience: ' + pa); const psc = val('fPptSlideCount'); if (psc) extra.push('Approximate Slide Count: ' + psc); const ptone = val('fPptTone'); if (ptone) extra.push('Tone: ' + ptone);
+  const userNotes = val('taskDesc');
+
+  let desc = DEFAULT_TASK_INSTRUCTIONS;
+  if (extra.length) desc += '\n\n' + extra.join('\n');
+  if (userNotes) {
+    desc += '\n\nAdditional instructions from the customer — these take priority and override the default instructions above if there is any conflict:\n' + userNotes;
+  }
+  return desc;
+}
+
+function buildFilesPayload() {
+  const imageTypes = ['png','jpg','jpeg','gif','webp'];
+  const textTypes = ['csv','txt'];
+  return currentFiles.map((file, i) => {
+    const ext = file.name.split('.').pop().toLowerCase();
+    const dataUrl = currentFilesData[i];
+    const base64 = dataUrl.split(',')[1];
+
+    if (imageTypes.includes(ext)) {
+      const mediaType = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+      return { name: file.name, mediaType, data: base64 };
+    }
+    if (ext === 'pdf') {
+      return { name: file.name, mediaType: 'application/pdf', data: base64 };
+    }
+    if (textTypes.includes(ext)) {
+      try {
+        const textContent = decodeURIComponent(escape(atob(base64)));
+        return { name: file.name, textContent };
+      } catch(e) {
+        return { name: file.name };
+      }
+    }
+    // xlsx/xls/doc/docx and other binary formats: not yet parsed server-side,
+    // only the filename is passed through
+    return { name: file.name };
+  });
+}
+
+async function analyzeTask() {
+  const desc = buildFullDescription();
+  if (!desc) { showToast('Please describe what you need done.', 'error'); return; }
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+
+  document.getElementById('analysisResult').style.display = 'none';
+  document.getElementById('workingCard').style.display = 'none';
+  document.getElementById('resultCard').style.display = 'none';
+
+  const btn = document.getElementById('analyzeBtn');
+  btn.disabled = true;
+  btn.textContent = 'Analyzing...';
+
+  try {
+    const r = await fetch('/api/deskkit-analyze', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
+      body: JSON.stringify({ desc, analyzeContext: "This task is building a PowerPoint presentation. Classify by slide count: 5-10 slides is simple, 11-20 is moderate, 20+ is complex.", files: buildFilesPayload() })
+    });
+    const analysis = await r.json();
+    if (!r.ok) { showToast(analysis.error || 'Analysis failed. Please try again.', 'error'); btn.disabled = false; btn.textContent = 'Get My Price'; return; }
+    currentAnalysis = analysis;
+    showAnalysisResult(analysis, desc);
+  } catch(e) {
+    showToast('Analysis failed. Please try again.', 'error');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Get My Price';
+}
+
+function showAnalysisResult(analysis, desc) {
+  const tier = analysis.tier || 'moderate';
+  const price = PRICES[tier];
+  const el = document.getElementById('analysisResult');
+  el.innerHTML = `
+    <div class="analysis-tier">${TIER_LABELS[tier].toUpperCase()}</div>
+    <div class="analysis-price">$${price}</div>
+    <div class="analysis-desc">${TIER_DESCS[tier]}</div>
+    <div class="promo-row">
+      <div class="promo-input-row">
+        <input type="text" id="promoCodeInput" class="promo-input" placeholder="Promo code (optional)"/>
+        <button type="button" class="btn-apply-promo" onclick="applyPromoCode('${tier}')">Apply</button>
+      </div>
+      <div class="promo-result" id="promoResult"></div>
+    </div>
+    <div class="analysis-actions">
+      <button class="btn-cancel" onclick="cancelAnalysis()">Add More Files First</button>
+      <button class="btn-confirm" onclick='confirmAndPay("${tier}", ${price})'>Accept & Submit — $${price} →</button>
+    </div>`;
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function cancelAnalysis() { document.getElementById('analysisResult').style.display = 'none'; }
+
+let pendingDesc = null;
+let verifiedPromoCode = null;
+
+async function applyPromoCode(tier) {
+  const promoCode = val('promoCodeInput');
+  const resultEl = document.getElementById('promoResult');
+  if (!promoCode) { resultEl.className = 'promo-result error'; resultEl.textContent = 'Enter a code first.'; return; }
+
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+
+  const btn = document.querySelector('.btn-apply-promo');
+  btn.disabled = true;
+  btn.textContent = 'Checking...';
+
+  try {
+    const r = await fetch('/api/deskkit-validate-promo', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
+      body: JSON.stringify({ tier, promoCode })
+    });
+    const d = await r.json();
+
+    if (!r.ok) {
+      resultEl.className = 'promo-result error';
+      resultEl.textContent = d.error || 'Could not apply that code.';
+      verifiedPromoCode = null;
+    } else {
+      resultEl.className = 'promo-result success';
+      resultEl.textContent = `✓ ${d.discountLabel} applied — new price: $${d.discountedPrice}${d.flooredToMinimum ? ' (Stripe minimum)' : ''}`;
+      verifiedPromoCode = promoCode;
+      document.querySelector('.analysis-price').textContent = '$' + d.discountedPrice;
+      const confirmBtn = document.querySelector('.btn-confirm');
+      confirmBtn.textContent = `Accept & Submit — $${d.discountedPrice} →`;
+    }
+  } catch(e) {
+    resultEl.className = 'promo-result error';
+    resultEl.textContent = 'Something went wrong checking that code.';
+    verifiedPromoCode = null;
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Apply';
+}
+
+async function confirmAndPay(tier, price) {
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+  const desc = buildFullDescription();
+  pendingDesc = desc;
+  const promoCode = verifiedPromoCode || val('promoCodeInput');
+
+  document.getElementById('analysisResult').style.display = 'none';
+
+  try {
+    const r = await fetch('/api/deskkit-charge', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
+      body: JSON.stringify({ tier, desc, filename: currentFiles.length ? (currentFiles.length === 1 ? currentFiles[0].name : `${currentFiles.length} files`) : null, promoCode: promoCode || undefined, toolName: "PowerPoint Creation", toolPath: "/portal/powerpoint" })
+    });
+    const d = await r.json();
+    if (!r.ok) { showToast(d.error || 'Could not start payment.', 'error'); document.getElementById('analysisResult').style.display = 'block'; return; }
+    currentTaskId = d.taskId;
+    pendingPaymentIntentId = d.paymentIntentId;
+
+    elements = stripe.elements({ clientSecret: d.clientSecret, appearance: {
+      theme: 'stripe',
+      variables: { colorPrimary: '#1A4D8F', colorBackground: '#FFFFFF', colorText: '#1A2B4A', borderRadius: '8px' }
+    }});
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#paymentElement');
+
+    const chargeAmount = d.amountCharged != null ? d.amountCharged : price;
+    document.getElementById('payAmount').textContent = '$' + chargeAmount;
+    document.getElementById('paymentError').style.display = 'none';
+    document.getElementById('paymentCard').style.display = 'block';
+    document.getElementById('analyzeBtn').style.display = 'none';
+    document.getElementById('paymentCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
+  } catch(e) {
+    showToast('Something went wrong. Please try again.', 'error');
+  }
+}
+
+function cancelPayment() {
+  document.getElementById('paymentCard').style.display = 'none';
+  document.getElementById('analysisResult').style.display = 'block';
+  document.getElementById('analyzeBtn').style.display = 'flex';
+  elements = null;
+}
+
+async function submitPayment() {
+  if (!elements) return;
+  const btn = document.getElementById('payBtn');
+  const errEl = document.getElementById('paymentError');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+  errEl.style.display = 'none';
+
+  const { error, paymentIntent } = await stripe.confirmPayment({
+    elements,
+    confirmParams: { return_url: window.location.href },
+    redirect: 'if_required'
+  });
+
+  if (error) {
+    errEl.textContent = error.message || 'Payment failed. Please check your card details.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Pay →';
+    return;
+  }
+
+  if (paymentIntent && paymentIntent.status === 'succeeded') {
+    await onPaymentConfirmed();
+  } else {
+    errEl.textContent = 'Payment did not complete. Please try again.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Pay →';
+  }
+}
+
+async function onPaymentConfirmed() {
+  const session = getSession();
+  document.getElementById('paymentCard').style.display = 'none';
+
+  try {
+    const r = await fetch('/api/deskkit-confirm-payment', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
+      body: JSON.stringify({ taskId: currentTaskId, paymentIntentId: pendingPaymentIntentId })
+    });
+    const d = await r.json();
+    if (!r.ok) { showToast(d.error || 'Could not confirm payment.', 'error'); return; }
+    showSubmittedConfirmation();
+    // Generation happens now, in the background — result isn't shown immediately.
+    doWork(pendingDesc, currentTaskId);
+  } catch(e) {
+    showToast('Payment succeeded but something went wrong starting your task. Contact support with task ID: ' + currentTaskId, 'error');
+  }
+}
+
+function showSubmittedConfirmation() {
+  document.getElementById('taskForm').style.display = 'none';
+  document.getElementById('workingCard').style.display = 'none';
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('submittedCard').style.display = 'block';
+  document.getElementById('submittedCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+  setTimeout(() => {
+    window.location.href = '/portal/app?tab=history';
+  }, 2200);
+}
+
+window.addEventListener('load', async () => {
+  const params = new URLSearchParams(window.location.search);
+  const clientSecret = params.get('payment_intent_client_secret');
+  if (!clientSecret) return;
+  const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+  if (paymentIntent && paymentIntent.status === 'succeeded') {
+    pendingPaymentIntentId = paymentIntent.id;
+    currentTaskId = paymentIntent.metadata?.taskId || currentTaskId;
+    await onPaymentConfirmed();
+  }
+  window.history.replaceState({}, document.title, window.location.pathname);
+});
+
+async function doWork(desc, taskId) {
+  const session = getSession();
+  try {
+    const r = await fetch('/api/deskkit-generate', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
+      body: JSON.stringify({ taskId, desc, workSystem: "You are DeskKit, an AI back office assistant for small businesses. Build a complete PowerPoint presentation based on the details provided. Output ONLY a valid JSON object \u2014 no markdown code fences, no explanation, nothing before or after it \u2014 in this exact format: {\"title\": \"Presentation Title\", \"slides\": [{\"title\": \"Slide Title\", \"bullets\": [\"Point one\", \"Point two\", \"Point three\"]}]}. The first slide should be a title slide with the presentation title and an empty bullets array. Each content slide needs a clear title and 3-5 concise bullet points (short phrases, not full paragraphs). Return only the JSON object.", files: buildFilesPayload() })
+    });
+    const d = await r.json();
+    if (r.ok) { resultText = d.result; }
+    // Result intentionally not displayed here — the customer reviews it later
+    // via My Tasks on the DeskKit dashboard, or the email notification.
+  } catch(e) {
+    console.error('Generation error:', e);
+  }
+}
+
+const QBO_DELIMITER = '===QUICKBOOKS_CSV===';
+let qboText = '';
+
+function showResult(result) {
+  if (result.includes(QBO_DELIMITER)) {
+    const parts = result.split(QBO_DELIMITER);
+    document.getElementById('resultContent').textContent = parts[0].trim();
+    qboText = parts[1] ? parts[1].trim() : '';
+  } else {
+    document.getElementById('resultContent').textContent = result;
+    qboText = '';
+  }
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+async function revise() {
+  const feedback = val('revisionInput');
+  if (!feedback) return;
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('workingCard').style.display = 'block';
+  document.getElementById('workingSub').textContent = 'Revising based on your feedback...';
+  try {
+    const r = await fetch('/api/deskkit-generate', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
+      body: JSON.stringify({ taskId: currentTaskId, mode:'revise', feedback, previousResult: resultText })
+    });
+    const d = await r.json();
+    if (!r.ok) { document.getElementById('workingCard').style.display = 'none'; document.getElementById('resultCard').style.display = 'block'; showToast(d.error || 'Revision failed. Please try again.', 'error'); return; }
+    resultText = d.result;
+    document.getElementById('workingCard').style.display = 'none';
+    showResult(d.result);
+    document.getElementById('revisionInput').value = '';
+    showToast('Revised!', 'success');
+  } catch(e) {
+    document.getElementById('workingCard').style.display = 'none';
+    document.getElementById('resultCard').style.display = 'block';
+    showToast('Revision failed. Please try again.', 'error');
+  }
+}
+
+function downloadResult() {
+  const reportContent = resultText.includes(QBO_DELIMITER) ? resultText.split(QBO_DELIMITER)[0].trim() : resultText;
+  const blob = new Blob([reportContent], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'presentation.pptx';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Downloaded! ✓', 'success');
+}
+
+function downloadQBOFile() {
+  if (!qboText) { showToast('QuickBooks file not available for this result.', 'error'); return; }
+  const blob = new Blob([qboText], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'quickbooks-export.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('QuickBooks CSV downloaded! ✓', 'success');
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  setTimeout(() => t.className = 'toast', 3000);
+}
+</script>
+</body>
+</html>
