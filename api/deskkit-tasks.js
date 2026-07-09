@@ -66,7 +66,8 @@ module.exports = async function handler(req, res) {
         filename: t.filename,
         status: t.status,
         createdAt: t.createdAt,
-        toolName: t.toolName || "General Task"
+        toolName: t.toolName || "General Task",
+        toolPath: t.toolPath || "/portal/app"
       }))
     });
 
