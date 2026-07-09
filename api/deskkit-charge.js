@@ -1,18 +1,18 @@
 /**
  * /api/deskkit-charge
- * POST — charge customer for a DeskKit task via Stripe
- * Creates task record in KV, processes payment
+ * POST — create a DeskKit task + Stripe PaymentIntent (unconfirmed)
+ * Returns a client_secret so the frontend can collect card details via Stripe Elements.
+ * Payment is NOT considered complete until /api/deskkit-confirm-payment verifies it server-side.
  */
 const crypto = require("crypto");
-const { Resend } = require("resend");
 
-const PRICES = { simple: 1500, moderate: 3500, complex: 7500 }; // cents
+// Tier pricing (cents) — generic DeskKit tasks
+const TIER_PRICES = { simple: 1500, moderate: 3500, complex: 7500, bulk: 12500 };
 
-// Replace with your actual Stripe price IDs
-const STRIPE_PRICES = {
-  simple:   process.env.DESKKIT_PRICE_SIMPLE,
-  moderate: process.env.DESKKIT_PRICE_MODERATE,
-  complex:  process.env.DESKKIT_PRICE_COMPLEX
+// Collection Letter bundle pricing (cents)
+const BUNDLE_PRICES = {
+  single: 1500, triple: 3500, starter: 4900,
+  business: 8900, bulk: 14900, enterprise: 24900
 };
 
 function getKV() {
@@ -68,24 +68,23 @@ module.exports = async function handler(req, res) {
     const email = await validateSession(sessionToken);
     if (!email) return res.status(401).json({ error: "Unauthorized" });
 
-    const { tier, price, desc, filename } = req.body || {};
-    if (!tier || !price || !desc) return res.status(400).json({ error: "Missing required fields" });
+    const { tier, price, desc, filename, kind } = req.body || {};
+    if (!tier || !desc) return res.status(400).json({ error: "Missing required fields" });
 
-    const validTiers = ["simple", "moderate", "complex"];
-    if (!validTiers.includes(tier)) return res.status(400).json({ error: "Invalid tier" });
+    // Determine which pricing table applies and validate the tier/bundle server-side
+    // (never trust the price sent from the client — look it up ourselves)
+    const isBundle = kind === "collection_letter";
+    const priceTable = isBundle ? BUNDLE_PRICES : TIER_PRICES;
+    if (!priceTable.hasOwnProperty(tier)) return res.status(400).json({ error: "Invalid tier" });
+    const amountCents = priceTable[tier];
 
-    // Create task ID
-    const taskId = "dsk_" + Date.now().toString(36) + crypto.randomBytes(4).toString("hex");
-
-    // Charge via Stripe
     const stripeKey = process.env.STRIPE_SECRET_KEY;
     if (!stripeKey) return res.status(500).json({ error: "Stripe not configured" });
 
-    // Get customer's Stripe customer ID or create one
-    const emailKey = email.toLowerCase().replace(/[^a-z0-9@._-]/g, "");
-    const customer = await getFromKV("customer:" + emailKey);
+    const taskId = "dsk_" + Date.now().toString(36) + crypto.randomBytes(4).toString("hex");
 
-    // Create payment intent
+    // Create the PaymentIntent — NOT confirmed yet. The frontend collects card
+    // details via Stripe Elements using the client_secret returned below.
     const paymentResponse = await fetch("https://api.stripe.com/v1/payment_intents", {
       method: "POST",
       headers: {
@@ -93,59 +92,46 @@ module.exports = async function handler(req, res) {
         "Content-Type": "application/x-www-form-urlencoded"
       },
       body: new URLSearchParams({
-        amount: String(PRICES[tier]),
+        amount: String(amountCents),
         currency: "usd",
-        description: `DeskKit ${tier} task - ${desc.slice(0, 100)}`,
+        description: `DeskKit ${isBundle ? "Collection Letter " + tier : tier} task - ${desc.slice(0, 100)}`,
+        "automatic_payment_methods[enabled]": "true",
         "metadata[taskId]": taskId,
         "metadata[email]": email,
         "metadata[tier]": tier,
-        confirm: "false"
+        "metadata[kind]": isBundle ? "collection_letter" : "task"
       })
     });
 
     const paymentData = await paymentResponse.json();
+    if (paymentData.error) return res.status(400).json({ error: paymentData.error.message });
 
-    if (paymentData.error) {
-      return res.status(400).json({ error: paymentData.error.message });
-    }
-
-    // Save task to KV
+    // Save task in a pending-payment state — work does NOT begin until payment is confirmed
     await saveToKV("deskkit_task:" + taskId, {
       id: taskId,
       email,
       tier,
-      price,
+      kind: isBundle ? "collection_letter" : "task",
+      price: amountCents / 100,
       desc,
       filename: filename || null,
-      status: "pending",
+      status: "pending_payment",
       paymentIntentId: paymentData.id,
       createdAt: new Date().toISOString(),
       result: null
     });
 
-    // Add to user's task list
+    const emailKey = email.toLowerCase().replace(/[^a-z0-9@._-]/g, "");
     const taskList = await getFromKV("deskkit_tasks:" + emailKey) || [];
     taskList.unshift(taskId);
     await saveToKV("deskkit_tasks:" + emailKey, taskList);
 
-    // Notify Jen
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    resend.emails.send({
-      from: "DeskKit <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
-      to: "jen@compassbizsolutions.com",
-      subject: `New DeskKit Task — ${tier} $${price} — ${email}`,
-      html: `<div style="font-family:sans-serif;max-width:500px;">
-        <h2 style="color:#C8701A;">New DeskKit Task</h2>
-        <p><strong>Customer:</strong> ${email}</p>
-        <p><strong>Tier:</strong> ${tier} ($${price})</p>
-        <p><strong>File:</strong> ${filename || "No file"}</p>
-        <p><strong>Task:</strong></p>
-        <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:13px;line-height:1.6">${desc}</pre>
-        <p><strong>Task ID:</strong> ${taskId}</p>
-      </div>`
-    }).catch(() => {});
-
-    return res.status(200).json({ success: true, taskId, paymentIntentId: paymentData.id });
+    return res.status(200).json({
+      success: true,
+      taskId,
+      clientSecret: paymentData.client_secret,
+      paymentIntentId: paymentData.id
+    });
 
   } catch(err) {
     console.error("deskkit-charge error:", err.message);
