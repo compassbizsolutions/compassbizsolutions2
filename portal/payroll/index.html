@@ -158,6 +158,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 
   <div class="info-box"><strong>Any format works:</strong> Photo of a whiteboard, handwritten timesheet, spreadsheet, screenshot from your scheduling app — upload it and we'll read it. If information is missing or unclear, we'll flag it in the output so you can correct it before importing.</div>
 
+  <div id="taskForm">
   <!-- TIMESHEET UPLOAD -->
   <div class="section">
     <div class="section-title">Your Timesheet</div>
@@ -299,6 +300,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
   <button class="submit-btn" id="submitBtn" onclick="generate()">
     Compile My Payroll — <span id="btnPriceLabel">$35</span>
   </button>
+  </div>
 
   <div class="payment-card" id="paymentCard">
     <div class="payment-card-title">Payment Details</div>
@@ -505,7 +507,7 @@ async function saveRosterProfile() {
 
 async function resumePendingTask(taskId) {
   const session = getSession();
-  document.getElementById('submitBtn').style.display = 'none';
+  document.getElementById('taskForm').style.display = 'none';
   try {
     const r = await fetch('/api/deskkit-resume-payment', {
       method:'POST',
@@ -513,7 +515,7 @@ async function resumePendingTask(taskId) {
       body: JSON.stringify({ taskId })
     });
     const d = await r.json();
-    if (!r.ok) { showToast(d.error || 'Could not resume this task.', 'error'); document.getElementById('submitBtn').style.display = 'flex'; return; }
+    if (!r.ok) { showToast(d.error || 'Could not resume this task.', 'error'); document.getElementById('taskForm').style.display = 'block'; return; }
 
     currentTaskId = d.taskId;
     pendingPaymentIntentId = d.paymentIntentId;
@@ -844,6 +846,7 @@ async function onPaymentConfirmed() {
     const d = await r.json();
     if (!r.ok) { showToast(d.error || 'Could not confirm payment.', 'error'); return; }
 
+    document.getElementById('taskForm').style.display = 'none';
     document.getElementById('submittedCard').style.display = 'block';
     document.getElementById('submittedCard').scrollIntoView({ behavior:'smooth', block:'nearest' });
     doWork();
