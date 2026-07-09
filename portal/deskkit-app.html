@@ -1319,8 +1319,8 @@ function renderAsTable(csvText) {
     </div>`;
 }
 
-function renderResultContent(text) {
-  if (looksLikeCSV(text)) {
+function renderResultContent(text, toolName) {
+  if (resolveIsCSV(toolName, text)) {
     return renderAsTable(text);
   }
   return `<div class="preview-content" id="modalPreviewContent" style="white-space:pre-wrap;">${escapeHtml(text)}</div>`;
@@ -1350,7 +1350,7 @@ function renderTaskModal(t) {
         <div class="preview-title">Your Result — Ready to Review</div>
         <div class="preview-badge">✓ Complete</div>
       </div>
-      ${renderResultContent(main)}
+      ${renderResultContent(main, t.toolName)}
       ${notes ? `<div class="result-notes"><div class="result-notes-title">Notes</div>${escapeHtml(notes)}</div>` : ''}
       <div class="preview-actions">
         <button class="btn-accept" onclick="acceptResultFromModal('${t.id}')">✓ Accept & Download ${resolveIsCSV(t.toolName, main) ? '(Excel)' : '(Word)'}</button>
