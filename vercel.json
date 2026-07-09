@@ -89,6 +89,18 @@
       "destination": "/portal/deskkit-applicant-screening.html"
     },
     {
+      "source": "/portal/cleanup-spreadsheet",
+      "destination": "/portal/deskkit-cleanup-spreadsheet.html"
+    },
+    {
+      "source": "/portal/summarize-document",
+      "destination": "/portal/deskkit-summarize-document.html"
+    },
+    {
+      "source": "/portal/build-report",
+      "destination": "/portal/deskkit-build-report.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
