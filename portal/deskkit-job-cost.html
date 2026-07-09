@@ -576,7 +576,7 @@ async function doWork(desc, taskId) {
     const r = await fetch('/api/deskkit-generate', {
       method:'POST',
       headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + session.token },
-      body: JSON.stringify({ taskId, desc, workSystem: "You are DeskKit, an AI back office assistant for small trades businesses. Read the uploaded receipts/costs and produce a complete job cost report. Output ONLY the clean CSV data with columns: Item, Category, Cost. Include a labor line if hours/rate provided. Add final rows for Total Cost, Amount Charged to Customer, and Profit/Loss using the same columns \u2014 no separate narrative explanation or commentary, just the finished file.", files: buildFilesPayload() })
+      body: JSON.stringify({ taskId, desc, workSystem: "You are DeskKit, an AI back office assistant for small trades businesses. Read the uploaded receipts/costs and produce a complete job cost report. Output ONLY the clean CSV data with columns: Item, Category, Cost. Include a labor line if hours/rate provided. Add final rows for Total Cost, Amount Charged to Customer, and Profit/Loss using the same columns. No title row, no 'Generated:' date line, no markdown code fences, no narrative explanation or commentary \u2014 the column header row is the first line of your response.", files: buildFilesPayload() })
     });
     const d = await r.json();
     if (r.ok) { resultText = d.result; }
