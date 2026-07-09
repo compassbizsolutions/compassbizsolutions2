@@ -340,6 +340,16 @@ Output ONLY the clean CSV compilation with proper column headers and data rows â
     } else if (ext === 'pdf') {
       const b64 = await readFileAsBase64(f);
       pendingFiles.push({ name: f.name, mediaType: 'application/pdf', data: b64 });
+    } else if (['csv','txt'].includes(ext)) {
+      const b64 = await readFileAsBase64(f);
+      try {
+        const textContent = decodeURIComponent(escape(atob(b64)));
+        pendingFiles.push({ name: f.name, textContent });
+      } catch(e) {
+        pendingFiles.push({ name: f.name });
+      }
+    } else {
+      pendingFiles.push({ name: f.name });
     }
   }
 
