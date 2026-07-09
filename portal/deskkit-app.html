@@ -241,6 +241,12 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 .loader-spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.08); border-top-color: var(--amber); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
 .loader-text { font-size: 14px; color: var(--text2); line-height: 1.6; }
 
+.task-modal-overlay { position: fixed; inset: 0; background: rgba(10,21,32,0.85); display: none; align-items: center; justify-content: center; z-index: 210; padding: 20px; }
+.task-modal-overlay.show { display: flex; }
+.task-modal { background: var(--navy); border: 1px solid var(--border2); border-radius: 16px; padding: 32px; max-width: 640px; width: 100%; max-height: 85vh; overflow-y: auto; position: relative; }
+.task-modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; padding: 4px 8px; }
+.task-modal-close:hover { color: var(--amber); }
+
 @media (max-width: 600px) {
   .pricing-grid { grid-template-columns: 1fr; }
   .content { padding: 20px 16px; }
@@ -429,6 +435,14 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
   <div class="loader-box">
     <div class="loader-spinner"></div>
     <div class="loader-text" id="loaderText">Processing...</div>
+  </div>
+</div>
+
+<!-- TASK DETAIL MODAL -->
+<div class="task-modal-overlay" id="taskModalOverlay">
+  <div class="task-modal">
+    <button class="task-modal-close" onclick="closeTaskModal()">✕</button>
+    <div id="taskModalBody"></div>
   </div>
 </div>
 
@@ -1113,6 +1127,99 @@ function taskCard(t) {
       </div>
     </div>`;
 }
+
+async function viewTask(taskId) {
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+
+  try {
+    const r = await fetch(`/api/deskkit-tasks?id=${taskId}`, {
+      headers: { 'Authorization': 'Bearer ' + session.token }
+    });
+    const t = await r.json();
+    if (!r.ok) { showToast(t.error || 'Could not load this task.', 'error'); return; }
+    renderTaskModal(t);
+  } catch(e) {
+    showToast('Could not load this task.', 'error');
+  }
+}
+
+function renderTaskModal(t) {
+  const body = document.getElementById('taskModalBody');
+
+  if (t.status === 'needs_review') {
+    body.innerHTML = `
+      <div class="preview-header">
+        <div class="preview-title">We're Reviewing This</div>
+      </div>
+      <p style="color:var(--muted);font-size:13px;line-height:1.7;margin-top:12px;">
+        This task needs a closer look. Jen will review it personally and get your result to you within 24 hours. No additional charge.
+      </p>`;
+  } else {
+    body.innerHTML = `
+      <div class="preview-header">
+        <div class="preview-title">Your Result — Ready to Review</div>
+        <div class="preview-badge">✓ Complete</div>
+      </div>
+      <div class="preview-content" id="modalPreviewContent">${escapeHtml(t.result || '')}</div>
+      <div class="preview-actions">
+        <button class="btn-accept" onclick="acceptResultFromModal('${t.id}')">✓ Accept & Download</button>
+        <div class="revision-wrap">
+          <input class="revision-input" id="modalRevisionInput" placeholder="Not quite right? Tell us what to change..."/>
+          <button class="btn-revise" onclick="reviseFromModal('${t.id}')">Revise →</button>
+        </div>
+      </div>`;
+  }
+
+  document.getElementById('taskModalOverlay').classList.add('show');
+}
+
+function closeTaskModal() {
+  document.getElementById('taskModalOverlay').classList.remove('show');
+}
+
+async function acceptResultFromModal(taskId) {
+  const session = getSession();
+  const resultText = document.getElementById('modalPreviewContent').textContent;
+
+  try {
+    await fetch('/api/deskkit-save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ taskId, status: 'complete' })
+    });
+  } catch(e) { console.error('Accept error:', e); }
+
+  const blob = new Blob([resultText], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `deskkit-${taskId}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  closeTaskModal();
+  showToast('Downloaded! ✓', 'success');
+  loadTaskHistory();
+}
+
+async function reviseFromModal(taskId) {
+  const feedback = document.getElementById('modalRevisionInput').value.trim();
+  if (!feedback) { showToast('Tell us what to change.', 'error'); return; }
+
+  const previousResult = document.getElementById('modalPreviewContent').textContent;
+  const body = document.getElementById('taskModalBody');
+  body.innerHTML = `<div style="text-align:center;padding:40px;"><div class="loader-spinner" style="margin:0 auto 16px;"></div><div style="color:var(--muted);font-size:13px;">Revising based on your feedback...</div></div>`;
+
+  try {
+    const revised = await requestReviseWork(taskId, feedback, previousResult);
+    renderTaskModal({ id: taskId, status: 'preview', result: revised });
+  } catch(e) {
+    showToast('Revision failed. Please try again.', 'error');
+    renderTaskModal({ id: taskId, status: 'preview', result: previousResult });
+  }
+}
+
 
 async function downloadTask(taskId) {
   const session = getSession();
