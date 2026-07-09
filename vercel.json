@@ -101,6 +101,22 @@
       "destination": "/portal/deskkit-build-report.html"
     },
     {
+      "source": "/portal/task-breakdown",
+      "destination": "/portal/deskkit-task-breakdown.html"
+    },
+    {
+      "source": "/portal/runbook",
+      "destination": "/portal/deskkit-runbook.html"
+    },
+    {
+      "source": "/portal/powerpoint",
+      "destination": "/portal/deskkit-powerpoint.html"
+    },
+    {
+      "source": "/portal/process-map",
+      "destination": "/portal/deskkit-process-map.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
