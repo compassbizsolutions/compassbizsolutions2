@@ -542,7 +542,53 @@ window.onload = () => {
     showTab('history', document.getElementById('myTasksTabBtn'));
     window.history.replaceState({}, document.title, window.location.pathname);
   }
+
+  const resumeId = params.get('resume');
+  if (resumeId) {
+    resumePendingTask(resumeId);
+  }
 };
+
+async function resumePendingTask(taskId) {
+  const session = getSession();
+  if (!session) return;
+  document.getElementById('analyzeBtn').style.display = 'none';
+
+  try {
+    const r = await fetch('/api/deskkit-resume-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ taskId })
+    });
+    const d = await r.json();
+    if (!r.ok) {
+      showToast(d.error || 'Could not resume this task.', 'error');
+      document.getElementById('analyzeBtn').style.display = 'flex';
+      return;
+    }
+
+    currentTaskId = d.taskId;
+    pendingTier = d.tier;
+    pendingDesc = d.desc;
+    pendingPaymentIntentId = d.paymentIntentId;
+
+    elements = stripe.elements({ clientSecret: d.clientSecret, appearance: {
+      theme: 'night',
+      variables: { colorPrimary: '#C8701A', colorBackground: '#162840', colorText: '#E2EAF2', borderRadius: '8px' }
+    }});
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#paymentElement');
+
+    document.getElementById('payAmount').textContent = '$' + d.price;
+    document.getElementById('paymentError').style.display = 'none';
+    document.getElementById('paymentCard').style.display = 'block';
+    document.getElementById('paymentCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    showToast('Picking up where you left off — same price as before.', 'success');
+  } catch(e) {
+    showToast('Could not resume this task. Please start fresh.', 'error');
+    document.getElementById('analyzeBtn').style.display = 'flex';
+  }
+}
 
 // ─── TABS ────────────────────────────────────────────────────────
 function showTab(tab, btn) {
@@ -720,7 +766,7 @@ async function confirmAndPay(tier, price, desc) {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + session.token
       },
-      body: JSON.stringify({ tier, desc, filename: currentFile?.name || null, promoCode: promoCode || undefined, toolName: 'General Task' })
+      body: JSON.stringify({ tier, desc, filename: currentFile?.name || null, promoCode: promoCode || undefined, toolName: 'General Task', toolPath: '/portal/app' })
     });
 
     const d = await r.json();
@@ -1126,7 +1172,7 @@ function taskCard(t) {
       <div class="task-card-right">
         <span class="status-badge ${cls}">${label}</span>
         <div class="task-price">$${t.price || 0}</div>
-        ${t.status === 'pending_payment' ? `<button class="btn-view" onclick="showTab('submit', document.querySelector('.tab'))">Finish & Pay →</button>` : ''}
+        ${t.status === 'pending_payment' ? `<button class="btn-view" onclick="window.location.href = '${t.toolPath || '/portal/app'}?resume=${t.id}'">Finish & Pay →</button>` : ''}
         ${t.status === 'complete' ? `<button class="btn-download" onclick="downloadTask('${t.id}')">Download</button>` : ''}
         ${t.status === 'preview' ? `<button class="btn-view" onclick="viewTask('${t.id}')">Review →</button>` : ''}
         ${t.status === 'needs_review' ? `<span style="font-size:12px;color:var(--muted)">We'll follow up within 24 hours</span>` : ''}
