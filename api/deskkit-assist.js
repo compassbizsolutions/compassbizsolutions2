@@ -52,8 +52,14 @@ module.exports = async function handler(req, res) {
 
     const userContent = [];
     (files || []).slice(0, 5).forEach(f => {
-      if (f.mediaType && f.mediaType.startsWith("image/") && f.data) {
+      if (f.mediaType === "application/pdf" && f.data) {
+        userContent.push({ type: "document", source: { type: "base64", media_type: "application/pdf", data: f.data } });
+      } else if (f.mediaType && f.mediaType.startsWith("image/") && f.data) {
         userContent.push({ type: "image", source: { type: "base64", media_type: f.mediaType, data: f.data } });
+      } else if (f.textContent) {
+        userContent.push({ type: "text", text: `File: ${f.name || "upload"}\n\n${f.textContent}` });
+      } else if (f.name) {
+        userContent.push({ type: "text", text: `File uploaded: ${f.name} (content not readable in this format — only filename available)` });
       }
     });
     userContent.push({ type: "text", text: userText });
