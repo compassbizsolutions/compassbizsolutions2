@@ -29,7 +29,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .field label{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
 .field input,.field select,.field textarea{background:var(--navy2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border 0.15s;}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--amber);}
-.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,0.15);}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted);}
 .field textarea{resize:vertical;min-height:90px;line-height:1.5;}
 .upload-area{border:2px dashed var(--border2);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;}
 .upload-area:hover{border-color:var(--amber);background:var(--amber-dim);}
@@ -56,7 +56,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 .promo-input-row{display:flex;gap:8px;}
 .promo-input{flex:1;background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;outline:none;}
 .promo-input:focus{border-color:var(--amber);}
-.promo-input::placeholder{color:rgba(255,255,255,0.2);}
+.promo-input::placeholder{color:var(--muted);}
 .btn-apply-promo{background:var(--navy3);border:1px solid var(--border2);color:var(--text2);border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
 .btn-apply-promo:hover{border-color:var(--amber);color:var(--amber);}
 .btn-apply-promo:disabled{opacity:0.5;cursor:not-allowed;}
@@ -113,7 +113,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
 </div>
 
 <div class="page">
-  <div class="page-eyebrow">📬 Featured Task</div>
+  <div class="page-eyebrow">Featured Task</div>
   <div class="page-title">Customer Follow-Up Letters</div>
   <div class="page-sub">Turn your customer list into ready-to-send follow-up letters or emails — service reminders, check-ins, or win-back messages for lapsed customers.</div>
 
@@ -121,7 +121,6 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
     <div class="section-title">Upload Your File</div>
     <div class="upload-area" onclick="document.getElementById('fileInput').click()">
       <input type="file" id="fileInput" accept=".pdf,.csv,.xlsx,.xls,.png,.jpg,.jpeg,.webp,.doc,.docx"  onchange="handleFiles(this.files)"/>
-      <div style="font-size:28px;margin-bottom:8px;">📋</div>
       <div style="font-size:14px;font-weight:600;color:white;margin-bottom:4px;">Upload your customer list</div>
       <div style="font-size:12px;color:var(--muted);">Spreadsheet, CSV, exported job list, or a photo/screenshot</div>
       
@@ -287,7 +286,6 @@ function renderFileList() {
   const el = document.getElementById('fileList');
   el.innerHTML = currentFiles.map((f, i) => `
     <div class="upload-preview-row">
-      <span>📄</span>
       <div class="upload-preview-row-name">${f.name}</div>
       <button class="upload-remove" onclick="removeFileAt(${i})">✕</button>
     </div>`).join('');
