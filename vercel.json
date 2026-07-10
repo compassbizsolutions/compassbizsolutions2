@@ -179,6 +179,9 @@
     },
     "api/deskkit-profile.js": {
       "maxDuration": 15
+    },
+    "api/deskkit-escalate.js": {
+      "maxDuration": 15
     }
   },
   "env": {
