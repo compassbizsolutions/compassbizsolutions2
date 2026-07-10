@@ -45,6 +45,10 @@ body{font-family:'Inter',sans-serif;background:var(--ink);color:var(--text);marg
 .quote-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
 .quote-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--text);text-transform:uppercase;}
 .quote-badge{background:var(--green-dim);color:var(--green2);border:1px solid rgba(31,122,77,0.3);border-radius:99px;padding:4px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;}
+.setup-fee-row{background:var(--navy3);border:1px solid var(--border2);border-radius:10px;padding:14px 18px;margin-bottom:20px;}
+.setup-fee-label{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:4px;}
+.setup-fee-amount{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:var(--text);margin-bottom:4px;}
+.setup-fee-note{font-size:12px;color:var(--muted);line-height:1.5;}
 .quote-price{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;color:var(--amber);line-height:1;margin-bottom:4px;}
 .quote-price-note{font-size:13px;color:var(--muted);margin-bottom:20px;}
 .quote-section{background:var(--navy3);border-radius:10px;padding:16px 18px;margin-bottom:16px;}
@@ -149,7 +153,7 @@ WHAT THEY NEED: ${need}
 HOW OFTEN: ${frequency}
 ${notes ? 'ADDITIONAL CONTEXT: ' + notes : ''}
 
-This service is delivered primarily through AI automation — AI drafts responses, calculates payroll, categorizes expenses, and handles the repetitive execution. The business owner running this service only needs to review AI-drafted work, spot-check outputs, and personally handle genuine exceptions or judgment calls the AI flags — NOT perform the work manually from scratch. Estimate ONLY that oversight/review time, not the time a human doing this entirely by hand would need (be specific — e.g. "about 30-45 minutes per week"). High-volume but repetitive work (e.g. routine email responses, standard payroll runs) should have LOW oversight time once initial setup is done, since AI handles the bulk of it. Then recommend a fair ${frequency.toLowerCase().includes('month') ? 'monthly' : 'weekly'} price for handling this on their behalf on an ongoing basis. Base the price on the estimated oversight time at a rate of $25/hour. Return ONLY a valid JSON object, no markdown code fences, no explanation, in this exact format: {"timeEstimate": "About 30-45 minutes per week", "recommendedPrice": "$140/month", "reasoning": "2-3 sentence plain-language explanation of how you arrived at this, mentioning the specific tasks involved, their frequency, and the $25/hr rate used.", "whatsIncluded": "A short bullet-style summary (as plain text with line breaks, not markdown bullets) of what's covered at this price."}`;
+This service is delivered primarily through AI automation — AI drafts responses, calculates payroll, categorizes expenses, and handles the repetitive execution. The business owner running this service only needs to review AI-drafted work, spot-check outputs, and personally handle genuine exceptions or judgment calls the AI flags — NOT perform the work manually from scratch. There is a separate flat one-time setup fee that covers the first 2-3 weeks of heavier involvement (establishing protocols, reviewing AI drafts closely, calibrating what's correct for this specific business) — do NOT include that ramp-up period in your estimate. Estimate ONLY the ongoing STEADY-STATE oversight/review time once things are calibrated and running smoothly (be specific — e.g. "about 30-45 minutes per week"). High-volume but repetitive work (e.g. routine email responses, standard payroll runs) should have LOW steady-state oversight time, since AI handles the bulk of it. Then recommend a fair ongoing ${frequency.toLowerCase().includes('month') ? 'monthly' : 'weekly'} price for handling this on their behalf, based on that steady-state oversight time at a rate of $25/hour. Return ONLY a valid JSON object, no markdown code fences, no explanation, in this exact format: {"timeEstimate": "About 30-45 minutes per week", "recommendedPrice": "$140/month", "reasoning": "2-3 sentence plain-language explanation of how you arrived at this steady-state estimate, mentioning the specific tasks involved, their frequency, and the $25/hr rate used.", "whatsIncluded": "A short bullet-style summary (as plain text with line breaks, not markdown bullets) of what's covered at this price."}`;
 
   try {
     const r = await fetch('/api/deskkit-assist', {
@@ -187,8 +191,13 @@ function renderQuote(q, frequency) {
       <div class="quote-title">Your Custom Package Estimate</div>
       <div class="quote-badge">Estimate</div>
     </div>
+    <div class="setup-fee-row">
+      <div class="setup-fee-label">One-Time Setup Fee</div>
+      <div class="setup-fee-amount">$399</div>
+      <div class="setup-fee-note">Covers the first 2-3 weeks — establishing protocols and calibrating responses for your business</div>
+    </div>
     <div class="quote-price">${escapeHtml(q.recommendedPrice || 'Contact us')}</div>
-    <div class="quote-price-note">Estimated ${escapeHtml(frequency)} oversight time: ${escapeHtml(q.timeEstimate || 'varies')}</div>
+    <div class="quote-price-note">Ongoing, once set up — estimated ${escapeHtml(frequency)} oversight time: ${escapeHtml(q.timeEstimate || 'varies')}</div>
     <div class="quote-price-note" style="margin-top:-8px;margin-bottom:20px;">This reflects review/oversight time, not manual labor — AI handles the bulk of the actual work.</div>
     <div class="quote-section">
       <div class="quote-section-title">How We Got Here</div>
