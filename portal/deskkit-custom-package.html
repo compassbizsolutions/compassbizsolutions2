@@ -153,14 +153,14 @@ WHAT THEY NEED: ${need}
 HOW OFTEN: ${frequency}
 ${notes ? 'ADDITIONAL CONTEXT: ' + notes : ''}
 
-This service is delivered primarily through AI automation — AI drafts responses, calculates payroll, categorizes expenses, and handles the repetitive execution. The business owner running this service only needs to review AI-drafted work, spot-check outputs, and personally handle genuine exceptions or judgment calls the AI flags — NOT perform the work manually from scratch. There is a separate flat one-time setup fee that covers the first 2-3 weeks of heavier involvement (establishing protocols, reviewing AI drafts closely, calibrating what's correct for this specific business) — do NOT include that ramp-up period in your estimate. Estimate ONLY the ongoing STEADY-STATE oversight/review time once things are calibrated and running smoothly (be specific — e.g. "about 30-45 minutes per week"). High-volume but repetitive work (e.g. routine email responses, standard payroll runs) should have LOW steady-state oversight time, since AI handles the bulk of it. Then recommend a fair ongoing ${frequency.toLowerCase().includes('month') ? 'monthly' : 'weekly'} price for handling this on their behalf, based on that steady-state oversight time at a rate of $25/hour. Return ONLY a valid JSON object, no markdown code fences, no explanation, in this exact format: {"timeEstimate": "About 30-45 minutes per week", "recommendedPrice": "$140/month", "reasoning": "2-3 sentence plain-language explanation of how you arrived at this steady-state estimate, mentioning the specific tasks involved, their frequency, and the $25/hr rate used.", "whatsIncluded": "A short bullet-style summary (as plain text with line breaks, not markdown bullets) of what's covered at this price."}`;
+Estimate the realistic time a skilled human would need to perform these tasks manually, correctly and completely, at the frequency described (be specific about your reasoning — e.g. "roughly 2.5 hours/day on client emails at this volume, plus 2 hours/month on payroll, plus 4 hours/month on expense tracking"). This is the actual labor-equivalent time, not a reduced AI-oversight estimate. Then ADD a flat 2 hours per week as a safety buffer for cases requiring direct personal involvement, converting to the correct amount for the billing frequency (2 hrs/week \u2248 8.7 hrs/month). Add the base estimate and the buffer together, then price the total at $25/hour to get the ongoing ${frequency.toLowerCase().includes('month') ? 'monthly' : 'weekly'} price. Return ONLY a valid JSON object, no markdown code fences, no explanation, in this exact format: {"timeEstimate": "About 15 hours/week total, including a 2-hour/week buffer", "recommendedPrice": "$1,625/month", "reasoning": "2-3 sentence plain-language explanation showing the base labor-equivalent hours, the added buffer, and the $25/hr rate used to reach this total.", "whatsIncluded": "A short bullet-style summary (as plain text with line breaks, not markdown bullets) of what's covered at this price."}`;
 
   try {
     const r = await fetch('/api/deskkit-assist', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
       body: JSON.stringify({
-        systemPrompt: 'You are scoping ongoing back-office work that is delivered primarily through AI automation, with the business owner only reviewing and spot-checking rather than doing the work by hand. Estimate oversight time realistically (this should be much less than manual-labor time for repetitive tasks), then price at exactly $25/hour based on that oversight time. Return only valid JSON.',
+        systemPrompt: 'You are scoping ongoing back-office work for a small business, delivered via AI automation. Estimate the realistic labor-equivalent time a human would need to do these tasks manually and correctly, add a 2-hour/week safety buffer for direct involvement, and price the total at exactly $25/hour. Return only valid JSON.',
         userText,
         maxTokens: 600
       })
@@ -194,11 +194,11 @@ function renderQuote(q, frequency) {
     <div class="setup-fee-row">
       <div class="setup-fee-label">One-Time Setup Fee</div>
       <div class="setup-fee-amount">$399</div>
-      <div class="setup-fee-note">Covers the first 2-3 weeks — establishing protocols and calibrating responses for your business</div>
+      <div class="setup-fee-note">Covers the first week — setting expectations and getting AI automation calibrated for your business</div>
     </div>
     <div class="quote-price">${escapeHtml(q.recommendedPrice || 'Contact us')}</div>
-    <div class="quote-price-note">Ongoing, once set up — estimated ${escapeHtml(frequency)} oversight time: ${escapeHtml(q.timeEstimate || 'varies')}</div>
-    <div class="quote-price-note" style="margin-top:-8px;margin-bottom:20px;">This reflects review/oversight time, not manual labor — AI handles the bulk of the actual work.</div>
+    <div class="quote-price-note">Ongoing, once set up — estimated time: ${escapeHtml(q.timeEstimate || 'varies')}</div>
+    <div class="quote-price-note" style="margin-top:-8px;margin-bottom:20px;">Based on realistic hours if done manually, plus a 2-hour/week buffer for anything that needs your direct attention.</div>
     <div class="quote-section">
       <div class="quote-section-title">How We Got Here</div>
       <div class="quote-section-body">${escapeHtml(q.reasoning || '')}</div>
