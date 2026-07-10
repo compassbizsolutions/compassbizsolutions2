@@ -228,6 +228,9 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 .btn-accept { background: var(--green); color: white; border: none; border-radius: 10px; padding: 13px 24px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.15s; }
 .btn-accept:hover { background: var(--green2); }
 .revision-wrap { flex: 1; display: flex; gap: 8px; }
+.escalate-row { width: 100%; text-align: center; margin-top: 10px; }
+.escalate-row a { font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 1px dashed var(--border2); padding-bottom: 1px; }
+.escalate-row a:hover { color: var(--red2); border-bottom-color: var(--red2); }
 .revision-input { flex: 1; background: rgba(0,0,0,0.04); border: 1px solid var(--border2); border-radius: 8px; padding: 10px 14px; color: var(--text); font-size: 13px; outline: none; }
 .revision-input:focus { border-color: var(--amber); }
 .revision-input::placeholder { color: var(--muted); }
@@ -1497,6 +1500,9 @@ function renderTaskModal(t) {
           <input class="revision-input" id="modalRevisionInput" placeholder="Not quite right? Tell us what to change..."/>
           <button class="btn-revise" onclick="reviseFromModal('${t.id}')">Revise →</button>
         </div>
+        <div class="escalate-row">
+          <a href="#" onclick="escalateFromModal('${t.id}'); return false;">This isn't what I was expecting — get a human to help</a>
+        </div>
       </div>`;
 
     if (ALWAYS_MERMAID_TOOLS.includes(t.toolName)) {
@@ -1730,6 +1736,35 @@ function downloadScriptFromModal(taskId) {
   a.click();
   URL.revokeObjectURL(url);
   showToast('Script downloaded! ✓', 'success');
+}
+
+async function escalateFromModal(taskId) {
+  const reason = (document.getElementById('modalRevisionInput')?.value || '').trim();
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+
+  const body = document.getElementById('taskModalBody');
+  body.innerHTML = `<div style="text-align:center;padding:40px;"><div class="loader-spinner" style="margin:0 auto 16px;"></div><div style="color:var(--muted);font-size:13px;">Letting us know...</div></div>`;
+
+  try {
+    const r = await fetch('/api/deskkit-escalate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({ taskId, reason })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Something went wrong');
+
+    body.innerHTML = `
+      <div style="text-align:center;padding:20px 0;">
+        <div class="preview-title" style="margin-bottom:8px;">We're On It</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:8px;">Jen's been notified and will reach out personally to make this right — whether that's fixing it directly or a refund.</p>
+        <p style="font-size:13px;color:var(--muted);">You'll hear from us soon.</p>
+      </div>`;
+    setTimeout(() => { closeTaskModal(); loadTaskHistory(); }, 2500);
+  } catch(e) {
+    showToast('Could not send this. Please try again.', 'error');
+  }
 }
 
 async function reviseFromModal(taskId) {
