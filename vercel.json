@@ -121,6 +121,10 @@
       "destination": "/portal/deskkit-advanced-builder.html"
     },
     {
+      "source": "/portal/custom-package",
+      "destination": "/portal/deskkit-custom-package.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
