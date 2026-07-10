@@ -92,6 +92,35 @@ module.exports = async function handler(req, res) {
       console.error("Escalation email error:", emailErr.message);
     }
 
+    // Text alert — email can sit unread for hours, this actually reaches Jen right away
+    try {
+      const sid = process.env.TWILIO_ACCOUNT_SID;
+      const authToken = process.env.TWILIO_AUTH_TOKEN;
+      const fromNumber = process.env.TWILIO_FROM_NUMBER;
+      const alertToNumber = process.env.TWILIO_ALERT_TO_NUMBER;
+
+      if (sid && authToken && fromNumber && alertToNumber) {
+        const smsBody = `DeskKit: ${email} needs help with "${task.toolName || "a task"}" ($${task.price || 0}). ${reason ? 'Said: ' + reason.slice(0, 100) : 'No details given.'} Check email for full info.`;
+
+        await fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`, {
+          method: "POST",
+          headers: {
+            Authorization: "Basic " + Buffer.from(`${sid}:${authToken}`).toString("base64"),
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: new URLSearchParams({
+            To: alertToNumber,
+            From: fromNumber,
+            Body: smsBody
+          })
+        });
+      } else {
+        console.log("Twilio not configured — skipping SMS alert (email still sent)");
+      }
+    } catch(smsErr) {
+      console.error("Escalation SMS error:", smsErr.message);
+    }
+
     return res.status(200).json({ success: true });
 
   } catch(err) {
