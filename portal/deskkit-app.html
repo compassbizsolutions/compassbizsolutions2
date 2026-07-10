@@ -137,6 +137,13 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 
 /* FEATURED TASKS */
 .featured-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; display: block; }
+.path-chooser { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+.path-card { background: var(--navy2); border: 1px solid var(--border2); border-radius: 12px; padding: 20px; }
+.path-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 800; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.path-card-sub { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+.path-card-btn { display: inline-block; background: var(--amber); color: white; border-radius: 8px; padding: 9px 18px; font-size: 13px; font-weight: 700; text-decoration: none; }
+.path-card-btn:hover { background: var(--amber2); }
+@media (max-width: 600px) { .path-chooser { grid-template-columns: 1fr; } }
 .featured-tasks { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
 .featured-task { background: var(--navy2); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 12px; color: var(--text2); cursor: pointer; transition: all 0.15s; text-decoration: none; display: inline-block; }
 .featured-task:hover { border-color: var(--amber); color: var(--amber); }
@@ -350,6 +357,18 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
     <div class="submit-header">
       <h1>Welcome to DeskKit</h1>
       <p>We handle the back-office admin so you don't have to. What do you need done? Pick a category below, upload a file, describe your task, and we'll take it from there.</p>
+    </div>
+
+    <div class="path-chooser">
+      <div class="path-card">
+        <div class="path-card-title">Ad Hoc</div>
+        <div class="path-card-sub">Need something done right now, one time? Pick a category below and pay per task.</div>
+      </div>
+      <div class="path-card">
+        <div class="path-card-title">Admin Packages</div>
+        <div class="path-card-sub">Need this handled on an ongoing basis? Get a free price estimate for a weekly or monthly package.</div>
+        <a href="/portal/custom-package" class="path-card-btn">Get a Package Quote →</a>
+      </div>
     </div>
 
     <!-- FEATURED QUICK TASKS -->
