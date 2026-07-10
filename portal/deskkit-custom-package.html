@@ -149,14 +149,14 @@ WHAT THEY NEED: ${need}
 HOW OFTEN: ${frequency}
 ${notes ? 'ADDITIONAL CONTEXT: ' + notes : ''}
 
-Estimate the realistic time this would take a skilled person to do correctly each time (be specific — e.g. "about 30-45 minutes per week"), then recommend a fair ${frequency.toLowerCase().includes('month') ? 'monthly' : 'weekly'} price for handling this on their behalf on an ongoing basis. Base the price on the estimated time at a rate of $25/hour. Return ONLY a valid JSON object, no markdown code fences, no explanation, in this exact format: {"timeEstimate": "About 30-45 minutes per week", "recommendedPrice": "$140/month", "reasoning": "2-3 sentence plain-language explanation of how you arrived at this, mentioning the specific tasks involved, their frequency, and the $25/hr rate used.", "whatsIncluded": "A short bullet-style summary (as plain text with line breaks, not markdown bullets) of what's covered at this price."}`;
+This service is delivered primarily through AI automation — AI drafts responses, calculates payroll, categorizes expenses, and handles the repetitive execution. The business owner running this service only needs to review AI-drafted work, spot-check outputs, and personally handle genuine exceptions or judgment calls the AI flags — NOT perform the work manually from scratch. Estimate ONLY that oversight/review time, not the time a human doing this entirely by hand would need (be specific — e.g. "about 30-45 minutes per week"). High-volume but repetitive work (e.g. routine email responses, standard payroll runs) should have LOW oversight time once initial setup is done, since AI handles the bulk of it. Then recommend a fair ${frequency.toLowerCase().includes('month') ? 'monthly' : 'weekly'} price for handling this on their behalf on an ongoing basis. Base the price on the estimated oversight time at a rate of $25/hour. Return ONLY a valid JSON object, no markdown code fences, no explanation, in this exact format: {"timeEstimate": "About 30-45 minutes per week", "recommendedPrice": "$140/month", "reasoning": "2-3 sentence plain-language explanation of how you arrived at this, mentioning the specific tasks involved, their frequency, and the $25/hr rate used.", "whatsIncluded": "A short bullet-style summary (as plain text with line breaks, not markdown bullets) of what's covered at this price."}`;
 
   try {
     const r = await fetch('/api/deskkit-assist', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
       body: JSON.stringify({
-        systemPrompt: 'You are a back-office operations consultant who scopes ongoing administrative work for small trades and service businesses. Estimate time realistically, then price at exactly $25/hour based on that time. Return only valid JSON.',
+        systemPrompt: 'You are scoping ongoing back-office work that is delivered primarily through AI automation, with the business owner only reviewing and spot-checking rather than doing the work by hand. Estimate oversight time realistically (this should be much less than manual-labor time for repetitive tasks), then price at exactly $25/hour based on that oversight time. Return only valid JSON.',
         userText,
         maxTokens: 600
       })
@@ -188,7 +188,8 @@ function renderQuote(q, frequency) {
       <div class="quote-badge">Estimate</div>
     </div>
     <div class="quote-price">${escapeHtml(q.recommendedPrice || 'Contact us')}</div>
-    <div class="quote-price-note">Estimated ${escapeHtml(frequency)} time involved: ${escapeHtml(q.timeEstimate || 'varies')}</div>
+    <div class="quote-price-note">Estimated ${escapeHtml(frequency)} oversight time: ${escapeHtml(q.timeEstimate || 'varies')}</div>
+    <div class="quote-price-note" style="margin-top:-8px;margin-bottom:20px;">This reflects review/oversight time, not manual labor — AI handles the bulk of the actual work.</div>
     <div class="quote-section">
       <div class="quote-section-title">How We Got Here</div>
       <div class="quote-section-body">${escapeHtml(q.reasoning || '')}</div>
