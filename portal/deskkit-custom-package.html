@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Custom Admin Package Quote — DeskKit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="/deskkit-config.js"></script>
+<style>
+:root{--ink:#F5F6F8;--navy:#FFFFFF;--navy2:#FFFFFF;--navy3:#EEF1F5;--amber:#1A4D8F;--amber2:#2C64AC;--amber-dim:rgba(26,77,143,0.08);--amber-border:rgba(26,77,143,0.25);--green:#1F7A4D;--green2:#259960;--green-dim:rgba(31,122,77,0.1);--red:#B42318;--red2:#D92D20;--red-dim:rgba(180,35,24,0.08);--muted:#6B7280;--text:#1A2B4A;--text2:#4B5875;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--ink);color:var(--text);margin:0;min-height:100vh;}
+.header{background:var(--navy);border-bottom:1px solid var(--border);padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.header-logo{display:flex;align-items:baseline;gap:8px;}
+.header-logo-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:1px;}
+.header-logo-name span{color:var(--amber);}
+.header-logo-by{font-size:11px;color:var(--muted);letter-spacing:1px;}
+.header-links{display:flex;align-items:center;gap:20px;}
+.header-back{font-size:13px;color:var(--muted);text-decoration:none;}
+.header-back:hover{color:var(--amber);}
+.page{max-width:720px;margin:0 auto;padding:40px 24px 80px;}
+.page-eyebrow{font-size:12px;font-weight:700;letter-spacing:1.5px;color:var(--amber);text-transform:uppercase;margin-bottom:10px;}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.page-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:28px;}
+.section{margin-bottom:24px;}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.field input,.field select,.field textarea{width:100%;background:var(--navy2);border:1px solid var(--border2);border-radius:8px;padding:11px 14px;font-size:14px;color:var(--text);font-family:'Inter',sans-serif;outline:none;}
+.field textarea{min-height:110px;resize:vertical;line-height:1.5;}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted);}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--amber);}
+.info-box{background:var(--amber-dim);border:1px solid var(--amber-border);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:24px;}
+.submit-btn{width:100%;background:var(--amber);color:white;border:none;border-radius:10px;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;}
+.submit-btn:hover{background:var(--amber2);}
+.submit-btn:disabled{opacity:0.6;cursor:not-allowed;}
+.working-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:40px;text-align:center;margin-top:28px;display:none;}
+.spinner{width:36px;height:36px;border:3px solid var(--border2);border-top-color:var(--amber);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.working-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--text);text-transform:uppercase;margin-bottom:6px;}
+.working-sub{font-size:13px;color:var(--muted);}
+.quote-card{background:var(--navy2);border:1px solid var(--border2);border-radius:14px;padding:28px;margin-top:28px;display:none;}
+.quote-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+.quote-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--text);text-transform:uppercase;}
+.quote-badge{background:var(--green-dim);color:var(--green2);border:1px solid rgba(31,122,77,0.3);border-radius:99px;padding:4px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;}
+.quote-price{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;color:var(--amber);line-height:1;margin-bottom:4px;}
+.quote-price-note{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.quote-section{background:var(--navy3);border-radius:10px;padding:16px 18px;margin-bottom:16px;}
+.quote-section-title{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+.quote-section-body{font-size:14px;color:var(--text2);line-height:1.7;white-space:pre-wrap;}
+.quote-cta{background:var(--amber-dim);border:1px solid var(--amber-border);border-radius:10px;padding:18px;text-align:center;margin-top:20px;}
+.quote-cta-title{font-weight:700;color:var(--text);margin-bottom:6px;font-size:14px;}
+.quote-cta-sub{font-size:13px;color:var(--muted);margin-bottom:14px;}
+.quote-cta-btn{display:inline-block;background:var(--amber);color:white;border:none;border-radius:8px;padding:12px 28px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;text-decoration:none;cursor:pointer;}
+.quote-cta-btn:hover{background:var(--amber2);}
+.disclaimer{font-size:11px;color:var(--muted);margin-top:16px;text-align:center;line-height:1.6;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text);color:white;padding:12px 22px;border-radius:8px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.2);transition:transform 0.25s;z-index:300;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.error{background:var(--red);}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-logo">
+    <div class="header-logo-name">Desk<span>Kit</span></div>
+    <div class="header-logo-by">by Compass</div>
+  </div>
+  <div class="header-links">
+    <a href="/portal/app?tab=history" class="header-back">My Tasks</a>
+    <a href="/portal/app" class="header-back">← Back to DeskKit</a>
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-eyebrow">Featured Task</div>
+  <div class="page-title">Custom Admin Package</div>
+  <div class="page-sub">Have an ongoing admin need instead of a one-time task? Tell us what you need and how often — we'll estimate the time involved and a fair weekly or monthly price. No charge for the quote, no commitment.</div>
+
+  <div class="section">
+    <div class="field">
+      <label>What do you need done?</label>
+      <textarea id="fNeed" placeholder="e.g. Compile payroll every week for 3 employees, reconcile my bank statement monthly, and follow up with customers 30+ days overdue twice a month."></textarea>
+    </div>
+    <div class="field">
+      <label>How Often Do You Need This?</label>
+      <select id="fFrequency">
+        <option>Weekly</option>
+        <option>Bi-Weekly</option>
+        <option>Monthly</option>
+        <option>A Few Times a Month</option>
+        <option>Daily</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Anything Else Useful to Know (optional)</label>
+      <input type="text" id="fNotes" placeholder="Business size, current tools you use, deadlines that matter"/>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>How this works:</strong> This gives you a ballpark estimate based on the scope and frequency you describe — not an automatic charge. If it looks good, book a quick call and we'll set up the actual arrangement together.
+  </div>
+
+  <button class="submit-btn" id="submitBtn" onclick="getQuote()">Get My Quote</button>
+
+  <div class="working-card" id="workingCard">
+    <div class="spinner"></div>
+    <div class="working-title">Working It Out</div>
+    <div class="working-sub">Estimating the time involved and a fair price...</div>
+  </div>
+
+  <div class="quote-card" id="quoteCard"></div>
+
+  <div class="disclaimer">This is an estimate, not a bill — nothing is charged from this page. Final pricing is confirmed when the package is actually set up.</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function getSession() { try { return JSON.parse(localStorage.getItem('dk_session')); } catch(e) { return null; } }
+function val(id) { return (document.getElementById(id)?.value || '').trim(); }
+
+window.onload = () => {
+  const s = getSession();
+  if (!s || !s.token) { window.location.href = '/portal/app'; return; }
+};
+
+async function getQuote() {
+  const need = val('fNeed');
+  if (!need) { showToast('Tell us what you need done first.', 'error'); return; }
+
+  const session = getSession();
+  if (!session) { showToast('Please log in again.', 'error'); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  document.getElementById('quoteCard').style.display = 'none';
+  document.getElementById('workingCard').style.display = 'block';
+  document.getElementById('workingCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  const frequency = val('fFrequency');
+  const notes = val('fNotes');
+
+  const userText = `A small business owner is describing an ongoing admin need they'd like handled on a recurring basis instead of one task at a time.
+
+WHAT THEY NEED: ${need}
+HOW OFTEN: ${frequency}
+${notes ? 'ADDITIONAL CONTEXT: ' + notes : ''}
+
+Estimate the realistic time this would take a skilled person to do correctly each time (be specific — e.g. "about 30-45 minutes per week"), then recommend a fair ${frequency.toLowerCase().includes('month') ? 'monthly' : 'weekly'} price for handling this on their behalf on an ongoing basis. Base the price on the actual time and complexity involved, at a rate that reflects skilled back-office/bookkeeping work (roughly $25-45/hr equivalent depending on complexity), while still being a good value compared to hiring someone. Return ONLY a valid JSON object, no markdown code fences, no explanation, in this exact format: {"timeEstimate": "About 30-45 minutes per week", "recommendedPrice": "$140/month", "reasoning": "2-3 sentence plain-language explanation of how you arrived at this, mentioning the specific tasks involved and their frequency.", "whatsIncluded": "A short bullet-style summary (as plain text with line breaks, not markdown bullets) of what's covered at this price."}`;
+
+  try {
+    const r = await fetch('/api/deskkit-assist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
+      body: JSON.stringify({
+        systemPrompt: 'You are a back-office operations consultant who scopes and prices ongoing administrative work fairly for small trades and service businesses. Be realistic about time estimates and price fairly — not artificially cheap, not inflated. Return only valid JSON.',
+        userText,
+        maxTokens: 600
+      })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Could not generate a quote');
+
+    let parsed;
+    try {
+      parsed = JSON.parse((d.text || '').replace(/```json|```/g, '').trim());
+    } catch(e) {
+      throw new Error('Could not read the quote — please try again');
+    }
+
+    renderQuote(parsed, frequency);
+  } catch(e) {
+    showToast(e.message || 'Something went wrong. Please try again.', 'error');
+  }
+
+  document.getElementById('workingCard').style.display = 'none';
+  btn.disabled = false;
+}
+
+function renderQuote(q, frequency) {
+  const card = document.getElementById('quoteCard');
+  card.innerHTML = `
+    <div class="quote-header">
+      <div class="quote-title">Your Custom Package Estimate</div>
+      <div class="quote-badge">Estimate</div>
+    </div>
+    <div class="quote-price">${escapeHtml(q.recommendedPrice || 'Contact us')}</div>
+    <div class="quote-price-note">Estimated ${escapeHtml(frequency)} time involved: ${escapeHtml(q.timeEstimate || 'varies')}</div>
+    <div class="quote-section">
+      <div class="quote-section-title">How We Got Here</div>
+      <div class="quote-section-body">${escapeHtml(q.reasoning || '')}</div>
+    </div>
+    <div class="quote-section">
+      <div class="quote-section-title">What's Included</div>
+      <div class="quote-section-body">${escapeHtml(q.whatsIncluded || '')}</div>
+    </div>
+    <div class="quote-cta">
+      <div class="quote-cta-title">Like what you see?</div>
+      <div class="quote-cta-sub">Book a quick call and we'll set up the actual arrangement together.</div>
+      <a class="quote-cta-btn" href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" rel="noopener">Book a Call →</a>
+    </div>`;
+  card.style.display = 'block';
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type === 'error' ? ' error' : '');
+  setTimeout(() => { t.className = 'toast'; }, 3500);
+}
+</script>
+</body>
+</html>
