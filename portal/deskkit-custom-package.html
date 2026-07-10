@@ -149,14 +149,14 @@ WHAT THEY NEED: ${need}
 HOW OFTEN: ${frequency}
 ${notes ? 'ADDITIONAL CONTEXT: ' + notes : ''}
 
-Estimate the realistic time this would take a skilled person to do correctly each time (be specific — e.g. "about 30-45 minutes per week"), then recommend a fair ${frequency.toLowerCase().includes('month') ? 'monthly' : 'weekly'} price for handling this on their behalf on an ongoing basis. Base the price on the actual time and complexity involved, at a rate that reflects skilled back-office/bookkeeping work (roughly $25-45/hr equivalent depending on complexity), while still being a good value compared to hiring someone. Return ONLY a valid JSON object, no markdown code fences, no explanation, in this exact format: {"timeEstimate": "About 30-45 minutes per week", "recommendedPrice": "$140/month", "reasoning": "2-3 sentence plain-language explanation of how you arrived at this, mentioning the specific tasks involved and their frequency.", "whatsIncluded": "A short bullet-style summary (as plain text with line breaks, not markdown bullets) of what's covered at this price."}`;
+Estimate the realistic time this would take a skilled person to do correctly each time (be specific — e.g. "about 30-45 minutes per week"), then recommend a fair ${frequency.toLowerCase().includes('month') ? 'monthly' : 'weekly'} price for handling this on their behalf on an ongoing basis. Base the price on the estimated time at a rate of $25/hour. Return ONLY a valid JSON object, no markdown code fences, no explanation, in this exact format: {"timeEstimate": "About 30-45 minutes per week", "recommendedPrice": "$140/month", "reasoning": "2-3 sentence plain-language explanation of how you arrived at this, mentioning the specific tasks involved, their frequency, and the $25/hr rate used.", "whatsIncluded": "A short bullet-style summary (as plain text with line breaks, not markdown bullets) of what's covered at this price."}`;
 
   try {
     const r = await fetch('/api/deskkit-assist', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.token },
       body: JSON.stringify({
-        systemPrompt: 'You are a back-office operations consultant who scopes and prices ongoing administrative work fairly for small trades and service businesses. Be realistic about time estimates and price fairly — not artificially cheap, not inflated. Return only valid JSON.',
+        systemPrompt: 'You are a back-office operations consultant who scopes ongoing administrative work for small trades and service businesses. Estimate time realistically, then price at exactly $25/hour based on that time. Return only valid JSON.',
         userText,
         maxTokens: 600
       })
