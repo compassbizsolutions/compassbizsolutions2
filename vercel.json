@@ -117,6 +117,10 @@
       "destination": "/portal/deskkit-process-map.html"
     },
     {
+      "source": "/portal/advanced-builder",
+      "destination": "/portal/deskkit-advanced-builder.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
