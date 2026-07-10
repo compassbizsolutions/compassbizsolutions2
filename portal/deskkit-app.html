@@ -218,6 +218,8 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
 .slide-preview-bullets { margin: 0; padding-left: 20px; font-size: 13px; color: var(--text2); line-height: 1.7; }
 .mermaid-preview-wrap { background: rgba(0,0,0,0.1); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 20px; max-height: 450px; overflow: auto; text-align: center; }
 .mermaid-preview-wrap svg { max-width: 100%; height: auto; }
+.formula-badge { display: inline-flex; align-items: center; gap: 5px; }
+.formula-fx { font-size: 9px; font-weight: 700; font-style: italic; color: var(--amber); background: var(--amber-dim); border-radius: 3px; padding: 1px 4px; }
 .csv-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .csv-table th { background: var(--navy3); color: var(--text2); text-align: left; padding: 8px 12px; position: sticky; top: 0; font-weight: 700; white-space: nowrap; }
 .csv-table td { padding: 7px 12px; color: var(--text2); border-top: 1px solid var(--border); white-space: nowrap; }
@@ -360,6 +362,7 @@ button, input, textarea, select { font-family: 'Inter', sans-serif; }
           <a href="/portal/quote-comparison" title="Upload quotes from multiple suppliers and get a side-by-side comparison showing the cheapest option.">Compare Material Quotes</a>
           <a href="/portal/mileage-expense" title="Upload a mileage log and get a tax-ready expense report using the current IRS mileage rate.">Mileage to Expense Report</a>
           <a href="/portal/tax-organizer" title="Upload receipts and statements, get them organized by category for your tax professional, plus a QuickBooks file.">Tax Document Organizer</a>
+          <a href="/portal/advanced-builder" title="Upload your data and describe what you need figured out — breakevens, projections, pricing models. Builds a real spreadsheet with live formulas.">Advanced Spreadsheet &amp; Analysis Builder</a>
         </div>
       </div>
       <div class="category-dropdown">
@@ -1265,17 +1268,22 @@ async function viewTask(taskId) {
 
 const QBO_DELIMITER_MODAL = '===QUICKBOOKS_CSV===';
 const NOTES_DELIMITER_MODAL = '===NOTES===';
+const SCRIPT_DELIMITER_MODAL = '===SCRIPT===';
 
 function splitResultSections(text) {
   if (text.includes(QBO_DELIMITER_MODAL)) {
     const parts = text.split(QBO_DELIMITER_MODAL);
-    return { main: parts[0].trim(), notes: '', qbo: parts[1] ? parts[1].trim() : '' };
+    return { main: parts[0].trim(), notes: '', qbo: parts[1] ? parts[1].trim() : '', script: '' };
+  }
+  if (text.includes(SCRIPT_DELIMITER_MODAL)) {
+    const parts = text.split(SCRIPT_DELIMITER_MODAL);
+    return { main: parts[0].trim(), notes: '', qbo: '', script: parts[1] ? parts[1].trim() : '' };
   }
   if (text.includes(NOTES_DELIMITER_MODAL)) {
     const parts = text.split(NOTES_DELIMITER_MODAL);
-    return { main: parts[0].trim(), notes: parts[1] ? parts[1].trim() : '', qbo: '' };
+    return { main: parts[0].trim(), notes: parts[1] ? parts[1].trim() : '', qbo: '', script: '' };
   }
-  return { main: text, notes: '', qbo: '' };
+  return { main: text, notes: '', qbo: '', script: '' };
 }
 
 // Tools that always produce structured data — never guess, always force Excel/CSV
@@ -1295,6 +1303,8 @@ const ALWAYS_WORD_TOOLS = [
 const ALWAYS_PPTX_TOOLS = ['PowerPoint Creation'];
 // Tools that produce a Mermaid flowchart diagram
 const ALWAYS_MERMAID_TOOLS = ['Process Map Builder'];
+// Tools that produce a spreadsheet with real, live Excel formulas (JSON internally)
+const ALWAYS_FORMULA_XLSX_TOOLS = ['Advanced Spreadsheet & Analysis Builder'];
 
 function resolveIsCSV(toolName, text) {
   if (ALWAYS_CSV_TOOLS.includes(toolName)) return true;
@@ -1406,12 +1416,40 @@ async function renderMermaidDiagram(mermaidText) {
   }
 }
 
+function renderFormulaXlsxPreview(text) {
+  let parsed;
+  try {
+    parsed = JSON.parse(cleanAIJson(text));
+  } catch(e) {
+    return `<div class="preview-content" style="white-space:pre-wrap;">${escapeHtml(text)}</div>`;
+  }
+  const rows = parsed.rows || [];
+  const cellDisplay = (cell) => {
+    if (cell && typeof cell === 'object' && 'f' in cell) {
+      return `<span class="formula-badge" title="Live formula: =${escapeHtml(cell.f)}">${escapeHtml(String(cell.v ?? ''))}<span class="formula-fx">fx</span></span>`;
+    }
+    return escapeHtml(String(cell ?? ''));
+  };
+  const header = rows[0] || [];
+  const body = rows.slice(1);
+  return `
+    <div class="csv-table-wrap">
+      <table class="csv-table">
+        <thead><tr>${header.map(h => `<th>${escapeHtml(String(h ?? ''))}</th>`).join('')}</tr></thead>
+        <tbody>${body.map(r => `<tr>${r.map(c => `<td>${cellDisplay(c)}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table>
+    </div>`;
+}
+
 function renderResultContent(text, toolName) {
   if (ALWAYS_PPTX_TOOLS.includes(toolName)) {
     return renderPptxPreview(text);
   }
   if (ALWAYS_MERMAID_TOOLS.includes(toolName)) {
     return renderMermaidPreview();
+  }
+  if (ALWAYS_FORMULA_XLSX_TOOLS.includes(toolName)) {
+    return renderFormulaXlsxPreview(text);
   }
   if (resolveIsCSV(toolName, text)) {
     return renderAsTable(text);
@@ -1431,11 +1469,12 @@ function renderTaskModal(t) {
         This task needs a closer look. Jen will review it personally and get your result to you within 24 hours. No additional charge.
       </p>`;
   } else {
-    const { main, notes, qbo } = splitResultSections(t.result || '');
+    const { main, notes, qbo, script } = splitResultSections(t.result || '');
     // Stash all parts on the modal element for the accept/download handlers to use
     document.getElementById('taskModalBody').dataset.mainResult = main;
     document.getElementById('taskModalBody').dataset.qboResult = qbo;
     document.getElementById('taskModalBody').dataset.notesResult = notes;
+    document.getElementById('taskModalBody').dataset.scriptResult = script;
     document.getElementById('taskModalBody').dataset.toolName = t.toolName || '';
 
     body.innerHTML = `
@@ -1449,9 +1488,11 @@ function renderTaskModal(t) {
         <button class="btn-accept" onclick="acceptResultFromModal('${t.id}')">✓ Accept & Download ${
           ALWAYS_PPTX_TOOLS.includes(t.toolName) ? '(PowerPoint)' :
           ALWAYS_MERMAID_TOOLS.includes(t.toolName) ? '(Image)' :
+          ALWAYS_FORMULA_XLSX_TOOLS.includes(t.toolName) ? '(Excel)' :
           resolveIsCSV(t.toolName, main) ? '(Excel)' : '(Word)'
         }</button>
         ${qbo ? `<button class="btn-accept" style="background:var(--navy3);border:1px solid var(--border2);" onclick="downloadQBOFromModal('${t.id}')">↓ QuickBooks CSV</button>` : ''}
+        ${script ? `<button class="btn-accept" style="background:var(--navy3);border:1px solid var(--border2);" onclick="downloadScriptFromModal('${t.id}')">↓ Download Script</button>` : ''}
         <div class="revision-wrap">
           <input class="revision-input" id="modalRevisionInput" placeholder="Not quite right? Tell us what to change..."/>
           <button class="btn-revise" onclick="reviseFromModal('${t.id}')">Revise →</button>
@@ -1487,6 +1528,8 @@ async function acceptResultFromModal(taskId) {
     downloadAsPptx(resultText, `deskkit-${taskId}.pptx`);
   } else if (ALWAYS_MERMAID_TOOLS.includes(toolName)) {
     downloadMermaidAsPng(`deskkit-${taskId}.png`);
+  } else if (ALWAYS_FORMULA_XLSX_TOOLS.includes(toolName)) {
+    downloadAsFormulaXlsx(resultText, `deskkit-${taskId}.xlsx`);
   } else if (resolveIsCSV(toolName, resultText)) {
     downloadAsExcel(resultText, `deskkit-${taskId}.xlsx`);
   } else {
@@ -1496,6 +1539,55 @@ async function acceptResultFromModal(taskId) {
   closeTaskModal();
   showToast('Downloaded! ✓', 'success');
   loadTaskHistory();
+}
+
+function downloadAsFormulaXlsx(jsonText, filename) {
+  let parsed;
+  try {
+    parsed = JSON.parse(cleanAIJson(jsonText));
+  } catch(e) {
+    showToast('Could not read the spreadsheet data.', 'error');
+    return;
+  }
+
+  const rows = parsed.rows || [];
+  const ws = {};
+  let maxCol = 0;
+
+  rows.forEach((row, r) => {
+    row.forEach((cell, c) => {
+      const addr = XLSX.utils.encode_cell({ r, c });
+      if (cell && typeof cell === 'object' && 'f' in cell) {
+        // Live formula cell — Excel recalculates this on open. The cached
+        // value (v) is just what displays before Excel recalculates.
+        ws[addr] = { t: 'n', f: cell.f, v: typeof cell.v === 'number' ? cell.v : 0 };
+      } else if (typeof cell === 'number') {
+        ws[addr] = { t: 'n', v: cell };
+      } else {
+        ws[addr] = { t: 's', v: String(cell ?? '') };
+      }
+      if (c > maxCol) maxCol = c;
+    });
+  });
+
+  ws['!ref'] = XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: Math.max(rows.length - 1, 0), c: maxCol } });
+
+  // Auto-size columns roughly based on content length
+  const colWidths = [];
+  for (let c = 0; c <= maxCol; c++) {
+    let maxLen = 8;
+    rows.forEach(row => {
+      const cell = row[c];
+      const display = cell && typeof cell === 'object' ? String(cell.v ?? '') : String(cell ?? '');
+      if (display.length > maxLen) maxLen = display.length;
+    });
+    colWidths.push({ wch: Math.min(maxLen + 2, 50) });
+  }
+  ws['!cols'] = colWidths;
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, ws, (parsed.sheetName || 'Analysis').slice(0, 31));
+  XLSX.writeFile(workbook, filename);
 }
 
 function downloadAsPptx(jsonText, filename) {
@@ -1627,6 +1719,19 @@ function downloadQBOFromModal(taskId) {
   showToast('QuickBooks CSV downloaded! ✓', 'success');
 }
 
+function downloadScriptFromModal(taskId) {
+  const scriptText = document.getElementById('taskModalBody').dataset.scriptResult || '';
+  if (!scriptText) return;
+  const blob = new Blob([scriptText], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `deskkit-${taskId}-script.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Script downloaded! ✓', 'success');
+}
+
 async function reviseFromModal(taskId) {
   const feedback = document.getElementById('modalRevisionInput').value.trim();
   if (!feedback) { showToast('Tell us what to change.', 'error'); return; }
@@ -1635,10 +1740,12 @@ async function reviseFromModal(taskId) {
   const mainResult = body.dataset.mainResult || '';
   const qboResult = body.dataset.qboResult || '';
   const notesResult = body.dataset.notesResult || '';
+  const scriptResult = body.dataset.scriptResult || '';
   // Send the full original text (with whichever section delimiter was used, if any)
   // so the AI knows to preserve that structure in its revision.
   let previousResult = mainResult;
   if (qboResult) previousResult = `${mainResult}\n\n${QBO_DELIMITER_MODAL}\n\n${qboResult}`;
+  else if (scriptResult) previousResult = `${mainResult}\n\n${SCRIPT_DELIMITER_MODAL}\n\n${scriptResult}`;
   else if (notesResult) previousResult = `${mainResult}\n\n${NOTES_DELIMITER_MODAL}\n\n${notesResult}`;
 
   body.innerHTML = `<div style="text-align:center;padding:40px;"><div class="loader-spinner" style="margin:0 auto 16px;"></div><div style="color:var(--muted);font-size:13px;">Revising based on your feedback...</div></div>`;
