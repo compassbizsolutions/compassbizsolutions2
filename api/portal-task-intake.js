@@ -148,7 +148,8 @@ module.exports = async function handler(req, res) {
         eKey,
       }, ...adminTasks]);
 
-      // Email confirmation to customer
+      // Email confirmation to customer (own try/catch — a failure here
+      // should never block Jen's notification below, and vice versa)
       try {
         const scheduleMsg = schedule.is_recurring
           ? `Delivered every ${frequency} by ${delivery_day} at ${delivery_time} (at least 24 hours before your deadline)`
@@ -183,31 +184,68 @@ module.exports = async function handler(req, res) {
             </div>`
           })
         });
+      } catch(custEmailErr) {
+        console.error("Customer confirmation email error:", custEmailErr.message);
+      }
 
-        // Notify Jen with full details
-        await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: { Authorization: "Bearer " + process.env.RESEND_API_KEY, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            from: "Compass Portal <reports@compassbizsolutions.com>",
-            to: "reports@compassbizsolutions.com",
-            subject: `New Active Task — ${service_type} (${email})`,
-            html: `<div style="font-family:sans-serif;max-width:500px;">
-              <h2 style="color:#C8701A;">New Active Task</h2>
-              <p><strong>Customer:</strong> ${email}</p>
-              <p><strong>Service:</strong> ${service_type}</p>
-              <p><strong>Frequency:</strong> ${frequency}</p>
-              <p><strong>Schedule:</strong> ${scheduleMsg}</p>
-              <p><strong>Next delivery due:</strong> ${new Date(schedule.next_delivery).toLocaleString()}</p>
-              ${specific_details ? `<p><strong>Additional details:</strong> ${specific_details}</p>` : ""}
-              ${access_info ? `<p><strong>Access info:</strong> ${access_info}</p>` : ""}
-              ${files ? `<p><strong>Files:</strong> <a href="${files}">${files}</a></p>` : ""}
-              ${attachment ? `<p><strong>Attachment:</strong> ${attachment.name} (${(attachment.size/1024).toFixed(1)} KB)</p>` : ""}
-            </div>`
-          })
-        });
-      } catch(emailErr) {
-        console.error("Task intake email error:", emailErr.message);
+      // Notify Jen — this is the ONLY signal she gets that a task needs doing,
+      // so it gets a retry, and if it still fails, the failure is persisted
+      // onto the admin task record itself so it's at least visible/queryable
+      // later, rather than vanishing into console logs no one checks.
+      const scheduleMsg2 = schedule.is_recurring
+        ? `Delivered every ${frequency} by ${delivery_day} at ${delivery_time} (at least 24 hours before your deadline)`
+        : `One-time delivery by ${new Date(schedule.next_delivery).toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" })}`;
+
+      const jenEmailPayload = {
+        from: "Compass Portal <reports@compassbizsolutions.com>",
+        to: "reports@compassbizsolutions.com",
+        subject: `New Active Task — ${service_type} (${email})`,
+        html: `<div style="font-family:sans-serif;max-width:500px;">
+          <h2 style="color:#C8701A;">New Active Task</h2>
+          <p><strong>Customer:</strong> ${email}</p>
+          <p><strong>Service:</strong> ${service_type}</p>
+          <p><strong>Frequency:</strong> ${frequency}</p>
+          <p><strong>Schedule:</strong> ${scheduleMsg2}</p>
+          <p><strong>Next delivery due:</strong> ${new Date(schedule.next_delivery).toLocaleString()}</p>
+          ${specific_details ? `<p><strong>Additional details:</strong> ${specific_details}</p>` : ""}
+          ${access_info ? `<p><strong>Access info:</strong> ${access_info}</p>` : ""}
+          ${files ? `<p><strong>Files:</strong> <a href="${files}">${files}</a></p>` : ""}
+          ${attachment ? `<p><strong>Attachment:</strong> ${attachment.name} (${(attachment.size/1024).toFixed(1)} KB)</p>` : ""}
+        </div>`
+      };
+
+      let jenNotified = false;
+      let jenNotifyError = "";
+      for (let attempt = 0; attempt < 2 && !jenNotified; attempt++) {
+        try {
+          if (attempt === 1) await new Promise(function(r) { setTimeout(r, 1500); });
+          const jenRes = await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: { Authorization: "Bearer " + process.env.RESEND_API_KEY, "Content-Type": "application/json" },
+            body: JSON.stringify(jenEmailPayload)
+          });
+          if (!jenRes.ok) throw new Error("Resend returned status " + jenRes.status);
+          jenNotified = true;
+        } catch(jenErr) {
+          jenNotifyError = jenErr.message;
+          console.error(`Jen notification attempt ${attempt + 1} failed:`, jenErr.message);
+        }
+      }
+
+      if (!jenNotified) {
+        console.error("Jen notification failed after retry — flagging task record:", jenNotifyError);
+        try {
+          const currentAdminTasks = await getFromKV("admin_active_tasks") || [];
+          const flagged = currentAdminTasks.map(function(t) {
+            if (t.eKey === eKey && t.created_at === intake.created_at) {
+              return Object.assign({}, t, { notification_failed: true, notification_error: jenNotifyError });
+            }
+            return t;
+          });
+          await saveToKV("admin_active_tasks", flagged);
+        } catch(flagErr) {
+          console.error("Could not even flag the failed notification:", flagErr.message);
+        }
       }
 
       return res.status(200).json({ success: true, intake, schedule });
