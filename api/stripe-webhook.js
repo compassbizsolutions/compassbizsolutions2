@@ -367,6 +367,54 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    // ── SAFETY NET: payment succeeded but we couldn't tell what was bought ──
+    // Without this, a resolution failure above means total silence: no
+    // customer email, no alert to Jen, nothing — a paying customer just
+    // falls through the cracks with zero indication anything went wrong.
+    else {
+      console.error("UNRESOLVED PLAN TYPE — payment succeeded but productId did not match PRODUCT_MAP. productId:", productId, "session:", session.id);
+
+      try {
+        await resend.emails.send({
+          from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
+          to: process.env.FROM_EMAIL || "reports@compassbizsolutions.com",
+          subject: "🚨 URGENT — Payment received but plan type unrecognized — " + customerEmail,
+          html: `<div style="font-family:sans-serif">
+            <p><b>A customer paid, but the webhook could not identify what they purchased.</b></p>
+            <p>They have NOT received any confirmation or account setup email — you need to follow up manually, right away.</p>
+            <p><strong>Email:</strong> ${customerEmail}</p>
+            <p><strong>Name:</strong> ${customerName || "not provided"}</p>
+            <p><strong>Business:</strong> ${bizName || "not provided"}</p>
+            <p><strong>Stripe session:</strong> ${session.id}</p>
+            <p><strong>Product ID found:</strong> ${productId || "(none found at all)"}</p>
+            <p style="color:#888;font-size:12px">Likely cause: a live/test mode key mismatch, or this product ID isn't in PRODUCT_MAP yet.</p>
+          </div>`
+        });
+      } catch(alertErr) {
+        console.error("Even the fallback alert email failed:", alertErr.message);
+      }
+
+      try {
+        await resend.emails.send({
+          from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
+          to: customerEmail,
+          subject: "We've got your payment — setting things up now",
+          html: `<div style="font-family:sans-serif;max-width:580px;margin:0 auto;color:#1B2E4B">
+            <div style="background:#1B2E4B;padding:24px;border-radius:8px 8px 0 0">
+              <div style="color:#C8701A;font-size:11px;letter-spacing:3px;font-weight:700">COMPASS BUSINESS SOLUTIONS</div>
+            </div>
+            <div style="background:#F4F7FC;padding:28px;border-radius:0 0 8px 8px;border:1px solid #C8D6E8">
+              <p style="font-size:15px">Hi there,</p>
+              <p style="font-size:15px;line-height:1.7">We've received your payment and are setting up your account now — you'll get a follow-up email with your login link shortly. If you don't hear from us within a few hours, just reply to this email and we'll sort it out right away.</p>
+              <p style="font-size:14px">— Jen<br>Compass Business Solutions</p>
+            </div>
+          </div>`
+        });
+      } catch(custErr) {
+        console.error("Fallback customer email also failed:", custErr.message);
+      }
+    }
+
     return res.status(200).json({ received: true });
 
   } catch(err) {
