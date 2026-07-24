@@ -182,6 +182,7 @@ FORMATTING RULES (apply everywhere below):
 
 [HEADLINE]
 One punchy line, 8-14 words. No period. Name the biggest pattern. Bold ONE number — at most two if they pair (e.g., revenue vs profit).
+CRITICAL: If this headline references a total dollar amount being "left on the table" or lost, that number MUST equal the exact sum of the three leak amounts you use in TOP_LEAK + SECOND_LEAK + THIRD_LEAK below — work those three numbers out first, add them, and use that exact sum here. Never state a separate, rounder, or independently-estimated total — it will visibly contradict the total shown elsewhere on the same page. Safer options that avoid this risk entirely: reference their revenue vs. take-home instead (e.g., "$900K in work for about $40K in your pocket"), or use a vague-but-true phrase like "well into six figures" instead of a specific total.
 Example: "You're doing **$900K** in work for about **$40K** in your pocket"
 [/HEADLINE]
 
