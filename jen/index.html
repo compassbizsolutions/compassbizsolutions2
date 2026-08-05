@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Jen Voiselle — Compass Business Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--navy:#0D1B2A;--navy2:#162236;--amber:#C8701A;--amber2:#E08930;--text:#E2EAF2;--muted:#7d92ad;--border:rgba(255,255,255,0.1);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--navy);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;position:relative;overflow-x:hidden;}
+body::before{content:"";position:fixed;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--amber),var(--amber2),var(--amber));background-size:200% 100%;animation:shimmer 3s linear infinite;}
+@keyframes shimmer{0%{background-position:0% 0;}100%{background-position:200% 0;}}
+.watermark{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:600px;color:rgba(255,255,255,0.02);pointer-events:none;font-weight:900;}
+.card{background:var(--navy2);border:1px solid var(--border);border-radius:20px;padding:36px 28px;max-width:380px;width:100%;position:relative;z-index:1;text-align:center;}
+.name{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;color:white;margin-bottom:4px;}
+.title{font-size:14px;color:var(--amber);font-weight:600;margin-bottom:2px;}
+.org{font-size:13px;color:var(--muted);margin-bottom:24px;}
+.contact-list{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.contact-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:13px 16px;text-decoration:none;color:var(--text);font-size:14px;font-weight:500;transition:border-color 0.15s;}
+.contact-row:hover{border-color:var(--amber);}
+.contact-icon{font-size:16px;width:20px;text-align:center;}
+.social-row{display:flex;gap:10px;justify-content:center;margin-bottom:24px;}
+.social-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);text-decoration:none;font-size:16px;transition:border-color 0.15s;}
+.social-btn:hover{border-color:var(--amber);}
+.qr-block{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;align-items:center;gap:16px;margin-bottom:18px;text-align:left;}
+#qrcode{background:white;padding:6px;border-radius:8px;flex-shrink:0;}
+.qr-label{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--amber);text-transform:uppercase;margin-bottom:4px;}
+.qr-desc{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:8px;}
+.qr-cta{font-size:12px;font-weight:700;color:var(--amber);text-decoration:none;}
+.save-btn{width:100%;background:var(--amber);color:white;border:none;border-radius:10px;padding:14px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.save-btn:hover{background:var(--amber2);}
+</style>
+</head>
+<body>
+<div class="watermark">✦</div>
+
+<div class="card">
+  <div class="name">Jen Voiselle</div>
+  <div class="title">Founder &amp; Business Strategist</div>
+  <div class="org">Compass Business Solutions</div>
+
+  <div class="contact-list">
+    <a class="contact-row" href="tel:+15085913418"><span class="contact-icon">📞</span> (508) 591-3418</a>
+    <a class="contact-row" href="mailto:jen@compassbizsolutions.com"><span class="contact-icon">✉️</span> jen@compassbizsolutions.com</a>
+    <a class="contact-row" href="https://www.compassbizsolutions.com" target="_blank" rel="noopener"><span class="contact-icon">🌐</span> compassbizsolutions.com</a>
+  </div>
+
+  <div class="qr-block">
+    <div id="qrcode"></div>
+    <div>
+      <div class="qr-label">Free Diagnostic</div>
+      <div class="qr-desc">Scan to find out how much time and profit your business is leaking — free, 16 questions.</div>
+      <a class="qr-cta" href="https://www.compassbizsolutions.com/trades" target="_blank" rel="noopener">Start Free →</a>
+    </div>
+  </div>
+
+  <button class="save-btn" onclick="saveContact()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+    Save to Contacts
+  </button>
+</div>
+
+<script>
+  new QRCode(document.getElementById("qrcode"), {
+    text: "https://www.compassbizsolutions.com/trades",
+    width: 84,
+    height: 84,
+    colorDark: "#0D1B2A",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+
+  function saveContact() {
+    const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:Jen Voiselle
+N:Voiselle;Jen;;;
+ORG:Compass Business Solutions
+TITLE:Founder & Business Strategist
+TEL;TYPE=CELL:+15085913418
+EMAIL:jen@compassbizsolutions.com
+URL:https://www.compassbizsolutions.com
+NOTE:Finding your time and profit leaks — so you can get back to why you started.
+END:VCARD`;
+
+    const blob = new Blob([vcard], { type: 'text/vcard' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'jen-voiselle.vcf';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+</script>
+</body>
+</html>
