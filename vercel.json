@@ -125,6 +125,10 @@
       "destination": "/portal/deskkit-custom-package.html"
     },
     {
+      "source": "/jen",
+      "destination": "/jen/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
