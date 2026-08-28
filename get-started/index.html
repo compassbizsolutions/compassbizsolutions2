@@ -115,9 +115,15 @@ h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,5vw,42px);font
     </div>
   </div>
 
-  <div class="submit-wrap">
+  <div class="submit-wrap" id="formSubmitArea">
     <button class="submit-btn" onclick="sendForm()">Send to Jen →</button>
-    <div class="submit-note">This opens your email app with everything filled in — just hit send. We'll follow up within one business day.</div>
+    <div class="submit-note">This opens your email app with everything filled in — just hit send. Then book your call below.</div>
+  </div>
+
+  <div class="section" id="successState" style="display:none;text-align:center;">
+    <div class="q-label" style="justify-content:center;"><span class="q-num">✓</span>Sent!</div>
+    <div class="q-hint" style="padding-left:0;margin-bottom:18px;">Now let's find 15 minutes to talk it through — since I already have everything I need, this'll be quick.</div>
+    <a class="submit-btn" style="display:block;text-decoration:none;box-sizing:border-box;" href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" rel="noopener">Book Your Call →</a>
   </div>
 </div>
 
@@ -193,6 +199,10 @@ ${whyProblem || '(not specified)'}`;
 
   const mailtoLink = `mailto:jen@compassbizsolutions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   window.location.href = mailtoLink;
+
+  document.getElementById('formSubmitArea').style.display = 'none';
+  document.getElementById('successState').style.display = 'block';
+  document.getElementById('successState').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 </script>
 
