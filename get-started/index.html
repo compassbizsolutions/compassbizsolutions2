@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Get Started — Compass Business Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#0D1B2A; --navy2:#162236; --navy3:#1D2E48;
+  --amber:#C8701A; --amber2:#E08930; --amber-dim:rgba(200,112,26,0.1);
+  --text:#E9EEF5; --text2:#B8C6D9; --muted:#7d92ad;
+  --border:rgba(255,255,255,0.1); --white:#FFFFFF;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--navy);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;padding:0 0 60px;}
+.wrap{max-width:640px;margin:0 auto;padding:0 24px;}
+
+header{padding:28px 0 0;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);}
+.logo span{color:var(--amber);}
+
+.page-head{padding:44px 0 32px;text-align:center;}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:14px;}
+h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,5vw,42px);font-weight:900;text-transform:uppercase;color:var(--white);letter-spacing:0.3px;margin-bottom:14px;}
+.page-sub{color:var(--text2);font-size:15px;max-width:480px;margin:0 auto;}
+
+.section{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:26px 24px;margin-bottom:16px;}
+.q-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:var(--amber-dim);color:var(--amber);border-radius:50%;font-size:12px;font-weight:800;margin-right:8px;}
+.q-label{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.5px;display:flex;align-items:center;margin-bottom:6px;}
+.q-hint{font-size:13.5px;color:var(--muted);margin-bottom:16px;padding-left:34px;}
+
+.field{margin-bottom:14px;}
+.field:last-child{margin-bottom:0;}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.field input, .field textarea, .field select{width:100%;background:var(--navy3);border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;outline:none;}
+.field input:focus, .field textarea:focus, .field select:focus{border-color:var(--amber);}
+.field input::placeholder, .field textarea::placeholder{color:var(--muted);}
+.field textarea{min-height:90px;resize:vertical;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media (max-width:520px){.field-row{grid-template-columns:1fr;}}
+
+.submit-wrap{margin-top:8px;}
+.submit-btn{width:100%;background:var(--amber);color:white;border:none;border-radius:10px;padding:17px;font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;transition:background 0.15s;}
+.submit-btn:hover{background:var(--amber2);}
+.submit-note{text-align:center;font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6;}
+
+.err{display:none;background:rgba(180,35,24,0.1);border:1px solid rgba(180,35,24,0.3);color:#f5a29a;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:14px;}
+</style>
+</head>
+<body>
+
+<header><div class="wrap"><div class="logo">Compass<span>·</span>Business Solutions</div></div></header>
+
+<div class="wrap">
+  <div class="page-head">
+    <div class="eyebrow">Let's Get Started</div>
+    <h1>Tell Us What You Need</h1>
+    <p class="page-sub">Fill this out once and we'll take it from there. The more specific you are, the faster we get it right the first time.</p>
+  </div>
+
+  <div class="err" id="errBox">Please fill in your name, email, and at least what you need done before sending.</div>
+
+  <div class="section">
+    <div class="q-label"><span class="q-num">•</span>Your Info</div>
+    <div class="field-row">
+      <div class="field"><label>Your Name</label><input type="text" id="yourName" placeholder="Jose Martinez"/></div>
+      <div class="field"><label>Business Name</label><input type="text" id="bizName" placeholder="Jose's Electrical"/></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Your Email</label><input type="email" id="yourEmail" placeholder="jose@email.com"/></div>
+      <div class="field"><label>Your Phone (optional)</label><input type="tel" id="yourPhone" placeholder="(555) 555-5555"/></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="q-label"><span class="q-num">W</span>Who</div>
+    <div class="q-hint">Who should actually receive the finished work? Sometimes it's you, sometimes it's a bookkeeper, office manager, or someone else.</div>
+    <div class="field-row">
+      <div class="field"><label>Recipient Name</label><input type="text" id="whoName" placeholder="Same as me, or someone else's name"/></div>
+      <div class="field"><label>Recipient Email</label><input type="email" id="whoEmail" placeholder="Their email address"/></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="q-label"><span class="q-num">W</span>What</div>
+    <div class="q-hint">What exactly do you need done? Be as specific as you can — the task, how often, and anything about how you currently do it.</div>
+    <div class="field">
+      <textarea id="whatNeeded" placeholder="e.g. Compile payroll every Friday for 6 employees, formatted for ADP. Right now I'm doing it by hand from paper timesheets and it takes me 2 hours."></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="q-label"><span class="q-num">W</span>Where</div>
+    <div class="q-hint">Where should the finished work actually land? Email, a shared drive, a specific software, a text — wherever makes sense for you.</div>
+    <div class="field">
+      <input type="text" id="whereDeliver" placeholder="e.g. Email it to me, or upload to our shared Google Drive folder"/>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="q-label"><span class="q-num">W</span>When</div>
+    <div class="q-hint">When do you need this by? Is this a one-time thing or something recurring?</div>
+    <div class="field">
+      <input type="text" id="whenNeeded" placeholder="e.g. Every Friday by noon, or just once by end of month"/>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="q-label"><span class="q-num">W</span>Why</div>
+    <div class="q-hint">What's actually going on right now? Why isn't this getting done, or why is it such a pain?</div>
+    <div class="field">
+      <textarea id="whyProblem" placeholder="e.g. I run out of time at the end of the week and it gets pushed to the weekend, which eats into family time. Or: I just don't have anyone to do this and I'm not good with spreadsheets."></textarea>
+    </div>
+  </div>
+
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="sendForm()">Send to Jen →</button>
+    <div class="submit-note">This opens your email app with everything filled in — just hit send. We'll follow up within one business day.</div>
+  </div>
+</div>
+
+<script>
+async function sendForm() {
+  const yourName = document.getElementById('yourName').value.trim();
+  const bizName = document.getElementById('bizName').value.trim();
+  const yourEmail = document.getElementById('yourEmail').value.trim();
+  const yourPhone = document.getElementById('yourPhone').value.trim();
+  const whoName = document.getElementById('whoName').value.trim();
+  const whoEmail = document.getElementById('whoEmail').value.trim();
+  const whatNeeded = document.getElementById('whatNeeded').value.trim();
+  const whereDeliver = document.getElementById('whereDeliver').value.trim();
+  const whenNeeded = document.getElementById('whenNeeded').value.trim();
+  const whyProblem = document.getElementById('whyProblem').value.trim();
+
+  const errBox = document.getElementById('errBox');
+  if (!yourName || !yourEmail || !whatNeeded) {
+    errBox.style.display = 'block';
+    errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  errBox.style.display = 'none';
+
+  const btn = document.querySelector('.submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  // Save as a structured lead in the admin system, so it shows up as a
+  // real, convertible record — not just an email that has to be re-typed
+  // later. If this fails for any reason, the mailto fallback below still
+  // guarantees Jen gets notified either way.
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 6000);
+    await fetch('https://admin.compassbizsolutions.com/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify({
+        action: 'submit_lead',
+        lead: { yourName, bizName, yourEmail, yourPhone, whoName, whoEmail, whatNeeded, whereDeliver, whenNeeded, whyProblem }
+      })
+    });
+    clearTimeout(timeout);
+  } catch (e) {
+    console.error('Could not save structured lead, falling back to email only:', e.message);
+  }
+
+  const subject = `New Request — ${bizName || yourName}`;
+  const body =
+`YOUR INFO
+Name: ${yourName}
+Business: ${bizName || '(not given)'}
+Email: ${yourEmail}
+Phone: ${yourPhone || '(not given)'}
+
+WHO — Who receives the finished work
+Name: ${whoName || '(same as requester)'}
+Email: ${whoEmail || '(same as requester)'}
+
+WHAT — Exactly what's needed
+${whatNeeded}
+
+WHERE — Where it should be delivered
+${whereDeliver || '(not specified)'}
+
+WHEN — Deadline / frequency
+${whenNeeded || '(not specified)'}
+
+WHY — The actual problem right now
+${whyProblem || '(not specified)'}`;
+
+  const mailtoLink = `mailto:jen@compassbizsolutions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailtoLink;
+}
+</script>
+
+</body>
+</html>
