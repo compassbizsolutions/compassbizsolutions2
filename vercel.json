@@ -129,6 +129,14 @@
       "destination": "/jen/index.html"
     },
     {
+      "source": "/support",
+      "destination": "/support/index.html"
+    },
+    {
+      "source": "/get-started",
+      "destination": "/get-started/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
