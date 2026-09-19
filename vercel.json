@@ -9,6 +9,18 @@
       "destination": "/trades/index.html"
     },
     {
+      "source": "/reviewkit",
+      "destination": "/reviewkit/index.html"
+    },
+    {
+      "source": "/reviewkit/onboarding",
+      "destination": "/reviewkit/onboarding.html"
+    },
+    {
+      "source": "/reviewkit/welcome",
+      "destination": "/reviewkit/welcome.html"
+    },
+    {
       "source": "/trades/(.*)",
       "destination": "/trades/index.html"
     },
