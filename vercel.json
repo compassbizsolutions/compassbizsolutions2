@@ -154,6 +154,18 @@
     }
   ],
   "functions": {
+    "api/reviewkit-checkout.js": {
+      "maxDuration": 15
+    },
+    "api/reviewkit-webhook.js": {
+      "maxDuration": 30
+    },
+    "api/reviewkit-session-lookup.js": {
+      "maxDuration": 15
+    },
+    "api/reviewkit-onboarding-save.js": {
+      "maxDuration": 15
+    },
     "api/paddle-webhook.js": {
       "maxDuration": 60
     },
