@@ -9,6 +9,22 @@
       "destination": "/trades/index.html"
     },
     {
+      "source": "/fixkit",
+      "destination": "/trades/index.html"
+    },
+    {
+      "source": "/buildkit",
+      "destination": "/trades/index.html"
+    },
+    {
+      "source": "/fieldkit",
+      "destination": "/trades/fieldkit/features/index.html"
+    },
+    {
+      "source": "/fieldkit/features",
+      "destination": "/trades/fieldkit/features/index.html"
+    },
+    {
       "source": "/reviewkit",
       "destination": "/reviewkit/index.html"
     },
