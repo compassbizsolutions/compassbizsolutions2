@@ -140,6 +140,20 @@
     .about-stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
     /* ── WORK ── */
+    .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; }
+    .plan-card { background: #fff; border: 1px solid rgba(61,107,158,0.2); border-radius: 14px; padding: 28px; display: flex; flex-direction: column; }
+    .plan-card--featured { border: 2px solid var(--amber); }
+    .plan-tag { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--amber); text-transform: uppercase; margin-bottom: 6px; }
+    .plan-name { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 800; color: var(--navy); text-transform: uppercase; line-height: 1.1; margin-bottom: 10px; }
+    .plan-price { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 800; color: var(--navy); margin-bottom: 16px; }
+    .plan-price span { font-size: 16px; font-weight: 600; color: var(--muted); margin-left: 4px; }
+    .plan-list { list-style: none; display: flex; flex-direction: column; gap: 9px; margin: 0 0 22px; padding: 0; flex: 1; }
+    .plan-list li { font-size: 14px; color: var(--muted); line-height: 1.55; padding-left: 18px; position: relative; }
+    .plan-list li::before { content: "✓"; color: var(--amber); font-weight: 700; position: absolute; left: 0; }
+    .plan-btn { text-align: center; }
+    .plans-note { margin-top: 20px; font-size: 14px; color: var(--muted); max-width: 900px; }
+    .plans-note a { color: var(--amber); font-weight: 700; }
+    @media (max-width: 900px) { .plans-grid { grid-template-columns: 1fr; } }
     .work-bg { background: var(--navy-dark); }
     .work-bg .section-title { color: white; }
     .work-bg .section-eyebrow { color: var(--amber); }
@@ -257,30 +271,23 @@
       <a href="#work" class="nav-link">Our Work</a>
       <a href="#about" class="nav-link">About</a>
       <div class="nav-dropdown-wrap">
-        <button class="nav-link nav-dropdown-btn" onclick="toggleVerticals(event)">Verticals ▾</button>
+        <button class="nav-link nav-dropdown-btn" onclick="toggleVerticals(event)">Tools ▾</button>
         <div class="nav-dropdown" id="verticals-dropdown">
-          <a href="/fixkit" class="nav-dropdown-item">🔧 FixKit — Profit Leak Repair <span class="soon-tag">Soon</span>
+          <a href="/trades" class="nav-dropdown-item">🔧 FixKit — Free Profit-Leak Check
             <div class="dd-tooltip">
               <div class="dd-tooltip-title">FixKit</div>
-              <div class="dd-tooltip-desc">Find and fix the profit leaks draining your trades business. Free diagnostic is live now — full fix plans coming soon.</div>
+              <div class="dd-tooltip-desc">19 questions, about 10 minutes. See your top 3 profit leaks in dollars, free.</div>
             </div>
           </a>
-          <a href="/buildkit" class="nav-dropdown-item">🏗️ BuildKit — New Business Launch <span class="soon-tag">Soon</span>
+          <a href="/reviewkit" class="nav-dropdown-item">⭐ ReviewKit — More Google Reviews
             <div class="dd-tooltip">
-              <div class="dd-tooltip-title">BuildKit</div>
-              <div class="dd-tooltip-desc">Build your trades business right from day one — pricing, first customers, systems, and a 90-day launch plan.</div>
+              <div class="dd-tooltip-title">ReviewKit</div>
+              <div class="dd-tooltip-desc">Review requests after every job and replies to every review, in your voice. From $79/mo.</div>
             </div>
           </a>
-          <a href="/fieldkit" class="nav-dropdown-item">📱 FieldKit — Field Operations <span class="soon-tag">Soon</span>
-            <div class="dd-tooltip">
-              <div class="dd-tooltip-title">FieldKit</div>
-              <div class="dd-tooltip-desc">Full field ops platform — scheduling, dispatch, AI quoting, invoicing, and real-time profit tracking.</div>
-            </div>
-          </a>
-          <div class="nav-dropdown-item nav-dropdown-soon">Restaurants <span class="soon-tag">Soon</span></div>
         </div>
       </div>
-      <a href="https://calendly.com/jvoiselle612-s9gb/strategy-call" target="_blank" class="nav-link nav-cta">Book a Call — From $79</a>
+      <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="nav-link nav-cta">Free 15-Min Call</a>
     </div>
     <button class="nav-mobile-btn" id="mobileBtn" aria-label="Menu">
       <span id="mb1"></span><span id="mb2"></span><span id="mb3"></span>
@@ -294,13 +301,11 @@
   <a href="#work" class="mobile-menu-link" onclick="closeMobile()">Our Work</a>
   <a href="#about" class="mobile-menu-link" onclick="closeMobile()">About</a>
   <div style="padding:8px 0;border-bottom:1px solid rgba(61,107,158,0.15)">
-    <div style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Verticals</div>
-    <a href="/fixkit" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">🔧 FixKit — Profit Leak Repair <span style="font-size:10px;background:var(--amber);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Soon</span></a>
-    <a href="/buildkit" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">🏗️ BuildKit — New Business <span style="font-size:10px;background:var(--amber);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Soon</span></a>
-    <a href="/fieldkit" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">📱 FieldKit — Field Ops <span style="font-size:10px;background:var(--amber);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Soon</span></a>
-    <div class="mobile-menu-link" style="padding:8px 0;font-size:14px;color:rgba(255,255,255,0.3)">🍽️ Restaurants <span style="font-size:10px;background:var(--amber);color:#fff;padding:2px 6px;border-radius:4px;margin-left:4px">Soon</span></div>
-  </div>
-  <a href="https://calendly.com/jvoiselle612-s9gb/strategy-call" target="_blank" class="mobile-menu-link" style="color:var(--amber);font-weight:600" onclick="closeMobile()">Book a Call →</a>
+    <div style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Tools</div>
+    <a href="/trades" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">🔧 FixKit — Free Profit-Leak Check</a>
+    <a href="/reviewkit" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">⭐ ReviewKit — More Google Reviews</a>
+    </div>
+  <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="mobile-menu-link" style="color:var(--amber);font-weight:600" onclick="closeMobile()">Book a Free 15-Min Call →</a>
 </div>
 
 <!-- HERO -->
@@ -310,18 +315,18 @@
   <div class="hero-inner">
     <div>
       <h1 class="hero-headline">
-        We Build the<br>
-        Infrastructure<br>
-        <em>Most Businesses</em><br>
-        Never Had.
+        More Booked Jobs.<br>
+        More of What<br>
+        You Earn<br>
+        <em>Stays Yours.</em>
       </h1>
       <p class="hero-sub">
-        <strong>Apps and websites. Fixing how your business actually runs. Real numbers you can read. Getting found online.</strong>
-        25 years doing this at the corporate level — now built for the shop your size, without the corporate price tag or the corporate runaround.
+        <strong>Compass finds where your trades business is leaking money, then fixes it for you: the missed calls, the reviews, the website, the paperwork.</strong>
+        25 years of corporate systems work, pointed at the shop your size. Based on Cape Cod.
       </p>
       <div class="hero-actions">
-        <a href="https://calendly.com/jvoiselle612-s9gb/strategy-call" target="_blank" class="btn-primary">Book a Strategy Call — $79 →</a>
-        <a href="#services" class="btn-ghost">See What We Do</a>
+        <a href="/trades" class="btn-primary">Run the Free Profit-Leak Check →</a>
+        <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="btn-ghost">Book a Free 15-Min Call</a>
       </div>
     </div>
     <div class="hero-card">
@@ -331,9 +336,8 @@
         <div class="hero-stat-text"><strong>Years Doing This For Real</strong>Corporate-level systems experience. Now pointed at businesses your size.</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num">8</div>
-        <div class="hero-stat-text"><strong>Things We Actually Do</strong>AI, apps, fixing how you run things, your numbers in plain English, social media, web builds, and tying it all together.
-</div>
+        <div class="hero-stat-num">12</div>
+        <div class="hero-stat-text"><strong>Profit Leaks We Check</strong>From underpricing and no-shows to missed calls and slow invoices. The check is free and shows you the dollars.</div>
       </div>
       <div class="hero-stat">
         <div class="hero-stat-num">0</div>
@@ -343,12 +347,50 @@
   </div>
 </section>
 
+<!-- MONTHLY PLANS -->
+<section id="plans" style="background:var(--light)">
+  <div class="section-inner">
+    <div class="section-eyebrow">Done For You, Every Month</div>
+    <h2 class="section-title">Nobody Wants a Website.<br>They Want the Phone to Ring.</h2>
+    <p class="section-sub">You shouldn't have to become a marketer to keep your trucks busy. Pick a plan and we run it. You get one page every month: what you paid on one side, what came in on the other.</p>
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-tag">Foundation</div>
+        <div class="plan-name">Get Found. Get Called Back.</div>
+        <div class="plan-price">From $497<span>/mo</span></div>
+        <ul class="plan-list">
+          <li>Missed-call text-back, so a caller hears from you in 60 seconds even when you're under a sink</li>
+          <li>A review request after every job, and replies to every review in your voice (ReviewKit)</li>
+          <li>A website built to get calls, hosted and kept up to date</li>
+          <li>Follow-up texts on every quote until the customer says yes or no</li>
+          <li>Your one-page results report every month</li>
+        </ul>
+        <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="btn-primary plan-btn">Book a Free 15-Min Call →</a>
+      </div>
+      <div class="plan-card plan-card--featured">
+        <div class="plan-tag">Full Stack</div>
+        <div class="plan-name">Keep the Phone Ringing.</div>
+        <div class="plan-price">From $1,500<span>/mo + your ad spend</span></div>
+        <ul class="plan-list">
+          <li>Everything in Foundation</li>
+          <li>Local ads run and managed for your area. Ad money goes straight from you to Facebook and Google</li>
+          <li>Social posts every week. You film a few clips on your phone, we do the rest</li>
+          <li>Automations for the manual work eating your nights: scheduling, invoicing, reminders</li>
+          <li>A monthly call with Jen to go over your numbers</li>
+        </ul>
+        <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="btn-primary plan-btn">Book a Free 15-Min Call →</a>
+      </div>
+    </div>
+    <p class="plans-note">One company per trade per town. Once you're in, we don't work for your competition down the road. Not sure what you need? <a href="/trades">Run the free profit-leak check first.</a></p>
+  </div>
+</section>
+
 <!-- SERVICES -->
 <section class="services-bg" id="services">
   <div class="section-inner">
-    <div class="section-eyebrow">What We Do</div>
-    <h2 class="section-title">Ways We Move<br>Your Business Forward</h2>
-    <p class="section-sub">Every service connects back to the same goal — finding where your business is leaking time, money, or opportunity, and fixing it.</p>
+    <div class="section-eyebrow">What's Inside</div>
+    <h2 class="section-title">What We Build<br>and Run for You</h2>
+    <p class="section-sub">These are the pieces behind the plans, and they're available one at a time for bigger projects. Every one ties back to the same thing: more booked jobs and more money kept.</p>
     <div class="services-grid">
 
       <div class="service-card">
@@ -442,7 +484,41 @@
     <h2 class="section-title" style="color:white">Built. Shipped. Real.</h2>
     <p class="section-sub">We don't talk about what we can do — we show what we've built.</p>
     <div class="work-grid">
-
+      <div class="work-card work-card-1">
+        <div class="work-status">Live</div>
+        <div class="work-tag">Diagnostic</div>
+        <div class="work-name">FixKit</div>
+        <div class="work-desc">A free profit-leak check for trades businesses. 19 questions in, your top 3 leaks out, each with the dollar math.</div>
+        <a href="/trades" class="work-link">Try it free →</a>
+      </div>
+      <div class="work-card work-card-2">
+        <div class="work-status">Live</div>
+        <div class="work-tag">Reviews</div>
+        <div class="work-name">ReviewKit</div>
+        <div class="work-desc">Review requests after every job and a reply to every Google review, written in the owner's voice.</div>
+        <a href="/reviewkit" class="work-link">See ReviewKit →</a>
+      </div>
+      <div class="work-card work-card-2">
+        <div class="work-status">Live</div>
+        <div class="work-tag">Pool Service · Cape Cod</div>
+        <div class="work-name">Grub's Tubs</div>
+        <div class="work-desc">A full setup for a local pool service company: the marketing site with online booking, plus a field app for the crew.</div>
+        <ul class="work-bullets">
+          <li>Website with local search setup and a booking form</li>
+          <li>Field app: pool profiles, before and after photos, truck inventory</li>
+          <li>Quotes and invoices from the truck</li>
+        </ul>
+        <a href="https://grubs-tubs.com" target="_blank" rel="noopener" class="work-link">Visit the site →</a>
+      </div>
+      <div class="work-card work-card-1">
+        <div class="work-tag">Website Examples</div>
+        <div class="work-name">Sites Built to Get Calls</div>
+        <div class="work-desc">Sample builds showing what a Compass website looks like for different kinds of business.</div>
+        <ul class="work-bullets">
+          <li><a href="/webdesign/trades.html" target="_blank" style="color:inherit">Trades example</a></li>
+          <li><a href="/webdesign/professional.html" target="_blank" style="color:inherit">Professional services example</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -464,6 +540,7 @@
         <div class="about-title">Founder, Compass Business Solutions</div>
         <p class="about-body">For 25 years I worked in business and technology process analysis across three major organizations — finding exactly where time and money disappear, how the individual parts of a business run, and how the pieces fit together. Automating the stuff that shouldn't be manual. Fixing the gaps that were quietly costing time, efficiency, and money.</p>
         <p class="about-body">That whole time I watched friends in the trades — and small business owners across industries — working themselves into the ground with the same operational problems I'd spent my career solving. They just never had anyone with that background in the room.</p>
+        <p class="about-body">I live in Mashpee and work with trades businesses here on Cape Cod and beyond. When you book a call, you talk to me.</p>
         <p class="about-body">Compass is what happens when 25 years of corporate-level process work gets pointed at the guys who actually need it — not another company that already has ten people doing this.</p>
         <div class="about-stats">
           <div class="about-stat">
@@ -489,7 +566,7 @@
   <div class="section-inner">
     <div class="section-eyebrow">Book Time With Jen</div>
     <h2 class="section-title">Paid Consulting Calls</h2>
-    <p class="section-sub">Come with a problem. Leave with a direction. Payment required to book — your time and mine are both worth something.</p>
+    <p class="section-sub">For a working session on one specific problem. Just want to see if Compass is a fit for your business? <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" style="color:var(--amber);font-weight:700">That call is free and takes 15 minutes →</a></p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:800px">
       <div style="background:#fff;border:2px solid var(--amber);border-radius:14px;padding:28px">
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--amber);margin-bottom:4px">$79</div>
@@ -518,8 +595,8 @@
         <div class="contact-item">
           <div class="contact-icon">📞</div>
           <div>
-            <div class="contact-item-label">Book a Call — From $79</div>
-            <div class="contact-item-value">Strategy Call (30 min) — $79. Working Session (60 min) — $149. Both credited toward any Compass project.<br><br><a href="https://calendly.com/jvoiselle612-s9gb/strategy-call" target="_blank">Book a Strategy Call — $79 →</a></div>
+            <div class="contact-item-label">Free 15-Minute Call</div>
+            <div class="contact-item-value">We look at your numbers together and you decide if it makes sense. No charge.<br><br><a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank">Book a Free Call →</a></div>
           </div>
         </div>
         <div class="contact-item">
@@ -547,14 +624,22 @@
               <input class="form-input" type="text" name="business" placeholder="Business name"/>
             </div>
           </div>
-          <div class="form-row">
-            <label class="form-label">Email</label>
-            <input class="form-input" type="email" name="email" placeholder="your@email.com" required/>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-row">
+              <label class="form-label">Email</label>
+              <input class="form-input" type="email" name="email" placeholder="your@email.com" required/>
+            </div>
+            <div class="form-row">
+              <label class="form-label">Phone</label>
+              <input class="form-input" type="tel" name="phone" placeholder="Best number to reach you"/>
+            </div>
           </div>
           <div class="form-row">
             <label class="form-label">I'm interested in</label>
             <select class="form-input" name="service">
               <option value="">Select a service...</option>
+              <option>Foundation plan (reviews, missed calls, website)</option>
+              <option>Full Stack plan (plus ads and social)</option>
               <option>AI & Automation</option>
               <option>Custom Applications</option>
               <option>Operations Consulting</option>
@@ -580,7 +665,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-copy">© 2025 Compass Business Solutions · Jen Voiselle</div>
+    <div class="footer-copy">© 2026 Compass Business Solutions · Jen Voiselle</div>
     <div class="footer-links">
       <a href="/terms-and-conditions" class="footer-link">Terms</a>
       <a href="/privacy-policy" class="footer-link">Privacy</a>
@@ -640,7 +725,8 @@
         email:    body.email || '',
         business: body.business || '',
         service:  body.service || '',
-        message:  body.message || '',
+        message:  (body.phone ? 'Phone: ' + body.phone + '\n\n' : '') + (body.message || ''),
+        phone:    body.phone || '',
         source:   'contact-form',
         category: 'contact_form'
       })
