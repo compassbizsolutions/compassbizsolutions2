@@ -68,7 +68,22 @@ billing/refund · complaint · vendor/spam.
 - Message arriving too close to close for the delay to land in-hours: reply
   next business morning.
 
-❓ Business hours + time zone (proposed: Mon–Fri 8am–6pm, Sat 9am–1pm, Sun closed)
+**Business hours:** 7am–7pm, every day (including weekends).
+❓ Time zone
+
+**Escalations Jen doesn't answer**
+- Jen responds only when available; the customer should never be left silent.
+- When the normal reply time is reached (15 min for a first message, 8 min
+  after that) and Jen hasn't replied, send a holding message instead:
+  - *In hours:* "Thanks for reaching out — we want to make sure you get the
+    right answer on this, so we've passed it along to the right person and
+    they'll be in touch with you shortly."
+  - *After hours:* "Thanks so much for reaching out! We've wrapped up for the
+    evening, but your message is at the top of our list and we'll be in touch
+    as soon as we're back in the morning."
+- Jen keeps getting reminders until she responds. Next morning, any escalation
+  still unanswered goes to the top of her digest.
+- Non-escalation messages after hours are still held and answered from 7am.
 ❓ Booking link (Calendly, Google booking page, …)
 
 **Escalate to Jen instead of replying:** bookings beyond the calendar link,
