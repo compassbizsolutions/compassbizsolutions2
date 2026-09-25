@@ -17,7 +17,15 @@ Status: **planning** — decisions below are confirmed; open questions marked �
   DeskKit/escalation code reads `UPSTASH_REDIS_REST_*` / `lime_KV_REST_API_*`.
   Confirm these point at the same store before building.
 
-❓ Off-limits topics list (refunds, custom pricing, guarantees, legal/tax, …)
+**Off-limits (DRAFT — Jen to confirm).** Never answered; escalate instead:
+- Refunds, cancellations, billing disputes, failed payments
+- Custom pricing, discounts, promo codes not published on the site
+- Guarantees or promised results ("will this get me X more jobs?")
+- Legal, tax, HR/employment, or insurance advice
+- Anything about a specific client or their results
+- Complaints or frustrated/angry tone
+- Partnership, press, hiring, or vendor proposals
+- Anything the assistant isn't confident about
 ❓ Urgent alert channel (email, text, both)
 ❓ Coverage when Jen is away
 
@@ -114,7 +122,7 @@ complaints, billing/refunds, custom pricing, anything low-confidence.
 **Meta constraints:** free-form replies only within 24h of the user's last
 message; must offer a path to a human.
 
-❓ Instagram is Business/Creator and linked to the Facebook Page?
+Accounts: Compass Facebook Page + Compass Instagram (Business), linked together in Meta Business Suite. ✅
 ❓ Option A or B
 ❓ Draft-approval vs auto-send for simple questions at launch
 
