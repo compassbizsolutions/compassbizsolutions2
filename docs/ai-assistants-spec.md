@@ -2,7 +2,29 @@
 
 Internal planning doc. Not deployed (excluded via `.vercelignore`).
 
-Status: **planning** — decisions below are confirmed; open questions marked ❓.
+Status: **email inquiry assistant built** (draft mode); social pending Jen's
+Facebook cleanup. Decisions below are confirmed; open questions marked ❓.
+
+## Built: email inquiry assistant
+
+- `api/inbound-email.js` — queues every inbound email for the assistant.
+- `api/inquiry-dispatch.js` — Vercel cron, every minute: triage + draft,
+  holding messages for unanswered escalations, optional auto-replies,
+  7am digest of escalations still waiting.
+- `api/_lib/` — shared config (business facts, off-limits, hours, wording),
+  business-hours math, Claude call, KV/queue helpers, email helpers.
+
+Env vars: `CRON_SECRET` (required — cron is rejected without it),
+`ANTHROPIC_API_KEY` (already set), `INQUIRY_AUTO_SEND=true` to let it send
+new-lead / pricing replies on its own (default: drafts only).
+
+Known limits:
+- Only email that reaches the Resend inbound webhook is seen. Today that is
+  replies to emails sent from the admin; mail sent straight to jen@ is not,
+  unless it's forwarded to the Resend inbound address.
+- Replies Jen sends from her own mail app aren't detected; only replies sent
+  from the admin cancel pending holding messages / auto-replies.
+
 
 ---
 

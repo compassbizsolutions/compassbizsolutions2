@@ -238,8 +238,20 @@
     },
     "api/deskkit-escalate.js": {
       "maxDuration": 15
+    },
+    "api/inbound-email.js": {
+      "maxDuration": 60
+    },
+    "api/inquiry-dispatch.js": {
+      "maxDuration": 300
     }
   },
+  "crons": [
+    {
+      "path": "/api/inquiry-dispatch",
+      "schedule": "* * * * *"
+    }
+  ],
   "env": {
     "SITE_URL": "https://www.compassbizsolutions.com"
   }

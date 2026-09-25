@@ -6,6 +6,9 @@
  */
 
 const { Resend } = require("resend");
+const { analyzeInquiry } = require("./_lib/inquiry-ai");
+const { buildPersonContext } = require("./_lib/person-context");
+const { enqueue } = require("./_lib/inquiry-queue");
 const FROM = "Jen Voiselle <jen@compassbizsolutions.com>";
 
 async function getFromKV(key) {
@@ -64,98 +67,14 @@ function extractText(body) {
   return body.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().substring(0, 2000);
 }
 
-// Build context about this person for the AI
-async function buildPersonContext(fromEmail) {
-  const ek = emailKey(fromEmail);
-  const [contact, lead, customer, notes, outreachHistory] = await Promise.all([
-    getFromKV("contact:" + ek),
-    getFromKV("lead:" + ek),
-    getFromKV("customer:" + ek),
-    getFromKV("person_notes:" + ek),
-    (async () => {
-      const keys = await scanKV("outreach:" + ek + ":*");
-      const logs = await Promise.all(keys.map(k => getFromKV(k)));
-      return logs.filter(Boolean).sort((a,b) => new Date(a.sentAt) - new Date(b.sentAt));
-    })()
-  ]);
-
-  const parts = [];
-
-  if (contact) {
-    parts.push(`CONTACT INFO: ${contact.firstName||""} ${contact.lastName||""}, Trade: ${contact.trade||"unknown"}, Business: ${contact.biz||"unknown"}, Source: ${contact.source||"unknown"}`);
-  }
-
-  if (lead) {
-    parts.push(`DIAGNOSTIC: They ran the free diagnostic. Estimated annual profit leak: ${lead.leak_total || lead.leakTotal || "unknown"}. Top leak: ${lead.top_leak || "unknown"}`);
-  }
-
-  if (customer) {
-    parts.push(`CUSTOMER: Purchased ${customer.plan_type} plan on ${customer.phase_1_date ? new Date(customer.phase_1_date).toLocaleDateString() : "unknown date"}. Intake ${customer.intake_complete ? "complete" : "not yet complete"}.`);
-    if (customer.intake_answers && Object.keys(customer.intake_answers).length > 0) {
-      const answers = Object.entries(customer.intake_answers)
-        .filter(([k,v]) => v)
-        .slice(0, 10)
-        .map(([k,v]) => `${k}: ${v}`)
-        .join(", ");
-      parts.push(`INTAKE ANSWERS (key ones): ${answers}`);
-    }
-  }
-
-  if (outreachHistory.length > 0) {
-    const emailsSent = outreachHistory.map(e => `"${e.subject}" on ${new Date(e.sentAt).toLocaleDateString()}`).join("; ");
-    parts.push(`EMAILS SENT TO THEM: ${emailsSent}`);
-  }
-
-  if (notes?.list?.length > 0) {
-    const noteText = notes.list.slice(0,3).map(n => n.text).join(" | ");
-    parts.push(`YOUR NOTES: ${noteText}`);
-  }
-
-  return parts.join("\n\n");
-}
-
-// Generate AI draft reply
-async function generateDraft(inboundEmail, personContext) {
-  const prompt = `You are drafting an email reply for Jen Voiselle, founder of Compass Business Solutions. Jen helps service business owners (HVAC, plumbing, electrical, landscaping, etc.) identify and fix profit leaks in their operations.
-
-ABOUT JEN'S VOICE:
-- Direct, warm, and real. Talks like a person, not a marketer.
-- Short sentences. No corporate speak. No fluff.
-- Genuinely cares about helping these guys make more money.
-- Signs off as "— Jen" or "— Jen Voiselle"
-- Never says "I hope this email finds you well" or anything generic like that
-- Gets to the point fast
-- If they're asking about pricing, she's honest and direct about what things cost
-- If they have a question she can't answer without more info, she asks one clear question
-- If they're interested, she moves them toward the next step naturally without being pushy
-
-CONTEXT ABOUT THIS PERSON:
-${personContext || "No prior context — this is a new contact."}
-
-INBOUND EMAIL RECEIVED:
-From: ${inboundEmail.from}
-Subject: ${inboundEmail.subject}
-Message:
-${inboundEmail.textBody || extractText(inboundEmail.htmlBody) || "(no body)"}
-
-Write a reply email for Jen to send. Just the email body — no subject line, no "Here is a draft" preamble. Start directly with the greeting. Keep it under 150 words unless the question genuinely requires more. Match the tone to what they wrote — if they're brief, be brief. If they're detailed, be a bit more detailed.`;
-
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": process.env.ANTHROPIC_API_KEY,
-      "anthropic-version": "2023-06-01",
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 500,
-      messages: [{ role: "user", content: prompt }]
-    })
+// AI draft for the admin "generate draft" button (same engine as the dispatcher)
+async function generateDraft(inbound) {
+  const result = await analyzeInquiry({
+    messages: `Subject: ${inbound.subject}\n${inbound.textBody || extractText(inbound.htmlBody) || "(no body)"}`,
+    personContext: await buildPersonContext(inbound.from),
+    voice: process.env.INQUIRY_AUTO_SEND === "true" ? "team" : "jen",
   });
-
-  const data = await response.json();
-  return data.content?.[0]?.text || "";
+  return result.reply || "";
 }
 
 module.exports = async function handler(req, res) {
@@ -207,6 +126,12 @@ module.exports = async function handler(req, res) {
         aiDraft: null,
         repliedAt: null,
       });
+
+      // Hand off to the inquiry assistant (triage, draft, timed follow-through)
+      if (!fromEmail.toLowerCase().endsWith("@compassbizsolutions.com")) {
+        try { await enqueue("analyze", inboundKey, new Date()); }
+        catch(e) { console.error("inquiry enqueue:", e.message); }
+      }
 
       // Update person's last activity
       const contact = await getFromKV("contact:" + ek);
@@ -270,8 +195,7 @@ module.exports = async function handler(req, res) {
       const inbound = await getFromKV(inboundKey);
       if (!inbound) return res.status(404).json({ error: "Email not found" });
 
-      const personContext = await buildPersonContext(inbound.from);
-      const draft = await generateDraft(inbound, personContext);
+      const draft = await generateDraft(inbound);
 
       // Save draft to the inbound record
       await saveToKV(inboundKey, Object.assign({}, inbound, {
