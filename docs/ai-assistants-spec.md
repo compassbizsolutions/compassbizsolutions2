@@ -119,6 +119,12 @@ complaints, billing/refunds, custom pricing, anything low-confidence.
 - **B — ManyChat:** no app review, live in ~a day; calls our API for replies.
   Recommended to start.
 
+**Account allowlist (hard rule):** only the Compass Facebook Page ID and the
+Compass Instagram account ID are ever accepted. Webhooks, tokens or messages
+for any other Page/account are rejected and logged, never processed or
+replied to. When authorizing ManyChat or a Meta app, grant access to the
+Compass Page/Instagram only — never "all current and future Pages".
+
 **Meta constraints:** free-form replies only within 24h of the user's last
 message; must offer a path to a human.
 
