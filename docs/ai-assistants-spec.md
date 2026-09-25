@@ -84,7 +84,9 @@ Time zone: Eastern (America/New_York — follows daylight saving).
 - Jen keeps getting reminders until she responds. Next morning, any escalation
   still unanswered goes to the top of her digest.
 - Non-escalation messages after hours are still held and answered from 7am.
-❓ Booking link (Calendly, Google booking page, …)
+Booking link: https://calendly.com/jvoiselle612-s9gb/free-scoping-call
+(free call only; paid Strategy Call / Working Session are described and sent
+to checkout, never linked to Calendly directly).
 
 **Escalate to Jen instead of replying:** bookings beyond the calendar link,
 complaints, billing/refunds, custom pricing, anything low-confidence.

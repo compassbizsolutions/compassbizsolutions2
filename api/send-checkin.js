@@ -91,7 +91,7 @@ module.exports = async function handler(req, res) {
                   <a href="https://compassbizsolutions.com" style="display:block;text-align:center;background:#C8701A;color:white;font-weight:bold;font-size:13px;padding:12px;border-radius:8px;text-decoration:none;">Get Days 31-60 Plan — $249</a>
                 </td>
                 <td width="48%" style="padding-left:8px;">
-                  <a href="https://compassbizsolutions.com/calendly" style="display:block;text-align:center;background:rgba(27,46,75,0.8);color:white;font-weight:bold;font-size:13px;padding:12px;border-radius:8px;text-decoration:none;">Book a Call Instead</a>
+                  <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" style="display:block;text-align:center;background:rgba(27,46,75,0.8);color:white;font-weight:bold;font-size:13px;padding:12px;border-radius:8px;text-decoration:none;">Book a Call Instead</a>
                 </td>
               </tr>
             </table>
