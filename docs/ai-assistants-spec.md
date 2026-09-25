@@ -69,7 +69,7 @@ billing/refund · complaint · vendor/spam.
   next business morning.
 
 **Business hours:** 7am–7pm, every day (including weekends).
-❓ Time zone
+Time zone: Eastern (America/New_York — follows daylight saving).
 
 **Escalations Jen doesn't answer**
 - Jen responds only when available; the customer should never be left silent.
