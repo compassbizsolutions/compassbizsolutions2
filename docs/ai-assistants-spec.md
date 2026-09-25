@@ -1,0 +1,119 @@
+# AI Assistants — Working Spec
+
+Internal planning doc. Not deployed (excluded via `.vercelignore`).
+
+Status: **planning** — decisions below are confirmed; open questions marked ❓.
+
+---
+
+## Shared foundation
+
+- **Knowledge base:** one "about the business" source both assistants read from
+  (services, Foundation $499 / Full Stack $999 plans, lead-flow diagnostic,
+  free call, DeskKit, ReviewKit, Jen's voice).
+- **Oversight:** everything lands in the admin area; daily digest of activity
+  and items waiting on Jen.
+- **Tech prerequisite:** `api/inbound-email.js` reads `KV_REST_API_*` while
+  DeskKit/escalation code reads `UPSTASH_REDIS_REST_*` / `lime_KV_REST_API_*`.
+  Confirm these point at the same store before building.
+
+❓ Off-limits topics list (refunds, custom pricing, guarantees, legal/tax, …)
+❓ Urgent alert channel (email, text, both)
+❓ Coverage when Jen is away
+
+---
+
+## Customer inquiry assistant
+
+**Channels:** email to jen@ (Resend, exists), site forms, Facebook Page and
+Instagram DMs/comments (see Social below).
+
+**Triage categories:** new lead · pricing/plan question · existing customer ·
+billing/refund · complaint · vendor/spam.
+
+**Handling:**
+
+| Category | Handling |
+|---|---|
+| New lead | Reply + booking link to our calendar |
+| Pricing / plan question | Answer from knowledge base |
+| Existing customer | Draft with account context for Jen |
+| Billing / refund | Never answered — alert Jen immediately |
+| Complaint | Never answered — alert Jen immediately |
+| Vendor / spam | Archive, no reply |
+
+❓ Lead follow-up cadence (email, since DMs close after Meta's 24h window)
+❓ What marks a lead closed
+
+---
+
+## Reply rules (confirmed)
+
+**Voice**
+- Speak as the business: "we", "our calendar", "our team".
+- No disclaimer about being an assistant.
+- Never claim to be Jen, never sign Jen's name, never "I'll personally…".
+- Only if someone asks directly whether they're talking to a bot/assistant:
+  answer honestly (e.g. "I'm Compass's assistant — want Jen to reach out
+  directly?") and alert Jen.
+
+**Timing**
+- First reply in a conversation: **15 minutes** after the inbound message.
+- Subsequent replies: **8 minutes** after the latest inbound message.
+- Multiple messages during the wait: batch into one reply; timer resets from
+  the last inbound message.
+- If Jen replies manually during the wait, the pending auto-reply is cancelled.
+- **Outside business hours:** hold until opening. Answer oldest first, spread
+  across the first 30–45 minutes (not all at opening time).
+- Message arriving too close to close for the delay to land in-hours: reply
+  next business morning.
+
+❓ Business hours + time zone (proposed: Mon–Fri 8am–6pm, Sat 9am–1pm, Sun closed)
+❓ Booking link (Calendly, Google booking page, …)
+
+**Escalate to Jen instead of replying:** bookings beyond the calendar link,
+complaints, billing/refunds, custom pricing, anything low-confidence.
+
+---
+
+## Social media
+
+**Auto-reply support by platform**
+
+| Platform | DMs | Comments |
+|---|---|---|
+| Facebook Page | Yes (Meta app review) | Yes |
+| Instagram Business/Creator | Yes (same Meta app) | Yes |
+| Google Business Profile | No (chat discontinued 2024) | Review replies |
+| LinkedIn | No | Partner approval required |
+| TikTok | No | No |
+
+**Integration options**
+- **A — Build on site:** Meta webhooks → inquiry assistant → Graph API.
+  Single queue/history. Requires Meta app review (1–4 weeks).
+- **B — ManyChat:** no app review, live in ~a day; calls our API for replies.
+  Recommended to start.
+
+**Meta constraints:** free-form replies only within 24h of the user's last
+message; must offer a path to a human.
+
+❓ Instagram is Business/Creator and linked to the Facebook Page?
+❓ Option A or B
+❓ Draft-approval vs auto-send for simple questions at launch
+
+**Content assistant (posting)**
+❓ Platforms and cadence
+❓ Canva brand kit / brand assets
+❓ Permission to use client results/testimonials
+❓ Auto-publish vs scheduler (Buffer / Meta Business Suite)
+❓ Primary success metric (calls booked, diagnostics, followers)
+
+---
+
+## Known gaps
+
+1. Social DMs/comments need an owner → routed into the inquiry assistant.
+2. Off-limits topic list must exist before any auto-send.
+3. Lead follow-up rules undefined.
+4. KV env var mismatch to verify.
+5. No away/backup plan.
