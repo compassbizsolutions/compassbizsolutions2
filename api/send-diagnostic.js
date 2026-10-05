@@ -162,6 +162,11 @@ module.exports = async function handler(req, res) {
       String(officeStaffVal).trim() === "0" ||
       !officeStaffVal;
 
+    // Gmail collapses ("...") any block that matches an earlier email in the
+    // same thread, which hid the buttons when someone ran the check twice.
+    // An invisible, per-email token in each block makes every copy unique.
+    const uid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    const mark = (n) => '<span style="display:none !important;font-size:0;line-height:0;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">' + uid + "-" + n + "</span>";
     const html = `
       <div style="font-family:Arial,sans-serif;max-width:620px;margin:0 auto;color:#1A2332;">
         <div style="background:#1B2E4B;padding:32px 36px;border-radius:8px 8px 0 0;">
@@ -182,11 +187,11 @@ module.exports = async function handler(req, res) {
           ${howWeHelp ? `<p style="font-size:15px;color:#3E4E63;line-height:1.8;margin:20px 0 0;">${renderBold(howWeHelp)}</p>` : ""}
 
           <!-- What to do next -->
-          <div style="margin:24px 0;">
+          <div style="margin:24px 0;">${mark(1)}
             <div style="font-size:12px;font-weight:bold;color:#1A2332;letter-spacing:2px;margin-bottom:18px;">YOUR NEXT STEP — THREE OPTIONS:</div>
 
             <!-- Snapshot tier -->
-            <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-top:3px solid #1B2E4B;border-radius:8px;padding:18px 20px;margin-bottom:12px;">
+            <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-top:3px solid #1B2E4B;border-radius:8px;padding:18px 20px;margin-bottom:12px;">${mark(2)}
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
                 <div>
                   <div style="font-size:15px;font-weight:bold;color:#1A2332;">DIY Profit Leak Snapshot</div>
@@ -201,7 +206,7 @@ module.exports = async function handler(req, res) {
             </div>
 
             <!-- 30-Day Plan -->
-            <div style="background:white;border:2px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;position:relative;">
+            <div style="background:white;border:2px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;position:relative;">${mark(3)}
               <div style="display:inline-block;background:#C8701A;color:white;font-size:10px;font-weight:bold;letter-spacing:1.5px;padding:2px 10px;border-radius:99px;margin-bottom:10px;">MOST POPULAR</div>
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
                 <div>
@@ -217,7 +222,7 @@ module.exports = async function handler(req, res) {
             </div>
 
             <!-- Full Bundle -->
-            <div style="background:white;border:1px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;position:relative;">
+            <div style="background:white;border:1px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;position:relative;">${mark(4)}
               <div style="display:inline-block;background:#1B2E4B;color:white;font-size:10px;font-weight:bold;letter-spacing:1.5px;padding:2px 10px;border-radius:99px;margin-bottom:10px;">BEST VALUE — SAVES $298</div>
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
                 <div>
@@ -244,17 +249,17 @@ module.exports = async function handler(req, res) {
             </div>` : ""}
 
             <!-- Done For You -->
-            <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-radius:8px;padding:16px 18px;text-align:center;">
+            <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-radius:8px;padding:16px 18px;text-align:center;">${mark(5)}
               <div style="font-size:14px;color:#6B7A90;margin-bottom:10px;">Rather have us handle it? We scope, build, and implement the systems for you.</div>
               <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:14px;padding:10px 22px;border-radius:8px;text-decoration:none;">Book a Free Scoping Call →</a>
             </div>
           </div>
-          <p style="font-size:14px;color:#6B7A90;margin-bottom:4px;">Questions? Reply to this email — I read every one.</p>
+          <p style="font-size:14px;color:#6B7A90;margin-bottom:4px;">${mark(6)}Questions? Reply to this email — I read every one.</p>
 
           <p style="margin:0;color:#3E4E63;font-size:15px;">— Jen, Compass Business Solutions</p>
         </div>
         <div style="text-align:center;padding:16px;font-size:12px;color:#A0ABBE;">
-          Compass Business Solutions &nbsp;·&nbsp; compassbizsolutions.com
+          ${mark(7)}Compass Business Solutions &nbsp;·&nbsp; compassbizsolutions.com
         </div>
       </div>`;
 
@@ -263,7 +268,8 @@ module.exports = async function handler(req, res) {
     const sent = await resend.emails.send({
       from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
       to: email,
-      subject: "Your Free Business Diagnostic — " + (biz || "Your Business"),
+      // Date in the subject keeps repeat runs from threading together in Gmail
+      subject: "Your Free Business Diagnostic — " + (biz || "Your Business") + " (" + new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "America/New_York" }) + ")",
       html
     });
     if (sent && sent.error) {
