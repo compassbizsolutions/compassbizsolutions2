@@ -169,6 +169,10 @@ module.exports = async function handler(req, res) {
     const reviewCount = answersRaw && typeof answersRaw.reviews === "string" ? answersRaw.reviews : "";
     const manyReviews = reviewCount === "50-150" || reviewCount === "150+";
     const reviewCountLabel = reviewCount === "150+" ? "150+" : "50 to 150";
+    // Owners with few reviews need more of them, so they get the review-request
+    // pitch (Growth plan — the $79 Starter plan only does replies).
+    const fewReviews = reviewCount === "Under 10" || reviewCount === "10-50";
+    const fewReviewsLabel = reviewCount === "Under 10" ? "under 10" : "10 to 50";
     const noAdmin = parseInt(officeStaffVal) === 0 ||
       String(officeStaffVal).toLowerCase().includes("none") ||
       String(officeStaffVal).trim() === "0" ||
@@ -267,6 +271,17 @@ module.exports = async function handler(req, res) {
               <div style="font-size:15px;font-weight:bold;color:#1A2332;margin-bottom:6px;">You told us you have ${reviewCountLabel} Google reviews</div>
               <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
                 That's a real asset. But at that volume, most owners stop replying, and people comparing you to the next shop read your replies as closely as the reviews. ReviewKit writes a specific reply to every new Google review in your voice and posts it for you. Bad reviews are held for you to see first, never posted on their own. <strong>From $79/month.</strong>
+              </div>
+              <a href="https://www.compassbizsolutions.com/reviewkit" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">See ReviewKit →</a>
+            </div>` : ""}
+
+            ${fewReviews ? `
+            <!-- ReviewKit — owners with few Google reviews -->
+            <div style="background:#FFF8EF;border:1px solid #E9C9A3;border-left:4px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;">${mark(9)}
+              <div style="font-size:11px;font-weight:bold;color:#C8701A;letter-spacing:2px;margin-bottom:8px;">YOUR WORK IS BETTER THAN YOUR GOOGLE PAGE SAYS</div>
+              <div style="font-size:15px;font-weight:bold;color:#1A2332;margin-bottom:6px;">You told us you have ${fewReviewsLabel} Google reviews</div>
+              <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
+                When someone searches for a ${trade ? (String(trade) === String(trade).toUpperCase() ? String(trade) : String(trade).toLowerCase()) : "local"} company, the shop with more reviews usually gets the call, even if your work is better. Happy customers will leave one; they just need to be asked. ReviewKit sends a review request after every job, then replies to every review in your voice. Bad reviews are held for you to see first, never posted on their own. <strong>Review requests come with the Growth plan, $149/month.</strong>
               </div>
               <a href="https://www.compassbizsolutions.com/reviewkit" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">See ReviewKit →</a>
             </div>` : ""}
