@@ -398,50 +398,81 @@ module.exports = async function handler(req, res) {
 
     const userMessage = header + formatAnswers(answers);
 
-    // Call Anthropic
-    const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01"
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",   // current stable Sonnet 4.5; swap to "claude-sonnet-4-6" after post-launch validation
-        max_tokens: 2500,
-        temperature: 0.7,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: "user", content: userMessage }]
-      })
-    });
+    const requiredTags = ["[HEADLINE]", "[WHAT_WE_SEE]", "[TOP_LEAK]", "[SECOND_LEAK]", "[THIRD_LEAK]", "[HOW_WE_HELP]", "[LEAK_RANKING]"];
 
-    if (!anthropicRes.ok) {
-      const errText = await anthropicRes.text();
-      console.error("Anthropic API error:", anthropicRes.status, errText);
-      return res.status(502).json({ error: "AI generation failed", status: anthropicRes.status });
+    // Call Anthropic. Returns { report, stopReason } or throws.
+    async function callAI() {
+      const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01"
+        },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          // Was 2500 — the full report (7 tagged sections + additional leaks)
+          // can run past that and get cut off after WHAT_WE_SEE.
+          max_tokens: 6000,
+          temperature: 0.7,
+          system: SYSTEM_PROMPT,
+          messages: [{ role: "user", content: userMessage }]
+        })
+      });
+
+      if (!anthropicRes.ok) {
+        const errText = await anthropicRes.text();
+        console.error("Anthropic API error:", anthropicRes.status, errText);
+        const e = new Error("AI generation failed");
+        e.status = anthropicRes.status;
+        throw e;
+      }
+
+      const data = await anthropicRes.json();
+      const report = data && data.content && data.content[0] && data.content[0].text;
+      if (!report) {
+        console.error("generate-diagnostic: empty report from AI", JSON.stringify(data).slice(0, 500));
+      }
+      return { report: report || "", stopReason: data && data.stop_reason };
     }
 
-    const data = await anthropicRes.json();
-    const report =
-      data &&
-      data.content &&
-      data.content[0] &&
-      data.content[0].text;
+    function missingTags(report) {
+      return requiredTags.filter(function (t) { return report.indexOf(t) === -1; });
+    }
 
-    if (!report) {
-      console.error("generate-diagnostic: empty report from AI", JSON.stringify(data).slice(0, 500));
+    let result;
+    try {
+      result = await callAI();
+    } catch (e) {
+      return res.status(502).json({ error: e.message, status: e.status });
+    }
+
+    let missing = missingTags(result.report);
+    if (missing.length) {
+      console.warn("generate-diagnostic: attempt 1 missing tags", missing,
+        "stop_reason:", result.stopReason, "length:", result.report.length,
+        "tail:", result.report.slice(-300));
+      // One retry — a bad first draft shouldn't cost us the lead.
+      try {
+        const retry = await callAI();
+        const retryMissing = missingTags(retry.report);
+        if (retryMissing.length < missing.length) {
+          result = retry;
+          missing = retryMissing;
+        }
+        if (missing.length) {
+          console.error("generate-diagnostic: retry still missing tags", missing, "stop_reason:", retry.stopReason);
+        }
+      } catch (e) {
+        console.error("generate-diagnostic: retry failed", e.message);
+      }
+    }
+
+    if (!result.report) {
       return res.status(502).json({ error: "Empty report from AI" });
     }
 
-    // Light sanity check: make sure the required tags are present.
-    // If any are missing, log and return anyway — better to show something than crash.
-    const requiredTags = ["[HEADLINE]", "[WHAT_WE_SEE]", "[TOP_LEAK]", "[SECOND_LEAK]", "[THIRD_LEAK]", "[HOW_WE_HELP]", "[LEAK_RANKING]"];
-    const missing = requiredTags.filter(function (t) { return report.indexOf(t) === -1; });
-    if (missing.length) {
-      console.warn("generate-diagnostic: report missing tags", missing);
-    }
-
-    return res.status(200).json({ report });
+    return res.status(200).json({ report: result.report, complete: missing.length === 0 });
 
   } catch (err) {
     console.error("generate-diagnostic fatal error:", err);
