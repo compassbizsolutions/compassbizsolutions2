@@ -308,24 +308,8 @@
       + '</div>';
   }).join('');
 
-  // Auto-redirect to trades after 6 seconds for purchase types
-  // Calls stay on the page (they need to read the booking steps)
-  if (type !== 'call') {
-    var countdown = 6;
-    var redirectNote = document.createElement('p');
-    redirectNote.style.cssText = 'font-size:12px;color:rgba(255,255,255,0.25);margin-top:16px;text-align:center';
-    redirectNote.textContent = 'Redirecting to Compass in ' + countdown + ' seconds…';
-    document.querySelector('.results-cta') && document.querySelector('.results-cta').appendChild(redirectNote);
-
-    var timer = setInterval(function() {
-      countdown--;
-      if (redirectNote) redirectNote.textContent = 'Redirecting to Compass in ' + countdown + ' seconds…';
-      if (countdown <= 0) {
-        clearInterval(timer);
-        window.location.href = 'https://www.compassbizsolutions.com/trades';
-      }
-    }, 1000);
-  }
+  // No auto-redirect: customers who just paid need time to read their next
+  // steps. The "Back to Compass" button on the page takes them back.
 </script>
 
 </body>
