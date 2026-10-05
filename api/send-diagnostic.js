@@ -7,8 +7,10 @@
 const { Resend } = require("resend");
 
 async function storeInKV(email, data) {
-  const url = process.env.KV_REST_API_URL;
-  const token = process.env.KV_REST_API_TOKEN;
+  // Same database, same order as FixKit and the rest of the site. This used to
+  // read only KV_REST_API_URL — an old, separate database FixKit never reads.
+  const url = process.env.lime_KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+  const token = process.env.lime_KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
   if (!url || !token) {
     console.warn("send-diagnostic: KV not configured (KV_REST_API_URL / KV_REST_API_TOKEN)");
     return;
@@ -57,14 +59,19 @@ module.exports = async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   try {
-    const { name, email, biz, phone, trade, answers, report, utm_source, utm_campaign, utm_medium } = req.body;
+    const { name, email, biz, phone, trade, answers, answers_raw, report, utm_source, utm_campaign, utm_medium } = req.body;
+    // Structured answers ({ jobs: "20-40", ... }) so the FixKit intake can pre-fill
+    const answersRaw = (answers_raw && typeof answers_raw === "object") ? answers_raw : null;
     if (!email || !report) return res.status(400).json({ error: "Missing required fields" });
 
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     // Store lead in KV (non-blocking — don't let KV failure stop email)
-    storeInKV(email, {
+    // Awaited so this early save can't land after (and wipe) the full save below.
+    // storeInKV never throws, so a database problem still can't block the email.
+    await storeInKV(email, {
       name, email, biz, phone, trade,
+      answers_raw: answersRaw,
       top_leak: answers?.leak1 || '',
       source: 'free-diagnostic',
       utm_source: utm_source || '',
@@ -286,6 +293,7 @@ module.exports = async function handler(req, res) {
     storeInKV(email, {
       name, email, biz, phone, trade,
       answers,
+      answers_raw: answersRaw,
       report,
       diagnosticDate: new Date().toISOString(),
       planPurchased: null
@@ -304,7 +312,7 @@ module.exports = async function handler(req, res) {
       utm_campaign: utm_campaign || "",
       utm_medium: utm_medium || "",
       source: utm_source || "direct",
-      diagnostic_answers: answers || {},
+      diagnostic_answers: answersRaw || {},
       outreach_tags: noAdmin ? ["no_admin_staff"] : [],
       outreach_opportunity: noAdmin ? "Business Support Services — no admin staff reported" : "",
     }).catch(function() {});
