@@ -160,9 +160,9 @@ module.exports = async function handler(req, res) {
 
     const planType = customer.plan_type || "30day";
 
-    // Prioritize intake-provided name over Paddle billing name
+    // Prioritize intake-provided name over Stripe billing name
     // intake_name = what they typed in the intake form (their real name)
-    // customer.name = often the Paddle billing name (could be a business or CC name)
+    // customer.name = often the Stripe billing name (could be a business or CC name)
     const resolvedName = name || customer.intake_name || "";
 
     // Build system prompt and call Claude
