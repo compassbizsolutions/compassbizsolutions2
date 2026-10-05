@@ -73,8 +73,13 @@ module.exports = async function handler(req, res) {
     });
     const firstName = name || "there";
 
+    // Section ends at its own closing tag, or the next real section tag —
+    // NOT at any "[" (the AI sometimes writes "[...]" inside a section, which
+    // used to chop text mid-word and drop whole leak blocks).
+    const SECTION_TAGS = "HEADLINE|WHAT_WE_SEE|TOP_LEAK|SECOND_LEAK|THIRD_LEAK|HOW_WE_HELP|LEAK_RANKING|ADDITIONAL_LEAKS";
     function getTag(text, tag) {
-      const m = text.match(new RegExp("\\[" + tag + "\\]([\\s\\S]*?)(?=\\[|$)"));
+      const re = new RegExp("\\[" + tag + "\\]([\\s\\S]*?)(?=\\[\\/" + tag + "\\]|\\[\\/?(?:" + SECTION_TAGS + ")\\]|$)");
+      const m = text.match(re);
       return m ? m[1].trim() : "";
     }
 
@@ -131,7 +136,10 @@ module.exports = async function handler(req, res) {
         .filter(function(line) { return line.length > 0; })
         .map(function(line) {
           var isBullet = /^-\s+/.test(line);
-          var clean    = renderBold(isBullet ? line.replace(/^-\s+/, "") : line);
+          var body     = isBullet ? line.replace(/^-\s+/, "") : line;
+          // If the AI copied a "[placeholder]" wrapper, drop the brackets
+          body = body.replace(/^\[([^\[\]]*)\]$/, "$1");
+          var clean    = renderBold(body);
           return isBullet
             ? '<div style="padding:5px 0 5px 18px;position:relative;font-size:15px;color:#1A2332;line-height:1.7;margin-bottom:10px">'
               + '<span style="position:absolute;left:0;top:10px;width:6px;height:6px;background:#C8701A;border-radius:50%;display:inline-block"></span>&nbsp;&nbsp;'
