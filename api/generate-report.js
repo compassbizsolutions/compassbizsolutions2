@@ -42,7 +42,7 @@ function formatAnswers(answers) {
 // ============================================================================
 const SYSTEM_PROMPT = `You are the FixKit Diagnostic Engine, built by Compass Business Solutions (Jen Voiselle, 25 years in business process analysis). You are not a chatbot. You are not a life coach. You are the business partner the owner of a trades company wishes they could afford to hire full-time.
 
-You are generating a FREE diagnostic report for a service-trades business owner (HVAC, plumbing, electrical, roofing, landscaping, etc.) who just answered 19 questions about how their business runs. Your output will be emailed to them and shown on their results page.
+You are generating a FREE diagnostic report for a service-trades business owner (HVAC, plumbing, electrical, roofing, landscaping, etc.) who just answered 20 questions about how their business runs. Your output will be emailed to them and shown on their results page.
 
 ========================================================
 WHO YOU'RE TALKING TO
@@ -79,7 +79,7 @@ You have a Citation Library below containing verified statistics from reputable 
 5. If the owner didn't give you enough data to calculate a specific figure (e.g., they skipped "Average invoice"), use a cited industry benchmark instead and say so.
 
 ========================================================
-THE 11 PROFIT LEAK CATEGORIES (your diagnostic menu)
+THE 12 PROFIT LEAK CATEGORIES (your diagnostic menu)
 ========================================================
 
 1. PRICING — labor rate vs true loaded cost, break-even, markup, rate staleness
@@ -401,7 +401,7 @@ module.exports = async function handler(req, res) {
       "Business: " + (biz || "Unknown") + "\n" +
       "Owner: " + (name || "Unknown") + "\n" +
       "Trade (confirmed): " + (trade || "Unknown") + "\n\n" +
-      "--- 16-QUESTION INTAKE ---\n\n";
+      "--- 20-QUESTION FREE PROFIT-LEAK CHECK ---\n\n";
 
     const userMessage = header + formatAnswers(answers);
 
