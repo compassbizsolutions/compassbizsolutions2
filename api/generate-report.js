@@ -6,6 +6,7 @@ const QUESTION_LABELS = {
   trucks:        "Truck count",
   jobs:          "Jobs per week",
   invoice:       "Average invoice",
+  weeks:         "Weeks per year actively running jobs",
   rate:          "Labor pricing method",
   tracking:      "How jobs are tracked from estimate to invoice",
   partsruns:     "Frequency of unplanned parts runs",
@@ -108,10 +109,15 @@ Score each of the 12 categories silently, then surface only the top 3 by dollar 
 
 KEY SIGNALS AND THEIR MATH:
 
+WEEKS WORKED — use THIS owner's answer everywhere a formula needs weeks per year.
+  "Weeks per year actively running jobs" → use: Under 20 weeks = 16 · 20-30 weeks = 25 · 30-40 weeks = 35 · 40-45 weeks = 42 · 46-50 weeks = 48 · 50-52 weeks = 51.
+  If that answer is missing, use 48. NEVER default to 50 when they gave an answer.
+  Every "× W weeks" below means this number, and every math line you show must use it.
+
 REVENUE ANCHOR — Calculate implied annual revenue first:
-  Revenue ≈ (Jobs per week midpoint) × (Average invoice midpoint) × 50 weeks
+  Revenue ≈ (Jobs per week midpoint) × (Average invoice midpoint) × W weeks
   Use this as the anchor for all % leak calculations.
-  Example: "Jobs per week: 20-40" (=30) × "Average invoice: $400-$800" (=$600) × 50 = $900K/year.
+  Example (owner answered 46-50 weeks, so W = 48): "Jobs per week: 20-40" (=30) × "Average invoice: $400-$800" (=$600) × 48 = $864K/year.
 
 PRICING (HUGE leak for most):
   - "Last rate raise: 3-5 years ago" = ~12% inflation drag.
@@ -123,8 +129,8 @@ PRICING (HUGE leak for most):
 
 SCHEDULING (from the no-shows answer):
   - "No-shows per week: 3-5" or "More than 5" or "Way too many" = significant leak.
-  - MATH: (cancellations/week) × 50 weeks × Average invoice midpoint × 0.5 recovery factor = annual leak.
-  - Example: 5 no-shows × 50 × $600 × 0.5 = $75K/year.
+  - MATH: (cancellations/week) × W weeks × Average invoice midpoint × 0.5 recovery factor = annual leak.
+  - Example (W = 48): 5 no-shows × 48 × $600 × 0.5 = $72K/year.
 
 EMPLOYEE COST / PRODUCTIVITY (from crew size + jobs per week):
   - Jobs per tech per week = Jobs per week midpoint ÷ Field crew size midpoint.
@@ -155,7 +161,7 @@ MATERIALS MARKUP (inferred from labor pricing + parts runs):
 
 ADMIN TIME DRAIN (from the non-billable time multi-select):
   - 3+ items selected for non-billable time = owner-trap signal.
-  - MATH: Estimate 10-15 hrs/week × $100-150 owner opportunity rate × 50 weeks = $50K-$110K/year in opportunity cost. Phrase as "what your time is worth doing the actual work of running this."
+  - MATH: Estimate 10-15 hrs/week × $100-150 owner opportunity rate × W weeks = annual opportunity cost (about $48K-$108K at 48 weeks). Phrase as "what your time is worth doing the actual work of running this."
 
 VEHICLES & PARTS (from parts runs frequency):
   - "Daily" or "Multiple times a day" = major productivity leak.
@@ -163,7 +169,7 @@ VEHICLES & PARTS (from parts runs frequency):
 
 LEAD FLOW (from lead source + missed calls + review count):
   - "It goes to voicemail and a lot never get returned" = serious leak. "I call back when I can, sometimes next day" = moderate leak. New callers who reach voicemail usually call the next company on the list.
-  - MATH: Estimate unreturned or late-returned new-customer calls per week conservatively from their job volume (for example 1-3 per week for under 20 jobs/week, 3-5 for 20-40, more above that). Calls × 50% would-have-booked × Average invoice midpoint × weeks worked per year = annual leak. Say plainly that the call count is an estimate and show the math.
+  - MATH: Estimate unreturned or late-returned new-customer calls per week conservatively from their job volume (for example 1-3 per week for under 20 jobs/week, 3-5 for 20-40, more above that). Calls × 50% would-have-booked × Average invoice midpoint × W weeks = annual leak. Say plainly that the call count is an estimate and show the math.
   - Reviews "Under 10" or "Not sure or no Google listing" = customers comparing on Google pass them over. Phrase as operational observation, no invented stats.
   - "Word of mouth and referrals" as the main source with "Mostly new" customers or "Under 10" reviews = no system bringing work in; the business depends on luck.
   - "Someone in the office answers" plus 50+ reviews = probably fine, don't surface as top-3 unless other signals are red.
@@ -215,7 +221,7 @@ Follow this EXACT shape. Two bullets only. Plain language. No jargon.
 You told us: [one plain sentence — what they said that triggered this, e.g. "You haven't raised rates in 5 years."]
 Why it matters: [one plain sentence — what that costs them, e.g. "Inflation alone erased 20% of your margin since 2020."]
 
-- [The math, on its own line. Short. Bold ONLY the final dollar amount. e.g. "30 jobs × $600 × 12% × 50 weeks = **$108,000/year**"]
+- [The math, on its own line. Short. Bold ONLY the final dollar amount. e.g. "30 jobs × $600 × 12% × 48 weeks = **$103,680/year**" — the weeks number is THIS owner's W, never a default 50]
 [/TOP_LEAK]
 
 [SECOND_LEAK]
@@ -330,12 +336,12 @@ You're doing **$900K** in work for about **$40K** in your pocket
 [/WHAT_WE_SEE]
 
 [TOP_LEAK]
-**PRICING** — **$108,000/year**
+**PRICING** — **$103,680/year**
 
 You told us: You haven't raised your rates in 5+ years.
 Why it matters: Costs went up 20%+ since 2020 — your margin absorbed every penny of it.
 
-- 30 jobs × $600 × 12% inflation drag × 50 weeks = **$108,000/year**
+- 30 jobs × $600 × 12% inflation drag × 48 weeks = **$103,680/year**
 [/TOP_LEAK]
 
 [SECOND_LEAK]
@@ -361,7 +367,7 @@ Your **pricing** and **vehicles & parts** leaks alone are a six-figure swing —
 [/HOW_WE_HELP]
 
 [LEAK_RANKING]
-1. Pricing — $108,000/year
+1. Pricing — $103,680/year
 2. Vehicles & Parts — $125,000/year
 3. Recurring Revenue — $30-50,000/year
 [/LEAK_RANKING]
