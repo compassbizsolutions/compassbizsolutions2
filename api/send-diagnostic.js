@@ -164,6 +164,11 @@ module.exports = async function handler(req, res) {
 
     // Check for no admin staff — triggers Business Support upsell
     const officeStaffVal = answers && (answers.office_staff || answers.admin || "0");
+    // ReviewKit pitch for owners who already have a lot of Google reviews —
+    // at that volume, replying to every one by hand stops happening.
+    const reviewCount = answersRaw && typeof answersRaw.reviews === "string" ? answersRaw.reviews : "";
+    const manyReviews = reviewCount === "50-150" || reviewCount === "150+";
+    const reviewCountLabel = reviewCount === "150+" ? "150+" : "50 to 150";
     const noAdmin = parseInt(officeStaffVal) === 0 ||
       String(officeStaffVal).toLowerCase().includes("none") ||
       String(officeStaffVal).trim() === "0" ||
@@ -253,6 +258,17 @@ module.exports = async function handler(req, res) {
                 That means follow-ups, confirmations, invoicing, and outreach are all landing on you. A full-time admin runs $3,000–4,000/month. Our Business Support plans start at $250/month and handle the recurring work for you — done, every week, without you touching it.
               </div>
               <a href="https://www.compassbizsolutions.com/pricing" style="display:inline-block;background:#3D6B9E;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">See Business Support Plans →</a>
+            </div>` : ""}
+
+            ${manyReviews ? `
+            <!-- ReviewKit — owners with lots of Google reviews -->
+            <div style="background:#FFF8EF;border:1px solid #E9C9A3;border-left:4px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;">${mark(8)}
+              <div style="font-size:11px;font-weight:bold;color:#C8701A;letter-spacing:2px;margin-bottom:8px;">YOUR REVIEWS ARE WORKING. ARE YOU ANSWERING THEM?</div>
+              <div style="font-size:15px;font-weight:bold;color:#1A2332;margin-bottom:6px;">You told us you have ${reviewCountLabel} Google reviews</div>
+              <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
+                That's a real asset. But at that volume, most owners stop replying, and people comparing you to the next shop read your replies as closely as the reviews. ReviewKit writes a specific reply to every new Google review in your voice and posts it for you. Bad reviews are held for you to see first, never posted on their own. <strong>From $79/month.</strong>
+              </div>
+              <a href="https://www.compassbizsolutions.com/reviewkit" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">See ReviewKit →</a>
             </div>` : ""}
 
             <!-- Done For You -->
