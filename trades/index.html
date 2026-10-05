@@ -244,6 +244,19 @@ section{padding:72px 24px}
 /* ── MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:500;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
+/* Plan preview thumbnails + full-screen viewer */
+.plan-peek{display:block;position:relative;margin:4px 0 16px;border-radius:10px;overflow:hidden;cursor:zoom-in;border:1px solid var(--border);box-shadow:0 4px 14px rgba(17,30,49,.12);background:#111E31;padding:0;width:100%}
+.plan-peek img{display:block;width:100%;height:auto;transition:transform .25s}
+.plan-peek:hover img,.plan-peek:focus-visible img{transform:scale(1.03)}
+.plan-peek span{position:absolute;left:10px;bottom:10px;background:rgba(17,30,49,.88);color:#fff;font-size:12px;font-weight:700;letter-spacing:.3px;padding:6px 10px;border-radius:999px}
+.peek-box{display:none;position:fixed;inset:0;z-index:600;background:rgba(10,18,30,.94);align-items:center;justify-content:center;padding:56px 64px}
+.peek-box.open{display:flex}
+.peek-box picture,.peek-box img{max-width:100%;max-height:100%;display:block;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.peek-btn{position:absolute;background:rgba(255,255,255,.12);color:#fff;border:none;border-radius:999px;width:44px;height:44px;font-size:22px;line-height:44px;text-align:center;cursor:pointer}
+.peek-btn:hover{background:rgba(255,255,255,.25)}
+.peek-close{top:12px;right:14px}.peek-prev{left:12px;top:50%;margin-top:-22px}.peek-next{right:12px;top:50%;margin-top:-22px}
+.peek-cap{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:13px}
+@media(max-width:700px){.peek-box{padding:52px 8px 40px}.peek-prev,.peek-next{top:auto;bottom:6px;margin-top:0}}
 .modal{background:#fff;border-radius:16px;padding:32px;max-width:480px;width:100%;position:relative;max-height:90vh;overflow-y:auto}
 .modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);line-height:1}
 .modal h3{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px}
@@ -480,6 +493,10 @@ footer{background:#0d1622;padding:28px 24px}
           <span class="product-tag tag-navy">$99</span>
           <div class="product-icon">📄</div>
           <div class="product-name">DIY Profit Leak Snapshot</div>
+          <button type="button" class="plan-peek" onclick="openPeek(0)" aria-label="See what's inside the Profit Leak Snapshot">
+            <img src="/images/fixkit/snapshot-thumb.jpg" alt="Screens from the Profit Leak Snapshot: sample business" loading="lazy" width="800" height="500">
+            <span>🔍 See what's inside</span>
+          </button>
           <div class="product-short">Your top 3 leaks, the exact math behind each one, what to fix, and the tools to do it.</div>
           <ul class="product-bullets">
             <li>Top 3 leaks ranked by dollar impact</li>
@@ -493,6 +510,10 @@ footer{background:#0d1622;padding:28px 24px}
           <span class="product-tag tag-amber">Most Popular · $299</span>
           <div class="product-icon">📋</div>
           <div class="product-name">FixKit 30-Day Plan</div>
+          <button type="button" class="plan-peek" onclick="openPeek(1)" aria-label="See what's inside the FixKit 30-Day Plan">
+            <img src="/images/fixkit/30-day-thumb.jpg" alt="Screens from the FixKit 30-Day Plan: sample business" loading="lazy" width="800" height="500">
+            <span>🔍 See what's inside</span>
+          </button>
           <div class="product-short">Daily tasks, built-in tracking, AI support. Everything personalized to your trade and numbers.</div>
           <ul class="product-bullets">
             <li>30 days of daily tasks — specific to your trade and leaks</li>
@@ -508,6 +529,10 @@ footer{background:#0d1622;padding:28px 24px}
           <span class="product-tag tag-amber">Best Value · $599</span>
           <div class="product-icon">📈</div>
           <div class="product-name">FixKit Complete Bundle</div>
+          <button type="button" class="plan-peek" onclick="openPeek(2)" aria-label="See what's inside the FixKit Complete Bundle">
+            <img src="/images/fixkit/bundle-thumb.jpg" alt="Screens from the FixKit Complete Bundle: sample business" loading="lazy" width="800" height="500">
+            <span>🔍 See what's inside</span>
+          </button>
           <div class="product-short">All three phases. All 12 leaks. Everything in one portal from day one.</div>
           <ul class="product-bullets">
             <li>Days 1–30, 31–60, and 61–90 fully sequenced</li>
@@ -637,6 +662,13 @@ footer{background:#0d1622;padding:28px 24px}
 </footer>
 
 <!-- UPGRADE MODAL -->
+<div class="peek-box" id="peek-box" role="dialog" aria-modal="true" aria-label="Plan preview" onclick="if(event.target===this)closePeek()">
+  <button class="peek-btn peek-close" onclick="closePeek()" aria-label="Close">✕</button>
+  <button class="peek-btn peek-prev" onclick="stepPeek(-1)" aria-label="Previous plan">‹</button>
+  <picture id="peek-pic"><source id="peek-src" media="(max-width:700px)"><img id="peek-img" alt=""></picture>
+  <button class="peek-btn peek-next" onclick="stepPeek(1)" aria-label="Next plan">›</button>
+  <div class="peek-cap" id="peek-cap"></div>
+</div>
 <div class="modal-overlay" id="upgrade-modal">
   <div class="modal modal-dark">
     <button class="modal-close" onclick="closeModal('upgrade-modal')">×</button>
@@ -1323,6 +1355,27 @@ function doneForYouHtml(leaks) {
 
 // ── MODALS ────────────────────────────────────────────────────────────────
 function openModal(id) { document.getElementById(id).classList.add('open'); }
+// ── Plan previews (full-screen viewer) ──
+var PEEKS=[
+  {slug:'snapshot',label:'Profit Leak Snapshot — $99'},
+  {slug:'30-day',label:'FixKit 30-Day Plan — $299'},
+  {slug:'bundle',label:'FixKit Complete Bundle — $599'}
+];
+var peekIdx=0;
+function showPeek(){
+  var p=PEEKS[peekIdx];
+  document.getElementById('peek-img').src='/images/fixkit/'+p.slug+'.jpg';
+  document.getElementById('peek-img').alt='Screens from the '+p.label+', shown with a sample business';
+  document.getElementById('peek-src').srcset='/images/fixkit/'+p.slug+'-tall.jpg';
+  document.getElementById('peek-cap').textContent=(peekIdx+1)+' of '+PEEKS.length+' · '+p.label;
+}
+function openPeek(i){peekIdx=i;showPeek();document.getElementById('peek-box').classList.add('open');document.body.style.overflow='hidden';}
+function closePeek(){document.getElementById('peek-box').classList.remove('open');document.body.style.overflow='';}
+function stepPeek(d){peekIdx=(peekIdx+d+PEEKS.length)%PEEKS.length;showPeek();}
+document.addEventListener('keydown',function(e){
+  if(!document.getElementById('peek-box').classList.contains('open'))return;
+  if(e.key==='Escape')closePeek(); else if(e.key==='ArrowRight')stepPeek(1); else if(e.key==='ArrowLeft')stepPeek(-1);
+});
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.modal-overlay').forEach(function(m) {
   m.addEventListener('click', function(e) { if (e.target === m) m.classList.remove('open'); });
