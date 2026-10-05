@@ -388,7 +388,7 @@ footer{background:#0d1622;padding:28px 24px}
     <div class="diagnostic-wrap">
       <div id="diag-intro">
         <h2>Free Business Diagnostic</h2>
-        <p class="sub">Answer 19 questions about how your business actually runs. We'll show you your top 3 profit leaks and what they're costing you annually — specific to your trade and your numbers.</p>
+        <p class="sub">Answer 20 questions about how your business actually runs. We'll show you your top 3 profit leaks and what they're costing you annually — specific to your trade and your numbers.</p>
         <button class="btn btn-amber" onclick="startDiagnostic()" style="width:100%;justify-content:center;font-size:18px;padding:16px">Start the Free Diagnostic →</button>
       </div>
       <div id="diag-questions" style="display:none">
@@ -407,7 +407,7 @@ footer{background:#0d1622;padding:28px 24px}
       </div>
       <div id="diag-loading" style="display:none" class="results-loading">
         <div class="loading-spinner"></div>
-        <div class="loading-msg"><strong>Analyzing your business...</strong>This takes about 30 seconds. We're looking at your numbers across all 12 profit leak categories.</div>
+        <div class="loading-msg"><strong>Analyzing your business...</strong>This can take up to a minute. We're looking at your numbers across all 12 profit leak categories.</div>
       </div>
       <div id="diag-email" style="display:none">
         <h2>Almost there</h2>
@@ -455,7 +455,7 @@ footer{background:#0d1622;padding:28px 24px}
         <div style="background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:28px">
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:var(--amber);line-height:1;margin-bottom:12px">1</div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px">Run the Diagnostic</div>
-          <div style="font-size:14px;color:var(--muted);line-height:1.6">19 questions about how your business actually runs. Takes 10 minutes. No fluff.</div>
+          <div style="font-size:14px;color:var(--muted);line-height:1.6">20 questions about how your business actually runs. Takes 10 minutes. No fluff.</div>
         </div><div style="background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:28px">
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:var(--amber);line-height:1;margin-bottom:12px">2</div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px">See Your Leaks</div>
@@ -508,7 +508,7 @@ footer{background:#0d1622;padding:28px 24px}
           <span class="product-tag tag-amber">Best Value · $599</span>
           <div class="product-icon">📈</div>
           <div class="product-name">FixKit Complete Bundle</div>
-          <div class="product-short">All three phases. All 11 leaks. Everything in one portal from day one.</div>
+          <div class="product-short">All three phases. All 12 leaks. Everything in one portal from day one.</div>
           <ul class="product-bullets">
             <li>Days 1–30, 31–60, and 61–90 fully sequenced</li>
             <li>All Fix-It Guides and docs unlocked from day one</li>
@@ -1242,7 +1242,7 @@ function showResults(parsed, email) {
     + '    <div class="paywall-badge paywall-badge--value">Best Value</div>'
     + '    <div class="paywall-price">$599</div>'
     + '    <div class="paywall-name">FixKit Complete Bundle</div>'
-    + '    <div class="paywall-desc">All 11 leak categories closed over 90 days. Saves $298 vs buying phases separately.</div>'
+    + '    <div class="paywall-desc">All 12 leak categories closed over 90 days. Saves $298 vs buying phases separately.</div>'
     + '    <button class="btn btn-dark paywall-btn" id="results-btn-bundle">Get Full Bundle</button>'
     + '  </div>'
     + '</div>'
@@ -1293,12 +1293,12 @@ function doneForYouHtml(leaks) {
         return '<div class="dfy-item"><div class="dfy-item-title">' + s.title + '</div><div class="dfy-item-desc">' + s.desc + '</div></div>';
       }).join('')
     + '</div>'
-    + '<a class="btn btn-amber dfy-btn" id="results-btn-call" href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" rel="noopener">Book a free 15-minute call →</a>'
+    + '<a class="btn btn-amber dfy-btn" id="results-btn-call" href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" rel="noopener">Book a free 20-minute call →</a>'
     + '<div class="dfy-note">No pitch deck. We look at your numbers together and you decide.</div>'
     + '</div>';
 }
 
-// ── PADDLE CHECKOUT ───────────────────────────────────────────────────────
+// ── STRIPE CHECKOUT ───────────────────────────────────────────────────────
 // ── STRIPE CHECKOUT ──────────────────────────────────────────────────────
     var STRIPE_LINKS = {
       snapshot:        'https://buy.stripe.com/6oU28kfwo27GbWT2l8dZ608',

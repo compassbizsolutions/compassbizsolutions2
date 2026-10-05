@@ -1,7 +1,7 @@
 /**
  * Vercel Serverless Function: /api/validate-token
  *
- * Called by the browser after Paddle redirects back with ?token=&email=
+ * Called by the browser after checkout redirects back with ?token=&email=
  * Checks Vercel KV that the token:
  *   - Exists
  *   - Has not been used
