@@ -173,6 +173,8 @@ module.exports = async function handler(req, res) {
     // pitch (Growth plan — the $79 Starter plan only does replies).
     const fewReviews = reviewCount === "Under 10" || reviewCount === "10-50";
     const fewReviewsLabel = reviewCount === "Under 10" ? "under 10" : "10 to 50";
+    const tradeWord = trade ? (String(trade) === String(trade).toUpperCase() ? String(trade) : String(trade).toLowerCase()) : "local";
+    const tradePhrase = (/^(HVAC|[aeiou])/i.test(tradeWord) ? "an " : "a ") + tradeWord;
     const noAdmin = parseInt(officeStaffVal) === 0 ||
       String(officeStaffVal).toLowerCase().includes("none") ||
       String(officeStaffVal).trim() === "0" ||
@@ -281,7 +283,7 @@ module.exports = async function handler(req, res) {
               <div style="font-size:11px;font-weight:bold;color:#C8701A;letter-spacing:2px;margin-bottom:8px;">YOUR WORK IS BETTER THAN YOUR GOOGLE PAGE SAYS</div>
               <div style="font-size:15px;font-weight:bold;color:#1A2332;margin-bottom:6px;">You told us you have ${fewReviewsLabel} Google reviews</div>
               <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                When someone searches for a ${trade ? (String(trade) === String(trade).toUpperCase() ? String(trade) : String(trade).toLowerCase()) : "local"} company, the shop with more reviews usually gets the call, even if your work is better. Happy customers will leave one; they just need to be asked. ReviewKit sends a review request after every job, then replies to every review in your voice. Bad reviews are held for you to see first, never posted on their own. <strong>Review requests come with the Growth plan, $149/month.</strong>
+                When someone searches for ${tradePhrase} company, the shop with more reviews usually gets the call, even if your work is better. Happy customers will leave one; they just need to be asked. ReviewKit sends a review request after every job, then replies to every review in your voice. Bad reviews are held for you to see first, never posted on their own. <strong>Review requests come with the Growth plan, $149/month.</strong>
               </div>
               <a href="https://www.compassbizsolutions.com/reviewkit" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">See ReviewKit →</a>
             </div>` : ""}
