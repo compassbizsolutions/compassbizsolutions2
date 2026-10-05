@@ -9,13 +9,23 @@ const { Resend } = require("resend");
 async function storeInKV(email, data) {
   const url = process.env.KV_REST_API_URL;
   const token = process.env.KV_REST_API_TOKEN;
-  if (!url || !token) return;
+  if (!url || !token) {
+    console.warn("send-diagnostic: KV not configured (KV_REST_API_URL / KV_REST_API_TOKEN)");
+    return;
+  }
   const key = "diagnostic:" + email.toLowerCase().replace(/[^a-z0-9@._-]/g, "");
-  await fetch(url + "/set/" + encodeURIComponent(key), {
-    method: "POST",
-    headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  });
+  // Never throw: an unreachable KV store used to crash the whole function
+  // ("Unhandled Rejection: TypeError: fetch failed").
+  try {
+    const r = await fetch(url + "/set/" + encodeURIComponent(key), {
+      method: "POST",
+      headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    if (!r.ok) console.error("send-diagnostic: KV write failed", r.status, key);
+  } catch (e) {
+    console.error("send-diagnostic: KV unreachable", e.message, "url host:", String(url).replace(/^https?:\/\//, "").split("/")[0]);
+  }
 }
 
 async function tagMailchimp(email, name, trade) {
@@ -240,19 +250,26 @@ module.exports = async function handler(req, res) {
         </div>
       </div>`;
 
-    // Send to user
-    await resend.emails.send({
+    // Send to user. Resend does NOT throw on failure — it returns { error },
+    // so check it, or a failed send looks like success.
+    const sent = await resend.emails.send({
       from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
       to: email,
       subject: "Your Free Business Diagnostic — " + (biz || "Your Business"),
       html
     });
+    if (sent && sent.error) {
+      console.error("send-diagnostic: Resend failed for", email, JSON.stringify(sent.error));
+      return res.status(502).json({ error: "Email failed", detail: sent.error.message || "" });
+    }
+    console.log("send-diagnostic: report emailed to", email, sent && sent.data && sent.data.id);
 
     // Copy to Jen with full answers
-    const answerDump = Object.keys(answers).map(k => k + ": " + answers[k]).join("\n");
+    const answerDump = typeof answers === "string" ? answers : Object.keys(answers || {}).map(k => k + ": " + answers[k]).join("\n");
     resend.emails.send({
       from: "Compass Business Solutions <" + (process.env.FROM_EMAIL || "reports@compassbizsolutions.com") + ">",
-      to: "jen@compassbizsolutions.com",
+      // jen@compassbizsolutions.com bounces — use ADMIN_EMAIL if set
+      to: process.env.ADMIN_EMAIL || "jvoiselle612@gmail.com",
       subject: "New Diagnostic — " + (biz || "Unknown") + " (" + (trade || "Unknown trade") + ") — " + phone,
       html: "<pre style='font-family:monospace;font-size:13px;line-height:1.6;'>NEW DIAGNOSTIC SUBMISSION\n\nName: " + name + "\nEmail: " + email + "\nBusiness: " + biz + "\nPhone: " + phone + "\nTrade: " + trade + "\n\n--- ANSWERS ---\n" + answerDump + "\n\n--- REPORT ---\n" + report + "</pre>"
     }).catch(function() {});

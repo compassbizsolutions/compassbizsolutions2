@@ -979,10 +979,14 @@ function submitDiagnostic() {
     return k + ': ' + (Array.isArray(v) ? v.join(', ') : v);
   }).join('\n');
 
-  // Server owns the system prompt now — we just send the intake
+  // Server owns the system prompt now — we just send the intake.
+  // Hard 120s cap so the spinner can never run forever.
+  var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+  var killTimer = setTimeout(function() { if (ctrl) ctrl.abort(); }, 120000);
   fetch('https://www.compassbizsolutions.com/api/generate-report', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
+    signal: ctrl ? ctrl.signal : undefined,
     body: JSON.stringify({
       name: name,
       biz: biz || (trade + ' business'),
@@ -990,7 +994,11 @@ function submitDiagnostic() {
       answers: diagAnswers
     })
   })
-  .then(function(r) { return r.json(); })
+  .then(function(r) {
+    clearTimeout(killTimer);
+    if (!r.ok) throw new Error('generate-report ' + r.status);
+    return r.json();
+  })
   .then(function(data) {
     var report = data.report || data.text || '';
 
@@ -1031,9 +1039,14 @@ function submitDiagnostic() {
       }).catch(function() {});
     }
   })
-  .catch(function() {
+  .catch(function(err) {
+    clearTimeout(killTimer);
+    if (window.console) console.error('Diagnostic failed:', err);
     document.getElementById('diag-loading').style.display = 'none';
-    showResults({leaks: [], headline: '', whatWeSee: '', emailSent: true}, email);
+    var wrap = document.getElementById('results-content');
+    wrap.innerHTML = '<div style="text-align:center;padding:40px 24px"><div style="font-size:16px;color:var(--muted)">Something went wrong on our end building your report. Please try again in a minute, or email <a href="mailto:support@compassbizsolutions.com" style="color:var(--amber);font-weight:600">support@compassbizsolutions.com</a> and Jen will run it for you.</div></div>';
+    document.getElementById('diag-results').style.display = 'block';
+    document.getElementById('diag-results').scrollIntoView({behavior:'smooth'});
   });
 }
 
