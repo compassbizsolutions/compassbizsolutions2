@@ -186,10 +186,12 @@ section{padding:72px 24px}
 .tag-slate{background:rgba(61,107,158,0.1);color:var(--slate)}
 .product-icon{font-size:28px;margin-bottom:12px}
 .product-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:6px}
-.product-short{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;flex:1}
-.product-bullets{list-style:none;margin-bottom:20px}
+.product-short{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6}
+.product-bullets{list-style:none;margin-bottom:20px;flex:1}
 .product-bullets li{font-size:13px;color:var(--navy);padding:3px 0 3px 18px;position:relative;line-height:1.5}
 .product-bullets li::before{content:"→";color:var(--amber);position:absolute;left:0;font-size:11px;top:4px}
+.product-inherit{display:inline-block;font-size:12px;font-weight:700;color:var(--navy);background:rgba(200,112,26,.12);border:1px solid rgba(200,112,26,.4);border-radius:6px;padding:5px 10px;margin:0 0 8px}
+.product-bullets li.note{color:var(--amber);font-weight:600}
 
 /* ── ABOUT ── */
 .about-beats{display:flex;flex-direction:column;gap:24px;max-width:720px}
@@ -499,10 +501,15 @@ footer{background:#0d1622;padding:28px 24px}
           </button>
           <div class="product-short">Your top 3 leaks, the exact math behind each one, what to fix, and the tools to do it.</div>
           <ul class="product-bullets">
-            <li>Top 3 leaks ranked by dollar impact</li>
-            <li>Exact annual cost of each leak</li>
-            <li>2-3 specific fixes + guides matched to your leaks</li>
-            <li>The $99 is credited toward a FixKit plan if you upgrade</li>
+            <li>Your top 3 profit leaks, ranked by dollar cost</li>
+            <li>The math behind each leak, using your numbers</li>
+            <li>2–3 fixes per leak you can start this week</li>
+            <li>Your estimated total annual profit leak</li>
+            <li>A preview of the next leaks to fix</li>
+            <li>Calculators matched to your top 3 leaks</li>
+            <li>Guides &amp; templates matched to your top 3 leaks</li>
+            <li>A downloadable PDF of your report</li>
+            <li class="note">Your $99 is credited if you upgrade</li>
           </ul>
           <button class="btn btn-outline" onclick="openCheckout('snapshot','Profit Leak Snapshot — $99')" style="width:100%;text-align:center">Get My Snapshot — $99</button>
         </div>
@@ -515,13 +522,18 @@ footer{background:#0d1622;padding:28px 24px}
             <span>🔍 See what's inside</span>
           </button>
           <div class="product-short">Daily tasks, built-in tracking, AI support. Everything personalized to your trade and numbers.</div>
+          <div class="product-inherit">Everything in the Snapshot, plus:</div>
           <ul class="product-bullets">
-            <li>30 days of daily tasks — specific to your trade and leaks</li>
-            <li>8 profit calculators pre-loaded with your numbers</li>
-            <li>Fix-It Guides and docs matched to your top leaks</li>
-            <li>Ask Jen AI advisor with your full business context</li>
-            <li>The $299 is credited toward the Full Bundle if you upgrade</li>
-            <li>Already have a Snapshot? $199 with your upgrade link</li>
+            <li>30 days of 15–20 minute daily tasks</li>
+            <li>Every task built on your numbers and your trade</li>
+            <li>Weekly sprints with progress tracking</li>
+            <li>All 8 calculators, pre-loaded with your numbers</li>
+            <li>All 19 guides &amp; templates</li>
+            <li>Ask Jen, an advisor who knows your plan</li>
+            <li>My Numbers: track your before &amp; after</li>
+            <li>Check off each day and build a streak</li>
+            <li class="note">Your $299 is credited if you upgrade to the Bundle</li>
+            <li class="note">Already have a Snapshot? $199 with your upgrade link</li>
           </ul>
           <button class="btn btn-amber" onclick="openCheckout('fixkit_30','FixKit 30-Day Plan — $299')" style="width:100%;text-align:center">Get 30-Day Plan — $299</button>
         </div>
@@ -534,12 +546,17 @@ footer{background:#0d1622;padding:28px 24px}
             <span>🔍 See what's inside</span>
           </button>
           <div class="product-short">All three phases. All 12 leaks. Everything in one portal from day one.</div>
+          <div class="product-inherit">Everything in the 30-Day Plan, plus:</div>
           <ul class="product-bullets">
-            <li>Days 1–30, 31–60, and 61–90 fully sequenced</li>
-            <li>All Fix-It Guides and docs unlocked from day one</li>
-            <li>Before/after dashboard across all 90 days</li>
-            <li>Saves $298 vs buying phases separately</li>
-            <li>Already have a Snapshot? $499 with your upgrade link</li>
+            <li>All 90 days unlocked from day one</li>
+            <li>13 weekly sprints across 3 phases</li>
+            <li>All 12 leak categories addressed</li>
+            <li>Days 31–60: your next 3 leaks</li>
+            <li>Days 61–90: systems that make the gains stick</li>
+            <li>Before &amp; after numbers to prove results</li>
+            <li>Ask Jen for all 90 days</li>
+            <li>Saves $298 vs. buying phases separately</li>
+            <li class="note">Already have a Snapshot? $499 with your upgrade link</li>
           </ul>
           <button class="btn btn-dark" onclick="openCheckout('fixkit_bundle','FixKit Complete Bundle — $599')" style="width:100%;text-align:center">Get Full Bundle — $599</button>
         </div>
