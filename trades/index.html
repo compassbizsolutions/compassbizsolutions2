@@ -1002,8 +1002,10 @@ function submitDiagnostic() {
   .then(function(data) {
     var report = data.report || data.text || '';
 
+    // Section ends at its own closing tag or the next real section tag — not at any "["
     function getTag(text, tag) {
-      var m = text.match(new RegExp('\\[' + tag + '\\]([\\s\\S]*?)(?=\\[|$)'));
+      var tags = 'HEADLINE|WHAT_WE_SEE|TOP_LEAK|SECOND_LEAK|THIRD_LEAK|HOW_WE_HELP|LEAK_RANKING|ADDITIONAL_LEAKS';
+      var m = text.match(new RegExp('\\[' + tag + '\\]([\\s\\S]*?)(?=\\[\\/' + tag + '\\]|\\[\\/?(?:' + tags + ')\\]|$)'));
       return m ? m[1].trim() : '';
     }
 

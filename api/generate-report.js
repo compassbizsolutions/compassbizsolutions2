@@ -191,6 +191,7 @@ FORMATTING RULES (apply everywhere below):
 - Keep every bullet under 15 words. Fragments beat sentences.
 - No headers, no markdown other than bold and bullets.
 - No emojis.
+- NEVER use square brackets [ ] in your output except the section tags themselves. The [bracketed text] below is instructions to replace, not text to copy.
 
 [HEADLINE]
 One punchy line, 8-14 words. No period. Name the biggest pattern. Bold ONE number — at most two if they pair (e.g., revenue vs profit).
