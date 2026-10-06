@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
   <style>
+.ico{width:1.15em;height:1.15em;display:inline-block;vertical-align:-0.2em;flex-shrink:0;stroke-width:2}
     :root {
       --navy: #1B2E4B;
       --navy-dark: #111E31;
@@ -186,7 +187,7 @@
     .contact-bg .section-sub { color: rgba(255,255,255,0.5); }
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
     .contact-item { display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start; }
-    .contact-icon { width: 44px; height: 44px; background: rgba(200,112,26,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .contact-icon { color: var(--amber, #C8701A); font-size: 20px; width: 44px; height: 44px; background: rgba(200,112,26,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
     .contact-item-label { font-size: 11px; font-weight: 700; color: var(--amber); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
     .contact-item-value { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; }
     .contact-item-value a { color: var(--amber); text-decoration: none; }
@@ -273,13 +274,13 @@
       <div class="nav-dropdown-wrap">
         <button class="nav-link nav-dropdown-btn" onclick="toggleVerticals(event)">Tools ▾</button>
         <div class="nav-dropdown" id="verticals-dropdown">
-          <a href="/trades" class="nav-dropdown-item">🔧 FixKit — Free Profit-Leak Check
+          <a href="/trades" class="nav-dropdown-item"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" /></svg> FixKit — Free Profit-Leak Check
             <div class="dd-tooltip">
               <div class="dd-tooltip-title">FixKit</div>
               <div class="dd-tooltip-desc">21 questions, about 10 minutes. See your top 3 profit leaks in dollars, free.</div>
             </div>
           </a>
-          <a href="/reviewkit" class="nav-dropdown-item">⭐ ReviewKit — More Google Reviews
+          <a href="/reviewkit" class="nav-dropdown-item"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" /></svg> ReviewKit — More Google Reviews
             <div class="dd-tooltip">
               <div class="dd-tooltip-title">ReviewKit</div>
               <div class="dd-tooltip-desc">Review requests after every job and replies to every review, in your voice. From $79/mo.</div>
@@ -302,8 +303,8 @@
   <a href="#about" class="mobile-menu-link" onclick="closeMobile()">About</a>
   <div style="padding:8px 0;border-bottom:1px solid rgba(61,107,158,0.15)">
     <div style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Tools</div>
-    <a href="/trades" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">🔧 FixKit — Free Profit-Leak Check</a>
-    <a href="/reviewkit" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()">⭐ ReviewKit — More Google Reviews</a>
+    <a href="/trades" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" /></svg> FixKit — Free Profit-Leak Check</a>
+    <a href="/reviewkit" class="mobile-menu-link" style="padding:8px 0;font-size:14px" onclick="closeMobile()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" /></svg> ReviewKit — More Google Reviews</a>
     </div>
   <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="mobile-menu-link" style="color:var(--amber);font-weight:600" onclick="closeMobile()">Book a Free 20-Min Call →</a>
 </div>
@@ -593,14 +594,14 @@
     <div class="contact-grid">
       <div>
         <div class="contact-item">
-          <div class="contact-icon">📞</div>
+          <div class="contact-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" /></svg></div>
           <div>
             <div class="contact-item-label">Free 20-Minute Call</div>
             <div class="contact-item-value">We look at your numbers together and you decide if it makes sense. No charge.<br><br><a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank">Book a Free Call →</a></div>
           </div>
         </div>
         <div class="contact-item">
-          <div class="contact-icon">✉️</div>
+          <div class="contact-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" /> <rect x="2" y="4" width="20" height="16" rx="2" /></svg></div>
           <div>
             <div class="contact-item-label">Email</div>
             <div class="contact-item-value"><a href="mailto:support@compassbizsolutions.com">support@compassbizsolutions.com</a></div>

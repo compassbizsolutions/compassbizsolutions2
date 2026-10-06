@@ -8,6 +8,7 @@
 <script src="https://js.stripe.com/v3/"></script>
 <script src="/deskkit-config.js"></script>
 <style>
+.ico{width:1.15em;height:1.15em;display:inline-block;vertical-align:-0.2em;flex-shrink:0;stroke-width:2}
 :root{--ink:#F5F6F8;--navy:#FFFFFF;--navy2:#FFFFFF;--navy3:#EEF1F5;--amber:#1A4D8F;--amber2:#2C64AC;--amber-dim:rgba(26,77,143,0.08);--amber-border:rgba(26,77,143,0.25);--green:#1F7A4D;--green2:#259960;--green-dim:rgba(31,122,77,0.1);--red2:#D92D20;--muted:#6B7280;--text:#1A2B4A;--text2:#4B5875;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;}
@@ -152,7 +153,7 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
   </div>
 </div>
 <div class="page">
-  <div class="page-eyebrow">📊 Featured Task</div>
+  <div class="page-eyebrow"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="M18 17V9" /> <path d="M13 17V5" /> <path d="M8 17v-3" /></svg> Featured Task</div>
   <div class="page-title">Payroll Compilation</div>
   <div class="page-sub">Upload your timesheet in any format — photo, spreadsheet, screenshot, or type it in. Choose your payroll software output format or build your own. We'll compile everything and produce a file ready to import. — $35</div>
 
@@ -164,12 +165,12 @@ html,body{background:var(--ink);color:var(--text);font-family:'Inter',sans-serif
     <div class="section-title">Your Timesheet</div>
     <div class="upload-area" onclick="document.getElementById('tsFile').click()">
       <input type="file" id="tsFile" accept=".xlsx,.xls,.csv,.pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp" onchange="handleFile(this.files[0])"/>
-      <div style="font-size:32px;margin-bottom:10px;">📋</div>
+      <div style="font-size:32px;margin-bottom:10px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" /> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /> <path d="M12 11h4" /> <path d="M12 16h4" /> <path d="M8 11h.01" /> <path d="M8 16h.01" /></svg></div>
       <div style="font-size:14px;font-weight:600;color:white;margin-bottom:4px;">Upload your timesheet</div>
       <div style="font-size:12px;color:var(--muted);">Photo, spreadsheet, PDF, screenshot — any format</div>
     </div>
     <div class="upload-preview" id="filePreview">
-      <span style="font-size:20px" id="fileIcon">📄</span>
+      <span style="font-size:20px" id="fileIcon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /></svg></span>
       <div class="upload-preview-name" id="fileName"></div>
       <button class="upload-remove" onclick="removeFile()">✕</button>
     </div>
@@ -542,8 +543,8 @@ function handleFile(file) {
   if (!file) return;
   fileName = file.name;
   const ext = file.name.split('.').pop().toLowerCase();
-  const iconMap = {png:'🖼️',jpg:'🖼️',jpeg:'🖼️',webp:'🖼️',pdf:'📋',xlsx:'📊',xls:'📊',csv:'📊',doc:'📄',docx:'📄',txt:'📄'};
-  document.getElementById('fileIcon').textContent = iconMap[ext] || '📄';
+  const iconMap = {png:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /> <circle cx="9" cy="9" r="2" /> <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg>',jpg:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /> <circle cx="9" cy="9" r="2" /> <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg>',jpeg:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /> <circle cx="9" cy="9" r="2" /> <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg>',webp:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /> <circle cx="9" cy="9" r="2" /> <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg>',pdf:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" /> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /> <path d="M12 11h4" /> <path d="M12 16h4" /> <path d="M8 11h.01" /> <path d="M8 16h.01" /></svg>',xlsx:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="M18 17V9" /> <path d="M13 17V5" /> <path d="M8 17v-3" /></svg>',xls:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="M18 17V9" /> <path d="M13 17V5" /> <path d="M8 17v-3" /></svg>',csv:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="M18 17V9" /> <path d="M13 17V5" /> <path d="M8 17v-3" /></svg>',doc:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /></svg>',docx:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /></svg>',txt:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /></svg>'};
+  document.getElementById('fileIcon').innerHTML = iconMap[ext] || "<svg class='ico' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z' /> <path d='M14 2v5a1 1 0 0 0 1 1h5' /> <path d='M10 9H8' /> <path d='M16 13H8' /> <path d='M16 17H8' /></svg>";
   document.getElementById('fileName').textContent = file.name;
   document.getElementById('filePreview').style.display = 'flex';
   const reader = new FileReader();
