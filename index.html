@@ -152,6 +152,25 @@
     .plan-list li { font-size: 14px; color: var(--muted); line-height: 1.55; padding-left: 18px; position: relative; }
     .plan-list li::before { content: "✓"; color: var(--amber); font-weight: 700; position: absolute; left: 0; }
     .plan-btn { text-align: center; }
+    .hero-trades { margin-top: 18px; font-size: 14px; color: rgba(255,255,255,0.65); }
+    .hero-trades a { color: var(--amber); font-weight: 700; text-decoration: none; }
+    .hero-trades a:hover { text-decoration: underline; }
+    .who-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .who-card { display: flex; gap: 14px; align-items: flex-start; background: white; border: 1px solid rgba(27,46,75,0.1); border-radius: 12px; padding: 20px; color: inherit; text-decoration: none; }
+    .who-feature { grid-column: span 3; background: var(--navy); border-color: var(--navy); transition: transform .15s, box-shadow .15s; }
+    .who-feature:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(15,25,45,0.18); }
+    .who-ico { width: 44px; height: 44px; border-radius: 10px; background: rgba(200,112,26,0.12); color: var(--amber); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .who-svg { width: 22px; height: 22px; }
+    .who-tag { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-bottom: 4px; }
+    .who-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; text-transform: uppercase; color: var(--navy); margin-bottom: 4px; letter-spacing: .2px; }
+    .who-feature .who-name { color: white; font-size: 28px; }
+    .who-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .who-feature .who-desc { color: rgba(255,255,255,0.72); max-width: 720px; }
+    .who-other { border-style: dashed; border-color: rgba(200,112,26,0.45); }
+    .who-other:hover { border-color: var(--amber); }
+    .who-link { margin-top: 10px; font-weight: 700; color: var(--amber); font-size: 14px; }
+    @media (max-width: 900px) { .who-grid { grid-template-columns: 1fr 1fr; } .who-feature { grid-column: span 2; } }
+    @media (max-width: 600px) { .who-grid { grid-template-columns: 1fr; } .who-feature { grid-column: auto; } }
     .plans-note { margin-top: 20px; font-size: 14px; color: var(--muted); max-width: 900px; }
     .plans-note a { color: var(--amber); font-weight: 700; }
     @media (max-width: 900px) { .plans-grid { grid-template-columns: 1fr; } }
@@ -316,19 +335,20 @@
   <div class="hero-inner">
     <div>
       <h1 class="hero-headline">
-        More Booked Jobs.<br>
+        Less Busywork.<br>
         More of What<br>
         You Earn<br>
         <em>Stays Yours.</em>
       </h1>
       <p class="hero-sub">
-        <strong>Compass finds where your trades business is leaking money, then fixes it for you: the missed calls, the reviews, the website, the paperwork.</strong>
-        23 years of corporate systems work, pointed at the shop your size. Based on Cape Cod.
+        <strong>Compass finds where your business is losing time and money, then fixes it for you: the missed calls, the manual paperwork, the website, the numbers nobody's tracking.</strong>
+        23 years of corporate systems work, pointed at small businesses of every kind. Based on Cape Cod.
       </p>
       <div class="hero-actions">
-        <a href="/trades" class="btn-primary">Run the Free Profit-Leak Check →</a>
-        <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="btn-ghost">Book a Free 20-Min Call</a>
+        <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="btn-primary">Book a Free 20-Min Call →</a>
+        <a href="#who" class="btn-ghost">See Who We Work With</a>
       </div>
+      <p class="hero-trades">Run a trades or field service business? <a href="/trades">Take the free profit-leak check →</a></p>
     </div>
     <div class="hero-card">
       <div class="hero-card-label">Why Compass</div>
@@ -337,13 +357,39 @@
         <div class="hero-stat-text"><strong>Years Doing This For Real</strong>Corporate-level systems experience. Now pointed at businesses your size.</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num">12</div>
-        <div class="hero-stat-text"><strong>Profit Leaks We Check</strong>From underpricing and no-shows to missed calls and slow invoices. The check is free and shows you the dollars.</div>
+        <div class="hero-stat-num">8</div>
+        <div class="hero-stat-text"><strong>Things We Actually Do</strong>AI and automation, apps, websites, operations, your numbers in plain English, social media, admin support, and tying it all together.</div>
       </div>
       <div class="hero-stat">
         <div class="hero-stat-num">0</div>
-        <div class="hero-stat-text"><strong>Cookie-Cutter Fixes</strong>Every job is built around your numbers, your crew, your headaches — not a template.</div>
+        <div class="hero-stat-text"><strong>Cookie-Cutter Fixes</strong>Every job is built around your numbers, your team, your headaches — not a template.</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WE WORK WITH -->
+<section id="who">
+  <div class="section-inner">
+    <div class="section-eyebrow">Who We Work With</div>
+    <h2 class="section-title">Any Small Business<br>That's Outgrown Winging It.</h2>
+    <p class="section-sub">The problems are the same everywhere: work done by hand that shouldn't be, calls and leads that slip away, and numbers nobody has time to look at. We fix those for any kind of business.</p>
+    <div class="who-grid">
+      <a class="who-card who-feature" href="/trades">
+        <div class="who-ico"><svg class="who-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" /></svg></div>
+        <div>
+          <div class="who-tag">Our focus right now</div>
+          <div class="who-name">Trades &amp; Field Service</div>
+          <div class="who-desc">HVAC, plumbing, electrical, roofing, cleaning, landscaping, pool service. We've built tools just for you: a free profit-leak check, FixKit daily fix plans, and FieldKit for running the crew.</div>
+          <div class="who-link">See the trades tools →</div>
+        </div>
+      </a>
+      <div class="who-card"><div class="who-ico"><svg class="who-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" /> <path d="M7 2v20" /> <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" /></svg></div><div><div class="who-name">Restaurants &amp; Food</div><div class="who-desc">Food and labor cost tracking, scheduling, reviews, and the admin that eats your afternoons.</div></div></div>
+      <div class="who-card"><div class="who-ico"><svg class="who-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5" /> <path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244" /> <path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05" /></svg></div><div><div class="who-name">Retail &amp; Shops</div><div class="who-desc">Inventory, sales reporting, a website that sells, and follow-up that brings customers back.</div></div></div>
+      <div class="who-card"><div class="who-ico"><svg class="who-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /> <rect width="20" height="14" x="2" y="6" rx="2" /></svg></div><div><div class="who-name">Professional Services</div><div class="who-desc">Client intake, scheduling, invoicing, and getting paid without chasing it.</div></div></div>
+      <div class="who-card"><div class="who-ico"><svg class="who-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" /> <path d="M20 2v4" /> <path d="M22 4h-4" /> <circle cx="4" cy="20" r="2" /></svg></div><div><div class="who-name">Salons, Wellness &amp; Fitness</div><div class="who-desc">Bookings, no-shows, memberships, and staying visible online.</div></div></div>
+      <div class="who-card"><div class="who-ico"><svg class="who-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /> <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg></div><div><div class="who-name">Real Estate &amp; Property</div><div class="who-desc">Lead follow-up, listings and tenant workflows, and reports you don't have to build by hand.</div></div></div>
+      <a class="who-card who-other" href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank"><div class="who-ico"><svg class="who-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" /></svg></div><div><div class="who-name">Something Else?</div><div class="who-desc">Your kind of business isn't listed? It doesn't matter. Book a free 20-minute call and we'll tell you honestly whether we can help.</div><div class="who-link">Book a free call →</div></div></a>
     </div>
   </div>
 </section>
@@ -352,15 +398,15 @@
 <section id="plans" style="background:var(--light)">
   <div class="section-inner">
     <div class="section-eyebrow">Done For You, Every Month</div>
-    <h2 class="section-title">Nobody Wants a Website.<br>They Want the Phone to Ring.</h2>
-    <p class="section-sub">You shouldn't have to become a marketer to keep your trucks busy. Pick a plan and we run it. You get one page every month: what you paid on one side, what came in on the other.</p>
+    <h2 class="section-title">Nobody Wants a Website.<br>They Want More Customers.</h2>
+    <p class="section-sub">You shouldn't have to become a marketer to keep your calendar full. Pick a plan and we run it. You get one page every month: what you paid on one side, what came in on the other.</p>
     <div class="plans-grid">
       <div class="plan-card">
         <div class="plan-tag">Foundation</div>
         <div class="plan-name">Get Found. Get Called Back.</div>
         <div class="plan-price">From $499<span>/mo</span></div>
         <ul class="plan-list">
-          <li>Missed-call text-back, so a caller hears from you in 60 seconds even when you're under a sink</li>
+          <li>Missed-call text-back, so a caller hears from you in 60 seconds even when you're with a customer</li>
           <li>A review request after every job, and replies to every review in your voice (ReviewKit)</li>
           <li>A website built to get calls, hosted and kept up to date</li>
           <li>Follow-up texts on every quote until the customer says yes or no</li>
@@ -382,7 +428,7 @@
         <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank" class="btn-primary plan-btn">Book a Free 20-Min Call →</a>
       </div>
     </div>
-    <p class="plans-note">One company per trade per town. Once you're in, we don't work for your competition down the road. Not sure what you need? <a href="/trades">Run the free profit-leak check first.</a></p>
+    <p class="plans-note">One business per industry per town. Once you're in, we don't work for your competition down the road. Not sure what you need? <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" target="_blank">Book a free 20-minute call</a>, or if you're in the trades, <a href="/trades">run the free profit-leak check</a>.</p>
   </div>
 </section>
 
@@ -391,7 +437,7 @@
   <div class="section-inner">
     <div class="section-eyebrow">What's Inside</div>
     <h2 class="section-title">What We Build<br>and Run for You</h2>
-    <p class="section-sub">These are the pieces behind the plans, and they're available one at a time for bigger projects. Every one ties back to the same thing: more booked jobs and more money kept.</p>
+    <p class="section-sub">These are the pieces behind the plans, and they're available one at a time for bigger projects. Every one ties back to the same thing: more customers and more money kept.</p>
     <div class="services-grid">
 
       <div class="service-card">
@@ -489,7 +535,7 @@
         <div class="work-status">Live</div>
         <div class="work-tag">Diagnostic</div>
         <div class="work-name">FixKit</div>
-        <div class="work-desc">A free profit-leak check for trades businesses. 21 questions in, your top 3 leaks out, each with the dollar math.</div>
+        <div class="work-desc">Our profit-leak check and fix plans for trades businesses. 21 questions in, your top 3 leaks out, each with the dollar math.</div>
         <a href="/trades" class="work-link">Try it free →</a>
       </div>
       <div class="work-card work-card-2">
@@ -541,8 +587,8 @@
         <div class="about-title">Founder, Compass Business Solutions</div>
         <p class="about-body">For 23 years I worked in business and technology process analysis across three major organizations — finding exactly where time and money disappear, how the individual parts of a business run, and how the pieces fit together. Automating the stuff that shouldn't be manual. Fixing the gaps that were quietly costing time, efficiency, and money.</p>
         <p class="about-body">That whole time I watched friends in the trades — and small business owners across industries — working themselves into the ground with the same operational problems I'd spent my career solving. They just never had anyone with that background in the room.</p>
-        <p class="about-body">I live in Mashpee and work with trades businesses here on Cape Cod and beyond. When you book a call, you talk to me.</p>
-        <p class="about-body">Compass is what happens when 23 years of corporate-level process work gets pointed at the guys who actually need it — not another company that already has ten people doing this.</p>
+        <p class="about-body">I live in Mashpee and work with small businesses of all kinds here on Cape Cod and beyond, with a special focus on the trades. When you book a call, you talk to me.</p>
+        <p class="about-body">Compass is what happens when 23 years of corporate-level process work gets pointed at the owners who actually need it — not another company that already has ten people doing this.</p>
         <div class="about-stats">
           <div class="about-stat">
             <div class="about-stat-num">23</div>
