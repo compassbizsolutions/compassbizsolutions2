@@ -163,7 +163,8 @@ module.exports = async function handler(req, res) {
       </div>`;
 
     // Check for no admin staff — triggers Business Support upsell
-    const officeStaffVal = answers && (answers.office_staff || answers.admin || "0");
+    // Business Support pitch: only when the owner said they handle the office side themselves
+    const officeAnswer = answersRaw && typeof answersRaw.office === "string" ? answersRaw.office : "";
     // ReviewKit pitch for owners who already have a lot of Google reviews —
     // at that volume, replying to every one by hand stops happening.
     const reviewCount = answersRaw && typeof answersRaw.reviews === "string" ? answersRaw.reviews : "";
@@ -175,10 +176,7 @@ module.exports = async function handler(req, res) {
     const fewReviewsLabel = reviewCount === "Under 10" ? "under 10" : "10 to 50";
     const tradeWord = trade ? (String(trade) === String(trade).toUpperCase() ? String(trade) : String(trade).toLowerCase()) : "local";
     const tradePhrase = (/^(HVAC|[aeiou])/i.test(tradeWord) ? "an " : "a ") + tradeWord;
-    const noAdmin = parseInt(officeStaffVal) === 0 ||
-      String(officeStaffVal).toLowerCase().includes("none") ||
-      String(officeStaffVal).trim() === "0" ||
-      !officeStaffVal;
+    const noAdmin = officeAnswer === "Just me (the owner)";
 
     // Gmail collapses ("...") any block that matches an earlier email in the
     // same thread, which hid the buttons when someone ran the check twice.
@@ -362,7 +360,7 @@ module.exports = async function handler(req, res) {
         email, name, biz, trade,
         plan: "lead",
         tagged_at: new Date().toISOString(),
-        reason: "Reported 0 office/admin staff on free diagnostic",
+        reason: "Owner handles the office side alone (free diagnostic)",
         campaign: "business_support_services",
         status: "pending",
       }).catch(function() {});
