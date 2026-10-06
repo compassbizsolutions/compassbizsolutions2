@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+.ico{width:1.15em;height:1.15em;display:inline-block;vertical-align:-0.2em;flex-shrink:0;stroke-width:2}
   :root {
     --black: #111E31;
     --charcoal: #162440;
@@ -1063,7 +1064,9 @@
   }
 
   .search-input-wrap::before {
-    content: '🔍';
+    content: '';
+    width: 14px; height: 14px;
+    background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%238A9AB0%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 aria-hidden=%22true%22%3E%3Cpath d=%22m21 21-4.34-4.34%22 /%3E %3Ccircle cx=%2211%22 cy=%2211%22 r=%228%22 /%3E%3C/svg%3E") center/contain no-repeat;
     position: absolute;
     left: 14px;
     top: 50%;
@@ -2037,64 +2040,64 @@
     <div class="sidebar-nav">
       <div class="nav-section-label">Operations</div>
       <div class="nav-item active" onclick="showSection('overview', this)">
-        <span class="nav-icon">⚡</span> Overview
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z" /></svg></span> Overview
       </div>
       <div class="nav-item" onclick="showSection('alerts', this)">
-        <span class="nav-icon">🚨</span> Alerts
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6" /> <path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" /> <path d="M21 12h1" /> <path d="M18.5 4.5 18 5" /> <path d="M2 12h1" /> <path d="M12 2v1" /> <path d="m4.929 4.929.707.707" /> <path d="M12 12v6" /></svg></span> Alerts
         <span class="nav-badge" id="alertsNavBadge" style="display:none;background:var(--red);">0</span>
       </div>
       <div class="nav-item" onclick="showSection('schedule', this)">
-        <span class="nav-icon">📅</span> Schedule
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg></span> Schedule
         <span class="nav-badge yellow" id="schedBadge">3</span>
       </div>
       <div class="nav-item" onclick="showSection('jobs', this)">
-        <span class="nav-icon">🔧</span> Jobs
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" /></svg></span> Jobs
         <span class="nav-badge" id="jobsBadge">12</span>
       </div>
       <div class="nav-item" onclick="showSection('customers', this)">
-        <span class="nav-icon">👷</span> Customers
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5" /> <path d="M14 6a6 6 0 0 1 6 6v3" /> <path d="M4 15v-3a6 6 0 0 1 6-6" /> <rect x="2" y="15" width="20" height="4" rx="1" /></svg></span> Customers
       </div>
 
       <div class="nav-section-label">Money</div>
       <div class="nav-item" onclick="showSection('invoices', this)">
-        <span class="nav-icon">💵</span> Invoicing
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2" /> <circle cx="12" cy="12" r="2" /> <path d="M6 12h.01M18 12h.01" /></svg></span> Invoicing
         <span class="nav-badge" id="invBadge">2</span>
       </div>
       <div class="nav-item" id="nav-profit" onclick="showSection('profit', this)">
-        <span class="nav-icon">📈</span> Profit Tracker
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6" /> <path d="m22 7-8.5 8.5-5-5L2 17" /></svg></span> Profit Tracker
       </div>
       <div class="nav-item" id="nav-payroll" onclick="showSection('payroll', this)">
-        <span class="nav-icon">🧾</span> Payroll
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17V7" /> <path d="M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8" /> <path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z" /></svg></span> Payroll
         <span class="nav-badge yellow" id="payrollBadge">!</span>
       </div>
 
       <div class="nav-section-label">Tools</div>
       <div class="nav-item" id="nav-ai-estimator" onclick="showSection('estimator', this)">
-        <span class="nav-icon">🔍</span> AI Estimator
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg></span> AI Estimator
       </div>
       <div class="nav-item" onclick="showSection('advisor', this)">
-        <span class="nav-icon">🧠</span> Compass Advisor
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5" /> <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4" /> <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" /> <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" /> <path d="M18 18a4 4 0 0 0 2-7.464" /> <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" /> <path d="M6 18a4 4 0 0 1-2-7.464" /> <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" /></svg></span> Compass Advisor
       </div>
       <div class="nav-item" id="nav-customer-portal" onclick="showSection('portal-mgr', this)">
-        <span class="nav-icon">🌐</span> Customer Portal
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /> <path d="M2 12h20" /></svg></span> Customer Portal
         <span class="nav-badge green" id="portalRequestsBadge" style="display:none;">0</span>
       </div>
 
       <div class="nav-section-label">Resources</div>
       <div class="nav-item" id="nav-inventory" onclick="showSection('inventory', this)">
-        <span class="nav-icon">📦</span> Inventory
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" /> <path d="M12 22V12" /> <polyline points="3.29 7 12 12 20.71 7" /> <path d="m7.5 4.27 9 5.15" /></svg></span> Inventory
         <span class="nav-badge yellow" id="invAlertBadge" style="display:none;">!</span>
       </div>
       <div class="nav-item" id="nav-subs" onclick="showSection('subs', this)">
-        <span class="nav-icon">🤝</span> Subcontractors
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3" /> <path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4" /> <path d="m21 3 1 11h-2" /> <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" /> <path d="M3 4h8" /></svg></span> Subcontractors
       </div>
 
       <div class="nav-section-label">Account</div>
       <div class="nav-item" onclick="showSection('team', this)">
-        <span class="nav-icon">👥</span> Team
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <path d="M16 3.128a4 4 0 0 1 0 7.744" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <circle cx="9" cy="7" r="4" /></svg></span> Team
       </div>
       <div class="nav-item" onclick="showSection('app-admin', this)">
-        <span class="nav-icon">⚙️</span> App Admin
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /> <circle cx="12" cy="12" r="3" /></svg></span> App Admin
       </div>
     </div>
 
@@ -2118,7 +2121,7 @@
       <div class="topbar-right" style="gap:8px;">
         <button class="topbar-btn" onclick="showModal('newJobModal')" style="padding:6px 12px;font-size:12px;">+ Job</button>
         <button id="topbarAlertBtn" onclick="showSection('alerts',null)" style="position:relative;background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:6px 14px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;color:var(--muted);cursor:pointer;transition:all 0.15s;">
-          🚨 <span id="topbarAlertCount" style="display:none;position:absolute;top:-6px;right:-6px;background:var(--red);color:white;font-size:10px;font-weight:700;padding:2px 5px;border-radius:8px;min-width:16px;text-align:center;line-height:14px;">0</span>
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6" /> <path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" /> <path d="M21 12h1" /> <path d="M18.5 4.5 18 5" /> <path d="M2 12h1" /> <path d="M12 2v1" /> <path d="m4.929 4.929.707.707" /> <path d="M12 12v6" /></svg> <span id="topbarAlertCount" style="display:none;position:absolute;top:-6px;right:-6px;background:var(--red);color:white;font-size:10px;font-weight:700;padding:2px 5px;border-radius:8px;min-width:16px;text-align:center;line-height:14px;">0</span>
         </button>
         <button class="topbar-btn primary" onclick="logOut()" style="padding:6px 12px;font-size:12px;">↩ Out</button>
       </div>
@@ -2130,7 +2133,7 @@
       <div class="page-section active fade-in" id="section-overview">
 
         <div class="alert-strip" id="alertStrip" style="display:none;">
-          ⚠️ <strong>2 overdue invoices</strong> — $3,740 outstanding. <span style="text-decoration:underline;cursor:pointer;" onclick="showSection('invoices',null)">View invoices →</span>
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> <strong>2 overdue invoices</strong> — $3,740 outstanding. <span style="text-decoration:underline;cursor:pointer;" onclick="showSection('invoices',null)">View invoices →</span>
         </div>
 
         <div class="kpi-grid">
@@ -2164,7 +2167,7 @@
             <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;border-bottom:1px solid var(--border);" onclick="toggleOverviewSection('requests')">
               <div style="display:flex;align-items:center;gap:10px;">
                 <div style="width:8px;height:8px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite;flex-shrink:0;"></div>
-                <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);">📥 Incoming Service Requests</div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12" /> <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" /></svg> Incoming Service Requests</div>
                 <span id="overviewRequestCount" style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;background:var(--orange);color:white;padding:2px 8px;border-radius:2px;">0</span>
               </div>
               <span id="overviewRequestsChevron" style="color:var(--muted);font-size:14px;transition:transform 0.2s;">▾</span>
@@ -2175,7 +2178,7 @@
             <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;border-top:1px solid var(--border);border-bottom:1px solid var(--border);" onclick="toggleOverviewSection('estimates')">
               <div style="display:flex;align-items:center;gap:10px;">
                 <div style="width:8px;height:8px;border-radius:50%;background:var(--yellow);flex-shrink:0;"></div>
-                <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);">📋 Pending Estimates</div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" /> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /> <path d="M12 11h4" /> <path d="M12 16h4" /> <path d="M8 11h.01" /> <path d="M8 16h.01" /></svg> Pending Estimates</div>
                 <span id="overviewEstimateCount" style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;background:var(--yellow);color:var(--black);padding:2px 8px;border-radius:2px;">0</span>
               </div>
               <span id="overviewEstimatesChevron" style="color:var(--muted);font-size:14px;transition:transform 0.2s;">▾</span>
@@ -2218,10 +2221,10 @@
                 <div class="card-title">Quick Actions</div>
               </div>
               <div class="card-body" style="display:flex;flex-direction:column;gap:8px;">
-                <button class="btn-sm" style="width:100%;text-align:left;" onclick="showModal('newJobModal')">🔧 Create New Job</button>
-                <button class="btn-sm" style="width:100%;text-align:left;" onclick="showSection('invoices', null)">💵 Create Invoice</button>
-                <button class="btn-sm" style="width:100%;text-align:left;" onclick="showSection('customers', null)">👷 Add Customer</button>
-                <button class="btn-sm" style="width:100%;text-align:left;" onclick="showSection('advisor', null)">🧠 Ask Compass Advisor</button>
+                <button class="btn-sm" style="width:100%;text-align:left;" onclick="showModal('newJobModal')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" /></svg> Create New Job</button>
+                <button class="btn-sm" style="width:100%;text-align:left;" onclick="showSection('invoices', null)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2" /> <circle cx="12" cy="12" r="2" /> <path d="M6 12h.01M18 12h.01" /></svg> Create Invoice</button>
+                <button class="btn-sm" style="width:100%;text-align:left;" onclick="showSection('customers', null)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5" /> <path d="M14 6a6 6 0 0 1 6 6v3" /> <path d="M4 15v-3a6 6 0 0 1 6-6" /> <rect x="2" y="15" width="20" height="4" rx="1" /></svg> Add Customer</button>
+                <button class="btn-sm" style="width:100%;text-align:left;" onclick="showSection('advisor', null)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5" /> <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4" /> <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" /> <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" /> <path d="M18 18a4 4 0 0 0 2-7.464" /> <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" /> <path d="M6 18a4 4 0 0 1-2-7.464" /> <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" /></svg> Ask Compass Advisor</button>
               </div>
             </div>
           </div>
@@ -2263,7 +2266,7 @@
             <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:rgba(90,114,145,0.4);border:1px solid var(--muted);border-radius:2px;"></span>To-Dos / Reminders</span>
           </div>
           <button class="topbar-btn" id="routeOptBtn" onclick="runRouteOptimizer()" style="display:flex;align-items:center;gap:8px;">
-            🗺 Optimize Routes
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z" /> <path d="M15 5.764v15" /> <path d="M9 3.236v15" /></svg> Optimize Routes
           </button>
         </div>
 
@@ -2271,7 +2274,7 @@
         <div id="routeOptimizerPanel" style="display:none;margin-bottom:20px;">
           <div class="card">
             <div class="card-header">
-              <div class="card-title">🗺 Route Recommendations</div>
+              <div class="card-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z" /> <path d="M15 5.764v15" /> <path d="M9 3.236v15" /></svg> Route Recommendations</div>
               <div style="display:flex;gap:8px;align-items:center;">
                 <div id="routeOptStatus" style="font-size:12px;color:var(--muted);"></div>
                 <button class="btn-sm primary" id="applyRouteBtn" style="display:none;" onclick="applyRouteRecommendations()">Apply Schedule →</button>
@@ -2328,7 +2331,7 @@
                   <div id="ownerBeforeWrap" style="background:var(--steel);border:1px solid var(--border);border-radius:2px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;">
                     <img id="ownerBeforeImg" src="" style="display:none;width:100%;height:100%;object-fit:cover;">
                     <div id="ownerBeforePlaceholder" style="text-align:center;color:var(--muted);">
-                      <div style="font-size:32px;margin-bottom:8px;">📷</div>
+                      <div style="font-size:32px;margin-bottom:8px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /> <circle cx="12" cy="13" r="3" /></svg></div>
                       <div style="font-size:12px;font-weight:600;">No photo yet</div>
                     </div>
                   </div>
@@ -2338,7 +2341,7 @@
                   <div id="ownerAfterWrap" style="background:var(--steel);border:1px solid var(--border);border-radius:2px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;">
                     <img id="ownerAfterImg" src="" style="display:none;width:100%;height:100%;object-fit:cover;">
                     <div id="ownerAfterPlaceholder" style="text-align:center;color:var(--muted);">
-                      <div style="font-size:32px;margin-bottom:8px;">📷</div>
+                      <div style="font-size:32px;margin-bottom:8px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /> <circle cx="12" cy="13" r="3" /></svg></div>
                       <div style="font-size:12px;font-weight:600;">No photo yet</div>
                     </div>
                   </div>
@@ -2453,13 +2456,13 @@
 
         <!-- Internal tab bar -->
         <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;">
-          <button class="portal-tab active" id="atab-autoconfirm" onclick="switchAdminTab('autoconfirm',this)">🤖 Auto-Confirm</button>
-          <button class="portal-tab" id="atab-fees" onclick="switchAdminTab('fees',this)">💲 Fees</button>
-          <button class="portal-tab" id="atab-rules" onclick="switchAdminTab('rules',this)">⚙️ Business Rules</button>
-          <button class="portal-tab" id="atab-portal" onclick="switchAdminTab('portal',this)">🌐 Customer Portal
+          <button class="portal-tab active" id="atab-autoconfirm" onclick="switchAdminTab('autoconfirm',this)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8" /> <rect width="16" height="12" x="4" y="8" rx="2" /> <path d="M2 14h2" /> <path d="M20 14h2" /> <path d="M15 13v2" /> <path d="M9 13v2" /></svg> Auto-Confirm</button>
+          <button class="portal-tab" id="atab-fees" onclick="switchAdminTab('fees',this)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" x2="12" y1="2" y2="22" /> <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg> Fees</button>
+          <button class="portal-tab" id="atab-rules" onclick="switchAdminTab('rules',this)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /> <circle cx="12" cy="12" r="3" /></svg> Business Rules</button>
+          <button class="portal-tab" id="atab-portal" onclick="switchAdminTab('portal',this)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /> <path d="M2 12h20" /></svg> Customer Portal
             <span id="adminPortalBadge" style="display:none;background:var(--orange);color:white;font-size:10px;font-weight:700;padding:1px 5px;border-radius:8px;margin-left:4px;">!</span>
           </button>
-          <button class="portal-tab" id="atab-settings" onclick="switchAdminTab('settings',this)">🏢 Settings</button>
+          <button class="portal-tab" id="atab-settings" onclick="switchAdminTab('settings',this)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 10h.01" /> <path d="M12 14h.01" /> <path d="M12 6h.01" /> <path d="M16 10h.01" /> <path d="M16 14h.01" /> <path d="M16 6h.01" /> <path d="M8 10h.01" /> <path d="M8 14h.01" /> <path d="M8 6h.01" /> <path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" /> <rect x="4" y="2" width="16" height="20" rx="2" /></svg> Settings</button>
         </div>
 
         <!-- AUTO-CONFIRM tab -->
@@ -2471,10 +2474,10 @@
         <!-- BUSINESS RULES tab -->
         <div class="admin-tab-section" id="atab-content-rules" style="display:none;">
           <div style="background:var(--charcoal);border:1px solid var(--border);border-radius:2px;padding:20px;text-align:center;">
-            <div style="font-size:32px;margin-bottom:10px;">⚙️</div>
+            <div style="font-size:32px;margin-bottom:10px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /> <circle cx="12" cy="12" r="3" /></svg></div>
             <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;color:var(--white);margin-bottom:8px;">Business Rules & Thresholds</div>
             <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Invoice routing, payroll thresholds, callback alerts, truck stock timing, tech permissions and more.</div>
-            <button class="btn-sm primary" onclick="showModal('ownerAdminModal')">⚙️ Open Business Rules →</button>
+            <button class="btn-sm primary" onclick="showModal('ownerAdminModal')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /> <circle cx="12" cy="12" r="3" /></svg> Open Business Rules →</button>
           </div>
         </div>
 
@@ -2492,7 +2495,7 @@
         <!-- Status + master toggle -->
         <div class="autoconfirm-card" style="margin-bottom:24px;">
           <div style="display:flex;align-items:center;gap:14px;">
-            <div style="font-size:28px;">🤖</div>
+            <div style="font-size:28px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8" /> <rect width="16" height="12" x="4" y="8" rx="2" /> <path d="M2 14h2" /> <path d="M20 14h2" /> <path d="M15 13v2" /> <path d="M9 13v2" /></svg></div>
             <div style="flex:1;">
               <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);" id="acStatusLabel">Auto-Confirm is Active</div>
               <div style="font-size:13px;color:var(--muted);">5-touch SMS + email sequence on all upcoming jobs</div>
@@ -2573,7 +2576,7 @@
       <div class="page-section fade-in" id="section-advisor">
         <div class="advisor-chat">
           <div class="advisor-intro" style="margin:20px 24px 0;flex-shrink:0;">
-            <div class="advisor-intro-title">🧠 Compass Advisor</div>
+            <div class="advisor-intro-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5" /> <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4" /> <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" /> <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" /> <path d="M18 18a4 4 0 0 0 2-7.464" /> <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" /> <path d="M6 18a4 4 0 0 1-2-7.464" /> <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" /></svg> Compass Advisor</div>
             <div class="advisor-intro-text">
               Your AI business partner, trained on field service operations. Ask about pricing, callbacks, 
               tech performance, cash flow, customer retention — anything your business needs to run tighter and earn more.
@@ -2609,7 +2612,7 @@
 
         <!-- Compass tip -->
         <div style="background:var(--orange-glow);border:1px solid rgba(200,112,26,0.25);border-radius:2px;padding:14px 18px;margin-bottom:24px;display:flex;align-items:flex-start;gap:12px;">
-          <div style="font-size:20px;flex-shrink:0;">💡</div>
+          <div style="font-size:20px;flex-shrink:0;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /> <path d="M9 18h6" /> <path d="M10 22h4" /></svg></div>
           <div>
             <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:3px;">Compass Methodology — Protect Your Margins</div>
             <div style="font-size:12px;color:var(--muted);line-height:1.6;">A $3 admin fee on every invoice at 100 jobs/month = <strong style="color:var(--white);">$300/mo</strong> — enough to cover your FieldKit subscription. A $75 trip fee at 80 jobs/month = <strong style="color:var(--white);">$6,000/mo</strong> in protected revenue. Set your fees once, the system applies them automatically.</div>
@@ -2618,7 +2621,7 @@
 
         <!-- CC Processing note -->
         <div style="background:rgba(90,114,145,0.1);border:1px solid rgba(90,114,145,0.25);border-radius:2px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;">
-          <div style="font-size:20px;flex-shrink:0;">💳</div>
+          <div style="font-size:20px;flex-shrink:0;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2" /> <line x1="2" x2="22" y1="10" y2="10" /> <path d="M6 14h2" /></svg></div>
           <div>
             <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px;">Note on Credit Card Processing Fees</div>
             <div style="font-size:12px;color:var(--muted);line-height:1.6;">Some states — including <strong style="color:var(--white);">Massachusetts, Connecticut, and Maine</strong> — prohibit charging customers a separate fee for paying by credit card. The legal workaround is the <strong style="color:var(--orange);">"Bake Processing Cost Into Estimates"</strong> option below — it increases your estimated price slightly to cover processing costs without ever mentioning credit cards. No line item, no label, fully compliant.</div>
@@ -2629,7 +2632,7 @@
 
         <!-- State disclaimer at bottom -->
         <div style="margin-top:24px;background:rgba(90,114,145,0.1);border:1px solid rgba(90,114,145,0.2);border-radius:2px;padding:14px 18px;font-size:12px;color:var(--muted);line-height:1.6;">
-          ⚖️ Fee regulations vary by state and municipality. FieldKit does not provide legal or financial advice. Always verify that any fees you charge comply with applicable laws in your state. You are solely responsible for compliance.
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18" /> <path d="m19 8 3 8a5 5 0 0 1-6 0zV7" /> <path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1" /> <path d="m5 8 3 8a5 5 0 0 1-6 0zV7" /> <path d="M7 21h10" /></svg> Fee regulations vary by state and municipality. FieldKit does not provide legal or financial advice. Always verify that any fees you charge comply with applicable laws in your state. You are solely responsible for compliance.
         </div>
       </div>
 
@@ -2638,13 +2641,13 @@
 
         <!-- Portal status banner -->
         <div id="portalStatusBanner" style="background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.3);border-radius:2px;padding:14px 18px;display:flex;align-items:center;gap:14px;margin-bottom:24px;">
-          <div style="font-size:20px;">🌐</div>
+          <div style="font-size:20px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /> <path d="M2 12h20" /></svg></div>
           <div style="flex:1;">
             <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:2px;">Customer Portal is Active</div>
             <div style="font-size:12px;color:var(--muted);">Customers access at: <span style="color:var(--orange);font-weight:600;">app.compassbizsolutions.com/portal</span></div>
           </div>
           <div style="display:flex;gap:8px;">
-            <button class="btn-sm" onclick="showModal('portalSettingsModal')">⚙️ Settings</button>
+            <button class="btn-sm" onclick="showModal('portalSettingsModal')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /> <circle cx="12" cy="12" r="3" /></svg> Settings</button>
             <label class="toggle-switch"><input type="checkbox" id="portalActiveToggle" checked onchange="togglePortalActive(this)"><span class="toggle-slider"></span></label>
           </div>
         </div>
@@ -2654,7 +2657,7 @@
           <!-- Incoming requests -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">📥 Incoming Requests</div>
+              <div class="card-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12" /> <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" /></svg> Incoming Requests</div>
               <div class="card-action" onclick="showSection('portal-mgr',null)">View All</div>
             </div>
             <div class="card-body" id="incomingRequestsList">
@@ -2665,7 +2668,7 @@
           <!-- Pending estimates -->
           <div class="card">
             <div class="card-header">
-              <div class="card-title">📋 Pending Estimates</div>
+              <div class="card-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" /> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /> <path d="M12 11h4" /> <path d="M12 16h4" /> <path d="M8 11h.01" /> <path d="M8 16h.01" /></svg> Pending Estimates</div>
               <button class="topbar-btn" style="font-size:11px;padding:6px 12px;" onclick="showModal('newEstimateModal')">+ Send Estimate</button>
             </div>
             <div class="card-body" id="pendingEstimatesList">
@@ -2677,7 +2680,7 @@
         <!-- Maintenance plans -->
         <div class="card" style="margin-bottom:20px;">
           <div class="card-header">
-            <div class="card-title">🔄 Maintenance Plans</div>
+            <div class="card-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /> <path d="M21 3v5h-5" /> <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /> <path d="M8 16H3v5" /></svg> Maintenance Plans</div>
             <div style="display:flex;align-items:center;gap:10px;">
               <label class="toggle-switch"><input type="checkbox" id="maintenancePlansToggle" checked><span class="toggle-slider"></span></label>
               <button class="topbar-btn primary" style="font-size:11px;padding:6px 12px;" onclick="showModal('newPlanModal')">+ New Plan</button>
@@ -2691,7 +2694,7 @@
         <!-- Unpaid invoices -->
         <div class="card">
           <div class="card-header">
-            <div class="card-title">💵 Invoices Awaiting Payment</div>
+            <div class="card-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2" /> <circle cx="12" cy="12" r="2" /> <path d="M6 12h.01M18 12h.01" /></svg> Invoices Awaiting Payment</div>
             <div style="font-size:12px;color:var(--muted);">Customers can pay directly from their portal</div>
           </div>
           <div class="card-body" id="portalUnpaidInvoices">
@@ -2706,7 +2709,7 @@
 
         <!-- Disclaimer banner (shown once) -->
         <div id="payrollDisclaimer" style="background:rgba(90,114,145,0.15);border:1px solid rgba(90,114,145,0.3);border-radius:2px;padding:16px 18px;margin-bottom:20px;">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:8px;">⚠️ Payroll Tool Disclaimer</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:8px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> Payroll Tool Disclaimer</div>
           <div style="font-size:13px;color:var(--white-dim);line-height:1.7;margin-bottom:14px;">
             FieldKit\'s payroll calculator is a <strong style="color:var(--white);">convenience tool only.</strong> Tax rates are pre-loaded based on current MA and federal schedules but may not reflect your specific situation. Always consult a licensed payroll professional or CPA before processing payroll. You are solely responsible for verifying all calculations.
           </div>
@@ -2721,7 +2724,7 @@
 
           <!-- Gusto/ADP connect banner -->
           <div style="background:rgba(200,112,26,0.08);border:1px solid rgba(200,112,26,0.25);border-radius:2px;padding:12px 18px;display:flex;align-items:center;gap:14px;margin-bottom:20px;">
-            <div style="font-size:20px;">🔗</div>
+            <div style="font-size:20px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /> <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg></div>
             <div style="flex:1;font-size:13px;color:var(--muted);">Connect <strong style="color:var(--white);">ADP</strong> or <strong style="color:var(--white);">Gusto</strong> to push payroll directly — or export a formatted file to import manually.</div>
             <button class="btn-sm" onclick="showModal('connectPayrollModal')">Connect →</button>
           </div>
@@ -2741,7 +2744,7 @@
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
               <button class="topbar-btn" onclick="exportPayrollCSV()">⬇ Export CSV</button>
               <button class="topbar-btn" onclick="exportADP()">⬇ ADP Format</button>
-              <button class="topbar-btn" id="FEATURE_FLAGS.check_printing ? '' : 'style=display:none'" onclick="showModal('checkPrintModal')">🖨 Print Checks</button>
+              <button class="topbar-btn" id="FEATURE_FLAGS.check_printing ? '' : 'style=display:none'" onclick="showModal('checkPrintModal')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /> <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" /> <rect x="6" y="14" width="12" height="8" rx="1" /></svg> Print Checks</button>
               <button class="topbar-btn primary" onclick="approvePayroll()" id="approvePayrollBtn">✓ Approve & Submit</button>
             </div>
           </div>
@@ -2826,8 +2829,8 @@
                   <div style="display:flex;flex-direction:column;gap:8px;">
                     <button class="btn-sm" style="width:100%;text-align:left;" onclick="exportPayrollCSV()">⬇ Export CSV (universal)</button>
                     <button class="btn-sm" style="width:100%;text-align:left;" onclick="exportADP()">⬇ ADP Import Format</button>
-                    <button class="btn-sm" style="width:100%;text-align:left;" onclick="showModal('checkPrintModal')">🖨 Print Check Register</button>
-                    <button class="btn-sm" style="width:100%;text-align:left;" onclick="showModal('checkPrintModal')">🖨 Print Checks (check stock)</button>
+                    <button class="btn-sm" style="width:100%;text-align:left;" onclick="showModal('checkPrintModal')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /> <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" /> <rect x="6" y="14" width="12" height="8" rx="1" /></svg> Print Check Register</button>
+                    <button class="btn-sm" style="width:100%;text-align:left;" onclick="showModal('checkPrintModal')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /> <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" /> <rect x="6" y="14" width="12" height="8" rx="1" /></svg> Print Checks (check stock)</button>
                     <button class="btn-sm primary" style="width:100%;text-align:left;" onclick="approvePayroll()">✓ Approve Payroll</button>
                   </div>
                 </div>
@@ -2847,7 +2850,7 @@
           <div>
             <div class="card" style="margin-bottom:16px;">
               <div class="card-header">
-                <div class="card-title">🔍 AI Estimator</div>
+                <div class="card-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg> AI Estimator</div>
                 <div style="font-size:12px;color:var(--muted);" id="estimatorTradeBadge">Trade: HVAC</div>
               </div>
               <div class="card-body">
@@ -2856,7 +2859,7 @@
                 <div style="margin-bottom:20px;">
                   <div class="settings-label" style="margin-bottom:8px;">Photo — Model Tag, Part Number, or Equipment</div>
                   <div id="estimatorPhotoWrap" style="background:var(--steel);border:2px dashed var(--border);border-radius:2px;padding:28px;text-align:center;cursor:pointer;transition:border-color 0.2s;position:relative;overflow:hidden;" onclick="document.getElementById('estimatorPhotoInput').click()" onmouseenter="this.style.borderColor='var(--orange)'" onmouseleave="this.style.borderColor='var(--border)'">
-                    <div style="font-size:32px;margin-bottom:8px;" id="estimatorPhotoIcon">📷</div>
+                    <div style="font-size:32px;margin-bottom:8px;" id="estimatorPhotoIcon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /> <circle cx="12" cy="13" r="3" /></svg></div>
                     <div style="font-size:13px;font-weight:600;color:var(--muted);" id="estimatorPhotoLabel">Tap to upload photo</div>
                     <div style="font-size:11px;color:var(--mid);margin-top:4px;">Model tag, serial number, part, or equipment photo</div>
                     <img id="estimatorPhotoPreview" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" src="">
@@ -2914,7 +2917,7 @@
               </div>
               <div class="card-body" id="estimatorResultsBody">
                 <div style="text-align:center;padding:32px 16px;color:var(--muted);">
-                  <div style="font-size:40px;margin-bottom:12px;">🔍</div>
+                  <div style="font-size:40px;margin-bottom:12px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg></div>
                   <div style="font-size:13px;line-height:1.6;">Fill in the problem description and hit Analyze. The AI will diagnose the likely issue, list the parts you\'ll need, and give you a price range.</div>
                 </div>
               </div>
@@ -2935,7 +2938,7 @@
       <div class="page-section fade-in" id="section-inventory">
 
         <div id="invFlagStrip" style="display:none;background:rgba(243,156,18,0.1);border:1px solid rgba(243,156,18,0.3);border-radius:2px;padding:12px 16px;align-items:center;gap:10px;margin-bottom:20px;font-size:13px;color:var(--yellow);font-weight:500;">
-          🔔 <span id="invFlagMsg"></span> <span style="margin-left:auto;text-decoration:underline;cursor:pointer;" onclick="scrollToFlagged()">Review →</span>
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0" /> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" /></svg> <span id="invFlagMsg"></span> <span style="margin-left:auto;text-decoration:underline;cursor:pointer;" onclick="scrollToFlagged()">Review →</span>
         </div>
 
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
@@ -2953,7 +2956,7 @@
             </select>
           </div>
           <div style="display:flex;gap:8px;">
-            <button class="topbar-btn" onclick="showModal('receiptUploadModal')">📷 Upload Receipt</button>
+            <button class="topbar-btn" onclick="showModal('receiptUploadModal')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /> <circle cx="12" cy="13" r="3" /></svg> Upload Receipt</button>
             <button class="topbar-btn primary" onclick="showModal('addPartModal')">+ Add Part</button>
           </div>
         </div>
@@ -2989,7 +2992,7 @@
             <!-- New message / broadcast -->
             <div style="padding:12px;border-bottom:1px solid var(--border);display:flex;gap:6px;">
               <button class="btn-sm primary" style="flex:1;font-size:11px;" onclick="openNewThread()">+ New</button>
-              <button class="btn-sm" style="font-size:11px;" onclick="openBroadcast()">📢 All Techs</button>
+              <button class="btn-sm" style="font-size:11px;" onclick="openBroadcast()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" /> <path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14" /> <path d="M8 6v8" /></svg> All Techs</button>
             </div>
 
             <!-- Thread items -->
@@ -3000,7 +3003,7 @@
           <div style="display:flex;flex-direction:column;overflow:hidden;" id="ownerThreadPanel">
             <div style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;" id="ownerThreadMessages">
               <div style="text-align:center;color:var(--muted);padding:40px 20px;">
-                <div style="font-size:32px;margin-bottom:10px;">💬</div>
+                <div style="font-size:32px;margin-bottom:10px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" /></svg></div>
                 <div style="font-size:14px;">Select a conversation or start a new one</div>
               </div>
             </div>
@@ -3029,11 +3032,11 @@
       <div class="page-section fade-in" id="section-settings">
         <div class="settings-grid">
           <div class="settings-nav">
-            <div class="settings-nav-item active" onclick="scrollToSettingsSection('sset-company', this)">🏢 Company Info</div>
-            <div class="settings-nav-item" onclick="scrollToSettingsSection('sset-plan', this)">💳 Subscription</div>
-            <div class="settings-nav-item" onclick="scrollToSettingsSection('sset-notifications', this)">🔔 Notifications</div>
-            <div class="settings-nav-item" onclick="scrollToSettingsSection('sset-autoconfirm', this)">💬 Auto-Confirm Messages</div>
-            <div class="settings-nav-item" onclick="scrollToSettingsSection('sset-password', this)">🔒 Password & Security</div>
+            <div class="settings-nav-item active" onclick="scrollToSettingsSection('sset-company', this)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 10h.01" /> <path d="M12 14h.01" /> <path d="M12 6h.01" /> <path d="M16 10h.01" /> <path d="M16 14h.01" /> <path d="M16 6h.01" /> <path d="M8 10h.01" /> <path d="M8 14h.01" /> <path d="M8 6h.01" /> <path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" /> <rect x="4" y="2" width="16" height="20" rx="2" /></svg> Company Info</div>
+            <div class="settings-nav-item" onclick="scrollToSettingsSection('sset-plan', this)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2" /> <line x1="2" x2="22" y1="10" y2="10" /> <path d="M6 14h2" /></svg> Subscription</div>
+            <div class="settings-nav-item" onclick="scrollToSettingsSection('sset-notifications', this)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0" /> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" /></svg> Notifications</div>
+            <div class="settings-nav-item" onclick="scrollToSettingsSection('sset-autoconfirm', this)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" /></svg> Auto-Confirm Messages</div>
+            <div class="settings-nav-item" onclick="scrollToSettingsSection('sset-password', this)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /> <path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg> Password & Security</div>
           </div>
 
           <div class="settings-panel">
@@ -3079,7 +3082,7 @@
           <div class="settings-section" id="sset-notifications">
             <div class="settings-section-title">Business Rules & Thresholds</div>
             <div class="settings-section-desc">Invoice routing, auto-confirm, callback alerts, tech permissions, truck stock timing, and more.</div>
-            <button class="btn-sm primary" onclick="showModal('ownerAdminModal')">⚙️ Configure Business Rules →</button>
+            <button class="btn-sm primary" onclick="showModal('ownerAdminModal')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /> <circle cx="12" cy="12" r="3" /></svg> Configure Business Rules →</button>
             </div>
           </div>
         </div>
@@ -3091,30 +3094,30 @@
   <nav class="bottom-nav" id="ownerBottomNav">
     <div class="bottom-nav-inner">
       <button class="bottom-nav-btn active" id="bnb-overview" onclick="showSection('overview',null);updateBottomNav('overview')">
-        <span class="bnb-icon">⚡</span>
+        <span class="bnb-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z" /></svg></span>
         <span class="bnb-label">Home</span>
       </button>
       <button class="bottom-nav-btn" id="bnb-schedule" onclick="showSection('schedule',null);updateBottomNav('schedule')">
-        <span class="bnb-icon">📅</span>
+        <span class="bnb-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg></span>
         <span class="bnb-label">Schedule</span>
         <span class="bottom-nav-badge" id="bnbSchedBadge"></span>
       </button>
       <button class="bottom-nav-btn" id="bnb-jobs" onclick="showSection('jobs',null);updateBottomNav('jobs')">
-        <span class="bnb-icon">🔧</span>
+        <span class="bnb-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" /></svg></span>
         <span class="bnb-label">Jobs</span>
       </button>
       <button class="bottom-nav-btn" id="bnb-invoices" onclick="showSection('invoices',null);updateBottomNav('invoices')">
-        <span class="bnb-icon">💵</span>
+        <span class="bnb-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2" /> <circle cx="12" cy="12" r="2" /> <path d="M6 12h.01M18 12h.01" /></svg></span>
         <span class="bnb-label">Invoices</span>
         <span class="bottom-nav-badge" id="bnbInvBadge"></span>
       </button>
       <button class="bottom-nav-btn" id="bnb-alerts" onclick="showSection('alerts',null);updateBottomNav('alerts')">
-        <span class="bnb-icon">🚨</span>
+        <span class="bnb-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6" /> <path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" /> <path d="M21 12h1" /> <path d="M18.5 4.5 18 5" /> <path d="M2 12h1" /> <path d="M12 2v1" /> <path d="m4.929 4.929.707.707" /> <path d="M12 12v6" /></svg></span>
         <span class="bnb-label">Alerts</span>
         <span class="bottom-nav-badge" id="bnbAlertBadge" style="display:none;background:var(--red);">0</span>
       </button>
       <button class="bottom-nav-btn" id="bnb-messages" onclick="showSection('messages',null);updateBottomNav('messages')">
-        <span class="bnb-icon">💬</span>
+        <span class="bnb-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" /></svg></span>
         <span class="bnb-label">Messages</span>
         <span class="bottom-nav-badge" id="bnbMsgBadge" style="display:none;background:var(--green);">0</span>
       </button>
@@ -3306,10 +3309,10 @@
         <div class="settings-field">
           <label class="settings-label">Type</label>
           <div style="display:flex;gap:8px;">
-            <button class="event-type-btn btn-sm" data-type="meeting" onclick="setEventType('meeting',this)" style="flex:1;text-align:center;">📅 Meeting</button>
-            <button class="event-type-btn btn-sm" data-type="call" onclick="setEventType('call',this)" style="flex:1;text-align:center;">📞 Call</button>
-            <button class="event-type-btn btn-sm" data-type="todo" onclick="setEventType('todo',this)" style="flex:1;text-align:center;">✅ To-Do</button>
-            <button class="event-type-btn btn-sm" data-type="reminder" onclick="setEventType('reminder',this)" style="flex:1;text-align:center;">🔔 Reminder</button>
+            <button class="event-type-btn btn-sm" data-type="meeting" onclick="setEventType('meeting',this)" style="flex:1;text-align:center;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg> Meeting</button>
+            <button class="event-type-btn btn-sm" data-type="call" onclick="setEventType('call',this)" style="flex:1;text-align:center;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" /></svg> Call</button>
+            <button class="event-type-btn btn-sm" data-type="todo" onclick="setEventType('todo',this)" style="flex:1;text-align:center;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="m16 9-5.5 5.5L8 12" /></svg> To-Do</button>
+            <button class="event-type-btn btn-sm" data-type="reminder" onclick="setEventType('reminder',this)" style="flex:1;text-align:center;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0" /> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" /></svg> Reminder</button>
           </div>
         </div>
 
@@ -3523,7 +3526,7 @@ function removeOwnerEvent(id) {
   renderSchedule();
 }
 
-const EVENT_ICONS = { meeting:'📅', call:'📞', todo:'✅', reminder:'🔔' };
+const EVENT_ICONS = { meeting:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg>', call:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" /></svg>', todo:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="m16 9-5.5 5.5L8 12" /></svg>', reminder:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0" /> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" /></svg>' };
 const EVENT_COLOR = {
   meeting: 'background:rgba(46,204,113,0.2);border-color:rgba(46,204,113,0.5);',
   call:    'background:rgba(46,204,113,0.15);border-color:rgba(46,204,113,0.4);',
@@ -3940,7 +3943,7 @@ function openInvoiceRecord(num) {
     if (lf) {
       const feeAmt = lf.amount ? '$' + lf.amount : lf.pct + '%';
       lateFeeEl.style.display = 'block';
-      lateFeeEl.innerHTML = `⏰ <strong>${lf.days} days overdue</strong> (threshold: ${lf.threshold} days) — Late fee of <strong>${feeAmt}</strong> applies. <span style="text-decoration:underline;cursor:pointer;" onclick="showToast('Late fee added to invoice!')">Add to Invoice →</span>`;
+      lateFeeEl.innerHTML = `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8" /> <path d="M12 9v4l2 2" /> <path d="M5 3 2 6" /> <path d="m22 6-3-3" /> <path d="M6.38 18.7 4 21" /> <path d="M17.64 18.67 20 21" /></svg> <strong>${lf.days} days overdue</strong> (threshold: ${lf.threshold} days) — Late fee of <strong>${feeAmt}</strong> applies. <span style="text-decoration:underline;cursor:pointer;" onclick="showToast('Late fee added to invoice!')">Add to Invoice →</span>`;
     } else {
       lateFeeEl.style.display = 'none';
     }
@@ -3998,19 +4001,19 @@ function renderAdminTab(tab) {
     if (el) {
       el.innerHTML = `
         <div style="background:var(--orange-glow);border:1px solid rgba(200,112,26,0.25);border-radius:2px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;">
-          <div style="font-size:20px;">💡</div>
+          <div style="font-size:20px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /> <path d="M9 18h6" /> <path d="M10 22h4" /></svg></div>
           <div>
             <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:3px;">Compass Methodology — Protect Your Margins</div>
             <div style="font-size:12px;color:var(--muted);line-height:1.6;">A $3 admin fee at 100 jobs/month = <strong style="color:var(--white);">$300/mo</strong>. A $75 trip fee at 80 jobs/month = <strong style="color:var(--white);">$6,000/mo</strong> in protected revenue.</div>
           </div>
         </div>
         <div style="background:rgba(90,114,145,0.1);border:1px solid rgba(90,114,145,0.25);border-radius:2px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;">
-          <div style="font-size:20px;">💳</div>
+          <div style="font-size:20px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2" /> <line x1="2" x2="22" y1="10" y2="10" /> <path d="M6 14h2" /></svg></div>
           <div><div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px;">Note on Credit Card Fees</div>
           <div style="font-size:12px;color:var(--muted);line-height:1.6;">States including <strong style="color:var(--white);">MA, CT, ME</strong> prohibit CC surcharges. Use the <strong style="color:var(--orange);">Bake Processing Cost</strong> option instead.</div></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" id="adminFeeCardsGrid"></div>
-        <div style="margin-top:16px;background:rgba(90,114,145,0.1);border:1px solid rgba(90,114,145,0.2);border-radius:2px;padding:14px;font-size:12px;color:var(--muted);">⚖️ Fee regulations vary by state. Always verify compliance with applicable laws.</div>`;
+        <div style="margin-top:16px;background:rgba(90,114,145,0.1);border:1px solid rgba(90,114,145,0.2);border-radius:2px;padding:14px;font-size:12px;color:var(--muted);"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18" /> <path d="m19 8 3 8a5 5 0 0 1-6 0zV7" /> <path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1" /> <path d="m5 8 3 8a5 5 0 0 1-6 0zV7" /> <path d="M7 21h10" /></svg> Fee regulations vary by state. Always verify compliance with applicable laws.</div>`;
       // Render fee cards into the new grid
       const grid = el.querySelector('#adminFeeCardsGrid');
       if (grid) {
@@ -4082,16 +4085,16 @@ function renderOverviewRequests() {
     } else {
       reqList.innerHTML = newReqs.map(r => {
         const urgColor = r.urgency === 'urgent' ? 'var(--red)' : r.urgency === 'soon' ? 'var(--yellow)' : 'var(--muted)';
-        const urgIcon  = r.urgency === 'urgent' ? '🚨' : r.urgency === 'soon' ? '⏰' : '📅';
+        const urgIcon  = r.urgency === 'urgent' ? '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6" /> <path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" /> <path d="M21 12h1" /> <path d="M18.5 4.5 18 5" /> <path d="M2 12h1" /> <path d="M12 2v1" /> <path d="m4.929 4.929.707.707" /> <path d="M12 12v6" /></svg>' : r.urgency === 'soon' ? '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8" /> <path d="M12 9v4l2 2" /> <path d="M5 3 2 6" /> <path d="m22 6-3-3" /> <path d="M6.38 18.7 4 21" /> <path d="M17.64 18.67 20 21" /></svg>' : '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg>';
         return `
         <div style="background:var(--steel);border:1px solid var(--border);border-left:3px solid ${urgColor};border-radius:2px;padding:12px 14px;cursor:pointer;transition:border-color 0.15s;" onclick="openRequestActions('${r.id}')" onmouseenter="this.style.borderColor='var(--orange)'" onmouseleave="this.style.borderColor='${urgColor}'">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
             <div style="font-size:13px;font-weight:700;color:var(--white);">${r.name} ${urgIcon}</div>
             <div style="font-size:11px;color:var(--muted);">${r.date}</div>
           </div>
-          <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">📍 ${r.address}</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:4px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg> ${r.address}</div>
           <div style="font-size:12px;color:var(--white-dim);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${r.problem}</div>
-          ${r.availDays ? `<div style="font-size:11px;color:var(--muted);margin-top:4px;">📅 ${r.availDays}${r.availTime ? ' · ' + r.availTime : ''}</div>` : ''}
+          ${r.availDays ? `<div style="font-size:11px;color:var(--muted);margin-top:4px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg> ${r.availDays}${r.availTime ? ' · ' + r.availTime : ''}</div>` : ''}
         </div>`;
       }).join('');
     }
@@ -4113,7 +4116,7 @@ function renderOverviewRequests() {
             <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--orange);">$${q.total.toLocaleString()}</div>
           </div>
           <div style="font-size:12px;color:var(--white-dim);">${q.desc}</div>
-          <div style="font-size:11px;color:var(--yellow);margin-top:4px;font-weight:700;">⏳ Awaiting approval · Expires ${q.expires}</div>
+          <div style="font-size:11px;color:var(--yellow);margin-top:4px;font-weight:700;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14" /> <path d="M5 2h14" /> <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" /> <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2" /></svg> Awaiting approval · Expires ${q.expires}</div>
         </div>`).join('');
     }
     estList.style.display = overviewSections.estimates ? 'flex' : 'none';
@@ -4131,8 +4134,8 @@ function openRequestActions(id) {
   document.getElementById('raAvailability').textContent =
     (req.availDays || 'Any day') + (req.availTime ? ' · ' + req.availTime : '');
   // Pre-fill new job modal customer
-  document.getElementById('raUrgency').textContent =
-    req.urgency === 'urgent' ? '🚨 Urgent' : req.urgency === 'soon' ? '⏰ Soon' : '📅 Routine';
+  document.getElementById('raUrgency').innerHTML =
+    req.urgency === 'urgent' ? '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6" /> <path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" /> <path d="M21 12h1" /> <path d="M18.5 4.5 18 5" /> <path d="M2 12h1" /> <path d="M12 2v1" /> <path d="m4.929 4.929.707.707" /> <path d="M12 12v6" /></svg> Urgent' : req.urgency === 'soon' ? '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8" /> <path d="M12 9v4l2 2" /> <path d="M5 3 2 6" /> <path d="m22 6-3-3" /> <path d="M6.38 18.7 4 21" /> <path d="M17.64 18.67 20 21" /></svg> Soon' : '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg> Routine';
 }
 
 function dismissOverviewRequest(id) {
@@ -4192,7 +4195,7 @@ function requestToCall() {
   const id = document.getElementById('raReqId').value;
   const req = portalRequests.find(r => r.id === id);
   closeModal('requestActionModal');
-  if (req) showToast('📞 Calling ' + req.name + ' at ' + req.phone);
+  if (req) showToast('<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" /></svg> Calling ' + req.name + ' at ' + req.phone);
 }
 
 // ══════════════════════════════════════
@@ -4208,7 +4211,7 @@ const messageStore = {
   'owner-luis':    { id:'owner-luis',    label:'Luis V.',      type:'direct', techId:'t3', messages:[] },
   'owner-kyle':    { id:'owner-kyle',    label:'Kyle B.',      type:'direct', techId:'t4', messages:[] },
   'owner-tony':    { id:'owner-tony',    label:'Tony M.',      type:'direct', techId:'t5', messages:[] },
-  'broadcast':     { id:'broadcast',     label:'📢 All Techs', type:'broadcast', messages:[] },
+  'broadcast':     { id:'broadcast',     label:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" /> <path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14" /> <path d="M8 6v8" /></svg> All Techs', type:'broadcast', messages:[] },
 };
 
 let activeOwnerThread = null;
@@ -4273,7 +4276,7 @@ function buildMsgBubble(m, isOwner) {
     <div style="width:28px;height:28px;border-radius:2px;background:${isOwner ? 'var(--orange)' : 'var(--steel)'};
       display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;
       color:${isOwner ? 'white' : 'var(--white)'};flex-shrink:0;font-family:'Barlow Condensed',sans-serif;">
-      ${isOwner ? 'ME' : m.initials || '👤'}
+      ${isOwner ? 'ME' : m.initials || '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /> <circle cx="12" cy="7" r="4" /></svg>'}
     </div>
     <div>
       <div style="background:${isOwner ? 'var(--orange-glow)' : 'var(--steel)'};border:1px solid ${isOwner ? 'rgba(200,112,26,0.3)' : 'var(--border)'};
@@ -4295,7 +4298,7 @@ function sendOwnerMessage() {
   renderOwnerThreadMessages(thread);
   renderOwnerThreadList();
   // If broadcast — notify all techs
-  if (thread.type === 'broadcast') showToast('📢 Message sent to all techs');
+  if (thread.type === 'broadcast') showToast('<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" /> <path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14" /> <path d="M8 6v8" /></svg> Message sent to all techs');
   else showToast('Message sent to ' + thread.label);
   // Simulate tech reply for demo (Marcus only)
   if (activeOwnerThread === 'owner-marcus') {
@@ -4413,18 +4416,18 @@ function filterJobs(v) {
 const BOTTOM_NAV_SECTIONS = ['overview','schedule','jobs','invoices','alerts','messages'];
 
 const MORE_MENU_ITEMS = [
-  { icon:'📈', label:'Profit Tracker',    section:'profit' },
-  { icon:'🧾', label:'Payroll',           section:'payroll' },
-  { icon:'📦', label:'Inventory',         section:'inventory' },
-  { icon:'🤝', label:'Subcontractors',    section:'subs' },
-  { icon:'🔍', label:'AI Estimator',      section:'estimator' },
-  { icon:'⚙️', label:'App Admin',          section:'app-admin' },
-  { icon:'🌐', label:'Customer Portal',   section:'portal-mgr' },
-  { icon:'🚨', label:'Alerts',            section:'alerts' },
-  { icon:'💬', label:'Messages',          section:'messages' },
-  { icon:'🧠', label:'Compass Advisor',   section:'advisor' },
-  { icon:'👥', label:'Team',              section:'team' },
-  { icon:'⚙️', label:'Settings',          section:'settings' },
+  { icon:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6" /> <path d="m22 7-8.5 8.5-5-5L2 17" /></svg>', label:'Profit Tracker',    section:'profit' },
+  { icon:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17V7" /> <path d="M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8" /> <path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z" /></svg>', label:'Payroll',           section:'payroll' },
+  { icon:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" /> <path d="M12 22V12" /> <polyline points="3.29 7 12 12 20.71 7" /> <path d="m7.5 4.27 9 5.15" /></svg>', label:'Inventory',         section:'inventory' },
+  { icon:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3" /> <path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4" /> <path d="m21 3 1 11h-2" /> <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" /> <path d="M3 4h8" /></svg>', label:'Subcontractors',    section:'subs' },
+  { icon:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg>', label:'AI Estimator',      section:'estimator' },
+  { icon:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /> <circle cx="12" cy="12" r="3" /></svg>', label:'App Admin',          section:'app-admin' },
+  { icon:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /> <path d="M2 12h20" /></svg>', label:'Customer Portal',   section:'portal-mgr' },
+  { icon:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6" /> <path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" /> <path d="M21 12h1" /> <path d="M18.5 4.5 18 5" /> <path d="M2 12h1" /> <path d="M12 2v1" /> <path d="m4.929 4.929.707.707" /> <path d="M12 12v6" /></svg>', label:'Alerts',            section:'alerts' },
+  { icon:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" /></svg>', label:'Messages',          section:'messages' },
+  { icon:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5" /> <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4" /> <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" /> <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" /> <path d="M18 18a4 4 0 0 0 2-7.464" /> <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" /> <path d="M6 18a4 4 0 0 1-2-7.464" /> <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" /></svg>', label:'Compass Advisor',   section:'advisor' },
+  { icon:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <path d="M16 3.128a4 4 0 0 1 0 7.744" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <circle cx="9" cy="7" r="4" /></svg>', label:'Team',              section:'team' },
+  { icon:'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /> <circle cx="12" cy="12" r="3" /></svg>', label:'Settings',          section:'settings' },
 ];
 
 function updateBottomNav(active) {
@@ -4518,12 +4521,12 @@ function openJobRecord(jobId) {
   const coBody = document.getElementById('jrCloseoutBody');
   if (co) {
     coSec.style.display = 'block';
-    const satEmoji = ['','😠','😞','😐','😊','😄'][co.satisfaction] || '—';
+    const satEmoji = ['','<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 12v-1.584" /> <path d="M17 10a5 5 0 00-3 1" /> <path d="M7 10a5 5 0 013 1" /> <path d="M9 12v-1.584" /> <path d="M9 17a5 5 0 016.001 0" /> <circle cx="12" cy="12" r="10" /></svg>','<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9" /> <path d="M9 10V9" /> <path d="M9 16a5 5 0 016 0" /> <circle cx="12" cy="12" r="10" /></svg>','<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9" /> <path d="M8 16h8" /> <path d="M9 10V9" /> <circle cx="12" cy="12" r="10" /></svg>','<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9" /> <path d="M16.472 15a6 6 0 01-8.943 0" /> <path d="M9 10V9" /> <circle cx="12" cy="12" r="10" /></svg>','<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9" /> <path d="M7.084 14.302a5.12 5.12 0 009.833 0 .24.24 0 00-.235-.302H7.32a.24.24 0 00-.235.302" /> <path d="M9 10V9" /> <circle cx="12" cy="12" r="10" /></svg>'][co.satisfaction] || '—';
     coBody.innerHTML = `
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <div style="background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:10px 12px;">
           <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Went as Planned</div>
-          <div style="font-size:14px;font-weight:700;color:${co.planOk?'var(--green)':'var(--orange)'};">${co.planOk?'✅ Yes':'⚠️ No'}</div>
+          <div style="font-size:14px;font-weight:700;color:${co.planOk?'var(--green)':'var(--orange)'};">${co.planOk?'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="m16 9-5.5 5.5L8 12" /></svg> Yes':'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> No'}</div>
         </div>
         <div style="background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:10px 12px;">
           <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Satisfaction</div>
@@ -4534,8 +4537,8 @@ function openJobRecord(jobId) {
         <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Parts Used</div>
         ${co.parts.map(p => `<div style="font-size:13px;color:var(--white-dim);">• ${p.name} ×${p.qty}</div>`).join('')}
       </div>` : ''}
-      ${co.callbackRisk ? `<div style="background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);border-radius:2px;padding:10px 12px;font-size:12px;font-weight:700;color:var(--red);">🔁 Callback risk flagged${co.callbackNotes ? ' — ' + co.callbackNotes : ''}</div>` : ''}
-      ${co.missingParts ? `<div style="background:rgba(200,112,26,0.1);border:1px solid rgba(200,112,26,0.3);border-radius:2px;padding:10px 12px;font-size:12px;font-weight:700;color:var(--orange);">⚠️ Missing parts — return trip needed</div>` : ''}
+      ${co.callbackRisk ? `<div style="background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);border-radius:2px;padding:10px 12px;font-size:12px;font-weight:700;color:var(--red);"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4" /> <path d="M3 11v-1a4 4 0 0 1 4-4h14" /> <path d="m7 22-4-4 4-4" /> <path d="M21 13v1a4 4 0 0 1-4 4H3" /></svg> Callback risk flagged${co.callbackNotes ? ' — ' + co.callbackNotes : ''}</div>` : ''}
+      ${co.missingParts ? `<div style="background:rgba(200,112,26,0.1);border:1px solid rgba(200,112,26,0.3);border-radius:2px;padding:10px 12px;font-size:12px;font-weight:700;color:var(--orange);"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> Missing parts — return trip needed</div>` : ''}
     `;
   } else {
     coSec.style.display = 'none';
@@ -4630,19 +4633,19 @@ function renderIncomingRequests() {
   }
   el.innerHTML = portalRequests.map(r => {
     const urgColor = r.urgency === 'urgent' ? 'var(--red)' : r.urgency === 'soon' ? 'var(--yellow)' : 'var(--muted)';
-    const urgLabel = r.urgency === 'urgent' ? '🚨 Urgent' : r.urgency === 'soon' ? '⏰ Soon' : '📅 Routine';
+    const urgLabel = r.urgency === 'urgent' ? '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6" /> <path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" /> <path d="M21 12h1" /> <path d="M18.5 4.5 18 5" /> <path d="M2 12h1" /> <path d="M12 2v1" /> <path d="m4.929 4.929.707.707" /> <path d="M12 12v6" /></svg> Urgent' : r.urgency === 'soon' ? '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8" /> <path d="M12 9v4l2 2" /> <path d="M5 3 2 6" /> <path d="m22 6-3-3" /> <path d="M6.38 18.7 4 21" /> <path d="M17.64 18.67 20 21" /></svg> Soon' : '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg> Routine';
     return `
       <div style="background:${r.status==='new'?'rgba(200,112,26,0.06)':'var(--steel)'};border:1px solid ${r.status==='new'?'rgba(200,112,26,0.3)':'var(--border)'};border-radius:2px;padding:14px 16px;margin-bottom:8px;">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px;">
           <div>
             <div style="font-size:14px;font-weight:700;color:var(--white);">${r.name} ${r.status==='new'?'<span style="font-size:10px;font-weight:700;letter-spacing:1px;background:var(--orange);color:white;padding:2px 6px;border-radius:2px;margin-left:6px;">NEW</span>':''}</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:2px;">📍 ${r.address} · 📱 ${r.phone}</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg> ${r.address} · <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /> <path d="M12 18h.01" /></svg> ${r.phone}</div>
           </div>
           <span style="font-size:11px;font-weight:700;color:${urgColor};white-space:nowrap;">${urgLabel}</span>
         </div>
         <div style="font-size:13px;color:var(--white-dim);margin-bottom:8px;line-height:1.5;">"${r.problem}"</div>
-        ${r.availDays ? `<div style="font-size:12px;color:var(--muted);margin-bottom:6px;">📅 Available: <strong style="color:var(--white-dim);">${r.availDays}</strong>${r.availTime ? ' · ' + r.availTime : ''}</div>` : ''}
-        ${r.specificDates && r.specificDates.length ? `<div style="font-size:12px;color:var(--muted);margin-bottom:6px;">🗓 Specific dates: ${r.specificDates.join(', ')}</div>` : ''}
+        ${r.availDays ? `<div style="font-size:12px;color:var(--muted);margin-bottom:6px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg> Available: <strong style="color:var(--white-dim);">${r.availDays}</strong>${r.availTime ? ' · ' + r.availTime : ''}</div>` : ''}
+        ${r.specificDates && r.specificDates.length ? `<div style="font-size:12px;color:var(--muted);margin-bottom:6px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /> <path d="M8 13h.01" /> <path d="M12 13h.01" /> <path d="M16 13h.01" /> <path d="M8 17h.01" /> <path d="M12 17h.01" /> <path d="M16 17h.01" /></svg> Specific dates: ${r.specificDates.join(', ')}</div>` : ''}
         <div style="display:flex;gap:8px;">
           <button class="btn-sm primary" style="font-size:11px;" onclick="scheduleRequest('${r.id}')">Schedule Job →</button>
           <button class="btn-sm" style="font-size:11px;" onclick="dismissRequest('${r.id}')">Dismiss</button>
@@ -4683,7 +4686,7 @@ function renderPendingEstimates() {
         <div style="font-size:12px;color:var(--muted);">Sent · Expires ${q.expires}</div>
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--orange);">$${q.total.toLocaleString()}</div>
       </div>
-      <div style="font-size:11px;font-weight:700;color:var(--yellow);margin-top:6px;">⏳ Awaiting customer approval</div>
+      <div style="font-size:11px;font-weight:700;color:var(--yellow);margin-top:6px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14" /> <path d="M5 2h14" /> <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" /> <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2" /></svg> Awaiting customer approval</div>
     </div>`).join('');
 }
 
@@ -4937,7 +4940,7 @@ function renderPortalHistory() {
       <div style="padding:16px 20px;display:flex;align-items:center;gap:16px;cursor:pointer;flex-wrap:wrap;" onclick="toggleInvoice('${h.id}')">
         <div style="flex:1;min-width:0;">
           <div style="font-size:14px;font-weight:700;color:var(--white);">${h.type}</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:3px;">📅 ${h.date} · 👷 ${h.tech}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg> ${h.date} · <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5" /> <path d="M14 6a6 6 0 0 1 6 6v3" /> <path d="M4 15v-3a6 6 0 0 1 6-6" /> <rect x="2" y="15" width="20" height="4" rx="1" /></svg> ${h.tech}</div>
         </div>
         <div style="text-align:right;">
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:${h.paid?'var(--muted)':'var(--orange)'};">$${h.amount}</div>
@@ -4966,7 +4969,7 @@ function renderPortalHistory() {
 
         <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
           ${!h.paid ? `<button class="btn-sm primary" style="flex:1;" onclick="payInvoicePortal(${h.amount})">Pay $${h.amount} Now →</button>` : `<div style="font-size:12px;color:var(--green);font-weight:700;display:flex;align-items:center;gap:6px;">✓ Paid on ${h.date}</div>`}
-          <button class="btn-sm" style="font-size:12px;" onclick="printPortalInvoice('${h.id}')">🖨 Print / Save PDF</button>
+          <button class="btn-sm" style="font-size:12px;" onclick="printPortalInvoice('${h.id}')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /> <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" /> <rect x="6" y="14" width="12" height="8" rx="1" /></svg> Print / Save PDF</button>
         </div>
       </div>` : ''}
 
@@ -5214,12 +5217,12 @@ function renderRouteResults(text) {
       const val = clean.replace('CAPACITY:', '').trim();
       isOverloaded = val.includes('OVERLOADED');
       html += `<div style="font-size:12px;font-weight:700;letter-spacing:0.5px;color:${isOverloaded ? 'var(--red)' : 'var(--green)'};">
-        ${isOverloaded ? '⚠️ OVERLOADED — ' : '✓ '}${val}</div>`;
+        ${isOverloaded ? '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> OVERLOADED — ' : '✓ '}${val}</div>`;
 
     } else if (clean.startsWith('AREA:')) {
       const area = clean.replace('AREA:', '').trim();
       html += `<div style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;">
-        📍 <span style="color:var(--white-dim);">${area}</span></div>`;
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg> <span style="color:var(--white-dim);">${area}</span></div>`;
 
     } else if (clean.startsWith('JOBS IN ORDER:')) {
       html += `<div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;">Job Sequence</div>`;
@@ -5239,8 +5242,8 @@ function renderRouteResults(text) {
         <div style="background:var(--charcoal);border:1px solid var(--border);border-radius:2px;padding:10px 14px;">
           <div style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;">
             <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:700;color:var(--white);">🔧 ${customer} <span style="font-size:11px;color:var(--muted);margin-left:4px;">${jobId}</span></div>
-              <div style="font-size:12px;color:var(--muted);margin-top:2px;">📍 ${address}</div>
+              <div style="font-size:13px;font-weight:700;color:var(--white);"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" /></svg> ${customer} <span style="font-size:11px;color:var(--muted);margin-left:4px;">${jobId}</span></div>
+              <div style="font-size:12px;color:var(--muted);margin-top:2px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg> ${address}</div>
               <div style="font-size:12px;color:var(--muted);margin-top:2px;">${type} ${timing ? '· ' + timing : ''}</div>
             </div>
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">
@@ -5258,7 +5261,7 @@ function renderRouteResults(text) {
     } else if (clean.startsWith('NOTES:') && inTech) {
       const note = clean.replace('NOTES:', '').trim();
       if (note && note !== '—' && note.length > 2) {
-        html += `<div style="font-size:12px;color:var(--yellow);background:rgba(243,156,18,0.08);border:1px solid rgba(243,156,18,0.2);border-radius:2px;padding:8px 10px;margin-top:4px;">💡 ${note}</div>`;
+        html += `<div style="font-size:12px;color:var(--yellow);background:rgba(243,156,18,0.08);border:1px solid rgba(243,156,18,0.2);border-radius:2px;padding:8px 10px;margin-top:4px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /> <path d="M9 18h6" /> <path d="M10 22h4" /></svg> ${note}</div>`;
       }
 
     } else if (clean.startsWith('SUMMARY:')) {
@@ -5340,7 +5343,7 @@ const CC_RESTRICTED_STATES  = ['New York', 'California', 'Florida'];
 const FEE_LIBRARY = [
   {
     id: 'trip',
-    icon: '🚗',
+    icon: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" /> <circle cx="7" cy="17" r="2" /> <path d="M9 17h6" /> <circle cx="17" cy="17" r="2" /></svg>',
     name: 'Trip / Service Call Fee',
     description: 'Flat charge for showing up — covers fuel, truck wear, and drive time. Applied to every job.',
     type: 'flat',
@@ -5352,7 +5355,7 @@ const FEE_LIBRARY = [
   },
   {
     id: 'admin',
-    icon: '📋',
+    icon: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" /> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /> <path d="M12 11h4" /> <path d="M12 16h4" /> <path d="M8 11h.01" /> <path d="M8 16h.01" /></svg>',
     name: 'Admin / Processing Fee',
     description: 'Covers software, invoicing, and back-office costs. Small flat fee or % of invoice.',
     type: 'flat_or_pct',
@@ -5366,7 +5369,7 @@ const FEE_LIBRARY = [
   },
   {
     id: 'emergency',
-    icon: '🚨',
+    icon: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6" /> <path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" /> <path d="M21 12h1" /> <path d="M18.5 4.5 18 5" /> <path d="M2 12h1" /> <path d="M12 2v1" /> <path d="m4.929 4.929.707.707" /> <path d="M12 12v6" /></svg>',
     name: 'Emergency / Same-Day Fee',
     description: 'Premium for same-day or emergency dispatch. Applied to jobs flagged as emergency.',
     type: 'flat',
@@ -5378,7 +5381,7 @@ const FEE_LIBRARY = [
   },
   {
     id: 'afterhours',
-    icon: '🌙',
+    icon: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></svg>',
     name: 'After-Hours Fee',
     description: 'Applied to jobs outside your normal business hours.',
     type: 'flat_or_pct',
@@ -5392,7 +5395,7 @@ const FEE_LIBRARY = [
   },
   {
     id: 'sunday',
-    icon: '📅',
+    icon: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg>',
     name: 'Sunday / Holiday Fee',
     description: 'Premium for weekend or holiday service.',
     type: 'flat_or_pct',
@@ -5406,7 +5409,7 @@ const FEE_LIBRARY = [
   },
   {
     id: 'fuel',
-    icon: '⛽',
+    icon: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5" /> <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16" /> <path d="M2 21h13" /> <path d="M3 9h11" /></svg>',
     name: 'Fuel Surcharge',
     description: 'Per-job flat charge to offset fuel costs. Useful when gas prices spike.',
     type: 'flat',
@@ -5418,7 +5421,7 @@ const FEE_LIBRARY = [
   },
   {
     id: 'materials_markup',
-    icon: '🔩',
+    icon: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 10.27 7 3.34" /> <path d="m11 13.73-4 6.93" /> <path d="M12 22v-2" /> <path d="M12 2v2" /> <path d="M14 12h8" /> <path d="m17 20.66-1-1.73" /> <path d="m17 3.34-1 1.73" /> <path d="M2 12h2" /> <path d="m20.66 17-1.73-1" /> <path d="m20.66 7-1.73 1" /> <path d="m3.34 17 1.73-1" /> <path d="m3.34 7 1.73 1" /> <circle cx="12" cy="12" r="2" /> <circle cx="12" cy="12" r="8" /></svg>',
     name: 'Materials Markup',
     description: 'Percentage markup applied to all parts and materials on the invoice.',
     type: 'pct',
@@ -5430,7 +5433,7 @@ const FEE_LIBRARY = [
   },
   {
     id: 'permit',
-    icon: '📄',
+    icon: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /></svg>',
     name: 'Permit / Inspection Fee',
     description: 'Applied to jobs requiring a permit. Entered per job.',
     type: 'passthrough',
@@ -5442,7 +5445,7 @@ const FEE_LIBRARY = [
   },
   {
     id: 'warranty_callback',
-    icon: '🔁',
+    icon: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4" /> <path d="M3 11v-1a4 4 0 0 1 4-4h14" /> <path d="m7 22-4-4 4-4" /> <path d="M21 13v1a4 4 0 0 1-4 4H3" /></svg>',
     name: 'Warranty Callback Fee',
     description: 'Reduced rate for return visits within your warranty window.',
     type: 'flat',
@@ -5454,7 +5457,7 @@ const FEE_LIBRARY = [
   },
   {
     id: 'cc_bake',
-    icon: '💳',
+    icon: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2" /> <line x1="2" x2="22" y1="10" y2="10" /> <path d="M6 14h2" /></svg>',
     name: 'Bake Processing Cost Into Quotes',
     description: 'Quietly increases all quotes by an estimated processing %. No line item, no label — just your price. Fully legal everywhere.',
     type: 'pct',
@@ -5467,7 +5470,7 @@ const FEE_LIBRARY = [
   },
   {
     id: 'late_fee',
-    icon: '📆',
+    icon: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M16 2v3" /> <path d="M3 9h18" /> <path d="M8 2v3" /> <path d="M17 13h-6" /> <path d="M13 17H7" /> <path d="M7 13h.01" /> <path d="M17 17h.01" /></svg>',
     name: 'Late Payment Fee',
     description: 'Automatically applied to invoices unpaid after a set number of days. Flat amount or % of invoice.',
     type: 'flat_or_pct',
@@ -5538,11 +5541,11 @@ function renderFees() {
 
       <!-- Compass tip -->
       <div style="background:var(--steel);border-radius:2px;padding:8px 10px;font-size:11px;color:var(--muted);line-height:1.5;border-left:2px solid var(--orange);">
-        💡 ${fee.compassTip}
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /> <path d="M9 18h6" /> <path d="M10 22h4" /></svg> ${fee.compassTip}
       </div>
 
       ${fee.isBakeIn ? `<div style="margin-top:10px;font-size:11px;font-weight:700;color:var(--green);">✓ Fully legal in all states — amount is never disclosed to customers.</div>` : ''}
-      ${isCC ? `<div style="margin-top:10px;font-size:11px;font-weight:700;color:var(--red);">⚠️ Verify state laws before enabling — prohibited in MA, CT, ME and other states.</div>` : ''}
+      ${isCC ? `<div style="margin-top:10px;font-size:11px;font-weight:700;color:var(--red);"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> Verify state laws before enabling — prohibited in MA, CT, ME and other states.</div>` : ''}
       ${fee.isLateFee ? `
       <div style="margin-bottom:12px;">
         <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Apply After</div>
@@ -5645,7 +5648,7 @@ function checkCCState(state) {
     warningEl.style.display = 'block';
     warningEl.innerHTML = `
       <div style="background:rgba(231,76,60,0.12);border:2px solid rgba(231,76,60,0.5);border-radius:2px;padding:14px 16px;">
-        <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:6px;">🚫 PROHIBITED IN ${state.toUpperCase()}</div>
+        <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:6px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="M4.929 4.929 19.07 19.071" /></svg> PROHIBITED IN ${state.toUpperCase()}</div>
         <div style="font-size:13px;color:var(--white-dim);line-height:1.7;">${data.msg}</div>
         <div style="font-size:12px;font-weight:700;color:var(--red);margin-top:10px;">FieldKit strongly recommends NOT enabling this fee in ${state}.</div>
       </div>`;
@@ -5653,7 +5656,7 @@ function checkCCState(state) {
     warningEl.style.display = 'block';
     warningEl.innerHTML = `
       <div style="background:rgba(243,156,18,0.1);border:1px solid rgba(243,156,18,0.35);border-radius:2px;padding:14px 16px;">
-        <div style="font-size:13px;font-weight:700;color:var(--yellow);margin-bottom:6px;">⚠️ RESTRICTED IN ${state.toUpperCase()} — VERIFY BEFORE ENABLING</div>
+        <div style="font-size:13px;font-weight:700;color:var(--yellow);margin-bottom:6px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> RESTRICTED IN ${state.toUpperCase()} — VERIFY BEFORE ENABLING</div>
         <div style="font-size:13px;color:var(--white-dim);line-height:1.7;">${data.msg}</div>
       </div>`;
   } else {
@@ -6214,7 +6217,7 @@ function selectHelpReason(btn) {
   const display = document.getElementById('helpSelectedDisplay');
   if (!isOther) {
     display.style.display = 'block';
-    display.textContent = '⚠️ ' + selectedHelpReason;
+    display.textContent = '' + selectedHelpReason;
   } else {
     display.style.display = 'none';
   }
@@ -6230,7 +6233,7 @@ function updateHelpCharCount(el) {
   const display = document.getElementById('helpSelectedDisplay');
   if (el.value.trim()) {
     display.style.display = 'block';
-    display.textContent = '⚠️ ' + el.value.trim();
+    display.textContent = '' + el.value.trim();
   } else {
     display.style.display = 'none';
   }
@@ -6261,7 +6264,7 @@ function sendHelpRequest() {
   ownerAlerts.unshift(alert);
   closeModal('needHelpModal');
   resetHelpModal();
-  showToast('✅ Office notified — help is on the way');
+  showToast('<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="m16 9-5.5 5.5L8 12" /></svg> Office notified — help is on the way');
 
   // Update owner alert badge
   updateAlertBadge();
@@ -6314,7 +6317,7 @@ function updateAlertBadge() {
   // Also light up bottom nav alerts button
   const bnbAlerts = document.getElementById('bnb-alerts');
   if (bnbAlerts) {
-    bnbAlerts.querySelector('.bnb-icon').textContent = unread > 0 ? '🔴' : '🚨';
+    bnbAlerts.querySelector('.bnb-icon').innerHTML = unread > 0 ? "<svg class='ico' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx='12' cy='12' r='1' /> <circle cx='12' cy='12' r='10' /></svg>" : "<svg class='ico' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M7 18v-6a5 5 0 1 1 10 0v6' /> <path d='M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z' /> <path d='M21 12h1' /> <path d='M18.5 4.5 18 5' /> <path d='M2 12h1' /> <path d='M12 2v1' /> <path d='m4.929 4.929.707.707' /> <path d='M12 12v6' /></svg>";
   }
 
   // Show/hide the overview alert strip
@@ -6333,7 +6336,7 @@ function renderOwnerAlertStrip() {
     strip.style.background = 'rgba(231,76,60,0.12)';
     strip.style.borderColor = 'rgba(231,76,60,0.4)';
     strip.style.color = 'var(--red)';
-    strip.innerHTML = `⚠️ <strong>${a.tech}</strong> needs help on <strong>${a.job} · ${a.customer}</strong> — "${a.message}" · ${a.time} &nbsp;<span style="text-decoration:underline;cursor:pointer;margin-left:auto;" onclick="showSection('alerts',null)">View Alerts →</span>`;
+    strip.innerHTML = `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> <strong>${a.tech}</strong> needs help on <strong>${a.job} · ${a.customer}</strong> — "${a.message}" · ${a.time} &nbsp;<span style="text-decoration:underline;cursor:pointer;margin-left:auto;" onclick="showSection('alerts',null)">View Alerts →</span>`;
     return;
   }
 
@@ -6345,7 +6348,7 @@ function renderOwnerAlertStrip() {
     strip.style.background = 'rgba(200,112,26,0.1)';
     strip.style.borderColor = 'rgba(200,112,26,0.3)';
     strip.style.color = 'var(--orange)';
-    strip.innerHTML = `⚠️ <strong>${overdue.length} overdue invoice${overdue.length > 1 ? 's' : ''}</strong> — $${total.toLocaleString()} outstanding. <span style="text-decoration:underline;cursor:pointer;margin-left:auto;" onclick="showSection('invoices',null)">View invoices →</span>`;
+    strip.innerHTML = `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> <strong>${overdue.length} overdue invoice${overdue.length > 1 ? 's' : ''}</strong> — $${total.toLocaleString()} outstanding. <span style="text-decoration:underline;cursor:pointer;margin-left:auto;" onclick="showSection('invoices',null)">View invoices →</span>`;
     return;
   }
 
@@ -6359,7 +6362,7 @@ function renderAlerts() {
 
   if (!ownerAlerts.length) {
     el.innerHTML = `<div style="text-align:center;padding:48px;color:var(--muted);">
-      <div style="font-size:32px;margin-bottom:12px;">✅</div>
+      <div style="font-size:32px;margin-bottom:12px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="m16 9-5.5 5.5L8 12" /></svg></div>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;">All Clear</div>
       <div style="font-size:13px;margin-top:6px;">No alerts right now.</div>
     </div>`;
@@ -6372,14 +6375,14 @@ function renderAlerts() {
 
   el.innerHTML = ownerAlerts.map(a => `
     <div style="display:flex;gap:14px;background:var(--charcoal);border:1px solid ${a.type==='need-help'?'rgba(231,76,60,0.3)':'var(--border)'};border-left:3px solid ${a.type==='need-help'?'var(--red)':'var(--orange)'};border-radius:2px;padding:16px 18px;">
-      <div style="font-size:24px;flex-shrink:0;">⚠️</div>
+      <div style="font-size:24px;flex-shrink:0;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg></div>
       <div style="flex:1;">
         <div style="font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px;">${a.tech} — ${a.job} · ${a.customer}</div>
         <div style="font-size:13px;color:var(--white-dim);margin-bottom:6px;">"${a.message}"</div>
-        <div style="font-size:11px;color:var(--muted);">📍 ${a.address} · ${a.time}</div>
+        <div style="font-size:11px;color:var(--muted);"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg> ${a.address} · ${a.time}</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px;align-self:flex-start;flex-shrink:0;">
-        <button onclick="replyToAlert('${a.tech}')" class="btn-sm primary" style="font-size:11px;padding:5px 10px;white-space:nowrap;">💬 Reply</button>
+        <button onclick="replyToAlert('${a.tech}')" class="btn-sm primary" style="font-size:11px;padding:5px 10px;white-space:nowrap;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" /></svg> Reply</button>
         <button onclick="dismissAlert('${a.id}')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0;text-align:center;" title="Dismiss">✕</button>
       </div>
     </div>
@@ -6680,7 +6683,7 @@ function renderSubs(items) {
   if (!items) items = subsDB;
   if (!items.length) {
     grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted);">
-      <div style="font-size:32px;margin-bottom:12px;">🤝</div>
+      <div style="font-size:32px;margin-bottom:12px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3" /> <path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4" /> <path d="m21 3 1 11h-2" /> <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" /> <path d="M3 4h8" /></svg></div>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;margin-bottom:6px;">No Subs Yet</div>
       <div style="font-size:13px;margin-bottom:20px;">Add your first subcontractor.</div>
       <button class="btn-sm primary" onclick="showModal('addSubModal')">+ Add Sub</button>
@@ -6704,11 +6707,11 @@ function renderSubs(items) {
         <span style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:2px;background:rgba(90,114,145,0.2);color:var(--muted);">${s.trade}</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted);margin-bottom:12px;">
-        <span>📱 ${s.phone}</span>
-        <span>✉️ ${s.email}</span>
-        <span>🪪 ${s.license}</span>
-        <span>🛡️ Insurance: <span style="color:${insColor};font-weight:700;">${insStatus}</span> · ${s.insExpiry}</span>
-        <span>💵 ${s.rate}</span>
+        <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /> <path d="M12 18h.01" /></svg> ${s.phone}</span>
+        <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" /> <rect x="2" y="4" width="20" height="16" rx="2" /></svg> ${s.email}</span>
+        <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 19a4 4 0 00-8 0" /> <path d="M16 10h2" /> <path d="M16 14h2" /> <circle cx="9" cy="12" r="3" /> <rect x="2" y="5" width="20" height="14" rx="2" /></svg> ${s.license}</span>
+        <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /> <path d="m9 12 2 2 4-4" /></svg> Insurance: <span style="color:${insColor};font-weight:700;">${insStatus}</span> · ${s.insExpiry}</span>
+        <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2" /> <circle cx="12" cy="12" r="2" /> <path d="M6 12h.01M18 12h.01" /></svg> ${s.rate}</span>
       </div>
       ${s.notes ? `<div style="font-size:12px;color:var(--muted);font-style:italic;margin-bottom:12px;padding:8px 10px;background:var(--steel);border-radius:2px;">${s.notes}</div>` : ''}
       <div style="display:flex;gap:8px;align-items:center;">
@@ -6845,7 +6848,7 @@ function addChatMsg(role, text) {
   const div = document.createElement('div');
   div.className = 'chat-msg' + (isUser ? ' user' : '');
   div.innerHTML = `
-    <div class="chat-avatar ${isUser ? 'user-av' : 'advisor'}">${isUser ? '👤' : 'CA'}</div>
+    <div class="chat-avatar ${isUser ? 'user-av' : 'advisor'}">${isUser ? '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /> <circle cx="12" cy="7" r="4" /></svg>' : 'CA'}</div>
     <div class="chat-bubble">${text.replace(/\n/g,'<br>')}</div>
   `;
   msgs.appendChild(div);
@@ -7093,7 +7096,7 @@ function renderTeam() {
 
   if (!techRoster.length) {
     tr.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted);">
-      <div style="font-size:32px;margin-bottom:12px;">👷</div>
+      <div style="font-size:32px;margin-bottom:12px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5" /> <path d="M14 6a6 6 0 0 1 6 6v3" /> <path d="M4 15v-3a6 6 0 0 1 6-6" /> <rect x="2" y="15" width="20" height="4" rx="1" /></svg></div>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;margin-bottom:6px;">No Techs Yet</div>
       <div style="font-size:13px;margin-bottom:20px;">Add your first crew member to get started.</div>
       <button class="btn-sm primary" onclick="showModal('addTechModal')">+ Add First Tech</button>
@@ -7115,8 +7118,8 @@ function renderTeam() {
         </div>
       </div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:10px;display:flex;gap:14px;">
-        <span>📱 ${t.phone}</span>
-        <span>✉️ ${t.email}</span>
+        <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /> <path d="M12 18h.01" /></svg> ${t.phone}</span>
+        <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" /> <rect x="2" y="4" width="20" height="16" rx="2" /></svg> ${t.email}</span>
       </div>
       <div class="tech-stat-row">
         <div class="tech-stat"><div class="tech-stat-val">${t.jobs}</div><div class="tech-stat-lbl">Today</div></div>
@@ -7277,14 +7280,14 @@ function openJobPhotos(jobId, jobLabel) {
   const coGrid = document.getElementById('closeoutGrid');
   if (co) {
     coDiv.style.display = 'block';
-    const satEmoji = ['','😠','😞','😐','😊','😄'][co.satisfaction] || '—';
+    const satEmoji = ['','<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 12v-1.584" /> <path d="M17 10a5 5 0 00-3 1" /> <path d="M7 10a5 5 0 013 1" /> <path d="M9 12v-1.584" /> <path d="M9 17a5 5 0 016.001 0" /> <circle cx="12" cy="12" r="10" /></svg>','<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9" /> <path d="M9 10V9" /> <path d="M9 16a5 5 0 016 0" /> <circle cx="12" cy="12" r="10" /></svg>','<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9" /> <path d="M8 16h8" /> <path d="M9 10V9" /> <circle cx="12" cy="12" r="10" /></svg>','<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9" /> <path d="M16.472 15a6 6 0 01-8.943 0" /> <path d="M9 10V9" /> <circle cx="12" cy="12" r="10" /></svg>','<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9" /> <path d="M7.084 14.302a5.12 5.12 0 009.833 0 .24.24 0 00-.235-.302H7.32a.24.24 0 00-.235.302" /> <path d="M9 10V9" /> <circle cx="12" cy="12" r="10" /></svg>'][co.satisfaction] || '—';
     const flags = [];
-    if (co.missingParts) flags.push('<span style="color:var(--orange);font-weight:700;">⚠️ Missing parts — return trip needed</span>');
-    if (co.callbackRisk) flags.push('<span style="color:var(--red);font-weight:700;">🔁 Callback risk flagged</span>');
+    if (co.missingParts) flags.push('<span style="color:var(--orange);font-weight:700;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> Missing parts — return trip needed</span>');
+    if (co.callbackRisk) flags.push('<span style="color:var(--red);font-weight:700;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4" /> <path d="M3 11v-1a4 4 0 0 1 4-4h14" /> <path d="m7 22-4-4 4-4" /> <path d="M21 13v1a4 4 0 0 1-4 4H3" /></svg> Callback risk flagged</span>');
     coGrid.innerHTML = `
       <div style="background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:12px;">
         <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Job Went as Planned</div>
-        <div style="font-size:15px;font-weight:700;color:${co.planOk?'var(--green)':'var(--orange)'};">${co.planOk?'✅ Yes':'⚠️ No'}</div>
+        <div style="font-size:15px;font-weight:700;color:${co.planOk?'var(--green)':'var(--orange)'};">${co.planOk?'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="m16 9-5.5 5.5L8 12" /></svg> Yes':'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> No'}</div>
         ${!co.planOk && co.planIssue ? '<div style="font-size:12px;color:var(--white-dim);margin-top:6px;">'+co.planIssue+'</div>' : ''}
       </div>
       <div style="background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:12px;">
@@ -7331,25 +7334,25 @@ function openJobPhotos(jobId, jobLabel) {
     <div class="sidebar-nav">
       <div class="nav-section-label">My Day</div>
       <div class="nav-item active" onclick="showTechSection('my-jobs', this)">
-        <span class="nav-icon">🔧</span> My Jobs
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" /></svg></span> My Jobs
         <span class="nav-badge" id="techJobsBadge">5</span>
       </div>
       <div class="nav-item" onclick="showTechSection('job-detail', this)">
-        <span class="nav-icon">📋</span> Active Job
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" /> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /> <path d="M12 11h4" /> <path d="M12 16h4" /> <path d="M8 11h.01" /> <path d="M8 16h.01" /></svg></span> Active Job
         <span class="nav-badge green">1</span>
       </div>
       <div class="nav-item" id="nav-truck-stock" onclick="showTechSection('truck-stock', this)">
-        <span class="nav-icon">🚚</span> Truck Stock
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" /> <path d="M15 18H9" /> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14" /> <circle cx="17" cy="18" r="2" /> <circle cx="7" cy="18" r="2" /></svg></span> Truck Stock
         <span class="nav-badge yellow" id="truckStockBadge" style="display:none;">!</span>
       </div>
       <div class="nav-item" onclick="showTechSection('tech-messages', this)">
-        <span class="nav-icon">💬</span> Messages
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" /></svg></span> Messages
         <span class="nav-badge green" id="techMsgBadge" style="display:none;">0</span>
       </div>
 
       <div class="nav-section-label">Tools</div>
       <div class="nav-item" onclick="showTechSection('tech-advisor', this)">
-        <span class="nav-icon">🧠</span> Ask Advisor
+        <span class="nav-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5" /> <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4" /> <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" /> <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" /> <path d="M18 18a4 4 0 0 0 2-7.464" /> <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" /> <path d="M6 18a4 4 0 0 1-2-7.464" /> <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" /></svg></span> Ask Advisor
       </div>
     </div>
 
@@ -7397,7 +7400,7 @@ function openJobPhotos(jobId, jobLabel) {
       <div class="page-section fade-in" id="tech-section-job-detail">
         <div class="card" style="margin-bottom:16px;">
           <div class="card-header">
-            <div class="card-title">🔧 Active Job — JB-1041</div>
+            <div class="card-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" /></svg> Active Job — JB-1041</div>
             <div style="display:flex;gap:8px;">
               <span class="tech-status-badge badge-active">In Progress</span>
             </div>
@@ -7417,7 +7420,7 @@ function openJobPhotos(jobId, jobLabel) {
               <div style="grid-column:1/-1;">
                 <div class="settings-label" style="margin-bottom:6px;">Address</div>
                 <div style="font-size:15px;font-weight:600;color:var(--white);">142 Oak St, Anytown MA</div>
-                <a href="#" style="font-size:13px;color:var(--orange);text-decoration:none;margin-top:4px;display:inline-block;">📍 Open in Maps →</a>
+                <a href="#" style="font-size:13px;color:var(--orange);text-decoration:none;margin-top:4px;display:inline-block;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg> Open in Maps →</a>
               </div>
             </div>
 
@@ -7429,11 +7432,11 @@ function openJobPhotos(jobId, jobLabel) {
             <div style="margin-bottom:16px;">
               <div class="settings-label" style="margin-bottom:10px;">Update Job Status</div>
               <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <button class="btn-sm" onclick="showToast('Status updated: On My Way')">🚗 On My Way</button>
-                <button class="btn-sm" onclick="showToast('Status updated: On Site')">📍 On Site</button>
-                <button class="btn-sm primary" onclick="showToast('Status updated: Job Complete')">✅ Job Complete</button>
-                <button class="btn-sm" style="border-color:var(--red);color:var(--red);" onclick="showModal('needHelpModal')">⚠️ Need Help</button>
-                <button class="btn-sm" style="border-color:var(--yellow);color:var(--yellow);" onclick="markCustomerNotHome()">🚪 Not Home</button>
+                <button class="btn-sm" onclick="showToast('Status updated: On My Way')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" /> <circle cx="7" cy="17" r="2" /> <path d="M9 17h6" /> <circle cx="17" cy="17" r="2" /></svg> On My Way</button>
+                <button class="btn-sm" onclick="showToast('Status updated: On Site')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg> On Site</button>
+                <button class="btn-sm primary" onclick="showToast('Status updated: Job Complete')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="m16 9-5.5 5.5L8 12" /></svg> Job Complete</button>
+                <button class="btn-sm" style="border-color:var(--red);color:var(--red);" onclick="showModal('needHelpModal')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> Need Help</button>
+                <button class="btn-sm" style="border-color:var(--yellow);color:var(--yellow);" onclick="markCustomerNotHome()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 21H2" /> <path d="M10 3H7a2 2 0 00-2 2v16" /> <path d="M14 12h.01" /> <path d="M19 21V5a2 2 0 00-1.675-1.974l-6.163-1.013A1 1 0 0010 3v18a1 1 0 001.124.992z" /> <path d="M22 21h-3" /></svg> Not Home</button>
               </div>
             </div>
 
@@ -7446,7 +7449,7 @@ function openJobPhotos(jobId, jobLabel) {
                 <div>
                   <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Before</div>
                   <div id="beforePhotoWrap" style="background:var(--steel);border:2px dashed var(--border);border-radius:2px;aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:border-color 0.2s;position:relative;overflow:hidden;" onclick="document.getElementById('beforeInput').click()" onmouseenter="this.style.borderColor='var(--orange)'" onmouseleave="this.style.borderColor='var(--border)'">
-                    <div style="font-size:28px;">📷</div>
+                    <div style="font-size:28px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /> <circle cx="12" cy="13" r="3" /></svg></div>
                     <div style="font-size:12px;font-weight:600;color:var(--muted);">Tap to add</div>
                     <img id="beforePhotoImg" src="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
                   </div>
@@ -7458,7 +7461,7 @@ function openJobPhotos(jobId, jobLabel) {
                 <div>
                   <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">After</div>
                   <div id="afterPhotoWrap" style="background:var(--steel);border:2px dashed var(--border);border-radius:2px;aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:border-color 0.2s;position:relative;overflow:hidden;" onclick="document.getElementById('afterInput').click()" onmouseenter="this.style.borderColor='var(--orange)'" onmouseleave="this.style.borderColor='var(--border)'">
-                    <div style="font-size:28px;">📷</div>
+                    <div style="font-size:28px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /> <circle cx="12" cy="13" r="3" /></svg></div>
                     <div style="font-size:12px;font-weight:600;color:var(--muted);">Tap to add</div>
                     <img id="afterPhotoImg" src="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
                   </div>
@@ -7480,7 +7483,7 @@ function openJobPhotos(jobId, jobLabel) {
         <!-- JOB CLOSE FLOW -->
         <div class="card" style="margin-bottom:16px;">
           <div class="card-header">
-            <div class="card-title">📋 Job Close-Out</div>
+            <div class="card-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" /> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /> <path d="M12 11h4" /> <path d="M12 16h4" /> <path d="M8 11h.01" /> <path d="M8 16h.01" /></svg> Job Close-Out</div>
           </div>
           <div class="card-body">
 
@@ -7488,8 +7491,8 @@ function openJobPhotos(jobId, jobLabel) {
             <div style="margin-bottom:20px;">
               <div class="settings-label" style="margin-bottom:10px;">Did the job go as planned?</div>
               <div style="display:flex;gap:10px;">
-                <button class="btn-sm" id="planYes" onclick="setPlanStatus('yes')" style="flex:1;text-align:center;">✅ Yes, all good</button>
-                <button class="btn-sm" id="planNo" onclick="setPlanStatus('no')" style="flex:1;text-align:center;">⚠️ No, issue came up</button>
+                <button class="btn-sm" id="planYes" onclick="setPlanStatus('yes')" style="flex:1;text-align:center;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="m16 9-5.5 5.5L8 12" /></svg> Yes, all good</button>
+                <button class="btn-sm" id="planNo" onclick="setPlanStatus('no')" style="flex:1;text-align:center;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> No, issue came up</button>
               </div>
               <textarea class="settings-input" id="planIssueField" rows="2" placeholder="Describe what happened…" style="margin-top:10px;display:none;"></textarea>
             </div>
@@ -7532,7 +7535,7 @@ function openJobPhotos(jobId, jobLabel) {
               <div style="margin-top:10px;">
                 <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--white-dim);">
                   <input type="checkbox" id="missingPartsFlag" style="width:16px;height:16px;accent-color:var(--orange);">
-                  <span>⚠️ Had to leave job — missing part(s). Will need return trip.</span>
+                  <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> Had to leave job — missing part(s). Will need return trip.</span>
                 </label>
               </div>
             </div>
@@ -7542,7 +7545,7 @@ function openJobPhotos(jobId, jobLabel) {
               <div class="settings-label" style="margin-bottom:10px;">Callback Risk</div>
               <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--white-dim);">
                 <input type="checkbox" id="callbackFlag" style="width:16px;height:16px;accent-color:var(--red);">
-                <span>🔁 Flag this job — I think it might come back</span>
+                <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4" /> <path d="M3 11v-1a4 4 0 0 1 4-4h14" /> <path d="m7 22-4-4 4-4" /> <path d="M21 13v1a4 4 0 0 1-4 4H3" /></svg> Flag this job — I think it might come back</span>
               </label>
               <textarea class="settings-input" id="callbackNotes" rows="2" placeholder="Why might it come back?" style="margin-top:10px;display:none;"></textarea>
             </div>
@@ -7573,7 +7576,7 @@ function openJobPhotos(jobId, jobLabel) {
                 <div class="job-customer">Patricia W.</div>
                 <div class="job-address">310 Maple Dr · Service Call · 1:00 PM</div>
               </div>
-              <a href="#" style="font-size:13px;color:var(--orange);text-decoration:none;white-space:nowrap;">📍 Directions →</a>
+              <a href="#" style="font-size:13px;color:var(--orange);text-decoration:none;white-space:nowrap;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg> Directions →</a>
             </div>
           </div>
         </div>
@@ -7611,7 +7614,7 @@ function openJobPhotos(jobId, jobLabel) {
 
         <!-- Missing items alert -->
         <div id="truckMissingAlert" style="display:none;margin-top:16px;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);border-radius:2px;padding:14px 16px;">
-          <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px;">⚠️ Missing Items — Office Notified</div>
+          <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> Missing Items — Office Notified</div>
           <div id="truckMissingList" style="font-size:13px;color:var(--white-dim);"></div>
         </div>
 
@@ -7640,7 +7643,7 @@ function openJobPhotos(jobId, jobLabel) {
       <div class="page-section fade-in" id="tech-section-tech-advisor">
         <div class="advisor-chat" style="height:calc(100vh - 200px);">
           <div class="advisor-intro" style="margin:20px 24px 0;flex-shrink:0;">
-            <div class="advisor-intro-title">🧠 Compass Advisor</div>
+            <div class="advisor-intro-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5" /> <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4" /> <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" /> <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" /> <path d="M18 18a4 4 0 0 0 2-7.464" /> <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" /> <path d="M6 18a4 4 0 0 1-2-7.464" /> <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" /></svg> Compass Advisor</div>
             <div class="advisor-intro-text">Ask anything about your jobs, pricing a repair, talking to a customer, or handling a tough situation in the field.</div>
           </div>
           <div class="chat-messages" id="techChatMessages">
@@ -7778,7 +7781,7 @@ function addTechChatMsg(role, text) {
   const isUser = role === 'user';
   const div = document.createElement('div');
   div.className = 'chat-msg' + (isUser ? ' user' : '');
-  div.innerHTML = `<div class="chat-avatar ${isUser?'user-av':'advisor'}">${isUser?'👤':'CA'}</div><div class="chat-bubble">${text.replace(/\n/g,'<br>')}</div>`;
+  div.innerHTML = `<div class="chat-avatar ${isUser?'user-av':'advisor'}">${isUser?'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /> <circle cx="12" cy="7" r="4" /></svg>':'CA'}</div><div class="chat-bubble">${text.replace(/\n/g,'<br>')}</div>`;
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
@@ -7834,7 +7837,7 @@ function populatePartDropdown() {
   if (!sel) return;
   sel.innerHTML = '<option value="">— Pick from inventory —</option>' +
     inventoryDB.map(p =>
-      `<option value="${p.id}" data-name="${p.name}" data-qty="${p.qty}">${p.name}${p.qty <= p.reorderAt ? ' ⚠️ Low' : ''} (${p.qty} on hand)</option>`
+      `<option value="${p.id}" data-name="${p.name}" data-qty="${p.qty}">${p.name}${p.qty <= p.reorderAt ? ' Low' : ''} (${p.qty} on hand)</option>`
     ).join('');
 }
 
@@ -7873,7 +7876,7 @@ function addPart() {
     const onHand = parseInt(opt.dataset.qty) || 0;
 
     if (qty > onHand) {
-      showToast('⚠️ Only ' + onHand + ' on hand — flagging as short');
+      showToast('<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> Only ' + onHand + ' on hand — flagging as short');
     }
 
     partsUsed.push({ name, qty, inventoryId: sel.value, short: qty > onHand });
@@ -7906,7 +7909,7 @@ function renderPartsList() {
       <div style="flex:1;font-size:13px;font-weight:600;color:var(--white);">
         ${p.name}
         ${p.manual ? '<span style="font-size:10px;color:var(--muted);margin-left:6px;">manual</span>' : ''}
-        ${p.short ? '<span style="font-size:10px;color:var(--red);margin-left:6px;">⚠️ short</span>' : ''}
+        ${p.short ? '<span style="font-size:10px;color:var(--red);margin-left:6px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> short</span>' : ''}
       </div>
       <div style="font-size:12px;color:var(--muted);min-width:32px;text-align:center;">×${p.qty}</div>
       <div style="display:flex;align-items:center;gap:4px;">
@@ -8022,7 +8025,7 @@ function activateFinishJobBtn() {
   if (!btn) return;
   btn.disabled = false;
   btn.classList.add('btn-ready-pulse');
-  btn.textContent = '✅ Finish Job — Review Charges →';
+  btn.textContent = 'Finish Job — Review Charges →';
   if (hint) {
     hint.textContent = 'Customer signed off — tap to finalize and invoice';
     hint.style.color = 'var(--green)';
@@ -8046,7 +8049,7 @@ function markCustomerNotHome() {
     btn.style.borderColor = 'var(--yellow)';
     btn.style.color = 'var(--yellow)';
     btn.style.cursor = 'pointer';
-    btn.textContent = '⚠️ Close Job — Customer Not Home';
+    btn.textContent = 'Close Job — Customer Not Home';
     btn.classList.remove('btn-ready-pulse');
   }
   if (hint) {
@@ -8054,7 +8057,7 @@ function markCustomerNotHome() {
     hint.style.color = 'var(--yellow)';
   }
   if (statusText) {
-    statusText.textContent = '⚠️ Customer not home — no sign-off';
+    statusText.textContent = 'Customer not home — no sign-off';
     statusText.style.color = 'var(--yellow)';
   }
   if (openBtn) {
@@ -8091,7 +8094,7 @@ function closeJob() {
     closedAt: new Date().toLocaleTimeString()
   };
 
-  showToast('✅ Job closed! Record submitted to office.');
+  showToast('<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="m16 9-5.5 5.5L8 12" /></svg> Job closed! Record submitted to office.');
   setTimeout(() => showTechSection('my-jobs', null), 1500);
 }
 
@@ -8417,7 +8420,7 @@ function submitTruckStock() {
     });
     updateAlertBadge();
   } else {
-    showToast('✅ Truck stock complete — you are ready to roll!');
+    showToast('<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="m16 9-5.5 5.5L8 12" /></svg> Truck stock complete — you are ready to roll!');
     document.getElementById('truckMissingAlert').style.display = 'none';
     const badge = document.getElementById('truckStockBadge');
     if (badge) badge.style.display = 'none';
@@ -8516,7 +8519,7 @@ document.getElementById('techShell').style.display = '';
           <span style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--orange);" id="subPayTotal">$0.00</span>
         </div>
         <div style="background:rgba(90,114,145,0.1);border:1px solid rgba(90,114,145,0.2);border-radius:2px;padding:10px 12px;font-size:12px;color:var(--muted);">
-          🔖 1099 subcontractor — no tax withholding. Track for year-end 1099 filing.
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z" /></svg> 1099 subcontractor — no tax withholding. Track for year-end 1099 filing.
         </div>
         <div class="settings-field">
           <label class="settings-label">Job / Notes</label>
@@ -8540,7 +8543,7 @@ document.getElementById('techShell').style.display = '';
     </div>
     <div class="modal-body" style="padding:24px;">
       <div style="background:rgba(243,156,18,0.1);border:1px solid rgba(243,156,18,0.25);border-radius:2px;padding:12px 14px;margin-bottom:20px;font-size:12px;color:var(--yellow);line-height:1.6;">
-        ⚠️ These rates are pre-loaded based on current MA and federal schedules. Verify with your CPA before use. You can update these at any time.
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> These rates are pre-loaded based on current MA and federal schedules. Verify with your CPA before use. You can update these at any time.
       </div>
       <div style="display:flex;flex-direction:column;gap:0;">
         <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:12px 0 8px;">Federal (Employee Withholding)</div>
@@ -8585,7 +8588,7 @@ document.getElementById('techShell').style.display = '';
 <div class="modal-overlay" id="checkPrintModal">
   <div class="modal" style="max-width:500px;">
     <div class="modal-header">
-      <div class="modal-title">🖨 Print Checks</div>
+      <div class="modal-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /> <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" /> <rect x="6" y="14" width="12" height="8" rx="1" /></svg> Print Checks</div>
       <button class="modal-close" onclick="closeModal('checkPrintModal')">×</button>
     </div>
     <div class="modal-body">
@@ -8606,7 +8609,7 @@ document.getElementById('techShell').style.display = '';
     </div>
     <div class="modal-footer">
       <button class="btn-sm" onclick="closeModal('checkPrintModal')">Cancel</button>
-      <button class="btn-sm primary" onclick="doPrint()">🖨 Print</button>
+      <button class="btn-sm primary" onclick="doPrint()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /> <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" /> <rect x="6" y="14" width="12" height="8" rx="1" /></svg> Print</button>
     </div>
   </div>
 </div>
@@ -8621,7 +8624,7 @@ document.getElementById('techShell').style.display = '';
     <div class="modal-body">
       <div style="display:flex;flex-direction:column;gap:12px;">
         <div style="background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color 0.15s;" onmouseenter="this.style.borderColor='var(--orange)'" onmouseleave="this.style.borderColor='var(--border)'" onclick="connectADP()">
-          <div style="font-size:28px;">💼</div>
+          <div style="font-size:28px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /> <rect width="20" height="14" x="2" y="6" rx="2" /></svg></div>
           <div style="flex:1;">
             <div style="font-size:14px;font-weight:700;color:var(--white);">ADP Workforce Now</div>
             <div style="font-size:12px;color:var(--muted);">Push hours directly · Most popular for trades</div>
@@ -8629,7 +8632,7 @@ document.getElementById('techShell').style.display = '';
           <div style="font-size:12px;font-weight:700;color:var(--orange);">Connect →</div>
         </div>
         <div style="background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color 0.15s;" onmouseenter="this.style.borderColor='var(--orange)'" onmouseleave="this.style.borderColor='var(--border)'" onclick="connectGusto()">
-          <div style="font-size:28px;">🟢</div>
+          <div style="font-size:28px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="m16 9-5.5 5.5L8 12" /></svg></div>
           <div style="flex:1;">
             <div style="font-size:14px;font-weight:700;color:var(--white);">Gusto</div>
             <div style="font-size:12px;color:var(--muted);">Great for small teams · Handles tax filing</div>
@@ -8637,7 +8640,7 @@ document.getElementById('techShell').style.display = '';
           <div style="font-size:12px;font-weight:700;color:var(--orange);">Connect →</div>
         </div>
         <div style="background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:16px;display:flex;align-items:center;gap:14px;">
-          <div style="font-size:28px;">📄</div>
+          <div style="font-size:28px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /></svg></div>
           <div style="flex:1;">
             <div style="font-size:14px;font-weight:700;color:var(--white);">Export Only</div>
             <div style="font-size:12px;color:var(--muted);">CSV, ADP format, or check register — process manually</div>
@@ -8899,7 +8902,7 @@ document.getElementById('techShell').style.display = '';
 <div class="modal-overlay" id="receiptUploadModal">
   <div class="modal" style="max-width:540px;">
     <div class="modal-header">
-      <div class="modal-title">📷 Upload Receipt or Invoice</div>
+      <div class="modal-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /> <circle cx="12" cy="13" r="3" /></svg> Upload Receipt or Invoice</div>
       <button class="modal-close" onclick="closeModal('receiptUploadModal')">×</button>
     </div>
     <div class="modal-body">
@@ -8911,7 +8914,7 @@ document.getElementById('techShell').style.display = '';
 
       <!-- Upload zone -->
       <div id="receiptDropZone" style="background:var(--steel);border:2px dashed var(--border);border-radius:2px;padding:40px 24px;text-align:center;cursor:pointer;transition:border-color 0.2s;margin-bottom:16px;" onclick="document.getElementById('receiptFileInput').click()" onmouseenter="this.style.borderColor='var(--orange)'" onmouseleave="this.style.borderColor='var(--border)'">
-        <div style="font-size:40px;margin-bottom:10px;">📄</div>
+        <div style="font-size:40px;margin-bottom:10px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /></svg></div>
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:6px;">Tap to Upload</div>
         <div style="font-size:12px;color:var(--muted);">Photo, JPG, PNG, or PDF · Receipt or parts invoice</div>
       </div>
@@ -9054,11 +9057,11 @@ document.getElementById('techShell').style.display = '';
       <div style="margin-bottom:28px;">
         <div style="font-size:14px;font-weight:700;color:var(--white);margin-bottom:14px;text-align:center;">How did we do today?</div>
         <div style="display:flex;gap:10px;justify-content:center;" id="satisfactionBtns">
-          <button onclick="setSatisfaction(1)" class="sat-btn" data-val="1" style="flex:1;padding:14px 10px;background:var(--steel);border:1px solid var(--border);border-radius:2px;font-size:24px;cursor:pointer;transition:all 0.15s;">😠</button>
-          <button onclick="setSatisfaction(2)" class="sat-btn" data-val="2" style="flex:1;padding:14px 10px;background:var(--steel);border:1px solid var(--border);border-radius:2px;font-size:24px;cursor:pointer;transition:all 0.15s;">😞</button>
-          <button onclick="setSatisfaction(3)" class="sat-btn" data-val="3" style="flex:1;padding:14px 10px;background:var(--steel);border:1px solid var(--border);border-radius:2px;font-size:24px;cursor:pointer;transition:all 0.15s;">😐</button>
-          <button onclick="setSatisfaction(4)" class="sat-btn" data-val="4" style="flex:1;padding:14px 10px;background:var(--steel);border:1px solid var(--border);border-radius:2px;font-size:24px;cursor:pointer;transition:all 0.15s;">😊</button>
-          <button onclick="setSatisfaction(5)" class="sat-btn" data-val="5" style="flex:1;padding:14px 10px;background:var(--steel);border:1px solid var(--border);border-radius:2px;font-size:24px;cursor:pointer;transition:all 0.15s;">😄</button>
+          <button onclick="setSatisfaction(1)" class="sat-btn" data-val="1" style="flex:1;padding:14px 10px;background:var(--steel);border:1px solid var(--border);border-radius:2px;font-size:24px;cursor:pointer;transition:all 0.15s;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 12v-1.584" /> <path d="M17 10a5 5 0 00-3 1" /> <path d="M7 10a5 5 0 013 1" /> <path d="M9 12v-1.584" /> <path d="M9 17a5 5 0 016.001 0" /> <circle cx="12" cy="12" r="10" /></svg></button>
+          <button onclick="setSatisfaction(2)" class="sat-btn" data-val="2" style="flex:1;padding:14px 10px;background:var(--steel);border:1px solid var(--border);border-radius:2px;font-size:24px;cursor:pointer;transition:all 0.15s;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9" /> <path d="M9 10V9" /> <path d="M9 16a5 5 0 016 0" /> <circle cx="12" cy="12" r="10" /></svg></button>
+          <button onclick="setSatisfaction(3)" class="sat-btn" data-val="3" style="flex:1;padding:14px 10px;background:var(--steel);border:1px solid var(--border);border-radius:2px;font-size:24px;cursor:pointer;transition:all 0.15s;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9" /> <path d="M8 16h8" /> <path d="M9 10V9" /> <circle cx="12" cy="12" r="10" /></svg></button>
+          <button onclick="setSatisfaction(4)" class="sat-btn" data-val="4" style="flex:1;padding:14px 10px;background:var(--steel);border:1px solid var(--border);border-radius:2px;font-size:24px;cursor:pointer;transition:all 0.15s;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9" /> <path d="M16.472 15a6 6 0 01-8.943 0" /> <path d="M9 10V9" /> <circle cx="12" cy="12" r="10" /></svg></button>
+          <button onclick="setSatisfaction(5)" class="sat-btn" data-val="5" style="flex:1;padding:14px 10px;background:var(--steel);border:1px solid var(--border);border-radius:2px;font-size:24px;cursor:pointer;transition:all 0.15s;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9" /> <path d="M7.084 14.302a5.12 5.12 0 009.833 0 .24.24 0 00-.235-.302H7.32a.24.24 0 00-.235.302" /> <path d="M9 10V9" /> <circle cx="12" cy="12" r="10" /></svg></button>
         </div>
         <div id="satLabel" style="text-align:center;font-size:13px;color:var(--muted);margin-top:10px;min-height:18px;"></div>
       </div>
@@ -9131,14 +9134,14 @@ document.getElementById('techShell').style.display = '';
         <div style="margin-top:12px;">
           <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--white-dim);">
             <input type="checkbox" id="additionalWorkFlag" style="width:16px;height:16px;accent-color:var(--orange);">
-            <span>⚙️ Customer requested additional work not on original job</span>
+            <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /> <circle cx="12" cy="12" r="3" /></svg> Customer requested additional work not on original job</span>
           </label>
         </div>
       </div>
 
       <!-- Confirmation strip — no pricing shown to tech -->
       <div style="background:var(--charcoal);border:1px solid var(--border);border-radius:2px;padding:14px 18px;margin-bottom:4px;display:flex;align-items:center;gap:12px;" id="jobReadyStrip">
-        <div style="font-size:20px;">📋</div>
+        <div style="font-size:20px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" /> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /> <path d="M12 11h4" /> <path d="M12 16h4" /> <path d="M8 11h.01" /> <path d="M8 16h.01" /></svg></div>
         <div style="flex:1;">
           <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:2px;">Job ready to close</div>
           <div style="font-size:12px;color:var(--muted);" id="chargesConfirmText">Tap Next to get customer sign-off</div>
@@ -9171,7 +9174,7 @@ document.getElementById('techShell').style.display = '';
 
       <!-- INVOICING RULES -->
       <div style="padding:24px;border-bottom:1px solid var(--border);">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;">💵 Invoice Routing Rules</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2" /> <circle cx="12" cy="12" r="2" /> <path d="M6 12h.01M18 12h.01" /></svg> Invoice Routing Rules</div>
         <div style="font-size:12px;color:var(--muted);margin-bottom:20px;">Control when invoices auto-send vs. hold for your review.</div>
 
         <div style="display:flex;flex-direction:column;gap:16px;">
@@ -9214,7 +9217,7 @@ document.getElementById('techShell').style.display = '';
 
       <!-- AUTO-CONFIRM RULES -->
       <div style="padding:24px;border-bottom:1px solid var(--border);">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;">🤖 Auto-Confirm Settings</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8" /> <rect width="16" height="12" x="4" y="8" rx="2" /> <path d="M2 14h2" /> <path d="M20 14h2" /> <path d="M15 13v2" /> <path d="M9 13v2" /></svg> Auto-Confirm Settings</div>
         <div style="font-size:12px;color:var(--muted);margin-bottom:20px;">Control the 5-touch confirmation sequence.</div>
 
         <div style="display:flex;flex-direction:column;gap:16px;">
@@ -9255,7 +9258,7 @@ document.getElementById('techShell').style.display = '';
 
       <!-- CALLBACK & FLAGS -->
       <div style="padding:24px;border-bottom:1px solid var(--border);">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;">🔁 Callback & Quality Rules</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4" /> <path d="M3 11v-1a4 4 0 0 1 4-4h14" /> <path d="m7 22-4-4 4-4" /> <path d="M21 13v1a4 4 0 0 1-4 4H3" /></svg> Callback & Quality Rules</div>
         <div style="font-size:12px;color:var(--muted);margin-bottom:20px;">Set thresholds for when you want to be notified.</div>
 
         <div style="display:flex;flex-direction:column;gap:16px;">
@@ -9277,9 +9280,9 @@ document.getElementById('techShell').style.display = '';
             </div>
             <div style="display:flex;align-items:center;gap:8px;">
               <select class="settings-input" id="satisfactionAlertThreshold" style="font-size:14px;font-weight:700;width:80px;text-align:center;">
-                <option>😠 1</option>
-                <option selected>😞 2</option>
-                <option>😐 3</option>
+                <option>1</option>
+                <option selected>2</option>
+                <option>3</option>
               </select>
             </div>
           </div>
@@ -9288,7 +9291,7 @@ document.getElementById('techShell').style.display = '';
 
       <!-- INVENTORY RULES -->
       <div style="padding:24px;border-bottom:1px solid var(--border);">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;">📦 Inventory Alerts</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" /> <path d="M12 22V12" /> <polyline points="3.29 7 12 12 20.71 7" /> <path d="m7.5 4.27 9 5.15" /></svg> Inventory Alerts</div>
         <div style="font-size:12px;color:var(--muted);margin-bottom:20px;">Control when you get notified about stock levels.</div>
 
         <div style="display:flex;flex-direction:column;gap:16px;">
@@ -9318,7 +9321,7 @@ document.getElementById('techShell').style.display = '';
 
       <!-- TRUCK STOCK SETTINGS -->
       <div style="padding:24px;border-bottom:1px solid var(--border);">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;">🚚 Truck Stock Checklist</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" /> <path d="M15 18H9" /> <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14" /> <circle cx="17" cy="18" r="2" /> <circle cx="7" cy="18" r="2" /></svg> Truck Stock Checklist</div>
         <div style="font-size:12px;color:var(--muted);margin-bottom:20px;">Control when techs get their truck prep checklist.</div>
         <div style="display:flex;flex-direction:column;gap:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:14px 16px;">
@@ -9349,14 +9352,14 @@ document.getElementById('techShell').style.display = '';
             </div>
           </div>
           <div style="background:rgba(200,112,26,0.08);border:1px solid rgba(200,112,26,0.2);border-radius:2px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.6;">
-            💡 <strong style="color:var(--white);">Compass tip:</strong> Having techs arrive 30 min early to prep their truck eliminates morning delays and ensures every job starts on time. Especially effective for techs with a history of late arrivals.
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /> <path d="M9 18h6" /> <path d="M10 22h4" /></svg> <strong style="color:var(--white);">Compass tip:</strong> Having techs arrive 30 min early to prep their truck eliminates morning delays and ensures every job starts on time. Especially effective for techs with a history of late arrivals.
           </div>
         </div>
       </div>
 
       <!-- AI ESTIMATOR SETTINGS -->
       <div style="padding:24px;border-bottom:1px solid var(--border);">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;">🔍 AI Estimator</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg> AI Estimator</div>
         <div style="font-size:12px;color:var(--muted);margin-bottom:20px;">Configure your trade so the AI gives expert-level estimates.</div>
         <div style="display:flex;flex-direction:column;gap:16px;">
           <div style="display:flex;align-items:center;justify-content:space-between;background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:14px 16px;">
@@ -9381,7 +9384,7 @@ document.getElementById('techShell').style.display = '';
 
       <!-- TECH PERMISSIONS -->
       <div style="padding:24px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;">👷 Tech Permissions</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:4px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5" /> <path d="M14 6a6 6 0 0 1 6 6v3" /> <path d="M4 15v-3a6 6 0 0 1 6-6" /> <rect x="2" y="15" width="20" height="4" rx="1" /></svg> Tech Permissions</div>
         <div style="font-size:12px;color:var(--muted);margin-bottom:20px;">Control what techs can do in the app.</div>
 
         <div style="display:flex;flex-direction:column;gap:16px;">
@@ -9432,7 +9435,7 @@ document.getElementById('techShell').style.display = '';
 <div class="modal-overlay" id="needHelpModal">
   <div class="modal" style="max-width:420px;">
     <div class="modal-header" style="border-bottom:2px solid var(--red);">
-      <div class="modal-title" style="color:var(--red);">⚠️ Request Help from Office</div>
+      <div class="modal-title" style="color:var(--red);"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></svg> Request Help from Office</div>
       <button class="modal-close" onclick="closeModal('needHelpModal')">×</button>
     </div>
     <div class="modal-body">
@@ -9442,25 +9445,25 @@ document.getElementById('techShell').style.display = '';
 
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;" id="helpReasonBtns">
         <button class="help-reason-btn" data-reason="Can't find the address" onclick="selectHelpReason(this)">
-          📍 Can't find the address
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg> Can't find the address
         </button>
         <button class="help-reason-btn" data-reason="Missing part — need someone to bring it" onclick="selectHelpReason(this)">
-          📦 Missing part — need someone to bring it
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" /> <path d="M12 22V12" /> <polyline points="3.29 7 12 12 20.71 7" /> <path d="m7.5 4.27 9 5.15" /></svg> Missing part — need someone to bring it
         </button>
         <button class="help-reason-btn" data-reason="Customer is not home" onclick="selectHelpReason(this)">
-          🚪 Customer is not home
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 21H2" /> <path d="M10 3H7a2 2 0 00-2 2v16" /> <path d="M14 12h.01" /> <path d="M19 21V5a2 2 0 00-1.675-1.974l-6.163-1.013A1 1 0 0010 3v18a1 1 0 001.124.992z" /> <path d="M22 21h-3" /></svg> Customer is not home
         </button>
         <button class="help-reason-btn" data-reason="Need a second tech on site" onclick="selectHelpReason(this)">
-          👷 Need a second tech on site
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5" /> <path d="M14 6a6 6 0 0 1 6 6v3" /> <path d="M4 15v-3a6 6 0 0 1 6-6" /> <rect x="2" y="15" width="20" height="4" rx="1" /></svg> Need a second tech on site
         </button>
         <button class="help-reason-btn" data-reason="Safety concern on site" onclick="selectHelpReason(this)">
-          🦺 Safety concern on site
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5" /> <path d="M14 6a6 6 0 0 1 6 6v3" /> <path d="M4 15v-3a6 6 0 0 1 6-6" /> <rect x="2" y="15" width="20" height="4" rx="1" /></svg> Safety concern on site
         </button>
         <button class="help-reason-btn" data-reason="Customer dispute — need manager" onclick="selectHelpReason(this)">
-          🗣️ Customer dispute — need manager
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" /> <path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14" /> <path d="M8 6v8" /></svg> Customer dispute — need manager
         </button>
         <button class="help-reason-btn" id="helpOtherBtn" data-reason="other" onclick="selectHelpReason(this)">
-          ✏️ Other — type it
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" /> <path d="m15 5 4 4" /></svg> Other — type it
         </button>
       </div>
 
@@ -9522,7 +9525,7 @@ document.getElementById('techShell').style.display = '';
           </div>
           <div>
             <div style="font-size:13px;color:var(--white-dim);" id="jrPhone">(555) 201-3344</div>
-            <a id="jrMaps" href="#" style="font-size:12px;color:var(--orange);text-decoration:none;display:inline-block;margin-top:4px;">📍 Open in Maps →</a>
+            <a id="jrMaps" href="#" style="font-size:12px;color:var(--orange);text-decoration:none;display:inline-block;margin-top:4px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg> Open in Maps →</a>
           </div>
         </div>
       </div>
@@ -9584,7 +9587,7 @@ document.getElementById('techShell').style.display = '';
     </div>
     <div class="modal-footer" style="justify-content:space-between;">
       <div style="display:flex;gap:8px;">
-        <button class="btn-sm" onclick="closeModal('jobRecordModal');showSection('invoices',null)">💵 Invoice</button>
+        <button class="btn-sm" onclick="closeModal('jobRecordModal');showSection('invoices',null)"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2" /> <circle cx="12" cy="12" r="2" /> <path d="M6 12h.01M18 12h.01" /></svg> Invoice</button>
         <button class="btn-sm" onclick="saveJobRecord()">Save Notes</button>
       </div>
       <button class="btn-sm primary" onclick="closeModal('jobRecordModal')">Done</button>
@@ -9654,8 +9657,8 @@ document.getElementById('techShell').style.display = '';
     </div>
     <div class="modal-footer" style="justify-content:space-between;">
       <div style="display:flex;gap:8px;">
-        <button class="btn-sm" onclick="showToast('Invoice sent to customer!')">📧 Resend</button>
-        <button class="btn-sm" onclick="showToast('Opening print view…')">🖨 Print</button>
+        <button class="btn-sm" onclick="showToast('Invoice sent to customer!')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" /> <rect x="2" y="4" width="20" height="16" rx="2" /></svg> Resend</button>
+        <button class="btn-sm" onclick="showToast('Opening print view…')"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /> <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" /> <rect x="6" y="14" width="12" height="8" rx="1" /></svg> Print</button>
       </div>
       <div style="display:flex;gap:8px;">
         <button class="btn-sm" id="irPayBtn" onclick="markInvoicePaid()" style="color:var(--green);border-color:var(--green);">✓ Mark Paid</button>
@@ -9680,11 +9683,11 @@ document.getElementById('techShell').style.display = '';
       <input type="hidden" id="raReqId">
 
       <div style="background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:14px;margin-bottom:20px;">
-        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">📍 <span id="raAddress"></span></div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg> <span id="raAddress"></span></div>
         <div style="font-size:13px;color:var(--white-dim);margin-bottom:6px;" id="raProblem"></div>
         <div style="display:flex;gap:12px;font-size:12px;color:var(--muted);">
           <span id="raUrgency"></span>
-          <span>📅 <span id="raAvailability"></span></span>
+          <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg> <span id="raAvailability"></span></span>
         </div>
       </div>
 
@@ -9693,22 +9696,22 @@ document.getElementById('techShell').style.display = '';
       <div style="display:flex;flex-direction:column;gap:10px;">
 
         <button style="background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:16px;text-align:left;cursor:pointer;transition:border-color 0.15s;width:100%;" onmouseenter="this.style.borderColor='var(--orange)'" onmouseleave="this.style.borderColor='var(--border)'" onclick="requestToSchedule()">
-          <div style="font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px;">📅 Schedule a Job</div>
+          <div style="font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg> Schedule a Job</div>
           <div style="font-size:12px;color:var(--muted);">Create a new job and assign a tech — opens job scheduler</div>
         </button>
 
         <button style="background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:16px;text-align:left;cursor:pointer;transition:border-color 0.15s;width:100%;" onmouseenter="this.style.borderColor='var(--orange)'" onmouseleave="this.style.borderColor='var(--border)'" onclick="requestToEstimate()">
-          <div style="font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px;">📋 Send an Estimate</div>
+          <div style="font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" /> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /> <path d="M12 11h4" /> <path d="M12 16h4" /> <path d="M8 11h.01" /> <path d="M8 16h.01" /></svg> Send an Estimate</div>
           <div style="font-size:12px;color:var(--muted);">Build and send an estimate — customer approves from their portal</div>
         </button>
 
         <button style="background:var(--steel);border:1px solid var(--border);border-radius:2px;padding:16px;text-align:left;cursor:pointer;transition:border-color 0.15s;width:100%;" onmouseenter="this.style.borderColor='var(--orange)'" onmouseleave="this.style.borderColor='var(--border)'" onclick="requestToEstimate()">
-          <div style="font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px;">🔍 Run AI Estimate</div>
+          <div style="font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg> Run AI Estimate</div>
           <div style="font-size:12px;color:var(--muted);">Use the AI Estimator to diagnose and price the job first</div>
         </button>
 
         <button style="background:transparent;border:1px solid var(--border);border-radius:2px;padding:12px;text-align:center;cursor:pointer;font-size:13px;color:var(--muted);width:100%;" onclick="requestToCall()">
-          📞 Call Customer First
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" /></svg> Call Customer First
         </button>
 
       </div>
@@ -9735,21 +9738,21 @@ document.getElementById('techShell').style.display = '';
 
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
         <div style="display:flex;gap:14px;align-items:flex-start;background:var(--steel);border:1px solid var(--border);border-left:3px solid var(--orange);border-radius:2px;padding:14px 16px;">
-          <div style="font-size:22px;flex-shrink:0;">💰</div>
+          <div style="font-size:22px;flex-shrink:0;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" /> <path d="M12 18V6" /></svg></div>
           <div>
             <div style="font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px;">Know Your Real Numbers</div>
             <div style="font-size:13px;color:var(--muted);line-height:1.5;">Your Profit Tracker is pre-loaded with the right metrics — loaded cost, overhead, billable hours. No guessing if a job made money.</div>
           </div>
         </div>
         <div style="display:flex;gap:14px;align-items:flex-start;background:var(--steel);border:1px solid var(--border);border-left:3px solid var(--orange);border-radius:2px;padding:14px 16px;">
-          <div style="font-size:22px;flex-shrink:0;">🛡️</div>
+          <div style="font-size:22px;flex-shrink:0;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /> <path d="m9 12 2 2 4-4" /></svg></div>
           <div>
             <div style="font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px;">Protect Your Jobs</div>
             <div style="font-size:13px;color:var(--muted);line-height:1.5;">Auto-Confirm runs a 5-touch SMS + email sequence on every job. No-shows cost you money. This stops them.</div>
           </div>
         </div>
         <div style="display:flex;gap:14px;align-items:flex-start;background:var(--steel);border:1px solid var(--border);border-left:3px solid var(--orange);border-radius:2px;padding:14px 16px;">
-          <div style="font-size:22px;flex-shrink:0;">⚡</div>
+          <div style="font-size:22px;flex-shrink:0;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z" /></svg></div>
           <div>
             <div style="font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px;">Get Paid Faster</div>
             <div style="font-size:13px;color:var(--muted);line-height:1.5;">Close jobs in the field, get signatures, log parts. Invoice the same day. Stop chasing payments weeks later.</div>
