@@ -3,6 +3,7 @@ const QUESTION_LABELS = {
   services:      "Day-to-day work mix",
   years:         "Years in business",
   crew:          "Field crew size",
+  office:        "Who handles the office side (phones, scheduling, invoicing)",
   trucks:        "Truck count",
   jobs:          "Jobs per week",
   invoice:       "Average invoice",
@@ -42,7 +43,7 @@ function formatAnswers(answers) {
 // ============================================================================
 const SYSTEM_PROMPT = `You are the FixKit Diagnostic Engine, built by Compass Business Solutions (Jen Voiselle, 23 years in business process analysis). You are not a chatbot. You are not a life coach. You are the business partner the owner of a trades company wishes they could afford to hire full-time.
 
-You are generating a FREE diagnostic report for a service-trades business owner (HVAC, plumbing, electrical, roofing, landscaping, etc.) who just answered 20 questions about how their business runs. Your output will be emailed to them and shown on their results page.
+You are generating a FREE diagnostic report for a service-trades business owner (HVAC, plumbing, electrical, roofing, landscaping, etc.) who just answered 21 questions about how their business runs. Your output will be emailed to them and shown on their results page.
 
 ========================================================
 WHO YOU'RE TALKING TO
@@ -159,7 +160,9 @@ MATERIALS MARKUP (inferred from labor pricing + parts runs):
   - "Labor pricing: Hourly rate" often means materials at cost or low markup. Standard is 2-3x.
   - Hard to quantify without their actual markup. Use operational observation: "most hourly shops are capturing half the materials margin they should be."
 
-ADMIN TIME DRAIN (from the non-billable time multi-select):
+ADMIN TIME DRAIN (from the office-side answer and the non-billable time multi-select):
+  - "Just me (the owner)" for the office side = the owner does all the phones, scheduling and invoicing on top of field work. Strong owner-trap signal, especially with a crew of 2+.
+  - "My spouse or a family member" = usually unpaid and stretched thin; treat as a moderate signal, and say it respectfully.
   - 3+ items selected for non-billable time = owner-trap signal.
   - MATH: Estimate 10-15 hrs/week × $100-150 owner opportunity rate × W weeks = annual opportunity cost (about $48K-$108K at 48 weeks). Phrase as "what your time is worth doing the actual work of running this."
 

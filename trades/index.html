@@ -403,7 +403,7 @@ footer{background:#0d1622;padding:28px 24px}
     <div class="diagnostic-wrap">
       <div id="diag-intro">
         <h2>Free Business Diagnostic</h2>
-        <p class="sub">Answer 20 questions about how your business actually runs. We'll show you your top 3 profit leaks and what they're costing you annually — specific to your trade and your numbers.</p>
+        <p class="sub">Answer 21 questions about how your business actually runs. We'll show you your top 3 profit leaks and what they're costing you annually — specific to your trade and your numbers.</p>
         <button class="btn btn-amber" onclick="startDiagnostic()" style="width:100%;justify-content:center;font-size:18px;padding:16px">Start the Free Diagnostic →</button>
       </div>
       <div id="diag-questions" style="display:none">
@@ -470,7 +470,7 @@ footer{background:#0d1622;padding:28px 24px}
         <div style="background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:28px">
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:var(--amber);line-height:1;margin-bottom:12px">1</div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px">Run the Diagnostic</div>
-          <div style="font-size:14px;color:var(--muted);line-height:1.6">20 questions about how your business actually runs. Takes 10 minutes. No fluff.</div>
+          <div style="font-size:14px;color:var(--muted);line-height:1.6">21 questions about how your business actually runs. Takes 10 minutes. No fluff.</div>
         </div><div style="background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:28px">
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:var(--amber);line-height:1;margin-bottom:12px">2</div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px">See Your Leaks</div>
@@ -717,6 +717,7 @@ const QUESTIONS = [
   {id:'services',q:'What do you do day to day? Pick all that apply.',type:'multi',opts:['Commercial service calls','Emergency calls','Estimates and bids','Inspections','Maintenance agreements','New installs','Other','Residential service calls']},
   {id:'years',q:'How long have you been in business?',type:'buttons',opts:['Under 2 years','2-5 years','5-10 years','10-20 years','20+ years']},
   {id:'crew',q:'How many guys do you have in the field?',type:'buttons',opts:['Just me','2-3','4-6','7-10','11-20','20+']},
+  {id:'office',q:'Who handles the office side: phones, scheduling, invoicing?',type:'buttons',opts:['Just me (the owner)','My spouse or a family member','A part-time office person','A full-time office person','2+ office staff']},
   {id:'trucks',q:'How many trucks?',type:'buttons',opts:['1','2-3','4-6','7-10','10+']},
   {id:'jobs',q:'How many jobs do you complete per week?',type:'buttons',opts:['Under 10','10-20','20-40','40-60','60+']},
   {id:'invoice',q:'What is your average invoice amount?',type:'buttons',opts:['Under $200','$200-$400','$400-$800','$800-$1,500','$1,500-$3,000','$3,000+']},
