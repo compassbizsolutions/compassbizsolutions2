@@ -81,7 +81,8 @@ module.exports = async function handler(req, res) {
           <p style="font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#F4F7FC;margin:0;font-family:'Barlow Condensed',Helvetica,sans-serif;">FieldKit</p>
         </div>
         <h1 style="font-family:'Barlow Condensed',Helvetica,sans-serif;font-size:36px;font-weight:900;text-transform:uppercase;color:#F4F7FC;margin:0 0 16px;">You're In, ${ownerName}.</h1>
-        <p style="font-size:16px;color:#c8d8e8;line-height:1.6;margin:0 0 24px;">We've saved your spot on the FieldKit waitlist. When we launch in <strong style="color:#C8701A;">November 2026</strong>, you'll be first in line, with time to get your team set up before you go live.</p>
+        <p style="font-size:16px;color:#c8d8e8;line-height:1.6;margin:0 0 24px;">You're on the FieldKit waitlist. FieldKit goes live in <strong style="color:#C8701A;">January 2027</strong>, and the first 15 businesses to order by December 31 get founding pricing locked in, no setup fee, and a personal setup slot in the first two weeks of January.</p>
+        <p style="margin:0 0 24px;"><a href="https://www.compassbizsolutions.com/fieldkit#founding" style="display:inline-block;background:#C8701A;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;font-weight:700;font-family:'Barlow Condensed',Helvetica,sans-serif;letter-spacing:1px;text-transform:uppercase;">See the Founding Offer →</a></p>
         <div style="background:#162440;border:1px solid rgba(61,107,158,0.25);border-radius:4px;padding:20px;margin-bottom:24px;">
           <p style="font-family:'Barlow Condensed',Helvetica,sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8aa5c0;margin:0 0 10px;">Your signup details</p>
           <p style="font-size:14px;color:#c8d8e8;margin:0 0 4px;"><strong style="color:#F4F7FC;">Company:</strong> ${company}</p>

@@ -25,6 +25,10 @@
       "destination": "/trades/fieldkit/features/index.html"
     },
     {
+      "source": "/fieldkit/reserved",
+      "destination": "/trades/fieldkit/reserved/index.html"
+    },
+    {
       "source": "/reviewkit",
       "destination": "/reviewkit/index.html"
     },
