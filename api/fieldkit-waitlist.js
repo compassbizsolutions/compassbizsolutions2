@@ -8,8 +8,8 @@ function emailKey(email) {
 }
 
 async function saveToKV(key, value) {
-  const url   = process.env.KV_REST_API_URL;
-  const token = process.env.KV_REST_API_TOKEN;
+  const url   = (process.env.lime_KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL);
+  const token = (process.env.lime_KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN);
   if (!url || !token) throw new Error("KV not configured");
   const r = await fetch(url + "/set/" + encodeURIComponent(key), {
     method: "POST",

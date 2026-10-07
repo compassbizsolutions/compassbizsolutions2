@@ -9,8 +9,8 @@ const { Resend } = require("resend");
 async function storeInKV(email, data) {
   // Same database, same order as FixKit and the rest of the site. This used to
   // read only KV_REST_API_URL — an old, separate database FixKit never reads.
-  const url = process.env.lime_KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
-  const token = process.env.lime_KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+  const url = (process.env.lime_KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL);
+  const token = (process.env.lime_KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN);
   if (!url || !token) {
     console.warn("send-diagnostic: KV not configured (KV_REST_API_URL / KV_REST_API_TOKEN)");
     return;
