@@ -234,7 +234,7 @@ module.exports = async function handler(req, res) {
               <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
                 30 days of daily tasks (15 min/day) built around your specific leaks and your numbers. Calculators pre-loaded. Fix-It Guides matched to your leaks. Ask Jen AI advisor. If you decide to upgrade, <strong>the $249 you paid is credited toward the Full Bundle</strong> (Days 31-90 for $350). <span style="color:#6B7A90;">Already bought a Snapshot? Use the upgrade link in your Snapshot email to get this plan for $150.</span>
               </div>
-              <a href="https://buy.stripe.com/14A28k9809A8gd9gbYdZ609" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the 30-Day Plan — $249 →</a>
+              <a href="https://buy.stripe.com/aFabIUgAseUs3qnf7UdZ60o" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the 30-Day Plan — $249 →</a>
             </div>
 
             <!-- Full Bundle -->
