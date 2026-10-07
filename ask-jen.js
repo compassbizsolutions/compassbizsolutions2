@@ -31,7 +31,7 @@
     '.head{background:#1B2E4B;color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}' +
     '.head .av{background:#C8701A;width:34px;height:34px;font-size:15px}' +
     '.hn{font-weight:800;font-size:15px}.hs{font-size:12px;color:rgba(255,255,255,.65)}' +
-    '.x{margin-left:auto;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1;padding:4px 8px}' +
+    '.x{margin-left:auto;flex:none;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;line-height:1;padding:10px 14px;border-radius:999px;min-height:44px}.x:hover{background:rgba(255,255,255,.24)}.x b{font-size:18px;font-weight:400}' +
     '.msgs{flex:1;overflow-y:auto;padding:14px;background:#F4F7FC;display:flex;flex-direction:column;gap:10px}' +
     '.m{max-width:85%;padding:10px 13px;border-radius:14px;font-size:14px;line-height:1.55;white-space:pre-wrap;word-wrap:break-word;color:#1B2E4B}' +
     '.m.jen{background:#fff;border:1px solid #DCE4EF;align-self:flex-start;border-bottom-left-radius:4px}' +
@@ -48,11 +48,11 @@
     '.send:disabled{opacity:.5;cursor:default}' +
     '.links{font-size:12px;color:#5A7291;padding:0 12px 10px;background:#fff;text-align:center}' +
     '.links a{color:#C8701A;text-decoration:none;font-weight:600}' +
-    '@media (max-width:520px){.bubble .lbl{display:none}.bubble{padding:12px}.panel{right:8px;bottom:8px;width:calc(100vw - 16px);height:calc(100vh - 16px)}}' +
+    '@media (max-width:520px){.bubble .lbl{display:none}.bubble{padding:12px}.panel{right:8px;left:8px;top:calc(8px + env(safe-area-inset-top,0px));bottom:auto;width:auto;height:calc(100vh - 16px);height:calc(100dvh - 16px - env(safe-area-inset-top,0px))}}' +
     '</style>' +
     '<button class="bubble" type="button" aria-label="Ask Jen a question"><span class="av">J</span><span class="lbl">Ask Jen</span></button>' +
     '<div class="panel" role="dialog" aria-label="Ask Jen">' +
-    '  <div class="head"><span class="av">J</span><div><div class="hn">Ask Jen</div><div class="hs">Questions about Compass, FixKit, FieldKit or ReviewKit</div></div><button class="x" type="button" aria-label="Close">×</button></div>' +
+    '  <div class="head"><span class="av">J</span><div><div class="hn">Ask Jen</div><div class="hs">Questions about Compass, FixKit, FieldKit or ReviewKit</div></div><button class="x" type="button" aria-label="Close chat">Close <b aria-hidden="true">×</b></button></div>' +
     '  <div class="msgs"></div>' +
     '  <div class="starters"></div>' +
     '  <div class="foot"><textarea class="in" rows="1" placeholder="Type your question…" aria-label="Your question"></textarea><button class="send" type="button">Send</button></div>' +
@@ -128,8 +128,25 @@
       .then(function () { busy = false; sendBtn.disabled = false; msgs.scrollTop = msgs.scrollHeight; });
   }
 
-  bubble.onclick = function () { panel.classList.add('open'); bubble.style.display = 'none'; init(); setTimeout(function () { input.focus(); }, 50); };
-  root.querySelector('.x').onclick = function () { panel.classList.remove('open'); bubble.style.display = ''; };
+  var touch = window.matchMedia && window.matchMedia('(hover: none)').matches;
+  // On phones, size the panel to the visible area so the header (and Close) stays on screen when the keyboard opens
+  function fit() {
+    if (!panel.classList.contains('open')) return;
+    var vv = window.visualViewport;
+    if (vv && window.innerWidth <= 520) {
+      panel.style.height = Math.max(240, vv.height - 16) + 'px';
+      panel.style.top = (vv.offsetTop + 8) + 'px';
+    } else { panel.style.height = ''; panel.style.top = ''; }
+  }
+  if (window.visualViewport) { window.visualViewport.addEventListener('resize', fit); window.visualViewport.addEventListener('scroll', fit); }
+  function openChat() {
+    panel.classList.add('open'); bubble.style.display = 'none'; init(); fit();
+    if (!touch) setTimeout(function () { input.focus(); }, 50); // no auto-keyboard on phones
+  }
+  function closeChat() { input.blur(); panel.classList.remove('open'); panel.style.height = ''; panel.style.top = ''; bubble.style.display = ''; }
+  bubble.onclick = openChat;
+  root.querySelector('.x').onclick = closeChat;
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && panel.classList.contains('open')) closeChat(); });
   sendBtn.onclick = function () { send(); };
   input.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
 
