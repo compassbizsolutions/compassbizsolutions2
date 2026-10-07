@@ -77,15 +77,17 @@ async function supabaseRequest(path, options) {
 function verifyStripeSignature(rawBody, sigHeader, secret) {
   if (!sigHeader || !secret) return false;
 
-  const parts = Object.fromEntries(
-    sigHeader.split(",").map((p) => {
-      const [k, v] = p.split("=");
-      return [k, v];
-    })
-  );
-  const timestamp = parts.t;
-  const signature = parts.v1;
-  if (!timestamp || !signature) return false;
+  // "t=…,v1=…,v1=…" — Stripe sends one v1 per active signing secret (two
+  // while a secret is being rolled), so check every one, not just the last.
+  let timestamp = null;
+  const signatures = [];
+  sigHeader.split(",").forEach((p) => {
+    const i = p.indexOf("=");
+    const k = p.slice(0, i).trim(), v = p.slice(i + 1).trim();
+    if (k === "t") timestamp = v;
+    if (k === "v1") signatures.push(v);
+  });
+  if (!timestamp || !signatures.length) return false;
 
   // Reject anything older than 5 minutes — same tolerance Stripe's own SDK uses.
   const age = Math.abs(Date.now() / 1000 - Number(timestamp));
@@ -94,11 +96,13 @@ function verifyStripeSignature(rawBody, sigHeader, secret) {
   const signedPayload = `${timestamp}.${rawBody.toString("utf8")}`;
   const expected = crypto.createHmac("sha256", secret).update(signedPayload).digest("hex");
 
-  try {
-    return crypto.timingSafeEqual(Buffer.from(expected, "hex"), Buffer.from(signature, "hex"));
-  } catch (e) {
-    return false; // length mismatch etc. — treat as invalid, not a crash
-  }
+  return signatures.some((signature) => {
+    try {
+      return crypto.timingSafeEqual(Buffer.from(expected, "hex"), Buffer.from(signature, "hex"));
+    } catch (e) {
+      return false; // length mismatch etc. — treat as invalid, not a crash
+    }
+  });
 }
 
 async function notifyJen(subject, html) {
