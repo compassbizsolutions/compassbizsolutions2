@@ -472,7 +472,7 @@
 </div>
 
 <footer>
-  <p>© 2026 <a href="https://www.compassbizsolutions.com">Compass Business Solutions</a> · FieldKit is a Compass product · <a href="mailto:jen@compassbizsolutions.com">Contact Us</a></p>
+  <p>© 2026 <a href="https://www.compassbizsolutions.com">Compass Business Solutions</a> · FieldKit is a Compass product · <a href="mailto:jen@compassbizsolutions.com">Contact Us</a> · <a href="/faq">FAQ</a></p>
 </footer>
 
 <script>
@@ -550,5 +550,6 @@ fetch('/api/fieldkit-spots').then(function (r) { return r.ok ? r.json() : null; 
   if (d.left <= 0) document.querySelectorAll('[data-link]').forEach(function (a) { a.href = '#waitlist'; a.textContent = 'Join the waitlist'; });
 }).catch(function () {});
 </script>
+<script src="/ask-jen.js" defer></script>
 </body>
 </html>
