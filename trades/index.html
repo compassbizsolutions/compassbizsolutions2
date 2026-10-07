@@ -486,8 +486,8 @@ footer{background:#0d1622;padding:28px 24px}
     </div>
   </section>
 
-  <!-- PRODUCT TEASE -->
-  <section>
+  <!-- PRODUCT TEASE (hidden once the free-check results show their own plan cards) -->
+  <section id="plans-section">
     <div class="section-inner">
       <div class="section-eyebrow">The Fix Plans</div>
       <h2 class="section-title">Choose How You Fix It</h2>
@@ -1282,6 +1282,7 @@ function showResults(parsed, email) {
     + '  <div class="paywall-card paywall-card--snapshot">'
     + '    <div class="paywall-price">$99</div>'
     + '    <div class="paywall-name">Profit Leak Snapshot</div>'
+    + '    <button type="button" class="plan-peek" onclick="openPeek(0)" aria-label="See what\'s inside the Profit Leak Snapshot"><img src="/images/fixkit/snapshot-thumb.jpg" alt="Screens from the Profit Leak Snapshot: sample business" loading="lazy" width="800" height="500"><span>See what\'s inside</span></button>'
     + '    <div class="paywall-desc">Your top 3 leaks, the exact math, what to fix, and the guides to do it.</div>'
     + '    <button class="btn btn-outline paywall-btn" id="results-btn-snapshot">Get Snapshot</button>'
     + '  </div>'
@@ -1289,6 +1290,7 @@ function showResults(parsed, email) {
     + '    <div class="paywall-badge">Most Popular</div>'
     + '    <div class="paywall-price">$299</div>'
     + '    <div class="paywall-name">FixKit 30-Day Plan</div>'
+    + '    <button type="button" class="plan-peek" onclick="openPeek(1)" aria-label="See what\'s inside the FixKit 30-Day Plan"><img src="/images/fixkit/30-day-thumb.jpg" alt="Screens from the FixKit 30-Day Plan: sample business" loading="lazy" width="800" height="500"><span>See what\'s inside</span></button>'
     + '    <div class="paywall-desc">Daily tasks, templates, and tracking to close your top 3 leaks in 30 days.</div>'
     + '    <button class="btn btn-amber paywall-btn" id="results-btn-fixkit">Get 30-Day Plan</button>'
     + '  </div>'
@@ -1296,6 +1298,7 @@ function showResults(parsed, email) {
     + '    <div class="paywall-badge paywall-badge--value">Best Value</div>'
     + '    <div class="paywall-price">$599</div>'
     + '    <div class="paywall-name">FixKit Complete Bundle</div>'
+    + '    <button type="button" class="plan-peek" onclick="openPeek(2)" aria-label="See what\'s inside the FixKit Complete Bundle"><img src="/images/fixkit/bundle-thumb.jpg" alt="Screens from the FixKit Complete Bundle: sample business" loading="lazy" width="800" height="500"><span>See what\'s inside</span></button>'
     + '    <div class="paywall-desc">All 12 leak categories closed over 90 days. Saves $298 vs buying phases separately.</div>'
     + '    <button class="btn btn-dark paywall-btn" id="results-btn-bundle">Get Full Bundle</button>'
     + '  </div>'
@@ -1314,6 +1317,8 @@ function showResults(parsed, email) {
   document.getElementById('results-btn-bundle').addEventListener('click', function() {
     openCheckout('fixkit_bundle', 'FixKit Complete Bundle — $599');
   });
+  var plansSec = document.getElementById('plans-section');
+  if (plansSec) plansSec.style.display = 'none';
   document.getElementById('diag-results').style.display = 'block';
   document.getElementById('diag-results').scrollIntoView({behavior:'smooth'});
 }
