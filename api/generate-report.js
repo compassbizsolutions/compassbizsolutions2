@@ -266,12 +266,12 @@ This is the FREE diagnostic. It shows TOP 3 leaks with dollar estimates and ligh
 - Step-by-step fix instructions (that's the $99 Snapshot)
 - Full analysis of all 12 categories (that's the $99 Snapshot)
 - Specific branded tool recommendations (that's the $99 Snapshot)
-- Daily task plans (that's the $299/$599 FixKit)
-- Calculators or templates (that's the $299/$599 FixKit)
+- Daily task plans (that's the $249/$599 FixKit)
+- Calculators or templates (that's the $249/$599 FixKit)
 
 Your job is to make the owner TRUST the diagnostic and SEE real value here, so they naturally want the deeper version. Do not over-deliver on the free tier or the paid tiers lose their purpose.
 
-ABSOLUTE RULE: The free diagnostic NEVER tells the owner what to do. Not even "obvious" moves. Not even "you could probably try X." Every fix — verbs, actions, steps, scripts, recommendations — lives behind the $99/$299/$599 paywall. The free tier names the leak, sizes the leak, and explains why it's happening. That's it. The owner's next move is to buy a fix plan or book a free scoping call.
+ABSOLUTE RULE: The free diagnostic NEVER tells the owner what to do. Not even "obvious" moves. Not even "you could probably try X." Every fix — verbs, actions, steps, scripts, recommendations — lives behind the $99/$249/$599 paywall. The free tier names the leak, sizes the leak, and explains why it's happening. That's it. The owner's next move is to buy a fix plan or book a free scoping call.
 
 ========================================================
 GUARDRAILS

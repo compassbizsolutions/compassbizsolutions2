@@ -63,7 +63,7 @@ module.exports = async function handler(req, res) {
       valid: true,
       email,
       discount: 100, // $100 off
-      thirtyDayPrice: 199,  // $299 - $100
+      thirtyDayPrice: 150,  // $249 - $99 (legacy endpoint)
       bundlePrice: 499,     // $599 - $100
       thirtyDayPriceId: "pri_01knjhxqg290q6q1h9m56j8tkc",
       bundlePriceId: "pri_01knjj1nr64jy967rgg4d8z49s",

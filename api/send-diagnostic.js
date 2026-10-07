@@ -216,7 +216,7 @@ module.exports = async function handler(req, res) {
                 <div style="font-size:24px;font-weight:bold;color:#1B2E4B;flex-shrink:0;margin-left:12px;">$99</div>
               </div>
               <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                Deep intake → your top 3 leaks with exact math, 2-3 specific fixes for each one, and Fix-It Guides matched to your leaks. If you decide to upgrade, <strong>the $99 you paid is credited toward your plan</strong>: the 30-Day Plan is $199 and the Full Bundle is $499. Upgrade links come in your Snapshot email.
+                Deep intake → your top 3 leaks with exact math, 2-3 specific fixes for each one, and Fix-It Guides matched to your leaks. If you decide to upgrade, <strong>the $99 you paid is credited toward your plan</strong>: the 30-Day Plan is $150 and the Full Bundle is $499. Upgrade links come in your Snapshot email.
               </div>
               <a href="https://buy.stripe.com/6oU28kfwo27GbWT2l8dZ608" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get My Snapshot — $99 →</a>
             </div>
@@ -229,17 +229,17 @@ module.exports = async function handler(req, res) {
                   <div style="font-size:15px;font-weight:bold;color:#1A2332;">FixKit — 30-Day Plan</div>
                   <div style="font-size:13px;color:#6B7A90;margin-top:2px;">Daily tasks. Built-in calculators. AI support.</div>
                 </div>
-                <div style="font-size:24px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$299</div>
+                <div style="font-size:24px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$249</div>
               </div>
               <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                30 days of daily tasks (15 min/day) built around your specific leaks and your numbers. Calculators pre-loaded. Fix-It Guides matched to your leaks. Ask Jen AI advisor. If you decide to upgrade, <strong>the $299 you paid is credited toward the Full Bundle</strong> (Days 31-90 for $300). <span style="color:#6B7A90;">Already bought a Snapshot? Use the upgrade link in your Snapshot email to get this plan for $199.</span>
+                30 days of daily tasks (15 min/day) built around your specific leaks and your numbers. Calculators pre-loaded. Fix-It Guides matched to your leaks. Ask Jen AI advisor. If you decide to upgrade, <strong>the $249 you paid is credited toward the Full Bundle</strong> (Days 31-90 for $350). <span style="color:#6B7A90;">Already bought a Snapshot? Use the upgrade link in your Snapshot email to get this plan for $150.</span>
               </div>
-              <a href="https://buy.stripe.com/14A28k9809A8gd9gbYdZ609" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the 30-Day Plan — $299 →</a>
+              <a href="https://buy.stripe.com/aFabIUgAseUs3qnf7UdZ60o" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the 30-Day Plan — $249 →</a>
             </div>
 
             <!-- Full Bundle -->
             <div style="background:white;border:1px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;position:relative;">${mark(4)}
-              <div style="display:inline-block;background:#1B2E4B;color:white;font-size:10px;font-weight:bold;letter-spacing:1.5px;padding:2px 10px;border-radius:99px;margin-bottom:10px;">BEST VALUE — SAVES $298</div>
+              <div style="display:inline-block;background:#1B2E4B;color:white;font-size:10px;font-weight:bold;letter-spacing:1.5px;padding:2px 10px;border-radius:99px;margin-bottom:10px;">BEST VALUE — SAVES $148</div>
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
                 <div>
                   <div style="font-size:15px;font-weight:bold;color:#1A2332;">FixKit — Complete 30/60/90-Day Plan</div>
@@ -248,7 +248,7 @@ module.exports = async function handler(req, res) {
                 <div style="font-size:24px;font-weight:bold;color:#C8701A;flex-shrink:0;margin-left:12px;">$599</div>
               </div>
               <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                All 90 days unlocked from day one. Every doc and calculator included. Ask Jen AI advisor included. Saves $298 vs buying phases separately. <span style="color:#6B7A90;">Already bought a Snapshot? Use the upgrade link in your Snapshot email to get the bundle for $499.</span>
+                All 90 days unlocked from day one. Every doc and calculator included. Ask Jen AI advisor included. Saves $148 vs buying phases separately. <span style="color:#6B7A90;">Already bought a Snapshot? Use the upgrade link in your Snapshot email to get the bundle for $499.</span>
               </div>
               <a href="https://buy.stripe.com/6oU00c1Fy7s0bWT2l8dZ60f" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">Get the Full Bundle — $599 →</a>
             </div>
