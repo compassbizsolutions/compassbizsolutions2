@@ -5,6 +5,10 @@
       "destination": "/api/$1"
     },
     {
+      "source": "/faq",
+      "destination": "/faq/index.html"
+    },
+    {
       "source": "/trades",
       "destination": "/trades/index.html"
     },

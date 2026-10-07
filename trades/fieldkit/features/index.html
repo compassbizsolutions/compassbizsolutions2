@@ -322,6 +322,7 @@
           <li>Everything in Base</li>
           <li>Real-time profit tracking</li>
           <li>Auto-Confirm 5-touch SMS & email</li>
+          <li>Weekly profit summary &amp; revenue benchmarks</li>
           <li>Advanced job reporting</li>
           <li>Priority support</li>
         </ul>
@@ -329,12 +330,12 @@
       <div class="price-card">
         <div class="price-tier">Pro + Modules</div>
         <div class="price-num"><sup>$</sup>149<sub>/mo</sub></div>
-        <div class="price-tagline">Up to 5 techs · Pro plus your choice of add-on modules</div>
+        <div class="price-tagline">Up to 5 techs · Pro plus all three add-on modules</div>
         <ul class="price-list">
           <li>Everything in Pro</li>
-          <li>1 add-on module included</li>
-          <li>AI Quoting, Payroll Prep, or Compass Methodology</li>
-          <li>Additional modules available</li>
+          <li>All 3 modules included</li>
+          <li>AI Quoting, Payroll Prep and Compass Methodology</li>
+          <li>Saves $15/mo vs. adding them one by one</li>
         </ul>
       </div>
     </div>
@@ -368,6 +369,13 @@
             <div class="addon-note">Base plan only · Twilio-powered</div>
           </div>
           <div class="addon-price">+$49/mo</div>
+        </div>
+        <div class="addon-item">
+          <div>
+            <div class="addon-name">ReviewKit — FieldKit price</div>
+            <div class="addon-note">AI Google review replies · Starter $49 (reg. $79) · Growth $99 (reg. $149) · Multi-Location $219 (reg. $299)</div>
+          </div>
+          <div class="addon-price">from $49/mo</div>
         </div>
       </div>
     </div>
@@ -407,7 +415,7 @@
         <div class="annual-rows">
           <div class="annual-row"><div class="annual-tier">Base<small>Up to 3 techs</small></div><div class="annual-price"><s>$948</s>$790/yr</div><a class="btn-sm" data-link="base" href="#waitlist">Choose</a></div>
           <div class="annual-row"><div class="annual-tier">Pro<small>Up to 5 techs · profit tracking · auto-confirm</small></div><div class="annual-price"><s>$1,308</s>$1,090/yr</div><a class="btn-sm" data-link="pro" href="#waitlist">Choose</a></div>
-          <div class="annual-row"><div class="annual-tier">Pro + Modules<small>Pro plus add-on modules</small></div><div class="annual-price"><s>$1,788</s>$1,490/yr</div><a class="btn-sm" data-link="modules" href="#waitlist">Choose</a></div>
+          <div class="annual-row"><div class="annual-tier">Pro + Modules<small>Pro plus all 3 modules</small></div><div class="annual-price"><s>$1,788</s>$1,490/yr</div><a class="btn-sm" data-link="modules" href="#waitlist">Choose</a></div>
         </div>
       </div>
     </div>
@@ -472,7 +480,7 @@
 </div>
 
 <footer>
-  <p>© 2026 <a href="https://www.compassbizsolutions.com">Compass Business Solutions</a> · FieldKit is a Compass product · <a href="mailto:jen@compassbizsolutions.com">Contact Us</a></p>
+  <p>© 2026 <a href="https://www.compassbizsolutions.com">Compass Business Solutions</a> · FieldKit is a Compass product · <a href="mailto:jen@compassbizsolutions.com">Contact Us</a> · <a href="/faq">FAQ</a></p>
 </footer>
 
 <script>
@@ -550,5 +558,6 @@ fetch('/api/fieldkit-spots').then(function (r) { return r.ok ? r.json() : null; 
   if (d.left <= 0) document.querySelectorAll('[data-link]').forEach(function (a) { a.href = '#waitlist'; a.textContent = 'Join the waitlist'; });
 }).catch(function () {});
 </script>
+<script src="/ask-jen.js" defer></script>
 </body>
 </html>

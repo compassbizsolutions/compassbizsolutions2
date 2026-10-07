@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FAQ — Compass Business Solutions</title>
+<meta name="description" content="Answers about FixKit, refunds, your portal, Ask Jen, FieldKit and ReviewKit."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F4F7FC;color:#1B2E4B;line-height:1.7}
+.nav{background:#1B2E4B;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;letter-spacing:1px;text-decoration:none}
+.nav-logo span{color:#C8701A}
+.nav a.nav-link{color:rgba(255,255,255,.75);font-size:14px;text-decoration:none;font-weight:600}
+.hero{background:#1B2E4B;padding:44px 40px 38px;border-bottom:4px solid #C8701A}
+.hero-label{font-size:11px;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:10px}
+.hero-title{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:white;text-transform:uppercase;line-height:1}
+.hero-sub{color:rgba(255,255,255,.7);margin-top:12px;max-width:600px}
+.container{max-width:780px;margin:0 auto;padding:36px 40px 60px}
+.ask{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#fff;border:1px solid #F2D3AE;border-left:4px solid #C8701A;border-radius:10px;padding:16px 18px;margin-bottom:22px}
+.ask b{display:block}
+.ask span{font-size:14px;color:#5A7291}
+.ask button{background:#C8701A;color:#fff;border:none;border-radius:8px;padding:11px 18px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+.search{width:100%;border:1px solid #C8D6E8;border-radius:10px;padding:12px 14px;font-size:16px;font-family:inherit;margin-bottom:8px;background:#fff}
+.cat{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;text-transform:uppercase;border-bottom:2px solid #C8701A;padding-bottom:6px;margin:28px 0 12px}
+details{background:#fff;border:1px solid #DCE4EF;border-radius:10px;margin-bottom:8px}
+summary{cursor:pointer;padding:14px 16px;font-weight:700;font-size:15.5px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:#C8701A;font-weight:800;font-size:18px;line-height:1.3}
+details[open] summary::after{content:"–"}
+.a{padding:0 16px 16px;font-size:15px;color:#2E3F55}
+.a a,.empty a{color:#C8701A}
+.empty{color:#5A7291;padding:12px 0}
+.footer{background:#1B2E4B;padding:24px 40px;text-align:center;font-size:13px;color:rgba(255,255,255,0.45)}
+.footer a{color:rgba(255,255,255,0.7);text-decoration:none}
+@media(max-width:600px){.hero{padding:32px 16px}.container{padding:28px 16px 48px}.nav{padding:16px}.hero-title{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="nav"><a class="nav-logo" href="/">COMPASS <span>BUSINESS SOLUTIONS</span></a><a class="nav-link" href="/trades">Free profit-leak check →</a></div>
+<div class="hero"><div class="hero-label">Help</div><div class="hero-title">Frequently Asked Questions</div><p class="hero-sub">FixKit, refunds, your portal, and the rest of Compass. Can't find it? Ask Jen.</p></div>
+<div class="container">
+  <div class="ask"><div><b>Ask Jen anything</b><span>Customers: log in to your portal and Ask Jen there. She knows your plan and can process refunds.</span></div><button type="button" onclick="window.openAskJen&&window.openAskJen()">Ask Jen →</button></div>
+  <input class="search" id="q" type="search" placeholder="Search questions…" aria-label="Search the FAQ"/>
+  <div id="list"><div class="empty">Loading…</div></div>
+</div>
+<div class="footer">Compass Business Solutions · <a href="mailto:support@compassbizsolutions.com">support@compassbizsolutions.com</a> · <a href="/terms-and-conditions.html">Terms</a> · <a href="/privacy-policy.html">Privacy</a> · <a href="/refund-policy.html">Refunds</a></div>
+<script>
+(function(){
+  var FAQ=[], q=document.getElementById('q'), list=document.getElementById('list');
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function link(t){return esc(t).replace(/([a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,})|((?:https?:\/\/)?(?:[a-z0-9-]+\.)+(?:com|app)(?:\/[^\s<,)]*)?)/gi,function(m,mail,url){if(mail)return '<a href="mailto:'+mail+'">'+mail+'</a>';var u=url.replace(/[.]$/,''),tail=url.slice(u.length);return '<a href="'+(/^https?:/.test(u)?u:'https://'+u)+'">'+u+'</a>'+tail;});}
+  function render(){
+    var s=(q.value||'').toLowerCase().trim(), cat='', html='';
+    var rows=FAQ.filter(function(f){return !s||(f.q+' '+f.a).toLowerCase().indexOf(s)!==-1;});
+    if(!rows.length){list.innerHTML='<div class="empty">No matches. <a href="#ask-jen">Ask Jen</a> instead.</div>';return;}
+    rows.forEach(function(f){if(f.cat!==cat){cat=f.cat;html+='<div class="cat">'+esc(cat)+'</div>';}html+='<details'+(s?' open':'')+'><summary>'+esc(f.q)+'</summary><div class="a">'+link(f.a)+'</div></details>';});
+    list.innerHTML=html;
+  }
+  q.addEventListener('input',render);
+  fetch('https://fixkit.compassbizsolutions.com/api/faq').then(function(r){return r.json();}).then(function(d){FAQ=(d&&d.faq)||[];render();})
+    .catch(function(){list.innerHTML='<div class="empty">The FAQ didn\'t load. <a href="#ask-jen">Ask Jen</a>, or email <a href="mailto:support@compassbizsolutions.com">support@compassbizsolutions.com</a>.</div>';});
+})();
+</script>
+<script src="/ask-jen.js" defer></script>
+</body>
+</html>
