@@ -1,4 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "/check",
+      "destination": "/trades?start=1",
+      "permanent": false
+    },
+    {
+      "source": "/free-check",
+      "destination": "/trades?start=1",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",

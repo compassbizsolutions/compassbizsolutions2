@@ -349,7 +349,7 @@ footer{background:#0d1622;padding:28px 24px}
     </button>
     <div class="nav-links">
       <a href="https://www.compassbizsolutions.com" class="nav-link" style="color:rgba(255,255,255,0.35);font-size:12px">compassbizsolutions.com</a>
-      <button class="nav-link" onclick="showPage('home');scrollToEl('diagnostic')">Run Diagnostic</button>
+      <button class="nav-link" onclick="goDiagnostic()">Run Diagnostic</button>
       <button class="nav-link" onclick="showPage('services')">What We Do</button>
       <a href="/buildkit" class="nav-link" style="color:rgba(255,255,255,0.5);">BuildKit</a>
       <a href="/trades/fieldkit/features" class="nav-link" style="color:rgba(255,255,255,0.5);">FieldKit</a>
@@ -366,7 +366,7 @@ footer{background:#0d1622;padding:28px 24px}
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <button class="mobile-link" onclick="showPage('home');scrollToEl('diagnostic');closeMobile()">Run Diagnostic</button>
+  <button class="mobile-link" onclick="goDiagnostic();closeMobile()">Run Diagnostic</button>
   <button class="mobile-link" onclick="showPage('services');closeMobile()">What We Do</button>
   <a href="/buildkit" class="mobile-link" style="display:block;padding:10px 0;color:rgba(255,255,255,0.6);text-decoration:none;font-size:14px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12h4" /> <path d="M10 8h4" /> <path d="M14 21v-3a2 2 0 0 0-4 0v3" /> <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2" /> <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16" /></svg> BuildKit — New Business</a>
   <a href="/trades/fieldkit/features" class="mobile-link" style="display:block;padding:10px 0;color:rgba(255,255,255,0.6);text-decoration:none;font-size:14px;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /> <path d="M12 18h.01" /></svg> FieldKit — Field Ops</a>
@@ -572,7 +572,7 @@ footer{background:#0d1622;padding:28px 24px}
         <p style="font-size:15px;font-style:italic;color:var(--navy);line-height:1.75">"They started their companies because they were good at their trade and figured they could make more running their own shop. Most of them weren't — or couldn't tell if they were. That's a fixable problem."</p>
       </div>
       <div style="margin-top:32px;text-align:center">
-        <button class="btn btn-amber" onclick="showPage('home');scrollToEl('diagnostic')">Run the Free Diagnostic →</button>
+        <button class="btn btn-amber" onclick="goDiagnostic()">Run the Free Diagnostic →</button>
       </div>
     </div>
   </section>
@@ -659,7 +659,7 @@ footer{background:#0d1622;padding:28px 24px}
         <p style="font-size:15px;font-style:italic;color:var(--navy);line-height:1.75">"They started their companies because they were good at their trade and figured they could make more running their own shop. Most of them weren't — or couldn't tell if they were. That's a fixable problem."</p>
       </div>
       <div style="margin-top:32px;text-align:center">
-        <button class="btn btn-amber" onclick="showPage('home');scrollToEl('diagnostic')">Run the Free Diagnostic →</button>
+        <button class="btn btn-amber" onclick="goDiagnostic()">Run the Free Diagnostic →</button>
       </div>
     </div>
   </section>
@@ -806,6 +806,16 @@ function showPage(id) {
   document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
   var el = document.getElementById('page-' + id);
   if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+}
+
+// Every "Run the Free Diagnostic" link except the hero button goes straight to question 1
+function goDiagnostic() {
+  showPage('home');
+  var started = document.getElementById('diag-questions').style.display === 'block';
+  var done = ['diag-loading','diag-email'].some(function(id){ var e=document.getElementById(id); return e && e.style.display !== 'none'; })
+    || document.getElementById('diag-results').style.display === 'block';
+  if (!started && !done) startDiagnostic();
+  scrollToEl('diagnostic');
 }
 
 function scrollToEl(id) {
@@ -1527,6 +1537,12 @@ renderServices();
   else if (buy === '30day') openCheckout('pri_01km957nv9t0wgnb7rxrpzmrkv', 'FixKit 30-Day Plan — $249');
   else if (buy === 'bundle') openCheckout('pri_01km95651yv87n7bkktg2fmzna', 'FixKit Complete Bundle — $599');
   
+  // Links from Ask Jen, emails and other pages (/check or ?start=1) open right on question 1
+  if (params.get('start') === '1' || /^#(diagnostic|start|check)$/.test(window.location.hash)) {
+    goDiagnostic();
+    try { window.history.replaceState({}, '', window.location.pathname); } catch(e) {}
+  }
+
   // Handle token in URL (post-purchase)
   var token = params.get('token');
   if (token) {
