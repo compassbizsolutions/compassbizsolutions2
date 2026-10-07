@@ -238,8 +238,8 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-copy">
-    © 2025 Compass Business Solutions · Jen Voiselle &nbsp;·&nbsp;
-    <a href="https://www.compassbizsolutions.com/trades">compassbizsolutions.com/trades</a>
+    © 2026 Compass Business Solutions · Jen Voiselle &nbsp;·&nbsp;
+    <a href="https://www.compassbizsolutions.com/trades">compassbizsolutions.com/trades</a> &nbsp;·&nbsp; <a href="/faq">FAQ</a>
   </div>
 </footer>
 
@@ -291,6 +291,41 @@
         { num: '3', text: 'Your <strong>full 30/60/90-day plan</strong> across all 12 leak categories is built a few minutes after you submit your intake — Days 1–30 first, then Days 31–90.' },
         { num: '4', text: 'Questions before then? Reply to your confirmation email — Jen reads every one.' }
       ]
+    },
+    // Upgrades and add-ons: they already have an account and (usually) an
+    // intake, so there's nothing to set up — we build and email them.
+    upgrade_30: {
+      eyebrow: 'Upgrade Confirmed',
+      headline: 'Upgrading to Your 30-Day Plan.',
+      sub: "We're building your 30-day plan from the answers you already gave us. We'll email you as soon as it's ready — usually about 5 minutes.",
+      steps: [
+        { num: '1', text: '<strong>Nothing to fill out.</strong> Your intake answers carry over, so you don\'t enter anything twice.' },
+        { num: '2', text: '<strong>Watch for our email</strong> — it means your plan is ready. Log in at fixkit.compassbizsolutions.com with the same email and password.' },
+        { num: '3', text: 'Your <strong>Snapshot stays in your portal</strong>, now joined by 30 days of daily tasks, the calculators and guides for your leaks, and Ask Jen.' },
+        { num: '4', text: 'Haven\'t finished your intake yet? Log in and complete it — your plan is built a few minutes after you submit.' }
+      ]
+    },
+    upgrade_bundle: {
+      eyebrow: 'Upgrade Confirmed',
+      headline: 'Upgrading to the Full Bundle.',
+      sub: "We're building your 90-day plan from the answers you already gave us. We'll email you as soon as it's ready — usually about 5 minutes.",
+      steps: [
+        { num: '1', text: '<strong>Nothing to fill out.</strong> Your intake answers carry over, so you don\'t enter anything twice.' },
+        { num: '2', text: '<strong>Watch for our email</strong> — it means your new days are in your portal. Log in with the same email and password.' },
+        { num: '3', text: 'Everything you already have <strong>stays right where it is</strong> — your progress and checkmarks carry over. The new days are added after it.' },
+        { num: '4', text: 'Haven\'t finished your intake yet? Log in and complete it — your plan is built a few minutes after you submit.' }
+      ]
+    },
+    addon: {
+      eyebrow: 'Purchase Confirmed',
+      headline: 'Adding Your Next 30 Days.',
+      sub: "We're building your next 30 days from your plan and your intake answers. We'll email you as soon as they're in your portal — usually about 5 minutes.",
+      steps: [
+        { num: '1', text: '<strong>Nothing to fill out.</strong> We build on everything you\'ve already done.' },
+        { num: '2', text: '<strong>Watch for our email</strong> — then log in with the same email and password.' },
+        { num: '3', text: 'Your <strong>new days appear after the ones you have</strong>, and your progress carries over.' },
+        { num: '4', text: 'Questions? Reply to your confirmation email — Jen reads every one.' }
+      ]
     }
   };
 
@@ -312,5 +347,6 @@
   // steps. The "Back to Compass" button on the page takes them back.
 </script>
 
+<script src="/ask-jen.js" defer></script>
 </body>
 </html>
