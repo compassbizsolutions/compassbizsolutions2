@@ -35,8 +35,8 @@ module.exports = async function handler(req, res) {
     }
 
     const kv = createClient({
-      url:   process.env.KV_REST_API_URL,
-      token: process.env.KV_REST_API_TOKEN,
+      url:(process.env.lime_KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL),
+      token:(process.env.lime_KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN),
     });
 
     const tokenKey = `scan_token:${token}`;

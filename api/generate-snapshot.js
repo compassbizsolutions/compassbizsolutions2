@@ -5,8 +5,8 @@
  */
 
 async function getFromKV(key) {
-  const url = process.env.LIME_REST_API_URL || process.env.KV_REST_API_URL;
-  const token = process.env.LIME_REST_API_TOKEN || process.env.KV_REST_API_TOKEN;
+  const url = (process.env.lime_KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL);
+  const token = (process.env.lime_KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN);
   if (!url || !token) return null;
   try {
     const res = await fetch(url + "/get/" + encodeURIComponent(key), {
@@ -18,8 +18,8 @@ async function getFromKV(key) {
 }
 
 async function saveToKV(key, value, ttl) {
-  const url = process.env.LIME_REST_API_URL || process.env.KV_REST_API_URL;
-  const token = process.env.LIME_REST_API_TOKEN || process.env.KV_REST_API_TOKEN;
+  const url = (process.env.lime_KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL);
+  const token = (process.env.lime_KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN);
   if (!url || !token) return;
   const path = ttl ? `/setex/${encodeURIComponent(key)}/${ttl}` : `/set/${encodeURIComponent(key)}`;
   await fetch(url + path, {
