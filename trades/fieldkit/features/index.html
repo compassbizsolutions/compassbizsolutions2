@@ -119,6 +119,21 @@
     .err-msg{background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);border-radius:3px;padding:12px 16px;font-size:13px;color:#e74c3c;margin-bottom:16px;display:none}
 
 
+    /* Plan previews + full-screen viewer */
+    .plan-peek{display:block;position:relative;margin:0 0 18px;border-radius:4px;overflow:hidden;cursor:zoom-in;border:1px solid var(--border);background:var(--black);padding:0;width:100%}
+    .plan-peek img{display:block;width:100%;height:auto;transition:transform .25s}
+    .plan-peek:hover img,.plan-peek:focus-visible img{transform:scale(1.03)}
+    .plan-peek span{position:absolute;left:10px;bottom:10px;background:rgba(17,30,49,.9);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:6px 10px;border-radius:3px}
+    .hero-peek{max-width:900px;margin:44px auto 0;box-shadow:0 30px 70px rgba(0,0,0,.45)}
+    .peek-box{display:none;position:fixed;inset:0;z-index:600;background:rgba(10,18,30,.95);align-items:center;justify-content:center;padding:56px 64px}
+    .peek-box.open{display:flex}
+    .peek-box picture,.peek-box img{max-width:100%;max-height:100%;display:block;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+    .peek-btn{position:absolute;background:rgba(255,255,255,.12);color:#fff;border:none;border-radius:999px;width:44px;height:44px;font-size:22px;line-height:44px;text-align:center;cursor:pointer}
+    .peek-btn:hover{background:rgba(255,255,255,.25)}
+    .peek-close{top:12px;right:14px}.peek-prev{left:12px;top:50%;margin-top:-22px}.peek-next{right:12px;top:50%;margin-top:-22px}
+    .peek-cap{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:13px}
+    @media(max-width:700px){.peek-box{padding:52px 8px 40px}.peek-prev,.peek-next{top:auto;bottom:6px;margin-top:0}}
+
     /* Founding Member offer */
     .founding-wrap{background:linear-gradient(180deg,rgba(200,112,26,0.10),rgba(200,112,26,0.02));border-top:1px solid rgba(200,112,26,0.25);border-bottom:1px solid rgba(200,112,26,0.25);padding:80px 40px}
     .founding-inner{max-width:1100px;margin:0 auto}
@@ -192,6 +207,10 @@
     <a href="#founding" class="btn-primary">Reserve a Founding Spot</a>
     <a href="/trades/fieldkit/" class="btn-ghost">See the Live Demo →</a>
   </div>
+  <button type="button" class="plan-peek hero-peek" onclick="openPeek(0)" aria-label="See the FieldKit Founding Member offer">
+          <img src="/images/fieldkit/founding.jpg" alt="FieldKit screens: the FieldKit Founding Member offer, shown with a sample business" width="2400" height="1500">
+          <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg> See what's inside</span>
+        </button>
 </div>
 
 <div class="trades-bar">
@@ -304,6 +323,10 @@
         <div class="price-tier">Base</div>
         <div class="price-num"><sup>$</sup>79<sub>/mo</sub></div>
         <div class="price-tagline">Up to 3 techs · Perfect for small shops getting started</div>
+        <button type="button" class="plan-peek" onclick="openPeek(1)" aria-label="See FieldKit Base">
+          <img src="/images/fieldkit/base-thumb.jpg" alt="FieldKit screens: FieldKit Base, shown with a sample business" loading="lazy" width="800" height="500">
+          <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg> See what's inside</span>
+        </button>
         <ul class="price-list">
           <li>Job scheduling & dispatch</li>
           <li>Tech GPS & status tracking</li>
@@ -318,6 +341,10 @@
         <div class="price-tier">Pro</div>
         <div class="price-num"><sup>$</sup>109<sub>/mo</sub></div>
         <div class="price-tagline">Up to 5 techs · Everything in Base plus profit tracking & auto-confirm</div>
+        <button type="button" class="plan-peek" onclick="openPeek(2)" aria-label="See FieldKit Pro">
+          <img src="/images/fieldkit/pro-thumb.jpg" alt="FieldKit screens: FieldKit Pro, shown with a sample business" loading="lazy" width="800" height="500">
+          <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg> See what's inside</span>
+        </button>
         <ul class="price-list">
           <li>Everything in Base</li>
           <li>Real-time profit tracking</li>
@@ -331,6 +358,10 @@
         <div class="price-tier">Pro + Modules</div>
         <div class="price-num"><sup>$</sup>149<sub>/mo</sub></div>
         <div class="price-tagline">Up to 5 techs · Pro plus all three add-on modules</div>
+        <button type="button" class="plan-peek" onclick="openPeek(3)" aria-label="See FieldKit Pro + Modules">
+          <img src="/images/fieldkit/pro-modules-thumb.jpg" alt="FieldKit screens: FieldKit Pro + Modules, shown with a sample business" loading="lazy" width="800" height="500">
+          <span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg> See what's inside</span>
+        </button>
         <ul class="price-list">
           <li>Everything in Pro</li>
           <li>All 3 modules included</li>
@@ -479,6 +510,31 @@
   </div>
 </div>
 
+
+<div class="peek-box" id="peek-box" role="dialog" aria-modal="true" aria-label="FieldKit preview" onclick="if(event.target===this)closePeek()">
+  <button class="peek-btn peek-close" onclick="closePeek()" aria-label="Close">✕</button>
+  <button class="peek-btn peek-prev" onclick="stepPeek(-1)" aria-label="Previous">‹</button>
+  <picture id="peek-pic"><source id="peek-src" media="(max-width:700px)"><img id="peek-img" alt=""></picture>
+  <button class="peek-btn peek-next" onclick="stepPeek(1)" aria-label="Next">›</button>
+  <div class="peek-cap" id="peek-cap"></div>
+</div>
+<script>
+var PEEKS=[{slug:'founding',label:'Founding Member offer'},{slug:'base',label:'FieldKit Base'},{slug:'pro',label:'FieldKit Pro'},{slug:'pro-modules',label:'FieldKit Pro + Modules'}],peekIdx=0;
+function showPeek(){
+  var p=PEEKS[peekIdx];
+  document.getElementById('peek-img').src='/images/fieldkit/'+p.slug+'.jpg';
+  document.getElementById('peek-img').alt='FieldKit screens: '+p.label+', shown with a sample business';
+  document.getElementById('peek-src').srcset='/images/fieldkit/'+p.slug+'-tall.jpg';
+  document.getElementById('peek-cap').textContent=(peekIdx+1)+' of '+PEEKS.length+' · '+p.label;
+}
+function openPeek(i){peekIdx=i;showPeek();document.getElementById('peek-box').classList.add('open');document.body.style.overflow='hidden';}
+function closePeek(){document.getElementById('peek-box').classList.remove('open');document.body.style.overflow='';}
+function stepPeek(d){peekIdx=(peekIdx+d+PEEKS.length)%PEEKS.length;showPeek();}
+document.addEventListener('keydown',function(e){
+  if(!document.getElementById('peek-box').classList.contains('open'))return;
+  if(e.key==='Escape')closePeek(); else if(e.key==='ArrowRight')stepPeek(1); else if(e.key==='ArrowLeft')stepPeek(-1);
+});
+</script>
 <footer>
   <p>© 2026 <a href="https://www.compassbizsolutions.com">Compass Business Solutions</a> · FieldKit is a Compass product · <a href="mailto:jen@compassbizsolutions.com">Contact Us</a> · <a href="/faq">FAQ</a></p>
 </footer>
