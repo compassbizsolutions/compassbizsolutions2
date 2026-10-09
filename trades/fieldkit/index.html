@@ -1925,6 +1925,41 @@
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
+.est{display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--white-dim);line-height:1.55}
+.est-hero{background:var(--steel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.est-urg{align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border:1px solid;border-radius:99px;padding:3px 10px}
+.est-sum{font-size:16px;font-weight:600;color:var(--white);line-height:1.4}
+.est-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;border-top:1px solid var(--border);padding-top:8px}
+.est-price span{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.est-price b{font-size:24px;color:var(--orange);font-variant-numeric:tabular-nums}
+.est-price small{flex-basis:100%;color:var(--muted);font-size:12.5px}
+.est-safety{background:rgba(231,76,60,0.10);border:1px solid rgba(231,76,60,0.35);border-radius:8px;padding:10px 12px;color:var(--white)}
+.est-safety b{color:#ff8a7d;margin-right:6px;text-transform:uppercase;font-size:11px;letter-spacing:1px}
+.est-first{background:var(--orange-glow);border-radius:8px;padding:10px 12px;color:var(--white)}
+.est-first span{display:block;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:2px}
+.est-sec{font-size:11px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.est-causes,.est-parts{display:flex;flex-direction:column;gap:6px}
+.est-cause{background:var(--charcoal);border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.est-cause-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.est-cause-top b{color:var(--white);font-weight:600}
+.est-n{width:22px;height:22px;border-radius:50%;background:var(--slate);color:var(--white);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.est-like{margin-left:auto;font-size:11px;font-weight:700;color:var(--muted);border:1px solid var(--border);border-radius:99px;padding:2px 8px}
+.est-like.hot{color:var(--orange);border-color:rgba(200,112,26,0.5)}
+.est-confirm{color:var(--muted);font-size:13px;margin-top:4px}
+.est-part{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:9px 12px;background:var(--charcoal);border:1px solid var(--border);border-radius:8px}
+.est-part-main{min-width:0}
+.est-part-name{color:var(--white);font-weight:600}
+.est-qty{color:var(--muted);font-weight:500}
+.est-part-spec{color:var(--muted);font-size:12.5px;word-break:break-word}
+.est-part-if{color:var(--orange);font-size:12.5px;margin-top:2px}
+.est-part-cost{color:var(--white);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.est-sub{background:none;border-style:dashed}
+.est-sub .est-part-main{color:var(--muted);font-weight:600}
+.est-maybe{font-size:12px;color:var(--muted);margin:6px 0 0;font-weight:700}
+.est-labor{background:var(--charcoal);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--white)}
+.est-say{background:var(--charcoal);border-left:3px solid var(--green);border-radius:4px 8px 8px 4px;padding:10px 12px;color:var(--white);font-style:italic}
+.est-notes{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.est-p{margin:0}
 </style>
 </head>
 <body>
@@ -8107,6 +8142,25 @@ let estimatorPhotoType = null;
 let lastEstimateResult = null;
 
 // Trade-specific system prompts
+// The estimate comes back as JSON so the screen can lay it out as an estimate,
+// not a wall of text. renderEstimatorResults falls back to clean text if not.
+const ESTIMATE_FORMAT = `
+
+Reply with ONLY a JSON object, no other text and no Markdown, in exactly this shape:
+{
+  "summary": "one plain sentence: what is most likely wrong",
+  "urgency": "stop_now" | "soon" | "routine",
+  "safety_note": "one sentence if there is a safety or damage risk, else empty",
+  "first_check": "the first thing to check on site, one sentence",
+  "causes": [ { "cause": "short name", "likelihood": "Most likely" | "Possible" | "Less likely", "how_to_confirm": "one short sentence" } ],
+  "parts": [ { "part": "name", "spec": "part number or spec", "qty": 1, "low": 0, "high": 0, "only_if": "condition, or empty if always needed" } ],
+  "labor": { "hours_low": 0, "hours_high": 0, "rate": 0, "note": "short" },
+  "price": { "low": 0, "high": 0, "note": "what the range covers" },
+  "customer_explanation": "2-3 plain sentences the tech can say to the homeowner",
+  "notes": [ "short practical tip" ]
+}
+Rules: 2-4 causes, most likely first. Only list parts for the most likely repair plus clearly marked "only_if" options; never list parts for a different problem than the one described. Prices are whole US dollars per unit. Keep every string short; this is read on a phone in the field.`;
+
 const TRADE_PROMPTS = {
   HVAC: `You are a master HVAC technician with 20+ years of field experience. You diagnose residential and light commercial HVAC systems with expert precision. When given a problem description and/or photo, you: 1) Identify the most likely cause(s), 2) List the exact parts needed with part numbers where possible, 3) Estimate labor time, 4) Give a realistic price range for parts and labor. Be specific and practical — you are helping a tech in the field. Format your response in clear sections: DIAGNOSIS, PARTS NEEDED, LABOR, PRICE RANGE, and NOTES.`,
   Plumbing: `You are a master plumber with 20+ years of experience in residential and commercial plumbing. When given a problem description and/or photo, diagnose the issue precisely, list parts needed with specifications, estimate labor time, and provide realistic pricing. Format: DIAGNOSIS, PARTS NEEDED, LABOR, PRICE RANGE, NOTES.`,
@@ -8152,7 +8206,7 @@ async function runEstimator() {
   const age = document.getElementById('estimatorAge').value;
   const notes = document.getElementById('estimatorNotes').value.trim();
   const trade = businessRules?.trade || 'HVAC';
-  const systemPrompt = TRADE_PROMPTS[trade] || TRADE_PROMPTS.General;
+  const systemPrompt = (TRADE_PROMPTS[trade] || TRADE_PROMPTS.General) + ESTIMATE_FORMAT;
 
   const userText = `Problem: ${problem}
 ${equipType ? 'Equipment Type: ' + equipType : ''}
@@ -8173,7 +8227,7 @@ Please provide a detailed diagnostic estimate.`;
     const res = await fetch('/api/site-ai', {
       method: 'POST',
       headers: { 'Content-Type':'application/json', 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true' },
-      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1500, system: systemPrompt, messages })
+      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:2500, system: systemPrompt, messages })
     });
     const data = await res.json();
     lastEstimateResult = data.content?.[0]?.text || data.error?.message || 'No response received.';
@@ -8187,47 +8241,96 @@ Please provide a detailed diagnostic estimate.`;
   btn.disabled = false;
 }
 
-function renderEstimatorResults(text) {
-  // Parse sections from the AI response
-  const sections = ['DIAGNOSIS', 'PARTS NEEDED', 'LABOR', 'PRICE RANGE', 'NOTES'];
-  const sectionColors = {
-    'DIAGNOSIS': 'var(--orange)',
-    'PARTS NEEDED': 'var(--green)',
-    'LABOR': 'var(--white)',
-    'PRICE RANGE': 'var(--orange)',
-    'NOTES': 'var(--muted)'
-  };
+let lastEstimate = null;   // parsed estimate (JSON) when the AI followed the format
+function parseEstimate(text) {
+  try {
+    const t = String(text || '').replace(/```(?:json)?/gi, '');
+    const a = t.indexOf('{'), b = t.lastIndexOf('}');
+    if (a === -1 || b <= a) return null;
+    const o = JSON.parse(t.slice(a, b + 1));
+    return (o && (o.summary || (o.causes && o.causes.length))) ? o : null;
+  } catch (e) { return null; }
+}
+const estEsc = v => String(v == null ? '' : v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const estMoney = n => (n || n === 0) && !isNaN(n) ? '$' + Math.round(Number(n)).toLocaleString('en-US') : '';
+const estRange = (lo, hi) => { const a = estMoney(lo), b = estMoney(hi); return a && b && a !== b ? a + '–' + b : (a || b); };
 
-  let html = '';
-  let remaining = text;
-
-  sections.forEach((section, i) => {
-    const nextSection = sections[i+1];
-    const startIdx = remaining.toUpperCase().indexOf(section);
-    if (startIdx === -1) return;
-
-    let endIdx = remaining.length;
-    if (nextSection) {
-      const nextIdx = remaining.toUpperCase().indexOf(nextSection, startIdx + section.length);
-      if (nextIdx !== -1) endIdx = nextIdx;
+function renderEstimateCard(e) {
+  const urg = { stop_now: ['Stop — shut it down', 'var(--red)', 'rgba(231,76,60,0.12)'], soon: ['Fix soon', 'var(--orange)', 'var(--orange-glow)'], routine: ['Routine repair', 'var(--green)', 'rgba(46,204,113,0.10)'] }[e.urgency] || null;
+  const causes = (e.causes || []).slice(0, 4);
+  const parts = (e.parts || []).filter(p => p && p.part);
+  const always = parts.filter(p => !p.only_if), maybe = parts.filter(p => p.only_if);
+  const partsLow = always.reduce((a, p) => a + (Number(p.low) || 0) * (Number(p.qty) || 1), 0);
+  const partsHigh = always.reduce((a, p) => a + (Number(p.high) || 0) * (Number(p.qty) || 1), 0);
+  const L = e.labor || {}, P = e.price || {};
+  const laborHrs = L.hours_low || L.hours_high ? (L.hours_low && L.hours_high && L.hours_low !== L.hours_high ? L.hours_low + '–' + L.hours_high : (L.hours_low || L.hours_high)) + ' hrs' : '';
+  const partRow = p => `<div class="est-part">
+      <div class="est-part-main"><div class="est-part-name">${estEsc(p.part)}${(Number(p.qty) || 1) > 1 ? ` <span class="est-qty">× ${estEsc(p.qty)}</span>` : ''}</div>
+        ${p.spec ? `<div class="est-part-spec">${estEsc(p.spec)}</div>` : ''}${p.only_if ? `<div class="est-part-if">Only if ${estEsc(String(p.only_if).replace(/^only if\s*/i, ''))}</div>` : ''}</div>
+      <div class="est-part-cost">${estEsc(estRange(p.low, p.high))}</div></div>`;
+  let h = '<div class="est">';
+  // Headline: price + diagnosis
+  h += `<div class="est-hero">
+      ${urg ? `<span class="est-urg" style="color:${urg[1]};background:${urg[2]};border-color:${urg[1]}">${urg[0]}</span>` : ''}
+      <div class="est-sum">${estEsc(e.summary || '')}</div>
+      ${P.low || P.high ? `<div class="est-price"><span>Estimated total</span><b>${estEsc(estRange(P.low, P.high))}</b>${P.note ? `<small>${estEsc(P.note)}</small>` : ''}</div>` : ''}
+    </div>`;
+  if (e.safety_note) h += `<div class="est-safety"><b>Safety</b> ${estEsc(e.safety_note)}</div>`;
+  if (e.first_check) h += `<div class="est-first"><span>Check first</span>${estEsc(e.first_check)}</div>`;
+  if (causes.length) h += `<div class="est-sec">Likely causes</div><div class="est-causes">${causes.map((c, i) => `<div class="est-cause">
+      <div class="est-cause-top"><span class="est-n">${i + 1}</span><b>${estEsc(c.cause)}</b>${c.likelihood ? `<span class="est-like ${/most/i.test(c.likelihood) ? 'hot' : ''}">${estEsc(c.likelihood)}</span>` : ''}</div>
+      ${c.how_to_confirm ? `<div class="est-confirm">${estEsc(c.how_to_confirm)}</div>` : ''}</div>`).join('')}</div>`;
+  if (parts.length) h += `<div class="est-sec">Parts</div><div class="est-parts">${always.map(partRow).join('')}
+      ${always.length && (partsLow || partsHigh) ? `<div class="est-part est-sub"><div class="est-part-main">Parts subtotal</div><div class="est-part-cost">${estEsc(estRange(partsLow, partsHigh))}</div></div>` : ''}
+      ${maybe.length ? `<div class="est-maybe">Might also need</div>${maybe.map(partRow).join('')}` : ''}</div>`;
+  if (laborHrs || L.rate) h += `<div class="est-sec">Labor</div><div class="est-labor"><div><b>${estEsc(laborHrs || '—')}</b>${L.rate ? ` at ${estEsc(estMoney(L.rate))}/hr` : ''}</div>${L.note ? `<div class="est-confirm">${estEsc(L.note)}</div>` : ''}</div>`;
+  if (e.customer_explanation) h += `<div class="est-sec">What to tell the customer</div><div class="est-say">${estEsc(e.customer_explanation)}</div>`;
+  if ((e.notes || []).length) h += `<div class="est-sec">Tech notes</div><ul class="est-notes">${e.notes.slice(0, 5).map(n => `<li>${estEsc(n)}</li>`).join('')}</ul>`;
+  return h + '</div>';
+}
+// Plain-text version for "Copy to Clipboard"
+function estimateText(e) {
+  const out = [];
+  if (e.summary) out.push(e.summary);
+  if (e.price && (e.price.low || e.price.high)) out.push('Estimated total: ' + estRange(e.price.low, e.price.high) + (e.price.note ? ' (' + e.price.note + ')' : ''));
+  if (e.safety_note) out.push('Safety: ' + e.safety_note);
+  if (e.first_check) out.push('Check first: ' + e.first_check);
+  if ((e.causes || []).length) out.push('', 'Likely causes:', ...e.causes.map((c, i) => (i + 1) + '. ' + c.cause + (c.likelihood ? ' (' + c.likelihood + ')' : '') + (c.how_to_confirm ? ' — ' + c.how_to_confirm : '')));
+  if ((e.parts || []).length) out.push('', 'Parts:', ...e.parts.map(p => '- ' + p.part + ((Number(p.qty) || 1) > 1 ? ' x' + p.qty : '') + (p.spec ? ' [' + p.spec + ']' : '') + ' ' + estRange(p.low, p.high) + (p.only_if ? ' (only if ' + p.only_if + ')' : '')));
+  if (e.labor && (e.labor.hours_low || e.labor.hours_high)) out.push('', 'Labor: ' + (e.labor.hours_low || '') + (e.labor.hours_high && e.labor.hours_high !== e.labor.hours_low ? '–' + e.labor.hours_high : '') + ' hrs' + (e.labor.rate ? ' at ' + estMoney(e.labor.rate) + '/hr' : ''));
+  if (e.customer_explanation) out.push('', 'For the customer: ' + e.customer_explanation);
+  return out.join('\n');
+}
+// If the AI didn't send JSON: show the text cleanly (no ** ## | --- symbols)
+function cleanEstimateText(text) {
+  const lines = String(text || '').split('\n');
+  let h = '', inList = false;
+  const inline = t => estEsc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*\*/g, '');
+  const close = () => { if (inList) { h += '</ul>'; inList = false; } };
+  lines.forEach(raw => {
+    const l = raw.trim();
+    if (!l || /^[-—_=]{2,}$/.test(l) || /^\|?\s*:?-{2,}/.test(l)) { close(); return; }
+    const head = l.match(/^#{1,4}\s*(.*)$/) || l.match(/^\*\*([^*]+)\*\*:?$/) || l.match(/^([A-Z][A-Z &/]{3,30}):?$/);
+    if (head) { close(); const t = head[1].replace(/[*:]/g, '').trim(); if (t && /[A-Za-z]/.test(t)) h += `<div class="est-sec">${estEsc(t)}</div>`; return; }
+    if (/^\|.*\|$/.test(l)) {
+      const cells = l.slice(1, -1).split('|').map(c => c.trim());
+      if (/^(part|item)$/i.test(cells[0])) return;
+      close(); h += `<div class="est-part"><div class="est-part-main"><div class="est-part-name">${inline(cells[0])}</div>${cells[1] && cells.length > 2 ? `<div class="est-part-spec">${inline(cells[1])}</div>` : ''}</div><div class="est-part-cost">${inline(cells[cells.length - 1])}</div></div>`;
+      return;
     }
-
-    const sectionText = remaining.substring(startIdx + section.length, endIdx).replace(/^[:\s]+/, '').trim();
-    if (!sectionText) return;
-
-    html += `
-      <div style="margin-bottom:16px;">
-        <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${sectionColors[section]||'var(--muted)'};margin-bottom:6px;">${section}</div>
-        <div style="font-size:13px;color:var(--white-dim);line-height:1.7;white-space:pre-wrap;">${sectionText}</div>
-      </div>`;
+    const li = l.match(/^(?:[-*•]|\d+[.)])\s+(.*)$/);
+    if (li) { if (!inList) { h += '<ul class="est-notes">'; inList = true; } h += `<li>${inline(li[1])}</li>`; return; }
+    close();
+    const q = l.replace(/^>\s*/, '');
+    h += q !== l ? `<div class="est-safety">${inline(q)}</div>` : `<p class="est-p">${inline(l)}</p>`;
   });
+  close();
+  return '<div class="est">' + h + '</div>';
+}
 
-  // If parsing didn\'t find sections, just render as-is
-  if (!html) {
-    html = `<div style="font-size:13px;color:var(--white-dim);line-height:1.7;white-space:pre-wrap;">${text}</div>`;
-  }
-
-  document.getElementById('estimatorResultsBody').innerHTML = html;
+function renderEstimatorResults(text) {
+  lastEstimate = parseEstimate(text);
+  document.getElementById('estimatorResultsBody').innerHTML = lastEstimate ? renderEstimateCard(lastEstimate) : cleanEstimateText(text);
   document.getElementById('estimatorResultsStatus').textContent = 'Complete';
   document.getElementById('estimatorActionsBody').style.display = 'block';
 }
@@ -8243,7 +8346,7 @@ function addPartsToInventory() {
 
 function copyEstimate() {
   if (lastEstimateResult) {
-    navigator.clipboard.writeText(lastEstimateResult).then(() => showToast('Estimate copied!'));
+    navigator.clipboard.writeText(lastEstimate ? estimateText(lastEstimate) : lastEstimateResult).then(() => showToast('Estimate copied!'));
   }
 }
 
