@@ -63,6 +63,7 @@ module.exports = async function handler(req, res) {
     const prior = await getFromKV(key);
     await saveToKV(key, Object.assign({}, prior || {}, f, {
       email, plan: b.plan, plan_label: link.label, ref,
+      attribution: (prior && prior.attribution) || (b.attribution && typeof b.attribution === "object" ? b.attribution : null),
       started_at: (prior && prior.started_at) || new Date().toISOString(),
       last_started_at: new Date().toISOString(),
     }));

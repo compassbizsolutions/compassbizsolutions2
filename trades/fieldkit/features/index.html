@@ -688,6 +688,7 @@ fetch('/api/fieldkit-spots').then(function (r) { return r.ok ? r.json() : null; 
   if (d.left <= 0) document.querySelectorAll('[data-link]').forEach(function (a) { a.href = '#waitlist'; a.textContent = 'Join the waitlist'; });
 }).catch(function () {});
 </script>
+<script src="/track.js"></script>
 <script src="/ask-jen.js" defer></script>
 </body>
 </html>
