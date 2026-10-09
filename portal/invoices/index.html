@@ -517,14 +517,14 @@ async function revise() {
   document.getElementById('workingCard').style.display = 'block';
   history.push({ role: 'user', content: feedback });
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
+    const r = await fetch('/api/site-ai', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 3000,
         system: 'Apply the requested revision and return the complete corrected compilation.',
         messages: history })
     });
     const d = await r.json();
-    const result = d.content?.[0]?.text || '';
+    const result = d.content?.[0]?.text || (() => { throw new Error((d.error && d.error.message) || 'No answer'); })();
     currentResult = result;
     history.push({ role: 'assistant', content: result });
     document.getElementById('workingCard').style.display = 'none';
@@ -534,6 +534,7 @@ async function revise() {
   } catch(e) {
     document.getElementById('workingCard').style.display = 'none';
     document.getElementById('resultCard').style.display = 'block';
+    if (typeof showToast === 'function') showToast((e && e.message) || 'Revision failed.', 'error');
   }
 }
 
