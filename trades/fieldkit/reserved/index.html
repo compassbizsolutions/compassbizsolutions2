@@ -204,8 +204,8 @@
   <h1 style="font-size:clamp(40px,7vw,72px);margin-bottom:16px">Your spot is <em>reserved.</em></h1>
   <p class="hero-sub" style="margin:0;max-width:none">Thank you for being one of the first. A receipt from Stripe and a welcome email from Jen are on their way to your inbox.</p>
   <form class="biz-card" id="bizForm" novalidate>
-    <h2>Tell Jen about your business</h2>
-    <p class="lead">Two minutes, so your setup call starts with FieldKit already shaped around your crew.</p>
+    <h2>A few more details for your setup call</h2>
+    <p class="lead">Two minutes, so your setup call starts with FieldKit already shaped around your crew. We've filled in what you already told us.</p>
     <div class="bf-grid">
       <div class="bf" id="emailRow" hidden><label for="bf_email">Email you paid with</label><input id="bf_email" type="email" autocomplete="email"/></div>
       <div class="bf"><label for="bf_name">Your name</label><input id="bf_name" autocomplete="name" required/></div>
@@ -263,6 +263,8 @@
       if(d.name&&!$('bf_name').value) $('bf_name').value=d.name;
       if(d.biz&&!$('bf_biz').value) $('bf_biz').value=d.biz;
       if(d.phone&&!$('bf_phone').value) $('bf_phone').value=d.phone;
+      if(d.trade&&!$('bf_trade').value) $('bf_trade').value=d.trade;
+      if(d.techs&&!$('bf_techs').value) $('bf_techs').value=d.techs;
     }).catch(function(){});
   }
   f.addEventListener('submit',function(e){
