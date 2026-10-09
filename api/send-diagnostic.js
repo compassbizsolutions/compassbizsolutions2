@@ -60,6 +60,8 @@ module.exports = async function handler(req, res) {
 
   try {
     const { name, email, biz, phone, trade, answers, answers_raw, report, utm_source, utm_campaign, utm_medium } = req.body;
+    // Which post or site sent them (track.js): { src, utm_source, utm_medium, utm_campaign, ref, landing, at }
+    const attribution = (req.body && req.body.attribution && typeof req.body.attribution === "object") ? req.body.attribution : null;
     // Structured answers ({ jobs: "20-40", ... }) so the FixKit intake can pre-fill
     const answersRaw = (answers_raw && typeof answers_raw === "object") ? answers_raw : null;
     if (!email || !report) return res.status(400).json({ error: "Missing required fields" });
@@ -76,6 +78,7 @@ module.exports = async function handler(req, res) {
       source: 'free-diagnostic',
       utm_source: utm_source || '',
       utm_campaign: utm_campaign || '',
+      attribution,
       created_at: new Date().toISOString()
     });
     const firstName = name || "there";
@@ -349,6 +352,7 @@ module.exports = async function handler(req, res) {
       utm_campaign: utm_campaign || "",
       utm_medium: utm_medium || "",
       source: utm_source || "direct",
+      attribution,
       diagnostic_answers: answersRaw || {},
       outreach_tags: noAdmin ? ["no_admin_staff"] : [],
       outreach_opportunity: noAdmin ? "Business Support Services — no admin staff reported" : "",

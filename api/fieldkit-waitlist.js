@@ -48,6 +48,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const { company, ownerName, email, phone, features = [] } = req.body || {};
+    const attribution = (req.body && req.body.attribution && typeof req.body.attribution === "object") ? req.body.attribution : null;
 
     if (!company || !ownerName || !email || !phone) {
       return res.status(400).json({ error: "All fields are required" });
@@ -63,6 +64,7 @@ module.exports = async function handler(req, res) {
       email: email.toLowerCase().trim(),
       phone,
       features,
+      attribution,
       signedAt
     });
 
