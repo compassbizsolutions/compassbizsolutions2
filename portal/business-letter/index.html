@@ -456,15 +456,15 @@ async function revise() {
   document.getElementById('workingCard').style.display='block';
   history.push({role:'user',content:feedback});
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,system:'Apply the revision and return the complete revised letter.',messages:history})});
+    const r = await fetch('/api/site-ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,system:'Apply the revision and return the complete revised letter.',messages:history})});
     const d = await r.json();
-    currentResult = d.content?.[0]?.text||'';
+    currentResult = d.content?.[0]?.text || (() => { throw new Error((d.error && d.error.message) || 'No answer'); })();
     history.push({role:'assistant',content:currentResult});
     document.getElementById('workingCard').style.display='none';
     document.getElementById('resultContent').textContent=currentResult;
     document.getElementById('resultCard').style.display='block';
     document.getElementById('revisionInput').value='';
-  } catch(e) { document.getElementById('workingCard').style.display='none'; document.getElementById('resultCard').style.display='block'; }
+  } catch(e) { document.getElementById('workingCard').style.display='none'; document.getElementById('resultCard').style.display='block'; showToast((e && e.message) || 'Revision failed.', 'error'); }
 }
 function download() {
   if(!currentResult) return;

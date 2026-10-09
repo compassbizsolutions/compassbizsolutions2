@@ -5158,7 +5158,7 @@ Then at the end:
 SUMMARY: [2-3 sentences on total efficiency, estimated drive time saved, and any jobs that might need to be rescheduled or reassigned]`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/site-ai', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -5173,7 +5173,7 @@ SUMMARY: [2-3 sentences on total efficiency, estimated drive time saved, and any
     });
 
     const data = await res.json();
-    const text = data.content?.[0]?.text || 'Could not generate recommendations.';
+    const text = data.content?.[0]?.text || data.error?.message || 'Could not generate recommendations.';
     routeRecommendations = text;
     renderRouteResults(text);
     status.textContent = 'Complete';
@@ -6582,7 +6582,7 @@ Example output: [{"name":"Capacitor 45/5 MFD","partNum":"CAP-45-5","qty":6,"unit
       { type:'text', text: prompt }
     ]}] : [{ role:'user', content: prompt + '\n\n[No image provided — generate 3 sample HVAC parts for demo]' }];
 
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/site-ai', {
       method:'POST', headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages })
     });
@@ -6820,7 +6820,7 @@ async function sendMessage() {
   showTyping();
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/site-ai', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({
@@ -6831,7 +6831,7 @@ async function sendMessage() {
       })
     });
     const data = await res.json();
-    const reply = data.content?.[0]?.text || 'Sorry, I hit an error. Try again.';
+    const reply = data.content?.[0]?.text || data.error?.message || 'Sorry, I hit an error. Try again.';
     removeTyping();
     addChatMsg('advisor', reply);
     chatHistory.push({ role:'assistant', content: reply });
@@ -7760,12 +7760,12 @@ async function sendTechMessage() {
   msgs.scrollTop = msgs.scrollHeight;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/site-ai', {
       method:'POST', headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, system:TECH_SYSTEM, messages:techChatHistory })
     });
     const data = await res.json();
-    const reply = data.content?.[0]?.text || 'Error — try again.';
+    const reply = data.content?.[0]?.text || data.error?.message || 'Error — try again.';
     typing.remove();
     addTechChatMsg('advisor', reply);
     techChatHistory.push({ role:'assistant', content: reply });
@@ -8170,13 +8170,13 @@ Please provide a detailed diagnostic estimate.`;
       ]
     }] : [{ role:'user', content: userText }];
 
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/site-ai', {
       method: 'POST',
       headers: { 'Content-Type':'application/json', 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true' },
       body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1500, system: systemPrompt, messages })
     });
     const data = await res.json();
-    lastEstimateResult = data.content?.[0]?.text || 'No response received.';
+    lastEstimateResult = data.content?.[0]?.text || data.error?.message || 'No response received.';
     renderEstimatorResults(lastEstimateResult);
   } catch(e) {
     document.getElementById('estimatorResultsBody').innerHTML = `<div style="font-size:13px;color:var(--red);padding:16px;">Connection error — please try again.</div>`;
