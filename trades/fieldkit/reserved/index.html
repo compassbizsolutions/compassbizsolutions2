@@ -172,6 +172,25 @@
     .steps li{counter-increment:s;background:var(--charcoal);border:1px solid var(--border);border-radius:4px;padding:18px 20px 18px 64px;position:relative;font-size:15px;color:var(--white-dim);line-height:1.6}
     .steps li::before{content:counter(s);position:absolute;left:20px;top:16px;width:30px;height:30px;border-radius:50%;background:var(--orange);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center}
     .steps strong{color:var(--white)}
+    [hidden]{display:none!important}
+    .biz-card{background:var(--charcoal);border:1px solid rgba(200,112,26,0.45);border-radius:6px;padding:26px 24px;margin:32px 0 8px}
+    .biz-card h2{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+    .biz-card .lead{color:var(--white-dim);font-size:15px;line-height:1.6;margin-bottom:20px}
+    .bf-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .bf{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .bf.full{grid-column:1/-1}
+    .bf label,.bf .lbl{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+    .bf input,.bf select,.bf textarea{background:var(--black);border:1px solid var(--border);border-radius:4px;color:var(--white);font-family:'Barlow',sans-serif;font-size:16px;padding:11px 12px;width:100%}
+    .bf textarea{min-height:90px;resize:vertical}
+    .bf input:focus,.bf select:focus,.bf textarea:focus{outline:2px solid var(--orange);outline-offset:1px}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chips label{display:flex;align-items:center;gap:8px;background:var(--black);border:1px solid var(--border);border-radius:99px;padding:8px 14px;font-family:'Barlow',sans-serif;font-size:14px;letter-spacing:0;text-transform:none;color:var(--white-dim);cursor:pointer}
+    .chips input{width:auto;accent-color:var(--orange)}
+    .chips label:has(input:checked){border-color:var(--orange);color:var(--white)}
+    .bf-msg{font-size:14px;margin-top:12px;color:#f5a29a}
+    .bf-done{color:var(--white-dim);font-size:15px;line-height:1.6}
+    .bf-done strong{color:#2ecc71}
+    @media(max-width:600px){.bf-grid{grid-template-columns:1fr}.biz-card{padding:22px 16px}}
   </style>
 </head>
 <body>
@@ -184,6 +203,40 @@
   <p class="sec-label">Founding Member</p>
   <h1 style="font-size:clamp(40px,7vw,72px);margin-bottom:16px">Your spot is <em>reserved.</em></h1>
   <p class="hero-sub" style="margin:0;max-width:none">Thank you for being one of the first. A receipt from Stripe and a welcome email from Jen are on their way to your inbox.</p>
+  <form class="biz-card" id="bizForm" novalidate>
+    <h2>Tell Jen about your business</h2>
+    <p class="lead">Two minutes, so your setup call starts with FieldKit already shaped around your crew.</p>
+    <div class="bf-grid">
+      <div class="bf" id="emailRow" hidden><label for="bf_email">Email you paid with</label><input id="bf_email" type="email" autocomplete="email"/></div>
+      <div class="bf"><label for="bf_name">Your name</label><input id="bf_name" autocomplete="name" required/></div>
+      <div class="bf"><label for="bf_biz">Business name</label><input id="bf_biz" autocomplete="organization" required/></div>
+      <div class="bf"><label for="bf_phone">Best phone</label><input id="bf_phone" type="tel" autocomplete="tel" required/></div>
+      <div class="bf"><label for="bf_trade">Your trade</label>
+        <select id="bf_trade"><option value="">Choose one</option><option>HVAC</option><option>Plumbing</option><option>Electrical</option><option>Roofing</option><option>Landscaping</option><option>Pool &amp; Spa</option><option>Pest Control</option><option>Cleaning</option><option>General Contracting</option><option>Handyman</option><option>Other</option></select></div>
+      <div class="bf"><label for="bf_techs">Field techs</label>
+        <select id="bf_techs"><option value="">How many?</option><option>Just me</option><option>2–3</option><option>4–6</option><option>7–10</option><option>11–20</option><option>20+</option></select></div>
+      <div class="bf"><label for="bf_office">Office staff</label>
+        <select id="bf_office"><option value="">How many?</option><option>None, it's me</option><option>1</option><option>2–3</option><option>4+</option></select></div>
+      <div class="bf full"><label for="bf_software">What do you use today to schedule and invoice?</label><input id="bf_software" placeholder="e.g. Jobber, QuickBooks, Google Calendar, paper"/></div>
+      <div class="bf full"><span class="lbl">What do you most want FieldKit to fix?</span>
+        <div class="chips" id="bf_interests">
+          <label><input type="checkbox" value="Scheduling &amp; dispatch"/>Scheduling &amp; dispatch</label>
+          <label><input type="checkbox" value="Quotes &amp; estimates"/>Quotes &amp; estimates</label>
+          <label><input type="checkbox" value="Invoicing &amp; payments"/>Invoicing &amp; payments</label>
+          <label><input type="checkbox" value="No-shows / appointment reminders"/>No-shows / reminders</label>
+          <label><input type="checkbox" value="Customer portal"/>Customer portal</label>
+          <label><input type="checkbox" value="Tech app in the field"/>Tech app in the field</label>
+          <label><input type="checkbox" value="Maintenance plans"/>Maintenance plans</label>
+          <label><input type="checkbox" value="Job profit tracking"/>Job profit tracking</label>
+          <label><input type="checkbox" value="Reviews &amp; follow-up"/>Reviews &amp; follow-up</label>
+        </div></div>
+      <div class="bf full"><label for="bf_best_time">Best days and times for your setup call</label><input id="bf_best_time" placeholder="e.g. weekday mornings before 9, or Fridays"/></div>
+      <div class="bf full"><label for="bf_notes">Anything else Jen should know?</label><textarea id="bf_notes" placeholder="Busy season, how you run jobs today, what drives you crazy"></textarea></div>
+    </div>
+    <div class="hero-btns" style="justify-content:flex-start;margin:20px 0 0"><button type="submit" class="btn-primary" id="bf_submit">Send to Jen →</button></div>
+    <div class="bf-msg" id="bf_msg" role="alert"></div>
+  </form>
+  <div class="biz-card" id="bizDone" hidden><div class="bf-done"><strong>Got it, thank you.</strong> Jen has your details and will use them to set up FieldKit for your crew before your call.</div></div>
   <ol class="steps">
     <li><strong>Watch your inbox.</strong> Jen will email you to book your setup call. Setup calls start in late December.</li>
     <li><strong>Gather three things before the call:</strong> your techs (names, phones, emails), your customer list (a spreadsheet export is perfect), and your price list or most common jobs.</li>
@@ -195,6 +248,39 @@
   </div>
 </div>
 <footer><p>© 2026 <a href="https://www.compassbizsolutions.com">Compass Business Solutions</a> · FieldKit is a Compass product</p></footer>
+<script>
+(function(){
+  var API='/api/fieldkit-founding-details';
+  var sid=''; try{ sid=new URLSearchParams(location.search).get('session_id')||''; }catch(e){}
+  var f=document.getElementById('bizForm'), msg=document.getElementById('bf_msg'), btn=document.getElementById('bf_submit');
+  var $=function(id){return document.getElementById(id);};
+  function done(){ f.hidden=true; $('bizDone').hidden=false; }
+  if(!sid){ $('emailRow').hidden=false; }
+  else {
+    fetch(API+'?session_id='+encodeURIComponent(sid)).then(function(r){return r.ok?r.json():null;}).then(function(d){
+      if(!d) { $('emailRow').hidden=false; sid=''; return; }
+      if(d.details){ done(); return; }
+      if(d.name&&!$('bf_name').value) $('bf_name').value=d.name;
+      if(d.biz&&!$('bf_biz').value) $('bf_biz').value=d.biz;
+      if(d.phone&&!$('bf_phone').value) $('bf_phone').value=d.phone;
+    }).catch(function(){});
+  }
+  f.addEventListener('submit',function(e){
+    e.preventDefault(); msg.textContent='';
+    var body={ name:$('bf_name').value, biz:$('bf_biz').value, phone:$('bf_phone').value, trade:$('bf_trade').value,
+      techs:$('bf_techs').value, office:$('bf_office').value, software:$('bf_software').value, best_time:$('bf_best_time').value,
+      notes:$('bf_notes').value, interests:[].slice.call(document.querySelectorAll('#bf_interests input:checked')).map(function(x){return x.value;}) };
+    if(sid) body.session_id=sid; else body.email=$('bf_email').value;
+    if(!sid && !body.email.trim()){ msg.textContent='Enter the email you paid with.'; $('bf_email').focus(); return; }
+    if(!body.name.trim()||!body.biz.trim()||!body.phone.trim()){ msg.textContent='Your name, business name and phone are needed so Jen can reach you.'; return; }
+    btn.disabled=true; btn.textContent='Sending…';
+    fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+      .then(function(r){return r.json().then(function(d){return {ok:r.ok,d:d};});})
+      .then(function(x){ if(x.ok) done(); else { msg.textContent=(x.d&&x.d.error)||'That didn\'t save. Try again.'; btn.disabled=false; btn.textContent='Send to Jen →'; } })
+      .catch(function(){ msg.textContent='That didn\'t go through. Check your connection and try again.'; btn.disabled=false; btn.textContent='Send to Jen →'; });
+  });
+})();
+</script>
 <script src="/ask-jen.js" defer></script>
 </body>
 </html>
