@@ -85,9 +85,13 @@ module.exports = async function handler(req, res) {
       const f = await founderFromSession(String(req.query.session_id || ""));
       if (!f) return res.status(404).json({ error: "not_found" });
       const rec = (await getFromKV("fieldkit:founding:" + emailKey(f.email))) || {};
+      // Step 1 answers (given before paying), in case the webhook hasn't merged them yet
+      const st = (await getFromKV("fieldkit:started:" + emailKey(f.email))) || {};
+      const pre = rec.prepay || {};
       return res.status(200).json({
         email: f.email,
-        name: rec.name || f.name, biz: rec.biz || "", phone: rec.phone || f.phone,
+        name: rec.name || st.name || f.name, biz: rec.biz || st.biz || "", phone: rec.phone || st.phone || f.phone,
+        trade: pre.trade || st.trade || "", techs: pre.techs || st.techs || "",
         details: rec.details || null,
       });
     }

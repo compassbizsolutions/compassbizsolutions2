@@ -181,6 +181,24 @@
       section{padding:60px 20px}
       .pricing-wrap,.waitlist-wrap,.q3-band,.trades-bar,.founding-wrap{padding-left:20px;padding-right:20px}
     }
+    [hidden]{display:none!important}
+    .fk-modal{position:fixed;inset:0;z-index:300;background:rgba(8,14,24,0.78);display:flex;align-items:flex-start;justify-content:center;padding:max(24px,env(safe-area-inset-top)) 16px 24px;overflow-y:auto}
+    .fk-sheet{background:var(--charcoal);border:1px solid rgba(200,112,26,0.45);border-radius:6px;width:100%;max-width:520px;padding:26px 24px;margin:auto 0;position:relative}
+    .fk-sheet h2{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;line-height:1;margin:0 0 6px}
+    .fk-plan{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+    .fk-lead{color:var(--white-dim);font-size:15px;line-height:1.55;margin:0 0 18px}
+    .fk-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .fk-f{display:flex;flex-direction:column;gap:5px;min-width:0}
+    .fk-f label{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+    .fk-f input,.fk-f select{background:var(--black);border:1px solid var(--border);border-radius:4px;color:var(--white);font-family:'Barlow',sans-serif;font-size:16px;padding:11px 12px;width:100%}
+    .fk-f input:focus,.fk-f select:focus{outline:2px solid var(--orange);outline-offset:1px}
+    .fk-x{position:absolute;top:10px;right:10px;background:none;border:1px solid var(--border);color:var(--white-dim);border-radius:99px;padding:6px 12px;font-size:14px;cursor:pointer}
+    .fk-x:hover{color:var(--white);border-color:var(--white-dim)}
+    .fk-go{width:100%;margin-top:18px}
+    .fk-go:disabled{opacity:.6;cursor:default}
+    .fk-msg{color:#f5a29a;font-size:14px;margin-top:10px;min-height:1em}
+    .fk-fine{color:var(--muted);font-size:13px;margin-top:8px;line-height:1.5}
+    @media(max-width:560px){.fk-grid{grid-template-columns:1fr}.fk-sheet{padding:24px 16px}}
   </style>
 </head>
 <body>
@@ -592,6 +610,27 @@ function showErr(msg) {
 }
 </script>
 
+<div class="fk-modal" id="fkModal" hidden role="dialog" aria-modal="true" aria-labelledby="fkTitle">
+  <form class="fk-sheet" id="fkForm" novalidate>
+    <button type="button" class="fk-x" id="fkClose" aria-label="Close">Close ×</button>
+    <div class="fk-plan" id="fkPlan"></div>
+    <h2 id="fkTitle">Reserve your founding spot</h2>
+    <p class="fk-lead">Tell us who you are, then you'll pay securely with Stripe.</p>
+    <div class="fk-grid">
+      <div class="fk-f"><label for="fk_name">Your name</label><input id="fk_name" autocomplete="name"/></div>
+      <div class="fk-f"><label for="fk_biz">Business name</label><input id="fk_biz" autocomplete="organization"/></div>
+      <div class="fk-f"><label for="fk_email">Email</label><input id="fk_email" type="email" autocomplete="email"/></div>
+      <div class="fk-f"><label for="fk_phone">Phone</label><input id="fk_phone" type="tel" autocomplete="tel"/></div>
+      <div class="fk-f"><label for="fk_trade">Trade</label>
+        <select id="fk_trade"><option value="">Choose one</option><option>HVAC</option><option>Plumbing</option><option>Electrical</option><option>Roofing</option><option>Landscaping</option><option>Pool &amp; Spa</option><option>Pest Control</option><option>Cleaning</option><option>General Contracting</option><option>Handyman</option><option>Other</option></select></div>
+      <div class="fk-f"><label for="fk_techs">Field techs</label>
+        <select id="fk_techs"><option value="">How many?</option><option>Just me</option><option>2–3</option><option>4–6</option><option>7–10</option><option>11–20</option><option>20+</option></select></div>
+    </div>
+    <button type="submit" class="btn-primary fk-go" id="fkGo">Continue to payment →</button>
+    <div class="fk-msg" id="fkMsg" role="alert"></div>
+    <p class="fk-fine">Use the same email at checkout. Fully refundable until you go live.</p>
+  </form>
+</div>
 <script>
 // Stripe Payment Links for the Founding Member offer. Paste each link in
 // when it's created in Stripe; until then the buttons go to the waitlist.
@@ -605,6 +644,41 @@ document.querySelectorAll('[data-link]').forEach(function (a) {
   var url = FOUNDING_LINKS[a.getAttribute('data-link')];
   if (url) a.href = url;
 });
+// Reserve buttons open a short form first; the answers are saved, then Stripe opens
+// with their email filled in (falls back to the plain Stripe link if anything fails).
+(function () {
+  var PLAN = { deposit: '$99 Founding Reservation', base: 'Base · 2027 prepaid · $790', pro: 'Pro · 2027 prepaid · $1,090', modules: 'Pro + Modules · 2027 prepaid · $1,490' };
+  var modal = document.getElementById('fkModal'), form = document.getElementById('fkForm'), msg = document.getElementById('fkMsg'), go = document.getElementById('fkGo');
+  var $ = function (id) { return document.getElementById(id); };
+  var plan = null, opener = null;
+  function open(p, el) { plan = p; opener = el; $('fkPlan').textContent = PLAN[p] || ''; msg.textContent = ''; modal.hidden = false; document.body.style.overflow = 'hidden'; setTimeout(function () { $('fk_name').focus(); }, 30); }
+  function close() { modal.hidden = true; document.body.style.overflow = ''; if (opener) opener.focus(); }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('[data-link]');
+    if (!a || !FOUNDING_LINKS[a.getAttribute('data-link')] || !/stripe\.com/.test(a.href)) return;
+    e.preventDefault(); open(a.getAttribute('data-link'), a);
+  });
+  $('fkClose').onclick = close;
+  modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) close(); });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var body = { plan: plan, name: $('fk_name').value.trim(), biz: $('fk_biz').value.trim(), email: $('fk_email').value.trim(), phone: $('fk_phone').value.trim(), trade: $('fk_trade').value, techs: $('fk_techs').value };
+    var missing = [['name', 'your name'], ['biz', 'business name'], ['email', 'email'], ['phone', 'phone'], ['trade', 'trade'], ['techs', 'number of field techs']].filter(function (x) { return !body[x[0]]; });
+    if (missing.length) { msg.textContent = 'Please add ' + missing.map(function (x) { return x[1]; }).join(', ') + '.'; return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(body.email)) { msg.textContent = 'That email doesn\'t look right.'; $('fk_email').focus(); return; }
+    go.disabled = true; go.textContent = 'Opening secure checkout…'; msg.textContent = '';
+    var fallback = FOUNDING_LINKS[plan] + '?prefilled_email=' + encodeURIComponent(body.email);
+    fetch('/api/fieldkit-founding-start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (x) {
+        if (x.ok && x.d.url) { location.href = x.d.url; return; }
+        if (x.d && x.d.error && !x.ok && x.d.error !== 'Method not allowed') { msg.textContent = x.d.error; go.disabled = false; go.textContent = 'Continue to payment →'; return; }
+        location.href = fallback;
+      })
+      .catch(function () { location.href = fallback; });
+  });
+})();
 fetch('/api/fieldkit-spots').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
   if (!d || typeof d.left !== 'number') return;
   var box = document.getElementById('spots');
