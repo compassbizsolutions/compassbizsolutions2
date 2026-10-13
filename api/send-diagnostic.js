@@ -262,7 +262,7 @@ module.exports = async function handler(req, res) {
               <div style="font-size:11px;font-weight:bold;color:#3D6B9E;letter-spacing:2px;margin-bottom:8px;">ONE MORE THING</div>
               <div style="font-size:15px;font-weight:bold;color:#1A2332;margin-bottom:6px;">You're running without admin support</div>
               <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                That means follow-ups, confirmations, invoicing, and outreach are all landing on you. A full-time admin runs $3,000–4,000/month. Our Business Support plans start at $250/month and handle the recurring work for you — done, every week, without you touching it.
+                That means follow-ups, confirmations, invoicing, and outreach are all landing on you. Hiring even a part-time admin runs $1,300–1,650/month. Our Business Support plans start at $250/month for the hours you actually need, and handle the recurring work for you every week.
               </div>
               <a href="https://www.compassbizsolutions.com/pricing" style="display:inline-block;background:#3D6B9E;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">See Business Support Plans →</a>
             </div>` : ""}
