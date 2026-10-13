@@ -11,9 +11,9 @@ const PACKAGES = [
     price: 250,
     interval: "month",
     stripe_price_id: "STRIPE_SINGLE_TASK", // wire in when ready
-    description: "One recurring task handled for you every week, start to finish — estimate follow-ups, weekly job reports, invoice reminders, payroll prep. Up to 4 hours of work a month.",
+    description: "One recurring task handled for you every week, start to finish — estimate follow-ups, weekly job reports, invoice reminders, payroll prep. Up to 5 hours of work a month.",
     covers: ["spreadsheet","data","report","summary","social","email","invoice","receipt","research","content","post","caption"],
-    hours: "up to 4 hrs/month",
+    hours: "up to 5 hrs/month",
     turnaround: "done within 2 business days",
     highlight: "Best for one regular job"
   },
@@ -122,10 +122,10 @@ COMPLEXITY SIGNALS — words that suggest complex: ${complexSignals.complex.join
 If no strong signals, default to Standard.
 
 MONTHLY PACKAGES:
-- Single Task Plan ($250/mo): One recurring task, up to 4 hours of work a month, done within 2 business days
+- Single Task Plan ($250/mo): One recurring task, up to 5 hours of work a month, done within 2 business days
 - Small Business Admin ($450/mo): 2–3 recurring tasks a week, up to 10 hours a month, done within 2 business days
 - Full Admin Support ($799/mo): Any mix of tasks, up to 20 hours a month, first in line, done within 1 business day
-All plans: one-time $199 setup on the first plan; extra hours $50/hr, approved by the client first; month-to-month with 30 days' notice to cancel.
+All plans: one-time $199 setup on the first plan; extra hours $50/hr for plan members (ad hoc hourly work is $65/hr, 1-hour minimum), approved by the client first; month-to-month with 30 days' notice to cancel.
 
 Respond with ONLY valid JSON in this exact format:
 {
