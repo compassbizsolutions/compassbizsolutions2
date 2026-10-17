@@ -37,7 +37,7 @@
   window.cbsAttribution = function () { return read(); };
 
   // Add the source to form posts that go to our own APIs
-  var API = /(compassbizsolutions\.com)?\/api\/(send-diagnostic|contact|waitlist|fieldkit-waitlist|fieldkit-founding-start|reviewkit-checkout|portal-signup)/;
+  var API = /(compassbizsolutions\.com)?\/api\/(send-diagnostic|contact|waitlist|fieldkit-waitlist|fieldkit-founding-start|reviewkit-checkout|portal-signup|course-signup)/;
   var orig = window.fetch;
   if (!orig) return;
   window.fetch = function (input, init) {
