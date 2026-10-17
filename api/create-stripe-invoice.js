@@ -114,7 +114,24 @@ module.exports = async function handler(req, res) {
         message: "Please contact jen@compassbizsolutions.com to set up your package."
       });
 
-      const sub = await stripe("POST", "/subscriptions", {
+      // One-time setup fee on a customer's first plan: it covers building their
+      // templates and sequences. A pending invoice item is pulled into the
+      // subscription's first invoice. Set ADMIN_SETUP_FEE=0 to turn it off.
+      const setupFee = Number(process.env.ADMIN_SETUP_FEE == null ? 199 : process.env.ADMIN_SETUP_FEE) || 0;
+      let setupItem = null;
+      if (setupFee > 0) {
+        const prior = await stripe("GET", "/subscriptions?status=all&limit=1&customer=" + encodeURIComponent(stripeId));
+        if (!(prior.data && prior.data.length)) {
+          setupItem = await stripe("POST", "/invoiceitems", {
+            customer: stripeId, currency: "usd", amount: Math.round(setupFee * 100),
+            description: "One-time setup — building your templates, sequences and task checklists",
+          });
+        }
+      }
+
+      let sub;
+      try {
+        sub = await stripe("POST", "/subscriptions", {
         customer: stripeId,
         "items[0][price]": priceId,
         payment_behavior: "default_incomplete",
@@ -123,7 +140,13 @@ module.exports = async function handler(req, res) {
         "metadata[quote_id]": quote_id || "",
         "metadata[service_type]": service_type || "",
         "metadata[source]": "compass_portal",
+        "expand[0]": "latest_invoice",
       });
+      } catch (e) {
+        // Don't leave the setup fee waiting to land on some later invoice
+        if (setupItem) await stripe("DELETE", "/invoiceitems/" + setupItem.id).catch(() => {});
+        throw e;
+      }
 
       invoiceId     = sub.latest_invoice?.id || sub.id;
       invoiceStatus = sub.status;
