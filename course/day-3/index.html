@@ -73,6 +73,22 @@ main li{margin-bottom:8px}
 footer{background:var(--navy);color:#8AA5C0;font-size:13px;padding:22px 20px 34px}
 footer .in{max-width:760px;margin:0 auto}
 footer a{color:#8AA5C0}
+
+.ws .lbl{display:flex;align-items:center;gap:8px;margin:14px 0 5px}
+.ws .lbl label{margin:0}
+.ws label em{font-style:normal;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--amber);margin-left:6px}
+.ws .tip{flex:none;width:22px;height:22px;border-radius:50%;border:1.5px solid #8AA5C0;background:transparent;color:#C8D8E8;font:italic 700 13px/1 Georgia,serif;cursor:pointer;padding:0;display:inline-flex;align-items:center;justify-content:center}
+.ws .tip[aria-expanded=true]{background:var(--amber);border-color:var(--amber);color:#fff}
+.tipbox{background:#F4F7FC;color:#1B2E4B;border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.5;margin:0 0 8px}
+.ws input.calc{background:rgba(200,112,26,.12);border-color:rgba(200,112,26,.45);color:#fff;font-weight:700}
+.ws input.neg{color:#ff9b8a}
+.res{background:#22385A;border-radius:12px;padding:16px;margin-top:18px}
+.res-row{display:flex;justify-content:space-between;font-size:15px;color:#C8D8E8;padding:4px 0}
+.res-row b{color:#fff}
+.res-big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:10px;border-top:1px solid rgba(255,255,255,.15);padding-top:12px}
+.res-big span{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:46px;line-height:1;color:var(--amber)}
+.res-big small{color:#C8D8E8;font-size:14px}
+.res p{margin:10px 0 0;color:#fff;font-size:15px}
 @media print{.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
 </style>
 </head>
@@ -112,7 +128,7 @@ footer a{color:#8AA5C0}
 <section class="ws" id="worksheet">
 <h2>Day 3 worksheet</h2>
 <p class="wi">Look back at last month. Count honestly. A rough number is better than none.</p>
-<label for="f0">No-shows and &quot;not home&quot; trips last month</label><div class="inp"><b>#</b><input id="f0" data-k="f0" inputmode=decimal/></div><label for="f1">Last-minute reschedules last month</label><div class="inp"><b>#</b><input id="f1" data-k="f1" inputmode=decimal/></div><label for="f2">Your average ticket</label><div class="inp"><b>$</b><input id="f2" data-k="f2" inputmode=decimal/></div><label for="f3">Lost to no-shows: no-shows × average ticket</label><div class="inp"><b>$</b><input id="f3" data-k="f3" inputmode=decimal/></div><label for="f4">Days that zig-zagged across your area</label><div class="inp"><b>#</b><input id="f4" data-k="f4" inputmode=decimal/></div><label for="f5">How confirmations go out today (who sends them, and when?)</label><div class="inp"><b></b><input id="f5" data-k="f5" /></div>
+<div class="lbl"><label for="f0">No-shows and &quot;not home&quot; trips last month</label></div><div class="inp"><b>#</b><input id="f0" data-k="f0" data-i="0" inputmode=decimal/></div><div class="lbl"><label for="f1">Last-minute reschedules last month</label></div><div class="inp"><b>#</b><input id="f1" data-k="f1" data-i="1" inputmode=decimal/></div><div class="lbl"><label for="f2">Your average ticket</label></div><div class="inp"><b>$</b><input id="f2" data-k="f2" data-i="2" inputmode=decimal/></div><div class="lbl"><label for="f3">Lost to no-shows: no-shows × average ticket</label></div><div class="inp"><b>$</b><input id="f3" data-k="f3" data-i="3" inputmode=decimal/></div><div class="lbl"><label for="f4">Days that zig-zagged across your area</label></div><div class="inp"><b>#</b><input id="f4" data-k="f4" data-i="4" inputmode=decimal/></div><div class="lbl"><label for="f5">How confirmations go out today (who sends them, and when?)</label></div><div class="inp"><b></b><input id="f5" data-k="f5" data-i="5" /></div>
 <p class="after">Multiply that lost amount by 12. That's roughly what scheduling costs you a year, before you count fuel and drive time.</p>
 <div class="tools"><button type="button" onclick="window.print()">Print / save as PDF</button><button type="button" id="clr">Clear</button><span class="saved" id="saved">Your answers stay on this device only.</span></div>
 </section>
@@ -127,12 +143,44 @@ footer a{color:#8AA5C0}
   var data={}; try{data=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){}
   box.querySelectorAll('input[data-k]').forEach(function(i){
     if(data[i.dataset.k]) i.value=data[i.dataset.k];
-    i.addEventListener('input',function(){data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}});
+    i.addEventListener('input',function(){data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){} calc();});
+    i.addEventListener('blur',function(){ if(i.getAttribute('inputmode')!=='decimal') return; var n=num(i.value); if(n===null) return; i.value=Math.round(n).toLocaleString('en-US'); data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){} });
   });
+  // "i" buttons: tap to show what goes in the field
+  box.querySelectorAll('.tip').forEach(function(b){
+    b.addEventListener('click',function(){
+      var t=document.getElementById(b.getAttribute('aria-controls')), open=b.getAttribute('aria-expanded')==='true';
+      b.setAttribute('aria-expanded',open?'false':'true'); t.hidden=open;
+    });
+  });
+  // Fields that can be figured from the others
+  function num(x){ var n=parseFloat(String(x||'').replace(/[^0-9.\-]/g,'')); return isNaN(n)?null:n; }
+  function money(n){ return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US'); }
+  function calc(){
+    var v=[]; box.querySelectorAll('[id^=f]').forEach(function(i){ v[+i.id.slice(1)]=i.classList.contains('calc')?null:num(i.value); });
+    box.querySelectorAll('input.calc').forEach(function(i){
+      var expr=i.dataset.calc, needed=(expr.match(/v\[(\d+)\]/g)||[]).map(function(m){return +m.replace(/\D/g,'');});
+      var ok=needed.every(function(k){return v[k]!==null&&v[k]!==undefined;});
+      var val=ok?Function('v','return '+expr)(v):null;
+      v[+i.id.slice(1)]=val;
+      i.value=val===null?'':money(val).replace('$',''); i.classList.toggle('neg',val!==null&&val<0);
+    });
+    var res=document.getElementById('res'); if(!res) return;
+    var rev=v[0], gross=v[2], net=v[6];
+    if(rev>0&&gross!==null){
+      res.hidden=false;
+      document.getElementById('rGross').textContent=money(gross)+' ('+Math.round(gross/rev*100)+'%)';
+      document.getElementById('rNet').textContent=net===null?'fill in overhead and a fair wage':money(net)+' ('+Math.round(net/rev*100)+'%)';
+      var cents=net===null?null:net/rev*100;
+      document.getElementById('rCents').textContent=cents===null?'–':(cents<0?'-':'')+Math.abs(cents).toFixed(1)+'¢';
+      document.getElementById('rNote').textContent=cents===null?'':cents<0?'The business is losing money once you pay yourself a fair wage. That’s more common than you’d think, and it’s fixable.':cents<5?'Right around where most trades shops land (2–3¢). Benchmarks say 20¢ is doable.':cents<15?'Better than most shops, with room to grow toward the 20¢ benchmark.':'That’s a healthy shop. The leaks are still worth finding.';
+    } else res.hidden=true;
+  }
+  calc();
   document.getElementById('clr').addEventListener('click',function(){
     if(!confirm('Clear your answers on this page?'))return;
     data={}; try{localStorage.removeItem(KEY);}catch(e){}
-    box.querySelectorAll('input[data-k]').forEach(function(i){i.value='';});
+    box.querySelectorAll('input[data-k]').forEach(function(i){i.value='';}); calc();
   });
 })();
 </script>
