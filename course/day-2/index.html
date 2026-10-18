@@ -89,6 +89,8 @@ footer a{color:#8AA5C0}
 .res-big span{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:46px;line-height:1;color:var(--amber)}
 .res-big small{color:#C8D8E8;font-size:14px}
 .res p{margin:10px 0 0;color:#fff;font-size:15px}
+.ws .swipe{display:none;font-size:13px;color:#8AA5C0;margin:0 0 6px}
+@media (max-width:600px){.ws .swipe{display:block}}
 @media print{.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
 </style>
 </head>
@@ -136,7 +138,11 @@ footer a{color:#8AA5C0}
 <section class="ws" id="worksheet">
 <h2>Day 2 worksheet</h2>
 <p class="wi">Pull your last 5 jobs. For each one, compare what you quoted with what actually happened, including drive time and any return trips.</p>
-<div class="tbl"><table><thead><tr><th>Job</th><th>Hours quoted</th><th>Hours actually spent (incl. drive)</th><th>Difference</th><th>Return trip? (Y/N)</th></tr></thead><tbody><tr><td><input data-k="r0c0" aria-label="Job, row 1"/></td><td><input data-k="r0c1" aria-label="Hours quoted, row 1"/></td><td><input data-k="r0c2" aria-label="Hours actually spent (incl. drive), row 1"/></td><td><input data-k="r0c3" aria-label="Difference, row 1"/></td><td><input data-k="r0c4" aria-label="Return trip? (Y/N), row 1"/></td></tr><tr><td><input data-k="r1c0" aria-label="Job, row 2"/></td><td><input data-k="r1c1" aria-label="Hours quoted, row 2"/></td><td><input data-k="r1c2" aria-label="Hours actually spent (incl. drive), row 2"/></td><td><input data-k="r1c3" aria-label="Difference, row 2"/></td><td><input data-k="r1c4" aria-label="Return trip? (Y/N), row 2"/></td></tr><tr><td><input data-k="r2c0" aria-label="Job, row 3"/></td><td><input data-k="r2c1" aria-label="Hours quoted, row 3"/></td><td><input data-k="r2c2" aria-label="Hours actually spent (incl. drive), row 3"/></td><td><input data-k="r2c3" aria-label="Difference, row 3"/></td><td><input data-k="r2c4" aria-label="Return trip? (Y/N), row 3"/></td></tr><tr><td><input data-k="r3c0" aria-label="Job, row 4"/></td><td><input data-k="r3c1" aria-label="Hours quoted, row 4"/></td><td><input data-k="r3c2" aria-label="Hours actually spent (incl. drive), row 4"/></td><td><input data-k="r3c3" aria-label="Difference, row 4"/></td><td><input data-k="r3c4" aria-label="Return trip? (Y/N), row 4"/></td></tr><tr><td><input data-k="r4c0" aria-label="Job, row 5"/></td><td><input data-k="r4c1" aria-label="Hours quoted, row 5"/></td><td><input data-k="r4c2" aria-label="Hours actually spent (incl. drive), row 5"/></td><td><input data-k="r4c3" aria-label="Difference, row 5"/></td><td><input data-k="r4c4" aria-label="Return trip? (Y/N), row 5"/></td></tr></tbody></table></div>
+<div class="tipbox" id="th0" role="note" hidden>Something that tells you which job it was: the customer&#x27;s last name, the street, or your job or invoice number, plus what the work was (for example &quot;Smith, 12 Oak St, AC repair&quot; or &quot;#1042 water heater swap&quot;). Pick 5 recent jobs you quoted ahead of time, not quick service calls billed by the hour.</div><div class="tipbox" id="th1" role="note" hidden>The labor hours you built into the price when you quoted it. If you quoted a flat price, work out the hours you were picturing (price ÷ your hourly rate is a good guess).</div><div class="tipbox" id="th2" role="note" hidden>All the hours the job really took, for everyone on it: drive time there and back, any parts runs, any return trips, cleanup. Two techs for 3 hours is 6 hours. Your timesheets, GPS or job notes will have it.</div><div class="tipbox" id="th3" role="note" hidden>Hours actually spent minus hours quoted. A positive number means the job ran over. We figure it for you.</div><div class="tipbox" id="th4" role="note" hidden>Did anyone have to go back: a missing part, a callback, something that didn&#x27;t work the first time? Write Y or N.</div><p class="swipe">Swipe the table sideways to see every column.</p><div class="tbl"><table><thead><tr><th>Job <button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="th0">i</button></th><th>Hours quoted <button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="th1">i</button></th><th>Hours actually spent <button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="th2">i</button></th><th>Hours over <em>auto</em> <button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="th3">i</button></th><th>Return trip? (Y/N) <button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="th4">i</button></th></tr></thead><tbody><tr><td><input data-k="r0c0" id="r0c0" placeholder="e.g. Smith, AC repair" aria-label="Job, row 1"/></td><td><input data-k="r0c1" id="r0c1" inputmode="decimal" placeholder="" aria-label="Hours quoted, row 1"/></td><td><input data-k="r0c2" id="r0c2" inputmode="decimal" placeholder="" aria-label="Hours actually spent, row 1"/></td><td><input class="calc" data-row="0" data-calc="c[2]-c[1]" id="r0c3" readonly tabindex="-1" aria-label="Hours over, row 1"/></td><td><input data-k="r0c4" id="r0c4" placeholder="Y / N" aria-label="Return trip? (Y/N), row 1"/></td></tr><tr><td><input data-k="r1c0" id="r1c0" placeholder="e.g. Smith, AC repair" aria-label="Job, row 2"/></td><td><input data-k="r1c1" id="r1c1" inputmode="decimal" placeholder="" aria-label="Hours quoted, row 2"/></td><td><input data-k="r1c2" id="r1c2" inputmode="decimal" placeholder="" aria-label="Hours actually spent, row 2"/></td><td><input class="calc" data-row="1" data-calc="c[2]-c[1]" id="r1c3" readonly tabindex="-1" aria-label="Hours over, row 2"/></td><td><input data-k="r1c4" id="r1c4" placeholder="Y / N" aria-label="Return trip? (Y/N), row 2"/></td></tr><tr><td><input data-k="r2c0" id="r2c0" placeholder="e.g. Smith, AC repair" aria-label="Job, row 3"/></td><td><input data-k="r2c1" id="r2c1" inputmode="decimal" placeholder="" aria-label="Hours quoted, row 3"/></td><td><input data-k="r2c2" id="r2c2" inputmode="decimal" placeholder="" aria-label="Hours actually spent, row 3"/></td><td><input class="calc" data-row="2" data-calc="c[2]-c[1]" id="r2c3" readonly tabindex="-1" aria-label="Hours over, row 3"/></td><td><input data-k="r2c4" id="r2c4" placeholder="Y / N" aria-label="Return trip? (Y/N), row 3"/></td></tr><tr><td><input data-k="r3c0" id="r3c0" placeholder="e.g. Smith, AC repair" aria-label="Job, row 4"/></td><td><input data-k="r3c1" id="r3c1" inputmode="decimal" placeholder="" aria-label="Hours quoted, row 4"/></td><td><input data-k="r3c2" id="r3c2" inputmode="decimal" placeholder="" aria-label="Hours actually spent, row 4"/></td><td><input class="calc" data-row="3" data-calc="c[2]-c[1]" id="r3c3" readonly tabindex="-1" aria-label="Hours over, row 4"/></td><td><input data-k="r3c4" id="r3c4" placeholder="Y / N" aria-label="Return trip? (Y/N), row 4"/></td></tr><tr><td><input data-k="r4c0" id="r4c0" placeholder="e.g. Smith, AC repair" aria-label="Job, row 5"/></td><td><input data-k="r4c1" id="r4c1" inputmode="decimal" placeholder="" aria-label="Hours quoted, row 5"/></td><td><input data-k="r4c2" id="r4c2" inputmode="decimal" placeholder="" aria-label="Hours actually spent, row 5"/></td><td><input class="calc" data-row="4" data-calc="c[2]-c[1]" id="r4c3" readonly tabindex="-1" aria-label="Hours over, row 5"/></td><td><input data-k="r4c4" id="r4c4" placeholder="Y / N" aria-label="Return trip? (Y/N), row 5"/></td></tr></tbody></table></div><div class="lbl"><label for="f0">Your hourly labor rate</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t0">i</button></div><div class="tipbox" id="t0" role="note" hidden>What you charge per labor hour. If you price by the job, use what you&#x27;d charge for an hour of time-and-materials work.</div><div class="inp"><b>$</b><input id="f0" data-k="f0" inputmode=decimal/></div><div class="res" id="res" hidden><div class="res-row"><span>Hours quoted (all jobs)</span><b id="rQ">–</b></div>
+<div class="res-row"><span>Hours actually spent</span><b id="rA">–</b></div>
+<div class="res-row"><span>Return trips</span><b id="rR">–</b></div>
+<div class="res-big"><span id="rOver">–</span><small id="rOverL">hours over across these jobs</small></div>
+<p id="rNote"></p></div>
 <p class="after">Look at the difference column. If most of your jobs run over, your estimates have a leak, and so does every job you'll quote this month.</p>
 <div class="tools"><button type="button" onclick="window.print()">Print / save as PDF</button><button type="button" id="clr">Clear</button><span class="saved" id="saved">Your answers stay on this device only.</span></div>
 </section>
@@ -147,12 +153,22 @@ footer a{color:#8AA5C0}
 <script src="/track.js"></script>
 <script>
 (function(){
+  var RESULTS=function(v,rows,money,res){ var q=0,a=0,n=0,trips=0;
+rows.forEach(function(c){ if(c[1]!==null&&c[2]!==null){q+=c[1];a+=c[2];n++;} });
+box.querySelectorAll('tbody tr').forEach(function(tr){ var t=tr.querySelectorAll('input')[4]; if(t&&/^y/i.test(t.value.trim())) trips++; });
+if(!n) return false;
+var over=a-q, pct=q>0?over/q*100:0, rate=v[0];
+el('rQ').textContent=(Math.round(q*10)/10)+' hrs'; el('rA').textContent=(Math.round(a*10)/10)+' hrs'; el('rR').textContent=trips+' of '+n+' jobs';
+el('rOver').textContent=(over>0?'+':'')+(Math.round(over*10)/10)+' hrs';
+el('rOverL').textContent=(over>=0?'over':'under')+' across '+n+' job'+(n>1?'s':'')+' ('+(pct>=0?'+':'')+Math.round(pct)+'% vs. quoted)';
+el('rNote').textContent=over<=0?'Your estimates are holding up. Nice. The next place to look is whether the rate itself covers your real cost per hour.':rate>0?'At '+money(rate)+' an hour, that’s about '+money(over*rate)+' of work you did but didn’t charge for, on just these '+n+' jobs.':'Add your hourly rate below to see what those hours were worth.';
+return true; };
   var KEY='cbs_course_day2', box=document.getElementById('worksheet');
   var data={}; try{data=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){}
   box.querySelectorAll('input[data-k]').forEach(function(i){
     if(data[i.dataset.k]) i.value=data[i.dataset.k];
     i.addEventListener('input',function(){data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){} calc();});
-    i.addEventListener('blur',function(){ if(i.getAttribute('inputmode')!=='decimal') return; var n=num(i.value); if(n===null) return; i.value=Math.round(n).toLocaleString('en-US'); data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){} });
+    i.addEventListener('blur',function(){ if(i.getAttribute('inputmode')!=='decimal') return; var n=num(i.value); if(n===null) return; i.value=n.toLocaleString('en-US',{maximumFractionDigits:2}); data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){} });
   });
   // "i" buttons: tap to show what goes in the field
   box.querySelectorAll('.tip').forEach(function(b){
@@ -165,25 +181,22 @@ footer a{color:#8AA5C0}
   function num(x){ var n=parseFloat(String(x||'').replace(/[^0-9.\-]/g,'')); return isNaN(n)?null:n; }
   function money(n){ return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US'); }
   function calc(){
-    var v=[]; box.querySelectorAll('[id^=f]').forEach(function(i){ v[+i.id.slice(1)]=i.classList.contains('calc')?null:num(i.value); });
+    var v=[]; box.querySelectorAll('[id^=f]').forEach(function(i){ if(!i.classList.contains('calc')) v[+i.id.slice(1)]=num(i.value); });
+    var rows=[];
+    box.querySelectorAll('tbody tr').forEach(function(tr,r){ var c=[]; tr.querySelectorAll('input').forEach(function(i,k){ c[k]=i.classList.contains('calc')?null:num(i.value); }); rows[r]=c; });
     box.querySelectorAll('input.calc').forEach(function(i){
-      var expr=i.dataset.calc, needed=(expr.match(/v\[(\d+)\]/g)||[]).map(function(m){return +m.replace(/\D/g,'');});
-      var ok=needed.every(function(k){return v[k]!==null&&v[k]!==undefined;});
-      var val=ok?Function('v','return '+expr)(v):null;
-      v[+i.id.slice(1)]=val;
-      i.value=val===null?'':money(val).replace('$',''); i.classList.toggle('neg',val!==null&&val<0);
+      var expr=i.dataset.calc, row=i.dataset.row, ctx=row!==undefined?rows[+row]:v, re=row!==undefined?/c\[(\d+)\]/g:/v\[(\d+)\]/g;
+      var needed=(expr.match(re)||[]).map(function(m){return +m.replace(/\D/g,'');});
+      var ok=needed.every(function(k){return ctx[k]!==null&&ctx[k]!==undefined;});
+      var val=ok?Function(row!==undefined?'c':'v','return '+expr)(ctx):null;
+      if(row!==undefined) rows[+row][+i.id.split('c')[1]]=val; else v[+i.id.slice(1)]=val;
+      i.value=val===null?'':(i.dataset.money?Math.round(val):Math.round(val*10)/10).toLocaleString('en-US'); i.classList.toggle('neg',val!==null&&val<0);
     });
     var res=document.getElementById('res'); if(!res) return;
-    var rev=v[0], gross=v[2], net=v[6];
-    if(rev>0&&gross!==null){
-      res.hidden=false;
-      document.getElementById('rGross').textContent=money(gross)+' ('+Math.round(gross/rev*100)+'%)';
-      document.getElementById('rNet').textContent=net===null?'fill in overhead and a fair wage':money(net)+' ('+Math.round(net/rev*100)+'%)';
-      var cents=net===null?null:net/rev*100;
-      document.getElementById('rCents').textContent=cents===null?'–':(cents<0?'-':'')+Math.abs(cents).toFixed(1)+'¢';
-      document.getElementById('rNote').textContent=cents===null?'':cents<0?'The business is losing money once you pay yourself a fair wage. That’s more common than you’d think, and it’s fixable.':cents<5?'Right around where most trades shops land (2–3¢). Benchmarks say 20¢ is doable.':cents<15?'Better than most shops, with room to grow toward the 20¢ benchmark.':'That’s a healthy shop. The leaks are still worth finding.';
-    } else res.hidden=true;
+    var show=RESULTS(v,rows,money,res);
+    res.hidden=!show;
   }
+  function el(id){return document.getElementById(id);}
   calc();
   document.getElementById('clr').addEventListener('click',function(){
     if(!confirm('Clear your answers on this page?'))return;

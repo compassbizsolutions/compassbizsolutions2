@@ -89,6 +89,8 @@ footer a{color:#8AA5C0}
 .res-big span{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:46px;line-height:1;color:var(--amber)}
 .res-big small{color:#C8D8E8;font-size:14px}
 .res p{margin:10px 0 0;color:#fff;font-size:15px}
+.ws .swipe{display:none;font-size:13px;color:#8AA5C0;margin:0 0 6px}
+@media (max-width:600px){.ws .swipe{display:block}}
 @media print{.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
 </style>
 </head>
@@ -128,7 +130,9 @@ footer a{color:#8AA5C0}
 <section class="ws" id="worksheet">
 <h2>Day 3 worksheet</h2>
 <p class="wi">Look back at last month. Count honestly. A rough number is better than none.</p>
-<div class="lbl"><label for="f0">No-shows and &quot;not home&quot; trips last month</label></div><div class="inp"><b>#</b><input id="f0" data-k="f0" data-i="0" inputmode=decimal/></div><div class="lbl"><label for="f1">Last-minute reschedules last month</label></div><div class="inp"><b>#</b><input id="f1" data-k="f1" data-i="1" inputmode=decimal/></div><div class="lbl"><label for="f2">Your average ticket</label></div><div class="inp"><b>$</b><input id="f2" data-k="f2" data-i="2" inputmode=decimal/></div><div class="lbl"><label for="f3">Lost to no-shows: no-shows × average ticket</label></div><div class="inp"><b>$</b><input id="f3" data-k="f3" data-i="3" inputmode=decimal/></div><div class="lbl"><label for="f4">Days that zig-zagged across your area</label></div><div class="inp"><b>#</b><input id="f4" data-k="f4" data-i="4" inputmode=decimal/></div><div class="lbl"><label for="f5">How confirmations go out today (who sends them, and when?)</label></div><div class="inp"><b></b><input id="f5" data-k="f5" data-i="5" /></div>
+<div class="lbl"><label for="f0">No-shows and &quot;not home&quot; trips last month</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t0">i</button></div><div class="tipbox" id="t0" role="note" hidden>Every time a tech showed up and couldn&#x27;t do the job: nobody home, no access, customer forgot, canceled at the door. Check your schedule or dispatch notes for last month.</div><div class="inp"><b>#</b><input id="f0" data-k="f0" inputmode=decimal/></div><div class="lbl"><label for="f1">Last-minute reschedules last month</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t1">i</button></div><div class="tipbox" id="t1" role="note" hidden>Appointments moved with less than a day&#x27;s notice, when it was too late to fill the slot with other work.</div><div class="inp"><b>#</b><input id="f1" data-k="f1" inputmode=decimal/></div><div class="lbl"><label for="f2">Your average ticket</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t2">i</button></div><div class="tipbox" id="t2" role="note" hidden>What a typical job brings in. Last month&#x27;s revenue divided by the number of jobs is a good estimate.</div><div class="inp"><b>$</b><input id="f2" data-k="f2" inputmode=decimal/></div><div class="lbl"><label for="f3">Lost to no-shows last month <em>auto</em></label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t3">i</button></div><div class="tipbox" id="t3" role="note" hidden>No-shows and late reschedules × your average ticket. That&#x27;s the work those empty slots could have been. We figure it for you.</div><div class="inp"><b>$</b><input id="f3" class="calc" data-calc="(v[0]+v[1])*v[2]" data-money=1 readonly tabindex="-1" placeholder="Figured for you"/></div><div class="lbl"><label for="f4">Lost to no-shows in a year <em>auto</em></label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t4">i</button></div><div class="tipbox" id="t4" role="note" hidden>Last month&#x27;s number × 12. We figure it for you.</div><div class="inp"><b>$</b><input id="f4" class="calc" data-calc="(v[0]+v[1])*v[2]*12" data-money=1 readonly tabindex="-1" placeholder="Figured for you"/></div><div class="lbl"><label for="f5">Days last month that zig-zagged across your area</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t5">i</button></div><div class="tipbox" id="t5" role="note" hidden>Days when trucks drove back and forth across town instead of working one area at a time. A rough count is fine.</div><div class="inp"><b>#</b><input id="f5" data-k="f5" inputmode=decimal/></div><div class="lbl"><label for="f6">How confirmations go out today</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t6">i</button></div><div class="tipbox" id="t6" role="note" hidden>Who sends appointment reminders, how (text, call, email), and when? If the honest answer is &quot;sometimes&quot; or &quot;nobody,&quot; write that.</div><div class="inp"><b></b><input id="f6" data-k="f6" /></div><div class="res" id="res" hidden><div class="res-row"><span>Empty slots last month</span><b id="rS">–</b></div>
+<div class="res-big"><span id="rY">–</span><small>a year in work those slots could have been</small></div>
+<p id="rNote"></p></div>
 <p class="after">Multiply that lost amount by 12. That's roughly what scheduling costs you a year, before you count fuel and drive time.</p>
 <div class="tools"><button type="button" onclick="window.print()">Print / save as PDF</button><button type="button" id="clr">Clear</button><span class="saved" id="saved">Your answers stay on this device only.</span></div>
 </section>
@@ -139,12 +143,18 @@ footer a{color:#8AA5C0}
 <script src="/track.js"></script>
 <script>
 (function(){
+  var RESULTS=function(v,rows,money,res){ if(v[0]===null||v[2]===null) return false;
+var slots=v[0]+(v[1]||0), yr=slots*v[2]*12;
+el('rS').textContent=slots+' ('+money(slots*v[2])+')';
+el('rY').textContent=money(yr);
+el('rNote').textContent=slots===0?'No empty slots last month. Your confirmations are doing their job.':'And that’s before fuel, drive time and the second trip to finish the job. Most of these are people who simply forgot, which is why reminders that always go out pay for themselves.';
+return true; };
   var KEY='cbs_course_day3', box=document.getElementById('worksheet');
   var data={}; try{data=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){}
   box.querySelectorAll('input[data-k]').forEach(function(i){
     if(data[i.dataset.k]) i.value=data[i.dataset.k];
     i.addEventListener('input',function(){data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){} calc();});
-    i.addEventListener('blur',function(){ if(i.getAttribute('inputmode')!=='decimal') return; var n=num(i.value); if(n===null) return; i.value=Math.round(n).toLocaleString('en-US'); data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){} });
+    i.addEventListener('blur',function(){ if(i.getAttribute('inputmode')!=='decimal') return; var n=num(i.value); if(n===null) return; i.value=n.toLocaleString('en-US',{maximumFractionDigits:2}); data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){} });
   });
   // "i" buttons: tap to show what goes in the field
   box.querySelectorAll('.tip').forEach(function(b){
@@ -157,25 +167,22 @@ footer a{color:#8AA5C0}
   function num(x){ var n=parseFloat(String(x||'').replace(/[^0-9.\-]/g,'')); return isNaN(n)?null:n; }
   function money(n){ return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US'); }
   function calc(){
-    var v=[]; box.querySelectorAll('[id^=f]').forEach(function(i){ v[+i.id.slice(1)]=i.classList.contains('calc')?null:num(i.value); });
+    var v=[]; box.querySelectorAll('[id^=f]').forEach(function(i){ if(!i.classList.contains('calc')) v[+i.id.slice(1)]=num(i.value); });
+    var rows=[];
+    box.querySelectorAll('tbody tr').forEach(function(tr,r){ var c=[]; tr.querySelectorAll('input').forEach(function(i,k){ c[k]=i.classList.contains('calc')?null:num(i.value); }); rows[r]=c; });
     box.querySelectorAll('input.calc').forEach(function(i){
-      var expr=i.dataset.calc, needed=(expr.match(/v\[(\d+)\]/g)||[]).map(function(m){return +m.replace(/\D/g,'');});
-      var ok=needed.every(function(k){return v[k]!==null&&v[k]!==undefined;});
-      var val=ok?Function('v','return '+expr)(v):null;
-      v[+i.id.slice(1)]=val;
-      i.value=val===null?'':money(val).replace('$',''); i.classList.toggle('neg',val!==null&&val<0);
+      var expr=i.dataset.calc, row=i.dataset.row, ctx=row!==undefined?rows[+row]:v, re=row!==undefined?/c\[(\d+)\]/g:/v\[(\d+)\]/g;
+      var needed=(expr.match(re)||[]).map(function(m){return +m.replace(/\D/g,'');});
+      var ok=needed.every(function(k){return ctx[k]!==null&&ctx[k]!==undefined;});
+      var val=ok?Function(row!==undefined?'c':'v','return '+expr)(ctx):null;
+      if(row!==undefined) rows[+row][+i.id.split('c')[1]]=val; else v[+i.id.slice(1)]=val;
+      i.value=val===null?'':(i.dataset.money?Math.round(val):Math.round(val*10)/10).toLocaleString('en-US'); i.classList.toggle('neg',val!==null&&val<0);
     });
     var res=document.getElementById('res'); if(!res) return;
-    var rev=v[0], gross=v[2], net=v[6];
-    if(rev>0&&gross!==null){
-      res.hidden=false;
-      document.getElementById('rGross').textContent=money(gross)+' ('+Math.round(gross/rev*100)+'%)';
-      document.getElementById('rNet').textContent=net===null?'fill in overhead and a fair wage':money(net)+' ('+Math.round(net/rev*100)+'%)';
-      var cents=net===null?null:net/rev*100;
-      document.getElementById('rCents').textContent=cents===null?'–':(cents<0?'-':'')+Math.abs(cents).toFixed(1)+'¢';
-      document.getElementById('rNote').textContent=cents===null?'':cents<0?'The business is losing money once you pay yourself a fair wage. That’s more common than you’d think, and it’s fixable.':cents<5?'Right around where most trades shops land (2–3¢). Benchmarks say 20¢ is doable.':cents<15?'Better than most shops, with room to grow toward the 20¢ benchmark.':'That’s a healthy shop. The leaks are still worth finding.';
-    } else res.hidden=true;
+    var show=RESULTS(v,rows,money,res);
+    res.hidden=!show;
   }
+  function el(id){return document.getElementById(id);}
   calc();
   document.getElementById('clr').addEventListener('click',function(){
     if(!confirm('Clear your answers on this page?'))return;

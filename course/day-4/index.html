@@ -89,6 +89,8 @@ footer a{color:#8AA5C0}
 .res-big span{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:46px;line-height:1;color:var(--amber)}
 .res-big small{color:#C8D8E8;font-size:14px}
 .res p{margin:10px 0 0;color:#fff;font-size:15px}
+.ws .swipe{display:none;font-size:13px;color:#8AA5C0;margin:0 0 6px}
+@media (max-width:600px){.ws .swipe{display:block}}
 @media print{.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
 </style>
 </head>
@@ -129,7 +131,11 @@ footer a{color:#8AA5C0}
 <section class="ws" id="worksheet">
 <h2>Day 4 worksheet</h2>
 <p class="wi">Two lists and one number. This one's worth doing with your invoices open.</p>
-<div class="lbl"><label for="f0">Invoices older than 30 days: how many?</label></div><div class="inp"><b>#</b><input id="f0" data-k="f0" data-i="0" inputmode=decimal/></div><div class="lbl"><label for="f1">Their total</label></div><div class="inp"><b>$</b><input id="f1" data-k="f1" data-i="1" inputmode=decimal/></div><div class="lbl"><label for="f2">Jobs in your last 10 with work done but not billed</label></div><div class="inp"><b>#</b><input id="f2" data-k="f2" data-i="2" inputmode=decimal/></div><div class="lbl"><label for="f3">Days from job done to invoice sent, usually</label></div><div class="inp"><b>#</b><input id="f3" data-k="f3" data-i="3" inputmode=decimal/></div><div class="lbl"><label for="f4">Hours a week you spend on office work</label></div><div class="inp"><b>#</b><input id="f4" data-k="f4" data-i="4" inputmode=decimal/></div><div class="lbl"><label for="f5">What an hour of your time bills at</label></div><div class="inp"><b>$</b><input id="f5" data-k="f5" data-i="5" inputmode=decimal/></div><div class="lbl"><label for="f6">Your office hours × your rate × 4.3 (per month)</label></div><div class="inp"><b>$</b><input id="f6" data-k="f6" data-i="6" inputmode=decimal/></div>
+<div class="lbl"><label for="f0">Invoices older than 30 days: how many?</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t0">i</button></div><div class="tipbox" id="t0" role="note" hidden>Open your invoicing or accounting software and filter for unpaid invoices dated more than 30 days ago.</div><div class="inp"><b>#</b><input id="f0" data-k="f0" inputmode=decimal/></div><div class="lbl"><label for="f1">Their total</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t1">i</button></div><div class="tipbox" id="t1" role="note" hidden>Add up what&#x27;s still owed on those invoices. This is money you&#x27;ve earned and haven&#x27;t collected.</div><div class="inp"><b>$</b><input id="f1" data-k="f1" inputmode=decimal/></div><div class="lbl"><label for="f2">Jobs in your last 10 with work done but not billed</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t2">i</button></div><div class="tipbox" id="t2" role="note" hidden>Look at your last 10 jobs. Count any where something happened that never made the invoice: an extra part, a change the customer asked for, a second trip.</div><div class="inp"><b>#</b><input id="f2" data-k="f2" inputmode=decimal/></div><div class="lbl"><label for="f3">Days from job done to invoice sent, usually</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t3">i</button></div><div class="tipbox" id="t3" role="note" hidden>On a typical job, how many days pass between finishing the work and the customer getting the invoice? Same day is 0.</div><div class="inp"><b>#</b><input id="f3" data-k="f3" inputmode=decimal/></div><div class="lbl"><label for="f4">Hours a week you spend on office work</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t4">i</button></div><div class="tipbox" id="t4" role="note" hidden>Everything that isn&#x27;t hands-on work or selling: invoicing, chasing payments, scheduling, returning calls, ordering, paperwork, bookkeeping. Include nights and weekends.</div><div class="inp"><b>#</b><input id="f4" data-k="f4" inputmode=decimal/></div><div class="lbl"><label for="f5">What an hour of your time bills at</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t5">i</button></div><div class="tipbox" id="t5" role="note" hidden>What you&#x27;d charge a customer for an hour of your time on a job. If you don&#x27;t work in the field anymore, use your shop&#x27;s hourly labor rate.</div><div class="inp"><b>$</b><input id="f5" data-k="f5" inputmode=decimal/></div><div class="lbl"><label for="f6">Office hours a month <em>auto</em></label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t6">i</button></div><div class="tipbox" id="t6" role="note" hidden>Your weekly office hours × 4.3 weeks. We figure it for you.</div><div class="inp"><b>#</b><input id="f6" class="calc" data-calc="v[4]*4.33" readonly tabindex="-1" placeholder="Figured for you"/></div><div class="lbl"><label for="f7">What those hours are worth a month <em>auto</em></label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t7">i</button></div><div class="tipbox" id="t7" role="note" hidden>Office hours a month × your hourly rate. That&#x27;s work you could have billed instead. We figure it for you.</div><div class="inp"><b>$</b><input id="f7" class="calc" data-calc="v[4]*4.33*v[5]" data-money=1 readonly tabindex="-1" placeholder="Figured for you"/></div><div class="res" id="res" hidden><div class="res-row"><span>Owed to you over 30 days</span><b id="rOwed">–</b></div>
+<div class="res-row"><span>Your office time is worth</span><b id="rWorth">–</b></div>
+<div class="res-row"><span>Part-time admin (15 hrs/wk)</span><b>≈ $1,300–$1,650/mo</b></div>
+<div class="res-big"><span id="rPlan">–</span><small id="rPlanL">Compass plan that fits your hours</small></div>
+<p id="rNote"></p></div>
 <p class="after">If the last line is bigger than what help would cost, the paperwork is the most expensive job you do.</p>
 <div class="tools"><button type="button" onclick="window.print()">Print / save as PDF</button><button type="button" id="clr">Clear</button><span class="saved" id="saved">Your answers stay on this device only.</span></div>
 </section>
@@ -140,12 +146,22 @@ footer a{color:#8AA5C0}
 <script src="/track.js"></script>
 <script>
 (function(){
+  var RESULTS=function(v,rows,money,res){ var owed=v[1], hrs=v[4], rate=v[5];
+if(owed===null&&hrs===null) return false;
+el('rOwed').textContent=owed===null?'–':money(owed);
+if(hrs===null){ el('rWorth').textContent='add your office hours'; el('rPlan').textContent='–'; el('rNote').textContent=''; return true; }
+var mo=hrs*4.33, worth=rate===null?null:mo*rate;
+el('rWorth').textContent=worth===null?Math.round(mo)+' hrs/mo (add your rate)':money(worth)+'/mo ('+Math.round(mo)+' hrs)';
+var plan=mo<=5?['$250/mo','Single Task, up to 5 hrs',250]:mo<=10?['$450/mo','Small Business Admin, up to 10 hrs',450]:mo<=20?['$799/mo','Full Admin Support, up to 20 hrs',799]:['20+ hrs','Full Admin Support plus extra hours at $50/hr',799+(mo-20)*50];
+el('rPlan').textContent=plan[0]; el('rPlanL').textContent=plan[1]+' a month';
+el('rNote').textContent=worth!==null&&worth>plan[2]?'Your office time is worth more than what it would cost to hand off. The paperwork may be the most expensive job you do.':'Even if the math is close, those are hours back for jobs, sales or home.';
+return true; };
   var KEY='cbs_course_day4', box=document.getElementById('worksheet');
   var data={}; try{data=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){}
   box.querySelectorAll('input[data-k]').forEach(function(i){
     if(data[i.dataset.k]) i.value=data[i.dataset.k];
     i.addEventListener('input',function(){data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){} calc();});
-    i.addEventListener('blur',function(){ if(i.getAttribute('inputmode')!=='decimal') return; var n=num(i.value); if(n===null) return; i.value=Math.round(n).toLocaleString('en-US'); data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){} });
+    i.addEventListener('blur',function(){ if(i.getAttribute('inputmode')!=='decimal') return; var n=num(i.value); if(n===null) return; i.value=n.toLocaleString('en-US',{maximumFractionDigits:2}); data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){} });
   });
   // "i" buttons: tap to show what goes in the field
   box.querySelectorAll('.tip').forEach(function(b){
@@ -158,25 +174,22 @@ footer a{color:#8AA5C0}
   function num(x){ var n=parseFloat(String(x||'').replace(/[^0-9.\-]/g,'')); return isNaN(n)?null:n; }
   function money(n){ return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-US'); }
   function calc(){
-    var v=[]; box.querySelectorAll('[id^=f]').forEach(function(i){ v[+i.id.slice(1)]=i.classList.contains('calc')?null:num(i.value); });
+    var v=[]; box.querySelectorAll('[id^=f]').forEach(function(i){ if(!i.classList.contains('calc')) v[+i.id.slice(1)]=num(i.value); });
+    var rows=[];
+    box.querySelectorAll('tbody tr').forEach(function(tr,r){ var c=[]; tr.querySelectorAll('input').forEach(function(i,k){ c[k]=i.classList.contains('calc')?null:num(i.value); }); rows[r]=c; });
     box.querySelectorAll('input.calc').forEach(function(i){
-      var expr=i.dataset.calc, needed=(expr.match(/v\[(\d+)\]/g)||[]).map(function(m){return +m.replace(/\D/g,'');});
-      var ok=needed.every(function(k){return v[k]!==null&&v[k]!==undefined;});
-      var val=ok?Function('v','return '+expr)(v):null;
-      v[+i.id.slice(1)]=val;
-      i.value=val===null?'':money(val).replace('$',''); i.classList.toggle('neg',val!==null&&val<0);
+      var expr=i.dataset.calc, row=i.dataset.row, ctx=row!==undefined?rows[+row]:v, re=row!==undefined?/c\[(\d+)\]/g:/v\[(\d+)\]/g;
+      var needed=(expr.match(re)||[]).map(function(m){return +m.replace(/\D/g,'');});
+      var ok=needed.every(function(k){return ctx[k]!==null&&ctx[k]!==undefined;});
+      var val=ok?Function(row!==undefined?'c':'v','return '+expr)(ctx):null;
+      if(row!==undefined) rows[+row][+i.id.split('c')[1]]=val; else v[+i.id.slice(1)]=val;
+      i.value=val===null?'':(i.dataset.money?Math.round(val):Math.round(val*10)/10).toLocaleString('en-US'); i.classList.toggle('neg',val!==null&&val<0);
     });
     var res=document.getElementById('res'); if(!res) return;
-    var rev=v[0], gross=v[2], net=v[6];
-    if(rev>0&&gross!==null){
-      res.hidden=false;
-      document.getElementById('rGross').textContent=money(gross)+' ('+Math.round(gross/rev*100)+'%)';
-      document.getElementById('rNet').textContent=net===null?'fill in overhead and a fair wage':money(net)+' ('+Math.round(net/rev*100)+'%)';
-      var cents=net===null?null:net/rev*100;
-      document.getElementById('rCents').textContent=cents===null?'–':(cents<0?'-':'')+Math.abs(cents).toFixed(1)+'¢';
-      document.getElementById('rNote').textContent=cents===null?'':cents<0?'The business is losing money once you pay yourself a fair wage. That’s more common than you’d think, and it’s fixable.':cents<5?'Right around where most trades shops land (2–3¢). Benchmarks say 20¢ is doable.':cents<15?'Better than most shops, with room to grow toward the 20¢ benchmark.':'That’s a healthy shop. The leaks are still worth finding.';
-    } else res.hidden=true;
+    var show=RESULTS(v,rows,money,res);
+    res.hidden=!show;
   }
+  function el(id){return document.getElementById(id);}
   calc();
   document.getElementById('clr').addEventListener('click',function(){
     if(!confirm('Clear your answers on this page?'))return;
