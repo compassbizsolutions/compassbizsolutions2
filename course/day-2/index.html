@@ -91,20 +91,45 @@ footer a{color:#8AA5C0}
 .res p{margin:10px 0 0;color:#fff;font-size:15px}
 .ws .swipe{display:none;font-size:13px;color:#8AA5C0;margin:0 0 6px}
 @media (max-width:600px){.ws .swipe{display:block}}
-@media print{.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
+html.slides .deck .slide{display:none}
+html.slides .deck .slide.on{display:block;animation:slidein .25s ease}
+html.slides .deck .slide.hero.on{display:flex}
+@keyframes slidein{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.deck{max-width:760px;margin:0 auto;padding:28px 20px 120px;overflow-x:clip}
+.deck .slide{min-height:calc(100vh - 230px);outline:none}
+html:not(.slides) .deck .slide{min-height:0;margin-bottom:28px}
+.deck .slide.hero{background:var(--navy);color:#fff;border-radius:18px;padding:34px 28px;display:flex;flex-direction:column;justify-content:center}
+.deck .slide.hero h1{margin:10px 0 14px}
+.deck .slide:not(.hero):not(.ws):not(.last){background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px 26px}
+.deck .slide.ws{margin:0}
+.deck .slide.last .cta{margin-top:0}
+.deck h2:first-child{margin-top:0}
+.pager{position:fixed;left:0;right:0;bottom:0;background:rgba(244,247,252,.96);backdrop-filter:blur(6px);border-top:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:12px max(16px,calc(50% - 380px));z-index:5}
+html:not(.slides) .pager{display:none}
+.pager button{border:2px solid var(--navy);background:#fff;color:var(--navy);border-radius:10px;font:800 18px 'Barlow Condensed',sans-serif;letter-spacing:.5px;text-transform:uppercase;padding:10px 16px;cursor:pointer;min-width:52px}
+.pager button.go{background:var(--amber);border-color:var(--amber);color:#fff;padding:10px 22px}
+.pager button:disabled{opacity:.35;cursor:default}
+.pbar{flex:1;position:relative;height:8px;background:var(--line);border-radius:99px}
+.pfill{position:absolute;left:0;top:0;bottom:0;background:var(--amber);border-radius:99px;transition:width .25s}
+.pbar span{position:absolute;right:0;top:12px;font-size:12px;color:var(--ink2);font-weight:700}
+footer{padding-bottom:90px}
+.logo{white-space:nowrap}
+@media (max-width:520px){.top .in{flex-wrap:wrap;row-gap:10px}.logo{font-size:15px}.dots{gap:4px}.dots a{width:26px;height:26px;font-size:13px}.top .in{padding:14px 16px}
+.deck{padding:16px 14px 110px}.deck .slide:not(.hero):not(.ws):not(.last){padding:22px 18px}.deck .slide.hero{padding:28px 20px}.deck .slide{min-height:calc(100vh - 190px)}
+.pager{gap:10px}.pager button{padding:9px 12px}.pager button.go{padding:9px 16px}}
+@media print{html.slides .deck .slide{display:block}.pager{display:none!important}.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
 </style>
 </head>
 <body>
 <div class="top"><div class="in"><a href="/" class="logo">COMPASS <span>BUSINESS</span> SOLUTIONS</a><nav class="dots" aria-label="Lessons"><a href="/course/day-1" class="" aria-label="Day 1">1</a><a href="/course/day-2" class="on" aria-label="Day 2">2</a><a href="/course/day-3" class="" aria-label="Day 3">3</a><a href="/course/day-4" class="" aria-label="Day 4">4</a><a href="/course/day-5" class="" aria-label="Day 5">5</a></nav></div></div>
-<header class="hero"><div class="in">
+<main class="deck" id="deck">
+<section class="slide hero">
 <div class="eyebrow">Run Your Shop Like a Business · Day 2 of 5</div>
 <h1>Pricing and estimating</h1>
-<div class="meta">About a 6-minute read, plus a short worksheet</div>
+<div class="meta">About 6 minutes, in short slides, plus a worksheet</div>
 <p class="intro">Underpricing doesn't feel like a leak. It feels like winning bids. Today is about what an hour of work really costs you, and why the job you won might be the job that's costing you.</p>
-</div></header>
-<main>
-
-<h2>An hour costs more than the wage</h2>
+</section>
+<section class="slide"><h2>An hour costs more than the wage</h2>
 <p>When you price an hour of labor, it's tempting to start from what you pay the tech. But that hour also has to cover:</p>
 <ul>
 <li>Payroll taxes and workers' comp on top of the wage</li>
@@ -114,28 +139,27 @@ footer a{color:#8AA5C0}
 </ul>
 <p>That last one is the big one.</p>
 
-<h2>Paid hours vs. billable hours</h2>
+</section><section class="slide"><h2>Paid hours vs. billable hours</h2>
 <p>A tech might be paid for 40 hours a week. But not all of those hours end up on an invoice. Drive time, parts runs, waiting on a customer, callbacks you don't charge for, the morning meeting: it all gets paid, and none of it gets billed.</p>
 <p>So every hour you <i>do</i> bill has to carry the cost of the hours you don't.</p>
-<div class="ex"><div class="ex-h">Example (made-up numbers, not a benchmark)</div>
+</section><section class="slide"><div class="ex"><div class="ex-h">Example (made-up numbers, not a benchmark)</div>
 <p>A tech is paid for 2,080 hours a year and bills 1,300 of them. Every billed hour has to cover the cost of 1.6 paid hours.</p>
 <p>If you set your rate as if every paid hour got billed, you're short on every single job, and you'd never see it on any one invoice.</p></div>
 <p>The formula, once: <b>true cost per billable hour = (yearly labor + yearly overhead) ÷ billable hours</b>. The part people get wrong is the bottom of that fraction.</p>
 
-<h2>Pricing from the market</h2>
+</section><section class="slide"><h2>Pricing from the market</h2>
 <p>Most owners set prices by watching competitors. The problem is that you don't know if the other guy is making money either. If he's underpriced and you match him, you're both losing money and calling it competitive.</p>
 <p>Your price has to start from your own costs. What the market will bear tells you how much room you have above that, not where to start.</p>
 
-<h2>Estimates that drift</h2>
+</section><section class="slide"><h2>Estimates that drift</h2>
 <p>Even a good rate leaks if the hours on the estimate don't match the hours on the job. The usual causes:</p>
 <ul>
 <li>Drive time left off, or underestimated</li>
 <li>A return trip for a part nobody planned for</li>
 <li>"While you're here" extras that never made it onto the paperwork</li>
 </ul>
-<p>You don't need to fix every estimate. You need to know which direction they drift and by how much.</p>
-
-<section class="ws" id="worksheet">
+<p>You don't need to fix every estimate. You need to know which direction they drift and by how much.</p></section>
+<section class="slide ws" id="worksheet">
 <h2>Day 2 worksheet</h2>
 <p class="wi">Pull your last 5 jobs. For each one, compare what you quoted with what actually happened, including drive time and any return trips.</p>
 <div class="tipbox" id="th0" role="note" hidden>Something that tells you which job it was: the customer&#x27;s last name, the street, or your job or invoice number, plus what the work was (for example &quot;Smith, 12 Oak St, AC repair&quot; or &quot;#1042 water heater swap&quot;). Pick 5 recent jobs you quoted ahead of time, not quick service calls billed by the hour.</div><div class="tipbox" id="th1" role="note" hidden>The labor hours you built into the price when you quoted it. If you quoted a flat price, work out the hours you were picturing (price ÷ your hourly rate is a good guess).</div><div class="tipbox" id="th2" role="note" hidden>All the hours the job really took, for everyone on it: drive time there and back, any parts runs, any return trips, cleanup. Two techs for 3 hours is 6 hours. Your timesheets, GPS or job notes will have it.</div><div class="tipbox" id="th3" role="note" hidden>Hours actually spent minus hours quoted. A positive number means the job ran over. We figure it for you.</div><div class="tipbox" id="th4" role="note" hidden>Did anyone have to go back: a missing part, a callback, something that didn&#x27;t work the first time? Write Y or N.</div><p class="swipe">Swipe the table sideways to see every column.</p><div class="tbl"><table><thead><tr><th>Job <button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="th0">i</button></th><th>Hours quoted <button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="th1">i</button></th><th>Hours actually spent <button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="th2">i</button></th><th>Hours over <em>auto</em> <button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="th3">i</button></th><th>Return trip? (Y/N) <button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="th4">i</button></th></tr></thead><tbody><tr><td><input data-k="r0c0" id="r0c0" placeholder="e.g. Smith, AC repair" aria-label="Job, row 1"/></td><td><input data-k="r0c1" id="r0c1" inputmode="decimal" placeholder="" aria-label="Hours quoted, row 1"/></td><td><input data-k="r0c2" id="r0c2" inputmode="decimal" placeholder="" aria-label="Hours actually spent, row 1"/></td><td><input class="calc" data-row="0" data-calc="c[2]-c[1]" id="r0c3" readonly tabindex="-1" aria-label="Hours over, row 1"/></td><td><input data-k="r0c4" id="r0c4" placeholder="Y / N" aria-label="Return trip? (Y/N), row 1"/></td></tr><tr><td><input data-k="r1c0" id="r1c0" placeholder="e.g. Smith, AC repair" aria-label="Job, row 2"/></td><td><input data-k="r1c1" id="r1c1" inputmode="decimal" placeholder="" aria-label="Hours quoted, row 2"/></td><td><input data-k="r1c2" id="r1c2" inputmode="decimal" placeholder="" aria-label="Hours actually spent, row 2"/></td><td><input class="calc" data-row="1" data-calc="c[2]-c[1]" id="r1c3" readonly tabindex="-1" aria-label="Hours over, row 2"/></td><td><input data-k="r1c4" id="r1c4" placeholder="Y / N" aria-label="Return trip? (Y/N), row 2"/></td></tr><tr><td><input data-k="r2c0" id="r2c0" placeholder="e.g. Smith, AC repair" aria-label="Job, row 3"/></td><td><input data-k="r2c1" id="r2c1" inputmode="decimal" placeholder="" aria-label="Hours quoted, row 3"/></td><td><input data-k="r2c2" id="r2c2" inputmode="decimal" placeholder="" aria-label="Hours actually spent, row 3"/></td><td><input class="calc" data-row="2" data-calc="c[2]-c[1]" id="r2c3" readonly tabindex="-1" aria-label="Hours over, row 3"/></td><td><input data-k="r2c4" id="r2c4" placeholder="Y / N" aria-label="Return trip? (Y/N), row 3"/></td></tr><tr><td><input data-k="r3c0" id="r3c0" placeholder="e.g. Smith, AC repair" aria-label="Job, row 4"/></td><td><input data-k="r3c1" id="r3c1" inputmode="decimal" placeholder="" aria-label="Hours quoted, row 4"/></td><td><input data-k="r3c2" id="r3c2" inputmode="decimal" placeholder="" aria-label="Hours actually spent, row 4"/></td><td><input class="calc" data-row="3" data-calc="c[2]-c[1]" id="r3c3" readonly tabindex="-1" aria-label="Hours over, row 4"/></td><td><input data-k="r3c4" id="r3c4" placeholder="Y / N" aria-label="Return trip? (Y/N), row 4"/></td></tr><tr><td><input data-k="r4c0" id="r4c0" placeholder="e.g. Smith, AC repair" aria-label="Job, row 5"/></td><td><input data-k="r4c1" id="r4c1" inputmode="decimal" placeholder="" aria-label="Hours quoted, row 5"/></td><td><input data-k="r4c2" id="r4c2" inputmode="decimal" placeholder="" aria-label="Hours actually spent, row 5"/></td><td><input class="calc" data-row="4" data-calc="c[2]-c[1]" id="r4c3" readonly tabindex="-1" aria-label="Hours over, row 5"/></td><td><input data-k="r4c4" id="r4c4" placeholder="Y / N" aria-label="Return trip? (Y/N), row 5"/></td></tr></tbody></table></div><div class="lbl"><label for="f0">Your hourly labor rate</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t0">i</button></div><div class="tipbox" id="t0" role="note" hidden>What you charge per labor hour. If you price by the job, use what you&#x27;d charge for an hour of time-and-materials work.</div><div class="inp"><b>$</b><input id="f0" data-k="f0" inputmode=decimal/></div><div class="res" id="res" hidden><div class="res-row"><span>Hours quoted (all jobs)</span><b id="rQ">–</b></div>
@@ -146,9 +170,14 @@ footer a{color:#8AA5C0}
 <p class="after">Look at the Hours over column. If most of your jobs run over, your estimates have a leak, and so does every job you'll quote this month.</p>
 <div class="tools"><button type="button" onclick="window.print()">Print / save as PDF</button><button type="button" id="clr">Clear</button><span class="saved" id="saved">Your answers stay on this device only.</span></div>
 </section>
-<section class="cta"><h3>That's one leak. There are eleven more.</h3><p>Estimates are just one place money slips out. The $99 Profit Leak Snapshot looks at all 12, ranks your top 3 by what they cost you a year, and gives you the steps to fix each one. If you upgrade to a full plan later, the $99 counts toward it.</p><a class="btn" href="https://www.compassbizsolutions.com/trades?utm_source=course&utm_medium=lesson&utm_campaign=course-day2#plans-section">See the Snapshot →</a></section>
-<div class="next"><a href="/course/day-1">← Day 1</a><span class="soon">Day 3 arrives in your inbox tomorrow · <a href="/course/day-3">read it now →</a></span></div>
+<section class="slide last"><div class="cta"><h3>That's one leak. There are eleven more.</h3><p>Estimates are just one place money slips out. The $99 Profit Leak Snapshot looks at all 12, ranks your top 3 by what they cost you a year, and gives you the steps to fix each one. If you upgrade to a full plan later, the $99 counts toward it.</p><a class="btn" href="https://www.compassbizsolutions.com/trades?utm_source=course&utm_medium=lesson&utm_campaign=course-day2#plans-section">See the Snapshot →</a></div>
+<div class="next"><a href="/course/day-1">← Day 1</a><span class="soon">Day 3 arrives in your inbox tomorrow · <a href="/course/day-3">read it now →</a></span></div></section>
 </main>
+<nav class="pager" id="pager" aria-label="Slides">
+<button type="button" id="pPrev" aria-label="Previous slide">←</button>
+<div class="pbar"><div class="pfill" id="pFill"></div><span id="pCount"></span></div>
+<button type="button" id="pNext" class="go" aria-label="Next slide">Next →</button>
+</nav>
 <footer><div class="in">© Compass Business Solutions · <a href="/course">Course home</a> · <a href="/privacy-policy.html">Privacy</a></div></footer>
 <script src="/track.js"></script>
 <script>
@@ -203,6 +232,38 @@ return true; };
     data={}; try{localStorage.removeItem(KEY);}catch(e){}
     box.querySelectorAll('input[data-k]').forEach(function(i){i.value='';}); calc();
   });
+})();
+</script>
+<script>
+(function(){
+  var deck=document.getElementById('deck'), slides=[].slice.call(deck.querySelectorAll('.slide')), i=0;
+  var prev=document.getElementById('pPrev'), next=document.getElementById('pNext'), fill=document.getElementById('pFill'), count=document.getElementById('pCount');
+  document.documentElement.classList.add('slides');
+  function show(n, focus){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){ s.classList.toggle('on',k===i); s.setAttribute('aria-hidden',k===i?'false':'true'); });
+    fill.style.width=((i+1)/slides.length*100)+'%';
+    count.textContent=(i+1)+' / '+slides.length;
+    prev.disabled=i===0;
+    var last=i===slides.length-1, isWs=slides[i].id==='worksheet';
+    next.textContent=i===0?'Start →':last?'Done ✓':(slides[i+1].id==='worksheet'?'Worksheet →':'Next →');
+    next.disabled=last;
+    try{ history.replaceState(null,'','#'+(i+1)); }catch(e){}
+    window.scrollTo(0,0);
+    if(focus) slides[i].focus({preventScroll:true});
+  }
+  slides.forEach(function(s){ s.setAttribute('tabindex','-1'); });
+  next.addEventListener('click',function(){ show(i+1,true); });
+  prev.addEventListener('click',function(){ show(i-1,true); });
+  document.addEventListener('keydown',function(e){
+    if(/input|textarea|select/i.test((e.target||{}).tagName)) return;
+    if(e.key==='ArrowRight') show(i+1,true); else if(e.key==='ArrowLeft') show(i-1,true);
+  });
+  var x0=null,y0=null;
+  deck.addEventListener('touchstart',function(e){ if(e.target.closest('input,.tbl')) return; x0=e.touches[0].clientX; y0=e.touches[0].clientY; },{passive:true});
+  deck.addEventListener('touchend',function(e){ if(x0===null) return; var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=null; if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5) show(i+(dx<0?1:-1),false); });
+  var h=parseInt((location.hash||'').slice(1),10);
+  show(h>0?h-1:0,false);
 })();
 </script>
 <script src="/ask-jen.js" defer></script>

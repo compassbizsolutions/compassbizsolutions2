@@ -91,20 +91,45 @@ footer a{color:#8AA5C0}
 .res p{margin:10px 0 0;color:#fff;font-size:15px}
 .ws .swipe{display:none;font-size:13px;color:#8AA5C0;margin:0 0 6px}
 @media (max-width:600px){.ws .swipe{display:block}}
-@media print{.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
+html.slides .deck .slide{display:none}
+html.slides .deck .slide.on{display:block;animation:slidein .25s ease}
+html.slides .deck .slide.hero.on{display:flex}
+@keyframes slidein{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.deck{max-width:760px;margin:0 auto;padding:28px 20px 120px;overflow-x:clip}
+.deck .slide{min-height:calc(100vh - 230px);outline:none}
+html:not(.slides) .deck .slide{min-height:0;margin-bottom:28px}
+.deck .slide.hero{background:var(--navy);color:#fff;border-radius:18px;padding:34px 28px;display:flex;flex-direction:column;justify-content:center}
+.deck .slide.hero h1{margin:10px 0 14px}
+.deck .slide:not(.hero):not(.ws):not(.last){background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px 26px}
+.deck .slide.ws{margin:0}
+.deck .slide.last .cta{margin-top:0}
+.deck h2:first-child{margin-top:0}
+.pager{position:fixed;left:0;right:0;bottom:0;background:rgba(244,247,252,.96);backdrop-filter:blur(6px);border-top:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:12px max(16px,calc(50% - 380px));z-index:5}
+html:not(.slides) .pager{display:none}
+.pager button{border:2px solid var(--navy);background:#fff;color:var(--navy);border-radius:10px;font:800 18px 'Barlow Condensed',sans-serif;letter-spacing:.5px;text-transform:uppercase;padding:10px 16px;cursor:pointer;min-width:52px}
+.pager button.go{background:var(--amber);border-color:var(--amber);color:#fff;padding:10px 22px}
+.pager button:disabled{opacity:.35;cursor:default}
+.pbar{flex:1;position:relative;height:8px;background:var(--line);border-radius:99px}
+.pfill{position:absolute;left:0;top:0;bottom:0;background:var(--amber);border-radius:99px;transition:width .25s}
+.pbar span{position:absolute;right:0;top:12px;font-size:12px;color:var(--ink2);font-weight:700}
+footer{padding-bottom:90px}
+.logo{white-space:nowrap}
+@media (max-width:520px){.top .in{flex-wrap:wrap;row-gap:10px}.logo{font-size:15px}.dots{gap:4px}.dots a{width:26px;height:26px;font-size:13px}.top .in{padding:14px 16px}
+.deck{padding:16px 14px 110px}.deck .slide:not(.hero):not(.ws):not(.last){padding:22px 18px}.deck .slide.hero{padding:28px 20px}.deck .slide{min-height:calc(100vh - 190px)}
+.pager{gap:10px}.pager button{padding:9px 12px}.pager button.go{padding:9px 16px}}
+@media print{html.slides .deck .slide{display:block}.pager{display:none!important}.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
 </style>
 </head>
 <body>
 <div class="top"><div class="in"><a href="/" class="logo">COMPASS <span>BUSINESS</span> SOLUTIONS</a><nav class="dots" aria-label="Lessons"><a href="/course/day-1" class="" aria-label="Day 1">1</a><a href="/course/day-2" class="" aria-label="Day 2">2</a><a href="/course/day-3" class="" aria-label="Day 3">3</a><a href="/course/day-4" class="on" aria-label="Day 4">4</a><a href="/course/day-5" class="" aria-label="Day 5">5</a></nav></div></div>
-<header class="hero"><div class="in">
+<main class="deck" id="deck">
+<section class="slide hero">
 <div class="eyebrow">Run Your Shop Like a Business · Day 4 of 5</div>
 <h1>Getting paid (and your own time)</h1>
-<div class="meta">About a 6-minute read, plus a short worksheet</div>
+<div class="meta">About 6 minutes, in short slides, plus a worksheet</div>
 <p class="intro">You did the work. So why isn't the money here yet? Every day an invoice sits unsent or unpaid, you're lending your customer money for free. Today covers the gaps that slow your cash, and the math on the hours you spend chasing it.</p>
-</div></header>
-<main>
-
-<h2>The three cash gaps</h2>
+</section>
+<section class="slide"><h2>The three cash gaps</h2>
 <ol>
 <li><b>Job done → invoice sent.</b> If invoices go out at the end of the week, or whenever you get to them, every job waits days before the clock even starts.</li>
 <li><b>Invoice sent → paid.</b> No reminder means the invoice sits at the bottom of someone's pile.</li>
@@ -112,23 +137,22 @@ footer a{color:#8AA5C0}
 </ol>
 <p>Slow cash costs more than it looks. It forces you to float payroll and materials on a credit card, which adds interest on top of the money you're already waiting for.</p>
 
-<h2>Work you did but never billed</h2>
+</section><section class="slide"><h2>Work you did but never billed</h2>
 <p>The most expensive leak is the one with no invoice at all: the extra part, the change the customer asked for on site, the second trip. It happened, it cost you, and nobody wrote it down.</p>
 
-<h2>Take the awkward out of collections</h2>
+</section><section class="slide"><h2>Take the awkward out of collections</h2>
 <p>Most owners avoid chasing money because it feels personal. The way around that is a standard schedule that every invoice follows, so nobody's singled out. Same reminders, same days, every time. When it's routine, customers stop taking it personally, and so do you.</p>
 
-<h2>The math on your own time</h2>
+</section><section class="slide"><h2>The math on your own time</h2>
 <p>Here's the part most owners skip. How many hours a week do you spend on invoices, follow-ups, scheduling and paperwork?</p>
-<div class="ex"><div class="ex-h">Example (plug in your own numbers)</div>
+</section><section class="slide"><div class="ex"><div class="ex-h">Example (plug in your own numbers)</div>
 <p>8 hours a week on the office is about 35 hours a month. If an hour of your time on a job bills at $95, that's about <b>$3,300 a month</b> of work you could have billed instead.</p></div>
 <p>Your options for getting those hours back:</p>
 <div class="compare">
 <div><div class="c-h">Hire a part-time admin</div><div class="c-p">≈ $1,300–$1,650/mo</div><p>15 hours a week at $18–22 an hour, plus payroll taxes. You pay for those hours whether there's work or not, plus the time to hire, train, and replace them.</p></div>
 <div><div class="c-h">Hand it to Compass</div><div class="c-p">$250 · $450 · $799/mo</div><p>Up to 5, 10 or 20 hours a month. Month-to-month, no payroll, no training. You pay for the hours you actually need.</p><a href="https://www.compassbizsolutions.com/pricing?utm_source=course&utm_medium=lesson&utm_campaign=course-day4">See the admin plans →</a></div>
-</div>
-
-<section class="ws" id="worksheet">
+</div></section>
+<section class="slide ws" id="worksheet">
 <h2>Day 4 worksheet</h2>
 <p class="wi">Two lists and one number. This one's worth doing with your invoices open.</p>
 <div class="lbl"><label for="f0">Invoices older than 30 days: how many?</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t0">i</button></div><div class="tipbox" id="t0" role="note" hidden>Open your invoicing or accounting software and filter for unpaid invoices dated more than 30 days ago.</div><div class="inp"><b>#</b><input id="f0" data-k="f0" inputmode=decimal/></div><div class="lbl"><label for="f1">Their total</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t1">i</button></div><div class="tipbox" id="t1" role="note" hidden>Add up what&#x27;s still owed on those invoices. This is money you&#x27;ve earned and haven&#x27;t collected.</div><div class="inp"><b>$</b><input id="f1" data-k="f1" inputmode=decimal/></div><div class="lbl"><label for="f2">Jobs in your last 10 with work done but not billed</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t2">i</button></div><div class="tipbox" id="t2" role="note" hidden>Look at your last 10 jobs. Count any where something happened that never made the invoice: an extra part, a change the customer asked for, a second trip.</div><div class="inp"><b>#</b><input id="f2" data-k="f2" inputmode=decimal/></div><div class="lbl"><label for="f3">Days from job done to invoice sent, usually</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t3">i</button></div><div class="tipbox" id="t3" role="note" hidden>On a typical job, how many days pass between finishing the work and the customer getting the invoice? Same day is 0.</div><div class="inp"><b>#</b><input id="f3" data-k="f3" inputmode=decimal/></div><div class="lbl"><label for="f4">Hours a week you spend on office work</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t4">i</button></div><div class="tipbox" id="t4" role="note" hidden>Everything that isn&#x27;t hands-on work or selling: invoicing, chasing payments, scheduling, returning calls, ordering, paperwork, bookkeeping. Include nights and weekends.</div><div class="inp"><b>#</b><input id="f4" data-k="f4" inputmode=decimal/></div><div class="lbl"><label for="f5">What an hour of your time bills at</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t5">i</button></div><div class="tipbox" id="t5" role="note" hidden>What you&#x27;d charge a customer for an hour of your time on a job. If you don&#x27;t work in the field anymore, use your shop&#x27;s hourly labor rate.</div><div class="inp"><b>$</b><input id="f5" data-k="f5" inputmode=decimal/></div><div class="lbl"><label for="f6">Office hours a month <em>auto</em></label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t6">i</button></div><div class="tipbox" id="t6" role="note" hidden>Your weekly office hours × 4.3 weeks. We figure it for you.</div><div class="inp"><b>#</b><input id="f6" class="calc" data-calc="v[4]*4.33" readonly tabindex="-1" placeholder="Figured for you"/></div><div class="lbl"><label for="f7">What those hours are worth a month <em>auto</em></label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t7">i</button></div><div class="tipbox" id="t7" role="note" hidden>Office hours a month × your hourly rate. That&#x27;s work you could have billed instead. We figure it for you.</div><div class="inp"><b>$</b><input id="f7" class="calc" data-calc="v[4]*4.33*v[5]" data-money=1 readonly tabindex="-1" placeholder="Figured for you"/></div><div class="res" id="res" hidden><div class="res-row"><span>Owed to you over 30 days</span><b id="rOwed">–</b></div>
@@ -139,9 +163,14 @@ footer a{color:#8AA5C0}
 <p class="after">If the last line is bigger than what help would cost, the paperwork is the most expensive job you do.</p>
 <div class="tools"><button type="button" onclick="window.print()">Print / save as PDF</button><button type="button" id="clr">Clear</button><span class="saved" id="saved">Your answers stay on this device only.</span></div>
 </section>
-<section class="cta"><h3>Ready to actually fix them?</h3><p>You've spotted the leaks this week. The FixKit 30-Day Plan turns fixing them into one 15–20 minute task a day, in the order that pays back fastest, with progress tracking and Ask Jen when you get stuck. $249 ($150 if you have the Snapshot).</p><a class="btn" href="https://www.compassbizsolutions.com/trades?utm_source=course&utm_medium=lesson&utm_campaign=course-day4#plans-section">See the 30-Day Plan →</a></section>
-<div class="next"><a href="/course/day-3">← Day 3</a><span class="soon">Day 5 arrives in your inbox tomorrow · <a href="/course/day-5">read it now →</a></span></div>
+<section class="slide last"><div class="cta"><h3>Ready to actually fix them?</h3><p>You've spotted the leaks this week. The FixKit 30-Day Plan turns fixing them into one 15–20 minute task a day, in the order that pays back fastest, with progress tracking and Ask Jen when you get stuck. $249 ($150 if you have the Snapshot).</p><a class="btn" href="https://www.compassbizsolutions.com/trades?utm_source=course&utm_medium=lesson&utm_campaign=course-day4#plans-section">See the 30-Day Plan →</a></div>
+<div class="next"><a href="/course/day-3">← Day 3</a><span class="soon">Day 5 arrives in your inbox tomorrow · <a href="/course/day-5">read it now →</a></span></div></section>
 </main>
+<nav class="pager" id="pager" aria-label="Slides">
+<button type="button" id="pPrev" aria-label="Previous slide">←</button>
+<div class="pbar"><div class="pfill" id="pFill"></div><span id="pCount"></span></div>
+<button type="button" id="pNext" class="go" aria-label="Next slide">Next →</button>
+</nav>
 <footer><div class="in">© Compass Business Solutions · <a href="/course">Course home</a> · <a href="/privacy-policy.html">Privacy</a></div></footer>
 <script src="/track.js"></script>
 <script>
@@ -196,6 +225,38 @@ return true; };
     data={}; try{localStorage.removeItem(KEY);}catch(e){}
     box.querySelectorAll('input[data-k]').forEach(function(i){i.value='';}); calc();
   });
+})();
+</script>
+<script>
+(function(){
+  var deck=document.getElementById('deck'), slides=[].slice.call(deck.querySelectorAll('.slide')), i=0;
+  var prev=document.getElementById('pPrev'), next=document.getElementById('pNext'), fill=document.getElementById('pFill'), count=document.getElementById('pCount');
+  document.documentElement.classList.add('slides');
+  function show(n, focus){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){ s.classList.toggle('on',k===i); s.setAttribute('aria-hidden',k===i?'false':'true'); });
+    fill.style.width=((i+1)/slides.length*100)+'%';
+    count.textContent=(i+1)+' / '+slides.length;
+    prev.disabled=i===0;
+    var last=i===slides.length-1, isWs=slides[i].id==='worksheet';
+    next.textContent=i===0?'Start →':last?'Done ✓':(slides[i+1].id==='worksheet'?'Worksheet →':'Next →');
+    next.disabled=last;
+    try{ history.replaceState(null,'','#'+(i+1)); }catch(e){}
+    window.scrollTo(0,0);
+    if(focus) slides[i].focus({preventScroll:true});
+  }
+  slides.forEach(function(s){ s.setAttribute('tabindex','-1'); });
+  next.addEventListener('click',function(){ show(i+1,true); });
+  prev.addEventListener('click',function(){ show(i-1,true); });
+  document.addEventListener('keydown',function(e){
+    if(/input|textarea|select/i.test((e.target||{}).tagName)) return;
+    if(e.key==='ArrowRight') show(i+1,true); else if(e.key==='ArrowLeft') show(i-1,true);
+  });
+  var x0=null,y0=null;
+  deck.addEventListener('touchstart',function(e){ if(e.target.closest('input,.tbl')) return; x0=e.touches[0].clientX; y0=e.touches[0].clientY; },{passive:true});
+  deck.addEventListener('touchend',function(e){ if(x0===null) return; var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=null; if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5) show(i+(dx<0?1:-1),false); });
+  var h=parseInt((location.hash||'').slice(1),10);
+  show(h>0?h-1:0,false);
 })();
 </script>
 <script src="/ask-jen.js" defer></script>
