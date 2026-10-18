@@ -13,6 +13,7 @@
 const HOME = "https://www.compassbizsolutions.com/";
 const KNOWN = {
   check: "https://www.compassbizsolutions.com/trades?start=1",
+  course: "https://www.compassbizsolutions.com/course",
   call: "https://calendly.com/jvoiselle612-s9gb/free-scoping-call",
   reviewkit: "https://www.compassbizsolutions.com/reviewkit",
   fieldkit: "https://www.compassbizsolutions.com/fieldkit",
