@@ -91,41 +91,65 @@ footer a{color:#8AA5C0}
 .res p{margin:10px 0 0;color:#fff;font-size:15px}
 .ws .swipe{display:none;font-size:13px;color:#8AA5C0;margin:0 0 6px}
 @media (max-width:600px){.ws .swipe{display:block}}
-@media print{.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
+html.slides .deck .slide{display:none}
+html.slides .deck .slide.on{display:block;animation:slidein .25s ease}
+html.slides .deck .slide.hero.on{display:flex}
+@keyframes slidein{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.deck{max-width:760px;margin:0 auto;padding:28px 20px 120px;overflow-x:clip}
+.deck .slide{min-height:calc(100vh - 230px);outline:none}
+html:not(.slides) .deck .slide{min-height:0;margin-bottom:28px}
+.deck .slide.hero{background:var(--navy);color:#fff;border-radius:18px;padding:34px 28px;display:flex;flex-direction:column;justify-content:center}
+.deck .slide.hero h1{margin:10px 0 14px}
+.deck .slide:not(.hero):not(.ws):not(.last){background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px 26px}
+.deck .slide.ws{margin:0}
+.deck .slide.last .cta{margin-top:0}
+.deck h2:first-child{margin-top:0}
+.pager{position:fixed;left:0;right:0;bottom:0;background:rgba(244,247,252,.96);backdrop-filter:blur(6px);border-top:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:12px max(16px,calc(50% - 380px));z-index:5}
+html:not(.slides) .pager{display:none}
+.pager button{border:2px solid var(--navy);background:#fff;color:var(--navy);border-radius:10px;font:800 18px 'Barlow Condensed',sans-serif;letter-spacing:.5px;text-transform:uppercase;padding:10px 16px;cursor:pointer;min-width:52px}
+.pager button.go{background:var(--amber);border-color:var(--amber);color:#fff;padding:10px 22px}
+.pager button:disabled{opacity:.35;cursor:default}
+.pbar{flex:1;position:relative;height:8px;background:var(--line);border-radius:99px}
+.pfill{position:absolute;left:0;top:0;bottom:0;background:var(--amber);border-radius:99px;transition:width .25s}
+.pbar span{position:absolute;right:0;top:12px;font-size:12px;color:var(--ink2);font-weight:700}
+footer{padding-bottom:90px}
+.logo{white-space:nowrap}
+@media (max-width:520px){.top .in{flex-wrap:wrap;row-gap:10px}.logo{font-size:15px}.dots{gap:4px}.dots a{width:26px;height:26px;font-size:13px}.top .in{padding:14px 16px}
+.deck{padding:16px 14px 110px}.deck .slide:not(.hero):not(.ws):not(.last){padding:22px 18px}.deck .slide.hero{padding:28px 20px}.deck .slide{min-height:calc(100vh - 190px)}
+.pager{gap:10px}.pager button{padding:9px 12px}.pager button.go{padding:9px 16px}}
+@media print{html.slides .deck .slide{display:block}.pager{display:none!important}.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
 </style>
 </head>
 <body>
 <div class="top"><div class="in"><a href="/" class="logo">COMPASS <span>BUSINESS</span> SOLUTIONS</a><nav class="dots" aria-label="Lessons"><a href="/course/day-1" class="on" aria-label="Day 1">1</a><a href="/course/day-2" class="" aria-label="Day 2">2</a><a href="/course/day-3" class="" aria-label="Day 3">3</a><a href="/course/day-4" class="" aria-label="Day 4">4</a><a href="/course/day-5" class="" aria-label="Day 5">5</a></nav></div></div>
-<header class="hero"><div class="in">
+<main class="deck" id="deck">
+<section class="slide hero">
 <div class="eyebrow">Run Your Shop Like a Business · Day 1 of 5</div>
 <h1>Know your real numbers</h1>
-<div class="meta">About a 5-minute read, plus a short worksheet</div>
+<div class="meta">About 5 minutes, in short slides, plus a worksheet</div>
 <p class="intro">Most trades shops keep 2 to 3 cents of every dollar they bring in. Industry benchmarks say 20 cents is doable. On $1 million in revenue, that's the difference between $20,000 and $200,000 in your pocket. Today is about seeing which side of that gap you're on.</p>
-</div></header>
-<main>
-
-<h2>Revenue isn't profit</h2>
+</section>
+<section class="slide"><h2>Revenue isn't profit</h2>
 <p>A full schedule feels like a healthy business. But you can be booked solid and still lose money, because revenue only tells you how much came in. It says nothing about how much stayed.</p>
 <p>Two numbers tell you what stayed:</p>
 <ul>
 <li><b>Gross margin</b> is what's left after the job's own costs: the labor on that job, the materials, the fuel to get there, disposal.</li>
 <li><b>Net profit</b> is what's left after <i>everything</i>: insurance, trucks and their payments, the shop, software, phones, office help, and your own pay.</li>
 </ul>
-<div class="ex"><div class="ex-h">Example (made-up numbers)</div>
+</section><section class="slide"><div class="ex"><div class="ex-h">Example (made-up numbers)</div>
 <p>A $1,000 job. Labor on the job $350, materials $250, fuel and disposal $50. That leaves <b>$350 gross</b> (35%).</p>
 <p>Now each job also has to carry its share of overhead: insurance, trucks, the phone bill, software. Say that's $250 per job. That leaves <b>$100 net</b> (10%), and that's before you've paid yourself anything.</p></div>
 
-<h2>Pay yourself first, on paper</h2>
+</section><section class="slide"><h2>Pay yourself first, on paper</h2>
 <p>A lot of owners never put themselves on the payroll. Whatever's left at the end of the year is "profit," and that's what they live on.</p>
 <p>Here's the problem: if you'd have to pay someone $70,000 to do your job, then the first $70,000 of "profit" is really just your wage. If your business made $60,000 and you took all of it home, the business didn't make money. You did, by working for less than your job is worth.</p>
 <p>To see the real picture, subtract a fair wage for your own job before you call anything profit.</p>
 
-<h2>Where the money hides</h2>
+</section><section class="slide"><h2>Where the money hides</h2>
 <p>The gap between gross and net is where profit leaks. In trades shops, it's almost always the same handful of places:</p>
 <div class="chips"><span>Rates that haven't moved</span><span>Estimates that run over</span><span>Callbacks and rework</span><span>Hours nobody bills</span><span>No-shows and empty slots</span><span>Drive time and parts runs</span><span>Invoices sent late</span><span>Balances nobody chases</span><span>Materials sold at cost</span><span>Extras never invoiced</span><span>Quotes never followed up</span><span>Too few reviews, too few calls</span></div>
-<p>Over the next four days we'll walk through the biggest ones: pricing, scheduling, getting paid, and making fixes stick.</p>
-
-<section class="ws" id="worksheet">
+<p>Over the next four days we'll walk through the biggest ones: pricing, scheduling, getting paid, and making fixes stick.</p></section>
+<section class="slide ws" id="worksheet">
 <h2>Day 1 worksheet</h2>
 <p class="wi">Fill this in from last year's numbers. Rough is fine. If you can't find a number, write down your best guess and circle it.</p>
 <div class="lbl"><label for="f0">Last year&#x27;s revenue</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t0">i</button></div><div class="tipbox" id="t0" role="note" hidden>Everything that came in from customers last year, before you paid anything out. Your tax return, accounting software, or bank deposits will have it.</div><div class="inp"><b>$</b><input id="f0" data-k="f0" inputmode=decimal/></div><div class="lbl"><label for="f1">Total job costs</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t1">i</button></div><div class="tipbox" id="t1" role="note" hidden>What it cost to do the jobs themselves: wages for the hours your crew spent on jobs, materials and parts, fuel to get there, dump and permit fees. Not office or truck payments.</div><div class="inp"><b>$</b><input id="f1" data-k="f1" inputmode=decimal/></div><div class="lbl"><label for="f2">Gross margin <em>auto</em></label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t2">i</button></div><div class="tipbox" id="t2" role="note" hidden>Revenue minus job costs. This is what&#x27;s left to pay for everything else. We figure it for you.</div><div class="inp"><b>$</b><input id="f2" class="calc" data-calc="v[0]-v[1]" data-money=1 readonly tabindex="-1" placeholder="Figured for you"/></div><div class="lbl"><label for="f3">Overhead</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t3">i</button></div><div class="tipbox" id="t3" role="note" hidden>Costs you pay whether or not you work a job: insurance, truck payments, shop rent, software, phones, accounting, office help. Leave out your own pay; that comes next.</div><div class="inp"><b>$</b><input id="f3" data-k="f3" inputmode=decimal/></div><div class="lbl"><label for="f4">What you actually took home</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t4">i</button></div><div class="tipbox" id="t4" role="note" hidden>What you paid yourself last year in total: paychecks, owner draws and distributions. This is just for comparison.</div><div class="inp"><b>$</b><input id="f4" data-k="f4" inputmode=decimal/></div><div class="lbl"><label for="f5">A fair wage for your job</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t5">i</button></div><div class="tipbox" id="t5" role="note" hidden>Your job here means everything you do as the owner: running the crews, quoting and selling, ordering parts, answering the phone, scheduling, doing the books, and any hours you still work in the field. Ask yourself: if I had to hire one person to do all of that so I could step away, what would I have to pay them for a year? If you&#x27;re not sure, look up job postings near you for an operations manager or general manager at a trades company and use that salary. Use a yearly number before taxes, and include it even if you&#x27;ve never paid yourself that much.</div><div class="inp"><b>$</b><input id="f5" data-k="f5" inputmode=decimal/></div><div class="lbl"><label for="f6">Real net profit <em>auto</em></label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t6">i</button></div><div class="tipbox" id="t6" role="note" hidden>Gross margin, minus overhead, minus a fair wage for you. This is what the business itself earned. We figure it for you.</div><div class="inp"><b>$</b><input id="f6" class="calc" data-calc="v[2]-v[3]-v[5]" data-money=1 readonly tabindex="-1" placeholder="Figured for you"/></div><div class="res" id="res" hidden><div class="res-row"><span>Gross margin</span><b id="rGross">–</b></div>
@@ -135,9 +159,14 @@ footer a{color:#8AA5C0}
 <p class="after">Don't worry if some numbers are guesses. Rough numbers still show you which side of the gap you're on, and that's what this week is for.</p>
 <div class="tools"><button type="button" onclick="window.print()">Print / save as PDF</button><button type="button" id="clr">Clear</button><span class="saved" id="saved">Your answers stay on this device only.</span></div>
 </section>
-<section class="cta"><h3>You found your number. Now find where it's going.</h3><p>This worksheet shows how much you keep. The free business check shows why: 21 questions (about 10 minutes) that pinpoint your top 3 profit leaks and what each one costs you a year.</p><a class="btn" href="https://www.compassbizsolutions.com/check?utm_source=course&utm_medium=lesson&utm_campaign=course-day1">Run the free check →</a></section>
-<div class="next"><a href="/course">← Course home</a><span class="soon">Day 2 arrives in your inbox tomorrow · <a href="/course/day-2">read it now →</a></span></div>
+<section class="slide last"><div class="cta"><h3>You found your number. Now find where it's going.</h3><p>This worksheet shows how much you keep. The free business check shows why: 21 questions (about 10 minutes) that pinpoint your top 3 profit leaks and what each one costs you a year.</p><a class="btn" href="https://www.compassbizsolutions.com/check?utm_source=course&utm_medium=lesson&utm_campaign=course-day1">Run the free check →</a></div>
+<div class="next"><a href="/course">← Course home</a><span class="soon">Day 2 arrives in your inbox tomorrow · <a href="/course/day-2">read it now →</a></span></div></section>
 </main>
+<nav class="pager" id="pager" aria-label="Slides">
+<button type="button" id="pPrev" aria-label="Previous slide">←</button>
+<div class="pbar"><div class="pfill" id="pFill"></div><span id="pCount"></span></div>
+<button type="button" id="pNext" class="go" aria-label="Next slide">Next →</button>
+</nav>
 <footer><div class="in">© Compass Business Solutions · <a href="/course">Course home</a> · <a href="/privacy-policy.html">Privacy</a></div></footer>
 <script src="/track.js"></script>
 <script>
@@ -190,6 +219,38 @@ return true; };
     data={}; try{localStorage.removeItem(KEY);}catch(e){}
     box.querySelectorAll('input[data-k]').forEach(function(i){i.value='';}); calc();
   });
+})();
+</script>
+<script>
+(function(){
+  var deck=document.getElementById('deck'), slides=[].slice.call(deck.querySelectorAll('.slide')), i=0;
+  var prev=document.getElementById('pPrev'), next=document.getElementById('pNext'), fill=document.getElementById('pFill'), count=document.getElementById('pCount');
+  document.documentElement.classList.add('slides');
+  function show(n, focus){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){ s.classList.toggle('on',k===i); s.setAttribute('aria-hidden',k===i?'false':'true'); });
+    fill.style.width=((i+1)/slides.length*100)+'%';
+    count.textContent=(i+1)+' / '+slides.length;
+    prev.disabled=i===0;
+    var last=i===slides.length-1, isWs=slides[i].id==='worksheet';
+    next.textContent=i===0?'Start →':last?'Done ✓':(slides[i+1].id==='worksheet'?'Worksheet →':'Next →');
+    next.disabled=last;
+    try{ history.replaceState(null,'','#'+(i+1)); }catch(e){}
+    window.scrollTo(0,0);
+    if(focus) slides[i].focus({preventScroll:true});
+  }
+  slides.forEach(function(s){ s.setAttribute('tabindex','-1'); });
+  next.addEventListener('click',function(){ show(i+1,true); });
+  prev.addEventListener('click',function(){ show(i-1,true); });
+  document.addEventListener('keydown',function(e){
+    if(/input|textarea|select/i.test((e.target||{}).tagName)) return;
+    if(e.key==='ArrowRight') show(i+1,true); else if(e.key==='ArrowLeft') show(i-1,true);
+  });
+  var x0=null,y0=null;
+  deck.addEventListener('touchstart',function(e){ if(e.target.closest('input,.tbl')) return; x0=e.touches[0].clientX; y0=e.touches[0].clientY; },{passive:true});
+  deck.addEventListener('touchend',function(e){ if(x0===null) return; var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=null; if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5) show(i+(dx<0?1:-1),false); });
+  var h=parseInt((location.hash||'').slice(1),10);
+  show(h>0?h-1:0,false);
 })();
 </script>
 <script src="/ask-jen.js" defer></script>

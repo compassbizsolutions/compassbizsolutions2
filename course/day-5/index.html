@@ -91,23 +91,48 @@ footer a{color:#8AA5C0}
 .res p{margin:10px 0 0;color:#fff;font-size:15px}
 .ws .swipe{display:none;font-size:13px;color:#8AA5C0;margin:0 0 6px}
 @media (max-width:600px){.ws .swipe{display:block}}
-@media print{.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
+html.slides .deck .slide{display:none}
+html.slides .deck .slide.on{display:block;animation:slidein .25s ease}
+html.slides .deck .slide.hero.on{display:flex}
+@keyframes slidein{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.deck{max-width:760px;margin:0 auto;padding:28px 20px 120px;overflow-x:clip}
+.deck .slide{min-height:calc(100vh - 230px);outline:none}
+html:not(.slides) .deck .slide{min-height:0;margin-bottom:28px}
+.deck .slide.hero{background:var(--navy);color:#fff;border-radius:18px;padding:34px 28px;display:flex;flex-direction:column;justify-content:center}
+.deck .slide.hero h1{margin:10px 0 14px}
+.deck .slide:not(.hero):not(.ws):not(.last){background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px 26px}
+.deck .slide.ws{margin:0}
+.deck .slide.last .cta{margin-top:0}
+.deck h2:first-child{margin-top:0}
+.pager{position:fixed;left:0;right:0;bottom:0;background:rgba(244,247,252,.96);backdrop-filter:blur(6px);border-top:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:12px max(16px,calc(50% - 380px));z-index:5}
+html:not(.slides) .pager{display:none}
+.pager button{border:2px solid var(--navy);background:#fff;color:var(--navy);border-radius:10px;font:800 18px 'Barlow Condensed',sans-serif;letter-spacing:.5px;text-transform:uppercase;padding:10px 16px;cursor:pointer;min-width:52px}
+.pager button.go{background:var(--amber);border-color:var(--amber);color:#fff;padding:10px 22px}
+.pager button:disabled{opacity:.35;cursor:default}
+.pbar{flex:1;position:relative;height:8px;background:var(--line);border-radius:99px}
+.pfill{position:absolute;left:0;top:0;bottom:0;background:var(--amber);border-radius:99px;transition:width .25s}
+.pbar span{position:absolute;right:0;top:12px;font-size:12px;color:var(--ink2);font-weight:700}
+footer{padding-bottom:90px}
+.logo{white-space:nowrap}
+@media (max-width:520px){.top .in{flex-wrap:wrap;row-gap:10px}.logo{font-size:15px}.dots{gap:4px}.dots a{width:26px;height:26px;font-size:13px}.top .in{padding:14px 16px}
+.deck{padding:16px 14px 110px}.deck .slide:not(.hero):not(.ws):not(.last){padding:22px 18px}.deck .slide.hero{padding:28px 20px}.deck .slide{min-height:calc(100vh - 190px)}
+.pager{gap:10px}.pager button{padding:9px 12px}.pager button.go{padding:9px 16px}}
+@media print{html.slides .deck .slide{display:block}.pager{display:none!important}.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
 </style>
 </head>
 <body>
 <div class="top"><div class="in"><a href="/" class="logo">COMPASS <span>BUSINESS</span> SOLUTIONS</a><nav class="dots" aria-label="Lessons"><a href="/course/day-1" class="" aria-label="Day 1">1</a><a href="/course/day-2" class="" aria-label="Day 2">2</a><a href="/course/day-3" class="" aria-label="Day 3">3</a><a href="/course/day-4" class="" aria-label="Day 4">4</a><a href="/course/day-5" class="on" aria-label="Day 5">5</a></nav></div></div>
-<header class="hero"><div class="in">
+<main class="deck" id="deck">
+<section class="slide hero">
 <div class="eyebrow">Run Your Shop Like a Business · Day 5 of 5</div>
 <h1>Making fixes stick</h1>
-<div class="meta">About a 5-minute read, plus a short worksheet</div>
+<div class="meta">About 5 minutes, in short slides, plus a worksheet</div>
 <p class="intro">Most owners fix a leak in a good month. Then it comes back in a busy one. This last lesson is about why that happens and how the most profitable shops keep their gains.</p>
-</div></header>
-<main>
-
-<h2>Why leaks come back</h2>
+</section>
+<section class="slide"><h2>Why leaks come back</h2>
 <p>A fix that lives in your head lasts until you get busy. You raise prices on new quotes, then forget during the spring rush. You start sending confirmations, then stop the first week you're short a tech. Nobody decided to stop. It just wasn't anyone's job.</p>
 
-<h2>Written down, owned, checked</h2>
+</section><section class="slide"><h2>Written down, owned, checked</h2>
 <p>A fix sticks when three things are true:</p>
 <ul>
 <li><b>It's written down.</b> What exactly happens, in a sentence anyone could follow.</li>
@@ -115,13 +140,13 @@ footer a{color:#8AA5C0}
 <li><b>Someone checks it.</b> A number you look at every week that tells you it's still happening.</li>
 </ul>
 
-<h2>Let the system remember</h2>
+</section><section class="slide"><h2>Let the system remember</h2>
 <p>The fixes that last longest are the ones nobody has to remember: confirmation texts that send themselves, review requests that go out after every job, invoice reminders on a schedule. If it repeats, automate it, so a bad week doesn't undo it.</p>
 
-<h2>Reviews are a lead source</h2>
+</section><section class="slide"><h2>Reviews are a lead source</h2>
 <p>Reviews aren't a vanity number. They're where a lot of your calls come from. Shops that ask after every job, make it one tap, and reply to every review (good and bad) get more calls than shops that do great work quietly.</p>
 
-<h2>What profitable shops have in common</h2>
+</section><section class="slide"><h2>What profitable shops have in common</h2>
 <ol>
 <li>They know their numbers, including a fair wage for the owner.</li>
 <li>They price from their own costs, not the competition's.</li>
@@ -129,18 +154,22 @@ footer a{color:#8AA5C0}
 <li>They invoice the same day and follow up on a schedule.</li>
 <li>They write their processes down.</li>
 </ol>
-<p>You now know where to look. What you don't know yet is <i>your</i> number, which leak to fix first, and in what order. That part is different for every shop.</p>
-
-<section class="ws" id="worksheet">
+<p>You now know where to look. What you don't know yet is <i>your</i> number, which leak to fix first, and in what order. That part is different for every shop.</p></section>
+<section class="slide ws" id="worksheet">
 <h2>Day 5 worksheet</h2>
 <p class="wi">Pick one leak from this week, just one, and make a plan for it.</p>
 <div class="lbl"><label for="f0">The leak that stung most this week</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t0">i</button></div><div class="tipbox" id="t0" role="note" hidden>Pick the one from Days 1–4 that cost the most or bugged you most: pricing, estimates running over, no-shows, slow invoices, unbilled work, or your own office time.</div><div class="inp"><b></b><input id="f0" data-k="f0" /></div><div class="lbl"><label for="f1">What exactly will change (one sentence)</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t1">i</button></div><div class="tipbox" id="t1" role="note" hidden>Write it so anyone could follow it. For example: &quot;Every appointment gets a reminder text the day before by 4 pm.&quot;</div><div class="inp"><b></b><input id="f1" data-k="f1" /></div><div class="lbl"><label for="f2">Who owns it</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t2">i</button></div><div class="tipbox" id="t2" role="note" hidden>One person&#x27;s name, not &quot;the office&quot; or &quot;we.&quot; It can be you.</div><div class="inp"><b></b><input id="f2" data-k="f2" /></div><div class="lbl"><label for="f3">Done by (date)</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t3">i</button></div><div class="tipbox" id="t3" role="note" hidden>A real date in the next two weeks. Put it in your calendar now.</div><div class="inp"><b></b><input id="f3" data-k="f3" /></div><div class="lbl"><label for="f4">The number you&#x27;ll check every week</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t4">i</button></div><div class="tipbox" id="t4" role="note" hidden>How you&#x27;ll know it&#x27;s working, for example no-shows per week, days to invoice, or hours over on quoted jobs.</div><div class="inp"><b></b><input id="f4" data-k="f4" /></div><div class="lbl"><label for="f5">Could it run automatically? How?</label><button type="button" class="tip" aria-label="What goes here?" aria-expanded="false" aria-controls="t5">i</button></div><div class="tipbox" id="t5" role="note" hidden>If it repeats, could software, a template or someone else do it without you remembering? Reminder texts, review requests and invoice reminders usually can.</div><div class="inp"><b></b><input id="f5" data-k="f5" /></div>
 <p class="after">Put the date in your calendar now. That's the whole trick.</p>
 <div class="tools"><button type="button" onclick="window.print()">Print / save as PDF</button><button type="button" id="clr">Clear</button><span class="saved" id="saved">Your answers stay on this device only.</span></div>
 </section>
-<section class="cta"><h3>Want help with the rest?</h3><p>The FixKit Complete Bundle covers all 12 leak categories over 90 days, and the last 30 days build the systems that make the gains stick ($599). Or book a free 20-minute call and we'll talk through your shop.</p><a class="btn" href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call?utm_source=course&utm_medium=lesson&utm_campaign=course-day5">Book a free call →</a><a class="btn ghost" href="https://www.compassbizsolutions.com/trades?utm_source=course&utm_medium=lesson&utm_campaign=course-day5#plans-section">See the Bundle</a></section>
-<div class="next"><a href="/course/day-4">← Day 4</a><span class="soon">That's the course. Thanks for doing it!</span></div>
+<section class="slide last"><div class="cta"><h3>Want help with the rest?</h3><p>The FixKit Complete Bundle covers all 12 leak categories over 90 days, and the last 30 days build the systems that make the gains stick ($599). Or book a free 20-minute call and we'll talk through your shop.</p><a class="btn" href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call?utm_source=course&utm_medium=lesson&utm_campaign=course-day5">Book a free call →</a><a class="btn ghost" href="https://www.compassbizsolutions.com/trades?utm_source=course&utm_medium=lesson&utm_campaign=course-day5#plans-section">See the Bundle</a></div>
+<div class="next"><a href="/course/day-4">← Day 4</a><span class="soon">That's the course. Thanks for doing it!</span></div></section>
 </main>
+<nav class="pager" id="pager" aria-label="Slides">
+<button type="button" id="pPrev" aria-label="Previous slide">←</button>
+<div class="pbar"><div class="pfill" id="pFill"></div><span id="pCount"></span></div>
+<button type="button" id="pNext" class="go" aria-label="Next slide">Next →</button>
+</nav>
 <footer><div class="in">© Compass Business Solutions · <a href="/course">Course home</a> · <a href="/privacy-policy.html">Privacy</a></div></footer>
 <script src="/track.js"></script>
 <script>
@@ -186,6 +215,38 @@ footer a{color:#8AA5C0}
     data={}; try{localStorage.removeItem(KEY);}catch(e){}
     box.querySelectorAll('input[data-k]').forEach(function(i){i.value='';}); calc();
   });
+})();
+</script>
+<script>
+(function(){
+  var deck=document.getElementById('deck'), slides=[].slice.call(deck.querySelectorAll('.slide')), i=0;
+  var prev=document.getElementById('pPrev'), next=document.getElementById('pNext'), fill=document.getElementById('pFill'), count=document.getElementById('pCount');
+  document.documentElement.classList.add('slides');
+  function show(n, focus){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){ s.classList.toggle('on',k===i); s.setAttribute('aria-hidden',k===i?'false':'true'); });
+    fill.style.width=((i+1)/slides.length*100)+'%';
+    count.textContent=(i+1)+' / '+slides.length;
+    prev.disabled=i===0;
+    var last=i===slides.length-1, isWs=slides[i].id==='worksheet';
+    next.textContent=i===0?'Start →':last?'Done ✓':(slides[i+1].id==='worksheet'?'Worksheet →':'Next →');
+    next.disabled=last;
+    try{ history.replaceState(null,'','#'+(i+1)); }catch(e){}
+    window.scrollTo(0,0);
+    if(focus) slides[i].focus({preventScroll:true});
+  }
+  slides.forEach(function(s){ s.setAttribute('tabindex','-1'); });
+  next.addEventListener('click',function(){ show(i+1,true); });
+  prev.addEventListener('click',function(){ show(i-1,true); });
+  document.addEventListener('keydown',function(e){
+    if(/input|textarea|select/i.test((e.target||{}).tagName)) return;
+    if(e.key==='ArrowRight') show(i+1,true); else if(e.key==='ArrowLeft') show(i-1,true);
+  });
+  var x0=null,y0=null;
+  deck.addEventListener('touchstart',function(e){ if(e.target.closest('input,.tbl')) return; x0=e.touches[0].clientX; y0=e.touches[0].clientY; },{passive:true});
+  deck.addEventListener('touchend',function(e){ if(x0===null) return; var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=null; if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5) show(i+(dx<0?1:-1),false); });
+  var h=parseInt((location.hash||'').slice(1),10);
+  show(h>0?h-1:0,false);
 })();
 </script>
 <script src="/ask-jen.js" defer></script>
