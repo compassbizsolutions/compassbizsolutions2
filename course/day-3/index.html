@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Day 3: Scheduling, no-shows and drive time | Run Your Shop Like a Business</title>
+<meta name="description" content="A customer who isn&#x27;t home doesn&#x27;t just cost you the job. It costs the whole trip. Today is about what empty slots and zig-zag days really cost, and why the"/>
+<meta name="robots" content="noindex"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#111E31;--navy2:#1B2E4B;--amber:#C8701A;--amber2:#E08930;--off:#F4F7FC;--ink:#1B2E4B;--ink2:#3D5573;--line:#D6E0EC}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.7;font-size:17px}
+a{color:var(--amber)}
+.top{background:var(--navy);color:#fff}
+.top .in{max-width:760px;margin:0 auto;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;letter-spacing:1px;color:#fff;text-decoration:none}
+.logo span{color:var(--amber)}
+.dots{display:flex;gap:6px}
+.dots a{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;text-decoration:none;color:#C8D8E8;border:1.5px solid rgba(255,255,255,.25)}
+.dots a.on{background:var(--amber);border-color:var(--amber);color:#fff}
+.hero{background:var(--navy);color:#fff;padding:26px 20px 40px}
+.hero .in{max-width:760px;margin:0 auto}
+.eyebrow{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;letter-spacing:3px;text-transform:uppercase;color:var(--amber)}
+h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(38px,6vw,56px);line-height:.95;text-transform:uppercase;margin:8px 0 14px}
+.meta{font-size:14px;color:#8AA5C0}
+.intro{font-size:19px;color:#C8D8E8;margin-top:16px}
+main{max-width:760px;margin:0 auto;padding:34px 20px 20px}
+main h2{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:30px;text-transform:uppercase;line-height:1;margin:34px 0 12px;color:var(--navy)}
+main h2:first-child{margin-top:0}
+main p{margin-bottom:14px}
+main ul,main ol{margin:0 0 16px 22px}
+main li{margin-bottom:8px}
+.ex{background:#fff;border-left:5px solid var(--amber);border-radius:0 12px 12px 0;padding:16px 20px;margin:18px 0}
+.ex-h{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.ex p:last-child{margin-bottom:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 18px}
+.chips span{background:#fff;border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:14px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 18px}
+@media (max-width:600px){.compare{grid-template-columns:1fr}}
+.compare>div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}
+.compare>div:last-child{border:2px solid var(--amber)}
+.c-h{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;text-transform:uppercase}
+.c-p{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:28px;color:var(--amber);margin:2px 0 6px}
+.compare p{font-size:15px;color:var(--ink2);margin-bottom:8px}
+.compare a{font-weight:700;font-size:15px}
+.ws{background:var(--navy);color:#fff;border-radius:16px;padding:24px 22px;margin:34px 0}
+.ws h2{color:#fff;margin:0 0 6px}
+.ws .wi{color:#C8D8E8;font-size:15.5px;margin-bottom:16px}
+.ws label{display:block;font-size:14px;color:#C8D8E8;margin:12px 0 5px}
+.ws .inp{display:flex;align-items:center;gap:6px}
+.ws .inp b{color:var(--amber);font-family:'Barlow Condensed',sans-serif;font-size:20px;width:14px}
+.ws input{width:100%;background:#22385A;border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:11px 12px;color:#fff;font:inherit;font-size:16px}
+.ws input:focus{outline:none;border-color:var(--amber)}
+.ws .tbl{overflow-x:auto;margin-top:4px}
+.ws table{width:100%;border-collapse:collapse;min-width:520px}
+.ws th{font-size:12.5px;text-align:left;color:#8AA5C0;font-weight:700;padding:6px 6px;text-transform:uppercase;letter-spacing:.5px}
+.ws td{padding:4px}
+.ws td input{padding:9px 10px;font-size:15px}
+.ws .after{margin-top:16px;color:#fff;font-size:15.5px;border-top:1px solid rgba(255,255,255,.15);padding-top:14px}
+.ws .tools{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.ws button{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);border-radius:8px;padding:9px 14px;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.ws .saved{font-size:13px;color:#8AA5C0;align-self:center}
+.cta{background:#fff;border:2px solid var(--amber);border-radius:16px;padding:22px;margin:10px 0 30px}
+.cta h3{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;text-transform:uppercase;line-height:1;margin-bottom:8px}
+.cta p{color:var(--ink2);font-size:16px;margin-bottom:14px}
+.btn{display:inline-block;background:var(--amber);color:#fff;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:19px;letter-spacing:.5px;text-transform:uppercase;padding:12px 22px;border-radius:10px;margin:0 8px 8px 0}
+.btn.ghost{background:transparent;color:var(--amber);border:2px solid var(--amber);padding:10px 20px}
+.next{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:22px 0 40px;flex-wrap:wrap}
+.next a{font-weight:700;text-decoration:none}
+.next .soon{color:var(--ink2);font-size:15px}
+footer{background:var(--navy);color:#8AA5C0;font-size:13px;padding:22px 20px 34px}
+footer .in{max-width:760px;margin:0 auto}
+footer a{color:#8AA5C0}
+@media print{.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
+</style>
+</head>
+<body>
+<div class="top"><div class="in"><a href="/" class="logo">COMPASS <span>BUSINESS</span> SOLUTIONS</a><nav class="dots" aria-label="Lessons"><a href="/course/day-1" class="" aria-label="Day 1">1</a><a href="/course/day-2" class="" aria-label="Day 2">2</a><a href="/course/day-3" class="on" aria-label="Day 3">3</a><a href="/course/day-4" class="" aria-label="Day 4">4</a><a href="/course/day-5" class="" aria-label="Day 5">5</a></nav></div></div>
+<header class="hero"><div class="in">
+<div class="eyebrow">Run Your Shop Like a Business · Day 3 of 5</div>
+<h1>Scheduling, no-shows and drive time</h1>
+<div class="meta">About a 5-minute read, plus a short worksheet</div>
+<p class="intro">A customer who isn't home doesn't just cost you the job. It costs the whole trip. Today is about what empty slots and zig-zag days really cost, and why the fix is a system instead of more effort.</p>
+</div></header>
+<main>
+
+<h2>What a no-show really costs</h2>
+<p>When a customer isn't home or cancels last minute, you lose more than the ticket:</p>
+<ul>
+<li>A slot you usually can't fill that late</li>
+<li>Fuel and drive time there and back</li>
+<li>A tech you're still paying for those hours</li>
+<li>Often a second trip later to do the same job</li>
+</ul>
+<p>One no-show a week sounds small. Fifty a year, times your average ticket, usually isn't.</p>
+
+<h2>The zig-zag day</h2>
+<p>A schedule built in the order calls came in sends trucks back and forth across town. Nobody notices, because everyone was busy all day. But the drive time adds up, and on a bad week it can eat one or two jobs you could have fit in.</p>
+<p>Grouping jobs by area, even loosely, gives that time back.</p>
+
+<h2>Confirmations work, if they always happen</h2>
+<p>Most no-shows aren't people blowing you off. They forgot. A simple reminder fixes most of it:</p>
+<ul>
+<li>A text the day before, with the arrival window</li>
+<li>A text when the tech is on the way</li>
+<li>An easy way to reschedule instead of just not being there</li>
+</ul>
+<p>The catch: doing this by hand works for about two weeks. Then a slammed Monday hits, the texts don't go out, and the no-shows come back. That's why the real fix is a system that sends them every time, whether or not anyone remembers.</p>
+
+<section class="ws" id="worksheet">
+<h2>Day 3 worksheet</h2>
+<p class="wi">Look back at last month. Count honestly. A rough number is better than none.</p>
+<label for="f0">No-shows and &quot;not home&quot; trips last month</label><div class="inp"><b>#</b><input id="f0" data-k="f0" inputmode=decimal/></div><label for="f1">Last-minute reschedules last month</label><div class="inp"><b>#</b><input id="f1" data-k="f1" inputmode=decimal/></div><label for="f2">Your average ticket</label><div class="inp"><b>$</b><input id="f2" data-k="f2" inputmode=decimal/></div><label for="f3">Lost to no-shows: no-shows × average ticket</label><div class="inp"><b>$</b><input id="f3" data-k="f3" inputmode=decimal/></div><label for="f4">Days that zig-zagged across your area</label><div class="inp"><b>#</b><input id="f4" data-k="f4" inputmode=decimal/></div><label for="f5">How confirmations go out today (who sends them, and when?)</label><div class="inp"><b></b><input id="f5" data-k="f5" /></div>
+<p class="after">Multiply that lost amount by 12. That's roughly what scheduling costs you a year, before you count fuel and drive time.</p>
+<div class="tools"><button type="button" onclick="window.print()">Print / save as PDF</button><button type="button" id="clr">Clear</button><span class="saved" id="saved">Your answers stay on this device only.</span></div>
+</section>
+<section class="cta"><h3>Want it handled automatically?</h3><p>FieldKit does scheduling, routing and automatic confirmation texts and emails in one app. It goes live in January 2027. Only 15 businesses get founding pricing and no setup fee, and you can hold a spot for $99, fully refundable.</p><a class="btn" href="https://www.compassbizsolutions.com/trades/fieldkit/features?utm_source=course&utm_medium=lesson&utm_campaign=course-day3">See the founding offer →</a></section>
+<div class="next"><a href="/course/day-2">← Day 2</a><span class="soon">Day 4 arrives in your inbox tomorrow · <a href="/course/day-4">read it now →</a></span></div>
+</main>
+<footer><div class="in">© Compass Business Solutions · <a href="/course">Course home</a> · <a href="/privacy-policy.html">Privacy</a></div></footer>
+<script src="/track.js"></script>
+<script>
+(function(){
+  var KEY='cbs_course_day3', box=document.getElementById('worksheet');
+  var data={}; try{data=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){}
+  box.querySelectorAll('input[data-k]').forEach(function(i){
+    if(data[i.dataset.k]) i.value=data[i.dataset.k];
+    i.addEventListener('input',function(){data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}});
+  });
+  document.getElementById('clr').addEventListener('click',function(){
+    if(!confirm('Clear your answers on this page?'))return;
+    data={}; try{localStorage.removeItem(KEY);}catch(e){}
+    box.querySelectorAll('input[data-k]').forEach(function(i){i.value='';});
+  });
+})();
+</script>
+<script src="/ask-jen.js" defer></script>
+</body>
+</html>
