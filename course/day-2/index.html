@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Day 2: Pricing and estimating | Run Your Shop Like a Business</title>
+<meta name="description" content="Underpricing doesn&#x27;t feel like a leak. It feels like winning bids. Today is about what an hour of work really costs you, and why the job you won might be t"/>
+<meta name="robots" content="noindex"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#111E31;--navy2:#1B2E4B;--amber:#C8701A;--amber2:#E08930;--off:#F4F7FC;--ink:#1B2E4B;--ink2:#3D5573;--line:#D6E0EC}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--off);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.7;font-size:17px}
+a{color:var(--amber)}
+.top{background:var(--navy);color:#fff}
+.top .in{max-width:760px;margin:0 auto;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;letter-spacing:1px;color:#fff;text-decoration:none}
+.logo span{color:var(--amber)}
+.dots{display:flex;gap:6px}
+.dots a{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;text-decoration:none;color:#C8D8E8;border:1.5px solid rgba(255,255,255,.25)}
+.dots a.on{background:var(--amber);border-color:var(--amber);color:#fff}
+.hero{background:var(--navy);color:#fff;padding:26px 20px 40px}
+.hero .in{max-width:760px;margin:0 auto}
+.eyebrow{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;letter-spacing:3px;text-transform:uppercase;color:var(--amber)}
+h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(38px,6vw,56px);line-height:.95;text-transform:uppercase;margin:8px 0 14px}
+.meta{font-size:14px;color:#8AA5C0}
+.intro{font-size:19px;color:#C8D8E8;margin-top:16px}
+main{max-width:760px;margin:0 auto;padding:34px 20px 20px}
+main h2{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:30px;text-transform:uppercase;line-height:1;margin:34px 0 12px;color:var(--navy)}
+main h2:first-child{margin-top:0}
+main p{margin-bottom:14px}
+main ul,main ol{margin:0 0 16px 22px}
+main li{margin-bottom:8px}
+.ex{background:#fff;border-left:5px solid var(--amber);border-radius:0 12px 12px 0;padding:16px 20px;margin:18px 0}
+.ex-h{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.ex p:last-child{margin-bottom:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 18px}
+.chips span{background:#fff;border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:14px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 18px}
+@media (max-width:600px){.compare{grid-template-columns:1fr}}
+.compare>div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}
+.compare>div:last-child{border:2px solid var(--amber)}
+.c-h{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;text-transform:uppercase}
+.c-p{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:28px;color:var(--amber);margin:2px 0 6px}
+.compare p{font-size:15px;color:var(--ink2);margin-bottom:8px}
+.compare a{font-weight:700;font-size:15px}
+.ws{background:var(--navy);color:#fff;border-radius:16px;padding:24px 22px;margin:34px 0}
+.ws h2{color:#fff;margin:0 0 6px}
+.ws .wi{color:#C8D8E8;font-size:15.5px;margin-bottom:16px}
+.ws label{display:block;font-size:14px;color:#C8D8E8;margin:12px 0 5px}
+.ws .inp{display:flex;align-items:center;gap:6px}
+.ws .inp b{color:var(--amber);font-family:'Barlow Condensed',sans-serif;font-size:20px;width:14px}
+.ws input{width:100%;background:#22385A;border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:11px 12px;color:#fff;font:inherit;font-size:16px}
+.ws input:focus{outline:none;border-color:var(--amber)}
+.ws .tbl{overflow-x:auto;margin-top:4px}
+.ws table{width:100%;border-collapse:collapse;min-width:520px}
+.ws th{font-size:12.5px;text-align:left;color:#8AA5C0;font-weight:700;padding:6px 6px;text-transform:uppercase;letter-spacing:.5px}
+.ws td{padding:4px}
+.ws td input{padding:9px 10px;font-size:15px}
+.ws .after{margin-top:16px;color:#fff;font-size:15.5px;border-top:1px solid rgba(255,255,255,.15);padding-top:14px}
+.ws .tools{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.ws button{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);border-radius:8px;padding:9px 14px;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.ws .saved{font-size:13px;color:#8AA5C0;align-self:center}
+.cta{background:#fff;border:2px solid var(--amber);border-radius:16px;padding:22px;margin:10px 0 30px}
+.cta h3{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;text-transform:uppercase;line-height:1;margin-bottom:8px}
+.cta p{color:var(--ink2);font-size:16px;margin-bottom:14px}
+.btn{display:inline-block;background:var(--amber);color:#fff;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:19px;letter-spacing:.5px;text-transform:uppercase;padding:12px 22px;border-radius:10px;margin:0 8px 8px 0}
+.btn.ghost{background:transparent;color:var(--amber);border:2px solid var(--amber);padding:10px 20px}
+.next{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:22px 0 40px;flex-wrap:wrap}
+.next a{font-weight:700;text-decoration:none}
+.next .soon{color:var(--ink2);font-size:15px}
+footer{background:var(--navy);color:#8AA5C0;font-size:13px;padding:22px 20px 34px}
+footer .in{max-width:760px;margin:0 auto}
+footer a{color:#8AA5C0}
+@media print{.top,.hero,.next,.cta,footer,.ws .tools,main>*:not(.ws){display:none!important}body{background:#fff}.ws{background:#fff;color:#000;border:1px solid #999}.ws h2,.ws label,.ws .wi,.ws .after{color:#000}.ws input{background:#fff;color:#000;border:1px solid #999}}
+</style>
+</head>
+<body>
+<div class="top"><div class="in"><a href="/" class="logo">COMPASS <span>BUSINESS</span> SOLUTIONS</a><nav class="dots" aria-label="Lessons"><a href="/course/day-1" class="" aria-label="Day 1">1</a><a href="/course/day-2" class="on" aria-label="Day 2">2</a><a href="/course/day-3" class="" aria-label="Day 3">3</a><a href="/course/day-4" class="" aria-label="Day 4">4</a><a href="/course/day-5" class="" aria-label="Day 5">5</a></nav></div></div>
+<header class="hero"><div class="in">
+<div class="eyebrow">Run Your Shop Like a Business · Day 2 of 5</div>
+<h1>Pricing and estimating</h1>
+<div class="meta">About a 6-minute read, plus a short worksheet</div>
+<p class="intro">Underpricing doesn't feel like a leak. It feels like winning bids. Today is about what an hour of work really costs you, and why the job you won might be the job that's costing you.</p>
+</div></header>
+<main>
+
+<h2>An hour costs more than the wage</h2>
+<p>When you price an hour of labor, it's tempting to start from what you pay the tech. But that hour also has to cover:</p>
+<ul>
+<li>Payroll taxes and workers' comp on top of the wage</li>
+<li>The truck: the payment, insurance, fuel, maintenance</li>
+<li>Tools, uniforms, phones, software</li>
+<li>Training, meetings, and all the time on the clock that nobody bills</li>
+</ul>
+<p>That last one is the big one.</p>
+
+<h2>Paid hours vs. billable hours</h2>
+<p>A tech might be paid for 40 hours a week. But not all of those hours end up on an invoice. Drive time, parts runs, waiting on a customer, callbacks you don't charge for, the morning meeting: it all gets paid, and none of it gets billed.</p>
+<p>So every hour you <i>do</i> bill has to carry the cost of the hours you don't.</p>
+<div class="ex"><div class="ex-h">Example (made-up numbers, not a benchmark)</div>
+<p>A tech is paid for 2,080 hours a year and bills 1,300 of them. Every billed hour has to cover the cost of 1.6 paid hours.</p>
+<p>If you set your rate as if every paid hour got billed, you're short on every single job, and you'd never see it on any one invoice.</p></div>
+<p>The formula, once: <b>true cost per billable hour = (yearly labor + yearly overhead) ÷ billable hours</b>. The part people get wrong is the bottom of that fraction.</p>
+
+<h2>Pricing from the market</h2>
+<p>Most owners set prices by watching competitors. The problem is that you don't know if the other guy is making money either. If he's underpriced and you match him, you're both losing money and calling it competitive.</p>
+<p>Your price has to start from your own costs. What the market will bear tells you how much room you have above that, not where to start.</p>
+
+<h2>Estimates that drift</h2>
+<p>Even a good rate leaks if the hours on the estimate don't match the hours on the job. The usual causes:</p>
+<ul>
+<li>Drive time left off, or underestimated</li>
+<li>A return trip for a part nobody planned for</li>
+<li>"While you're here" extras that never made it onto the paperwork</li>
+</ul>
+<p>You don't need to fix every estimate. You need to know which direction they drift and by how much.</p>
+
+<section class="ws" id="worksheet">
+<h2>Day 2 worksheet</h2>
+<p class="wi">Pull your last 5 jobs. For each one, compare what you quoted with what actually happened, including drive time and any return trips.</p>
+<div class="tbl"><table><thead><tr><th>Job</th><th>Hours quoted</th><th>Hours actually spent (incl. drive)</th><th>Difference</th><th>Return trip? (Y/N)</th></tr></thead><tbody><tr><td><input data-k="r0c0" aria-label="Job, row 1"/></td><td><input data-k="r0c1" aria-label="Hours quoted, row 1"/></td><td><input data-k="r0c2" aria-label="Hours actually spent (incl. drive), row 1"/></td><td><input data-k="r0c3" aria-label="Difference, row 1"/></td><td><input data-k="r0c4" aria-label="Return trip? (Y/N), row 1"/></td></tr><tr><td><input data-k="r1c0" aria-label="Job, row 2"/></td><td><input data-k="r1c1" aria-label="Hours quoted, row 2"/></td><td><input data-k="r1c2" aria-label="Hours actually spent (incl. drive), row 2"/></td><td><input data-k="r1c3" aria-label="Difference, row 2"/></td><td><input data-k="r1c4" aria-label="Return trip? (Y/N), row 2"/></td></tr><tr><td><input data-k="r2c0" aria-label="Job, row 3"/></td><td><input data-k="r2c1" aria-label="Hours quoted, row 3"/></td><td><input data-k="r2c2" aria-label="Hours actually spent (incl. drive), row 3"/></td><td><input data-k="r2c3" aria-label="Difference, row 3"/></td><td><input data-k="r2c4" aria-label="Return trip? (Y/N), row 3"/></td></tr><tr><td><input data-k="r3c0" aria-label="Job, row 4"/></td><td><input data-k="r3c1" aria-label="Hours quoted, row 4"/></td><td><input data-k="r3c2" aria-label="Hours actually spent (incl. drive), row 4"/></td><td><input data-k="r3c3" aria-label="Difference, row 4"/></td><td><input data-k="r3c4" aria-label="Return trip? (Y/N), row 4"/></td></tr><tr><td><input data-k="r4c0" aria-label="Job, row 5"/></td><td><input data-k="r4c1" aria-label="Hours quoted, row 5"/></td><td><input data-k="r4c2" aria-label="Hours actually spent (incl. drive), row 5"/></td><td><input data-k="r4c3" aria-label="Difference, row 5"/></td><td><input data-k="r4c4" aria-label="Return trip? (Y/N), row 5"/></td></tr></tbody></table></div>
+<p class="after">Look at the difference column. If most of your jobs run over, your estimates have a leak, and so does every job you'll quote this month.</p>
+<div class="tools"><button type="button" onclick="window.print()">Print / save as PDF</button><button type="button" id="clr">Clear</button><span class="saved" id="saved">Your answers stay on this device only.</span></div>
+</section>
+<section class="cta"><h3>Want this math done with your numbers?</h3><p>The $99 Profit Leak Snapshot ranks your top 3 leaks by what they cost you, with the calculators already filled in. If you upgrade to a full plan later, the $99 counts toward it.</p><a class="btn" href="https://www.compassbizsolutions.com/trades?utm_source=course&utm_medium=lesson&utm_campaign=course-day2#plans-section">See the Snapshot →</a></section>
+<div class="next"><a href="/course/day-1">← Day 1</a><span class="soon">Day 3 arrives in your inbox tomorrow · <a href="/course/day-3">read it now →</a></span></div>
+</main>
+<footer><div class="in">© Compass Business Solutions · <a href="/course">Course home</a> · <a href="/privacy-policy.html">Privacy</a></div></footer>
+<script src="/track.js"></script>
+<script>
+(function(){
+  var KEY='cbs_course_day2', box=document.getElementById('worksheet');
+  var data={}; try{data=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){}
+  box.querySelectorAll('input[data-k]').forEach(function(i){
+    if(data[i.dataset.k]) i.value=data[i.dataset.k];
+    i.addEventListener('input',function(){data[i.dataset.k]=i.value; try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}});
+  });
+  document.getElementById('clr').addEventListener('click',function(){
+    if(!confirm('Clear your answers on this page?'))return;
+    data={}; try{localStorage.removeItem(KEY);}catch(e){}
+    box.querySelectorAll('input[data-k]').forEach(function(i){i.value='';});
+  });
+})();
+</script>
+<script src="/ask-jen.js" defer></script>
+</body>
+</html>
