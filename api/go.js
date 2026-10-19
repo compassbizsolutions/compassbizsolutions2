@@ -15,6 +15,7 @@ const KNOWN = {
   check: "https://www.compassbizsolutions.com/trades?start=1",
   course: "https://www.compassbizsolutions.com/course",
   call: "https://calendly.com/jvoiselle612-s9gb/free-scoping-call",
+  contact: "https://www.compassbizsolutions.com/quote",
   reviewkit: "https://www.compassbizsolutions.com/reviewkit",
   fieldkit: "https://www.compassbizsolutions.com/fieldkit",
   home: HOME,
@@ -40,7 +41,9 @@ module.exports = async function handler(req, res) {
     if (code) {
       const raw = await kvCall("/get/" + encodeURIComponent("golink:" + code));
       let link = null; try { link = raw ? JSON.parse(raw) : null; } catch (e) { link = null; }
-      let d = (link && link.dest) || "";
+      // No saved link yet? A code named after a known page (check, course,
+      // call, contact…) still goes there instead of the home page.
+      let d = (link && link.dest) || (KNOWN[code] ? code : "");
       // "etsy:price" etc. → the listing link saved in the admin's Marketing section
       if (/^etsy:[a-z]+$/.test(d)) {
         const e = (await kvCall("/get/" + encodeURIComponent("etsylink:" + d.slice(5)))) || "";
