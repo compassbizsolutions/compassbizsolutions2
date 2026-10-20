@@ -14,6 +14,8 @@ const HOME = "https://www.compassbizsolutions.com/";
 const KNOWN = {
   check: "https://www.compassbizsolutions.com/trades?start=1",
   course: "https://www.compassbizsolutions.com/course",
+  dfy: "https://www.compassbizsolutions.com/done-for-you",
+  workshop: "https://www.compassbizsolutions.com/workshop",
   call: "https://calendly.com/jvoiselle612-s9gb/free-scoping-call",
   contact: "https://www.compassbizsolutions.com/quote",
   reviewkit: "https://www.compassbizsolutions.com/reviewkit",
