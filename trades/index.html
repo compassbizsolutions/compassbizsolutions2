@@ -60,6 +60,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--navy);
 /* ── DIAGNOSTIC SECTION ── */
 .diagnostic-wrap{max-width:700px;margin:0 auto;padding:60px 24px}
 .diagnostic-wrap h2{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px}
+#diagnostic{scroll-margin-top:72px}.diag-head{margin-bottom:28px}.diag-head .sub{margin-bottom:0}.diag-eyebrow{font-size:12px;font-weight:700;color:var(--amber);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:8px}
 .diagnostic-wrap .sub{font-size:14px;color:var(--muted);margin-bottom:32px;line-height:1.6}
 .progress-bar-wrap{height:4px;background:rgba(61,107,158,0.15);border-radius:2px;margin-bottom:32px;overflow:hidden}
 .progress-bar{height:100%;background:var(--amber);border-radius:2px;transition:width .4s ease}
@@ -409,6 +410,11 @@ footer{background:#0d1622;padding:28px 24px}
         <button class="btn btn-amber" onclick="startDiagnostic()" style="width:100%;justify-content:center;font-size:18px;padding:16px">Start the Free Diagnostic →</button>
       </div>
       <div id="diag-questions" style="display:none">
+        <div class="diag-head">
+          <div class="diag-eyebrow">Free profit leak check</div>
+          <h2>Find your top 3 profit leaks</h2>
+          <p class="sub">About 5 minutes. Answer what you know, using your own numbers, and we'll show you where money is slipping through and roughly what it's costing you a year. Free, no card.</p>
+        </div>
         <div class="progress-bar-wrap"><div class="progress-bar" id="diag-progress"></div></div>
         <div class="q-label" id="q-label"></div>
         <div class="q-text" id="q-text"></div>
@@ -472,7 +478,7 @@ footer{background:#0d1622;padding:28px 24px}
         <div style="background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:28px">
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:var(--amber);line-height:1;margin-bottom:12px">1</div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px">Run the Diagnostic</div>
-          <div style="font-size:14px;color:var(--muted);line-height:1.6">21 questions about how your business actually runs. Takes 10 minutes. No fluff.</div>
+          <div style="font-size:14px;color:var(--muted);line-height:1.6">21 quick questions about how your business actually runs. About 5 minutes. No fluff.</div>
         </div><div style="background:#fff;border:1px solid #dce8f5;border-radius:12px;padding:28px">
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:var(--amber);line-height:1;margin-bottom:12px">2</div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--navy);text-transform:uppercase;margin-bottom:8px">See Your Leaks</div>
