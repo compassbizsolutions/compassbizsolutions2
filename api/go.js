@@ -7,8 +7,11 @@
  *   - to Etsy or anywhere else as-is
  * Where each code goes lives in golink:<code> (seeded by the admin's Marketing
  * section); Etsy codes point at etsylink:<kit>, pasted in there once a listing
- * is live. Unknown codes, or an Etsy kit with no link yet, go to the home page,
- * still counted.
+ * is live. A code that isn't saved yet (a post shared before its plan was
+ * merged) goes by its name: one ending in -call, -course, -contact, -fieldkit,
+ * -reviewkit or -home goes there; any other new social post code (fb-…, ig-…,
+ * pin-…) goes to the free check, which is where posts point by default. An
+ * Etsy kit with no link yet goes to the home page. All still counted.
  */
 const HOME = "https://www.compassbizsolutions.com/";
 const KNOWN = {
@@ -34,6 +37,14 @@ async function kvCall(path, method) {
   return (await r.json()).result;
 }
 
+// Where an unsaved code should go, from its name
+function guessDest(code) {
+  const m = code.match(/-(call|course|contact|fieldkit|reviewkit|home)(-\d+)?$/);
+  if (m) return m[1];
+  if (/^(fb|ig|fbg|pin|li|story|tt|yt|em)-/.test(code)) return "check";
+  return "";
+}
+
 module.exports = async function handler(req, res) {
   const code = String(req.query.c || "").toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 40);
   let dest = HOME;
@@ -43,7 +54,7 @@ module.exports = async function handler(req, res) {
       let link = null; try { link = raw ? JSON.parse(raw) : null; } catch (e) { link = null; }
       // No saved link yet? A code named after a known page (check, course,
       // call, contact…) still goes there instead of the home page.
-      let d = (link && link.dest) || (KNOWN[code] ? code : "");
+      let d = (link && link.dest) || (KNOWN[code] ? code : "") || guessDest(code);
       // "etsy:price" etc. → the listing link saved in the admin's Marketing section
       if (/^etsy:[a-z]+$/.test(d)) {
         const e = (await kvCall("/get/" + encodeURIComponent("etsylink:" + d.slice(5)))) || "";
