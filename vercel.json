@@ -25,6 +25,14 @@
       "destination": "/faq/index.html"
     },
     {
+      "source": "/guides",
+      "destination": "/guides/index.html"
+    },
+    {
+      "source": "/guides/:slug",
+      "destination": "/guides/:slug/index.html"
+    },
+    {
       "source": "/trades",
       "destination": "/trades/index.html"
     },
