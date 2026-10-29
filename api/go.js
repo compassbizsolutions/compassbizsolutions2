@@ -16,6 +16,7 @@
 const HOME = "https://www.compassbizsolutions.com/";
 const KNOWN = {
   check: "https://www.compassbizsolutions.com/trades?start=1",
+  bizcheck: "https://www.compassbizsolutions.com/business-check",
   course: "https://www.compassbizsolutions.com/course",
   call: "https://calendly.com/jvoiselle612-s9gb/free-scoping-call",
   contact: "https://www.compassbizsolutions.com/quote",
@@ -39,7 +40,7 @@ async function kvCall(path, method) {
 
 // Where an unsaved code should go, from its name
 function guessDest(code) {
-  const m = code.match(/-(call|course|contact|fieldkit|reviewkit|home)(-\d+)?$/);
+  const m = code.match(/-(call|course|contact|fieldkit|reviewkit|bizcheck|home)(-\d+)?$/);
   if (m) return m[1];
   if (/^(fb|ig|fbg|pin|li|story|tt|yt|em)-/.test(code)) return "check";
   return "";
