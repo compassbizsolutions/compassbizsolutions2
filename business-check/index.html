@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Free Profit Leak Check for Custom-Order Businesses | Compass</title>
+<meta name="description" content="For embroidery, print, signs, bakeries, florists and makers: find your top 3 profit leaks in dollars, using your own numbers. About 5 minutes, free."/>
+<link rel="canonical" href="https://www.compassbizsolutions.com/business-check"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Free profit leak check for product and custom-order businesses"/>
+<meta property="og:description" content="Find your top 3 profit leaks in dollars, using your own numbers. About 5 minutes, free."/>
+<meta property="og:url" content="https://www.compassbizsolutions.com/business-check"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F4F7FC;color:#1B2E4B;line-height:1.6}
+.nav{background:#1B2E4B;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:1px;text-decoration:none}
+.nav-logo span{color:#C8701A}
+.nav a.nav-link{color:rgba(255,255,255,.75);font-size:14px;text-decoration:none;font-weight:600}
+.hero{background:#1B2E4B;padding:44px 40px 40px;border-bottom:4px solid #C8701A}
+.hero-label{font-size:11px;font-weight:700;letter-spacing:3px;color:#E08930;text-transform:uppercase;margin-bottom:10px}
+h1{font-family:'Barlow Condensed',sans-serif;font-size:50px;font-weight:900;color:#fff;text-transform:uppercase;line-height:.95;max-width:760px}
+.hero-sub{color:rgba(255,255,255,.78);margin-top:14px;max-width:620px;font-size:17px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.pills span{background:rgba(255,255,255,.08);color:#C8D8E8;border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:5px 12px;font-size:13px}
+.wrap{max-width:720px;margin:0 auto;padding:32px 24px 60px}
+.card{background:#fff;border:1px solid #DCE4EF;border-radius:16px;padding:26px 24px;box-shadow:0 6px 24px rgba(17,30,49,.06)}
+.progress{height:6px;background:#E6EDF6;border-radius:9px;overflow:hidden;margin-bottom:18px}
+.progress i{display:block;height:6px;background:#C8701A;width:0;transition:width .25s}
+.count{font-size:12px;font-weight:700;letter-spacing:2px;color:#8AA5C0;text-transform:uppercase;margin-bottom:6px}
+.q{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;line-height:1.1;margin-bottom:6px}
+.hint{font-size:14px;color:#5A7291;margin-bottom:12px}
+.opts{display:grid;gap:9px;margin-top:14px}
+.opt{display:block;width:100%;text-align:left;background:#F4F7FC;border:2px solid #DCE4EF;border-radius:11px;padding:13px 15px;font-size:16px;font-family:inherit;color:#1B2E4B;cursor:pointer}
+.opt:hover{border-color:#E08930}
+.opt.on{border-color:#C8701A;background:#FFF6EC;font-weight:700}
+textarea,input.f{width:100%;border:2px solid #DCE4EF;border-radius:11px;padding:12px 14px;font-size:16px;font-family:inherit;margin-top:12px;background:#fff;color:#1B2E4B}
+textarea{min-height:120px}
+.row{display:flex;gap:10px;justify-content:space-between;margin-top:18px}
+.btn{background:#C8701A;color:#fff;border:none;border-radius:10px;padding:13px 22px;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer}
+.btn[disabled]{opacity:.45;cursor:default}
+.ghost{background:none;border:none;color:#5A7291;font-size:15px;font-family:inherit;cursor:pointer;padding:13px 4px}
+.small{font-size:13px;color:#5A7291;margin-top:10px}
+.loading{text-align:center;padding:40px 10px}
+.spin{width:42px;height:42px;border:4px solid #E6EDF6;border-top-color:#C8701A;border-radius:50%;margin:0 auto 16px;animation:s 1s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+.r-eyebrow{font-size:12px;font-weight:700;letter-spacing:3px;color:#C8701A;text-transform:uppercase}
+.r-head{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;line-height:1.1;margin:6px 0 10px}
+.r-total{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;color:#C8701A;line-height:1}
+.r-total-l{font-size:13px;color:#5A7291;margin-bottom:16px}
+.box{background:#F4F7FC;border-radius:12px;padding:16px 18px;margin:14px 0}
+.box h3{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#3D6B9E;margin-bottom:8px}
+.box ul{margin-left:18px}
+.leak{border:1px solid #DCE4EF;border-left:5px solid #C8701A;border-radius:12px;padding:16px 18px;margin:12px 0;background:#fff}
+.leak .n{font-size:11px;font-weight:700;letter-spacing:2px;color:#8AA5C0}
+.leak .t{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;line-height:1.1;margin:2px 0 6px}
+.leak .t b{color:#C8701A}
+.leak p{font-size:15px;margin:4px 0}
+.leak .m{background:#FFF6EC;border-radius:8px;padding:8px 12px;font-size:14.5px;margin-top:8px}
+.next{background:#1B2E4B;color:#F4F7FC;border-radius:14px;padding:20px 22px;margin-top:18px}
+.next b{font-size:18px}
+.next a{display:inline-block;background:#C8701A;color:#fff;text-decoration:none;font-weight:700;border-radius:10px;padding:12px 20px;margin-top:12px}
+.footer{background:#1B2E4B;padding:24px 40px;text-align:center;font-size:13px;color:rgba(255,255,255,.45)}
+.footer a{color:rgba(255,255,255,.7);text-decoration:none}
+@media(max-width:600px){.hero{padding:32px 16px}h1{font-size:40px}.wrap{padding:22px 14px 48px}.card{padding:22px 16px}.nav{padding:16px}.q{font-size:26px}}
+</style>
+</head>
+<body>
+<div class="nav"><a class="nav-logo" href="/">COMPASS <span>BUSINESS SOLUTIONS</span></a><a class="nav-link" href="/go/call">Free 20-min call →</a></div>
+<div class="hero">
+  <div class="hero-label">Free profit leak check · About 5 minutes</div>
+  <h1>Great at the work. Losing money in the office.</h1>
+  <p class="hero-sub">For product and custom-order businesses. Answer a few quick questions and see your top 3 profit leaks in dollars, using your own numbers. No card.</p>
+  <div class="pills"><span>Embroidery &amp; apparel</span><span>Print &amp; promo</span><span>Signs</span><span>Bakeries</span><span>Florists</span><span>Makers</span></div>
+</div>
+<div class="wrap"><div class="card" id="app"></div></div>
+<div class="footer">Compass Business Solutions · <a href="/trades">Run a trades business? Take the trades check</a> · <a href="/privacy-policy.html">Privacy</a></div>
+<script>
+(function(){
+var Q=[
+ {id:'biztype',q:'What kind of business do you run?',opts:['Embroidery & custom apparel','Screen printing & promo products','Signs & graphics','Bakery & custom food','Florist & events','Handmade goods & crafts','Photography & creative services','Other']},
+ {id:'years',q:'How long have you been in business?',opts:['Under 2 years','2-5 years','5-10 years','10+ years']},
+ {id:'team',q:'Who does the work?',opts:['Just me','Me plus family helping','1-2 employees','3-5 employees','6+ employees']},
+ {id:'office',q:'Who handles quotes, invoices and customer emails?',opts:['Just me (the owner)','My spouse or a family member','A part-time helper','A full-time office person']},
+ {id:'orders',q:'About how many orders do you finish a month?',opts:['Under 10','10-25','25-50','50-100','100+']},
+ {id:'ordersize',q:"What's your average order size?",opts:['Under $100','$100-$250','$250-$500','$500-$1,000','$1,000-$2,500','$2,500+']},
+ {id:'season',q:'How steady are orders through the year?',opts:['Steady all year','Some busy seasons','Very seasonal']},
+ {id:'pricing',q:'How do you set your prices?',opts:['Price list with quantity breaks','My cost plus a markup','I match what others charge','I mostly guess','Not sure how to price it']},
+ {id:'setupfees',q:'Do you charge for setup, digitizing, design or proofs?',opts:['Always, as a separate fee','Built into my prices','Sometimes','No']},
+ {id:'rush',q:'Do you charge extra for rush orders?',opts:['Yes, always','Sometimes','No']},
+ {id:'deposits',q:'Do you take a deposit before buying materials or blanks?',opts:['Always, 50% or more','Sometimes','Rarely','Never']},
+ {id:'tracking',q:'How do you keep track of orders from quote to delivery?',opts:['Software or an order system','A spreadsheet','Texts and email','Paper or memory','Not really']},
+ {id:'invoicetiming',q:'When does the invoice go out?',opts:['Before I start (paid up front)','At pickup or delivery','A few days after','Whenever I get to it','Often weeks later']},
+ {id:'owed',q:'Right now, roughly how much do customers owe you?',opts:['Nothing','Under $500','$500-$2,000','$2,000-$5,000','$5,000+','Not sure']},
+ {id:'rates',q:'When did you last raise your prices?',opts:['Last 6 months','1-2 years ago','3-5 years ago','5+ years ago','Never']},
+ {id:'reorders',q:'Do you reach out to past customers about reordering?',opts:['Yes, on a schedule','Sometimes','Never']},
+ {id:'quotes',q:"What happens to quotes that don't get an answer?",opts:['I follow up every time','I follow up sometimes','They usually go cold',"I don't really send quotes"]},
+ {id:'remakes',q:'How often do you redo an order (errors, wrong size, spelling)?',opts:['Almost never','1-2 a month','About weekly','More than weekly']},
+ {id:'leadsource',q:'Where do most new customers come from?',opts:['Word of mouth and referrals','Facebook or Instagram','Google search or Maps','Etsy or online marketplaces','Events, markets or fairs','Not sure']},
+ {id:'reviews',q:'About how many Google reviews do you have?',opts:['Under 10','10-50','50-150','150+','Not sure or no Google listing']},
+ {id:'timewaste',q:"What eats your time that isn't design or production? Pick all that apply.",multi:true,opts:['Quoting and mockups','Back-and-forth messages','Chasing payments','Ordering materials or blanks','Bookkeeping and paperwork','Social media','Deliveries and pickups','Scheduling']},
+ {id:'goal',q:"What's your next big goal?",opts:['More orders','Bigger customers (schools, companies, government)','Raise my prices','Get organized','Hire help','Get my time back']},
+ {id:'concerns',q:'What keeps you up at night about the business?',area:true,hint:'Optional, but the more specific you are, the better the report. Only Jen sees this.'}
+];
+var A={}, i=0, app=document.getElementById('app');
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function bar(){return '<div class="progress"><i style="width:'+Math.round(i/(Q.length+1)*100)+'%"></i></div>';}
+function draw(){
+  if(i>=Q.length) return contact();
+  var q=Q[i], v=A[q.id], h=bar()+'<div class="count">Question '+(i+1)+' of '+Q.length+'</div><div class="q">'+esc(q.q)+'</div>';
+  if(q.hint) h+='<div class="hint">'+esc(q.hint)+'</div>';
+  if(q.area){ h+='<textarea id="area" placeholder="Type here…">'+esc(v||'')+'</textarea>'; }
+  else { h+='<div class="opts">'+q.opts.map(function(o,k){var on=q.multi?(v||[]).indexOf(o)>-1:v===o;return '<button type="button" class="opt'+(on?' on':'')+'" data-k="'+k+'">'+esc(o)+'</button>';}).join('')+'</div>'; }
+  h+='<div class="row">'+(i?'<button type="button" class="ghost" id="back">← Back</button>':'<span></span>')+((q.multi||q.area)?'<button type="button" class="btn" id="next"'+(q.multi&&!(v||[]).length?' disabled':'')+'>Next →</button>':'')+'</div>';
+  app.innerHTML=h;
+  [].forEach.call(app.querySelectorAll('.opt'),function(b){b.onclick=function(){var o=q.opts[+b.dataset.k];
+    if(q.multi){var arr=(A[q.id]||[]).slice();var p=arr.indexOf(o);if(p>-1)arr.splice(p,1);else arr.push(o);A[q.id]=arr;draw();}
+    else{A[q.id]=o;i++;draw();}};});
+  var bk=document.getElementById('back'); if(bk) bk.onclick=function(){i--;draw();};
+  var nx=document.getElementById('next'); if(nx) nx.onclick=function(){if(q.area)A[q.id]=document.getElementById('area').value.trim();i++;draw();};
+}
+function contact(){
+  app.innerHTML=bar()+'<div class="q">Where should we send your report?</div><div class="hint">You\'ll see it right here too. No spam, no card.</div>'
+   +'<input class="f" id="c_name" placeholder="First name" autocomplete="given-name"/>'
+   +'<input class="f" id="c_biz" placeholder="Business name" autocomplete="organization"/>'
+   +'<input class="f" id="c_email" type="email" placeholder="Email" autocomplete="email"/>'
+   +'<input class="f" id="c_phone" type="tel" placeholder="Phone (optional)" autocomplete="tel"/>'
+   +'<div class="row"><button type="button" class="ghost" id="back">← Back</button><button type="button" class="btn" id="go">Show my top 3 leaks →</button></div><div class="small" id="err"></div>';
+  document.getElementById('back').onclick=function(){i--;draw();};
+  document.getElementById('go').onclick=submit;
+}
+function val(id){return document.getElementById(id).value.trim();}
+function submit(){
+  var name=val('c_name'), biz=val('c_biz'), email=val('c_email'), phone=val('c_phone');
+  if(!name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){document.getElementById('err').textContent='Please add your first name and a valid email.';return;}
+  var type=A.biztype||'Small business';
+  app.innerHTML='<div class="loading"><div class="spin"></div><div class="q" style="font-size:24px">Running your numbers…</div><div class="hint">This takes about 30 seconds.</div></div>';
+  var ctrl=window.AbortController?new AbortController():null, kill=setTimeout(function(){if(ctrl)ctrl.abort();},120000);
+  fetch('/api/generate-report',{method:'POST',headers:{'Content-Type':'application/json'},signal:ctrl?ctrl.signal:undefined,
+    body:JSON.stringify({mode:'orders',name:name,biz:biz||type,trade:type,answers:A})})
+  .then(function(r){clearTimeout(kill);if(!r.ok)throw new Error('report '+r.status);return r.json();})
+  .then(function(d){
+    var report=d.report||''; show(report,email);
+    var lines=Object.keys(A).map(function(k){var v=A[k];return k+': '+(Array.isArray(v)?v.join(', '):v);}).join('\n');
+    var src=''; try{src=new URLSearchParams(location.search).get('src')||'';}catch(e){}
+    fetch('/api/send-diagnostic',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({mode:'orders',name:name,email:email,phone:phone,biz:biz||type,trade:type,answers:lines,answers_raw:A,report:report,utm_source:src||'bizcheck',utm_campaign:src||'',utm_medium:src?'social':''})}).catch(function(){});
+  })
+  .catch(function(){clearTimeout(kill);app.innerHTML='<div class="loading"><div class="q" style="font-size:24px">Something went wrong on our end.</div><div class="hint">Please try again in a minute, or <a href="/go/call" style="color:#C8701A">book a free call</a> and we\'ll walk through it together.</div></div>';});
+}
+function tag(t,n){var all='HEADLINE|WHAT_WE_SEE|TOP_LEAK|SECOND_LEAK|THIRD_LEAK|HOW_WE_HELP|LEAK_RANKING|ADDITIONAL_LEAKS';var m=t.match(new RegExp('\\['+n+'\\]([\\s\\S]*?)(?=\\[\\/'+n+'\\]|\\[\\/?(?:'+all+')\\]|$)'));return m?m[1].trim():'';}
+function inl(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');}
+function bullets(s){return s.split('\n').map(function(l){return l.trim();}).filter(function(l){return /^[-•]/.test(l);}).map(function(l){return l.replace(/^[-•]\s*/,'');});}
+function money(s){var m=String(s||'').replace(/,/g,'').match(/\$\s*(\d+(?:\.\d+)?)\s*(k)?(?:\s*[-–]\s*\$?\s*(\d+(?:\.\d+)?)\s*(k)?)?/i);if(!m)return [0,0];var kb=!!m[4],ka=!!m[2]||(kb&&!m[2]&&+m[1]<1000);var a=+m[1]*(ka?1000:1),b=m[3]?+m[3]*(kb?1000:1):a;return [a,b];}
+function leak(txt,n){
+  if(!txt) return {h:'',lo:0,hi:0};
+  var ls=txt.split('\n').map(function(l){return l.trim();}).filter(Boolean), head=ls[0]||'', plain=head.replace(/\*\*/g,''), di=plain.indexOf(' — ');
+  var name=di>0?plain.slice(0,di):plain, amt=di>0?plain.slice(di+3):'';
+  var said='',why='',math=[];
+  ls.slice(1).forEach(function(l){if(/^you told us/i.test(l))said=l;else if(/^why it matters/i.test(l))why=l;else if(/^[-•]/.test(l))math.push(l.replace(/^[-•]\s*/,''));});
+  var r=money(amt);
+  return {lo:r[0],hi:r[1],h:'<div class="leak"><div class="n">'+n+'</div><div class="t">'+esc(name)+(amt?' — <b>'+esc(amt)+'</b>':'')+'</div>'+(said?'<p>'+inl(said)+'</p>':'')+(why?'<p>'+inl(why)+'</p>':'')+math.map(function(m){return '<div class="m">'+inl(m)+'</div>';}).join('')+'</div>'};
+}
+function show(report,email){
+  var L=[leak(tag(report,'TOP_LEAK'),'#1 BIGGEST LEAK'),leak(tag(report,'SECOND_LEAK'),'#2 LEAK'),leak(tag(report,'THIRD_LEAK'),'#3 LEAK')].filter(function(l){return l.h;});
+  if(!L.length){app.innerHTML='<div class="loading"><div class="q" style="font-size:24px">Your report is on its way to '+esc(email)+'.</div><div class="hint">We had trouble showing it here. Check your inbox in a few minutes.</div></div>';return;}
+  var lo=0,hi=0;L.forEach(function(l){lo+=l.lo;hi+=l.hi;});
+  function k(n){return '$'+Math.round(n).toLocaleString('en-US');}
+  var wws=bullets(tag(report,'WHAT_WE_SEE')), help=tag(report,'HOW_WE_HELP');
+  app.innerHTML='<div class="r-eyebrow">Your free profit leak report</div><div class="r-head">'+inl(tag(report,'HEADLINE')||'Your business is losing money in a few specific places.')+'</div>'
+   +(lo?'<div class="r-total">'+(lo===hi?k(lo):k(lo)+'–'+k(hi))+'/yr</div><div class="r-total-l">estimated across your top 3 leaks</div>':'')
+   +(wws.length?'<div class="box"><h3>What we see in your answers</h3><ul>'+wws.map(function(b){return '<li>'+inl(b)+'</li>';}).join('')+'</ul></div>':'')
+   +L.map(function(l){return l.h;}).join('')
+   +(help?'<p style="margin-top:12px">'+inl(help)+'</p>':'')
+   +'<div class="next"><b>Want to know what to fix first?</b><div style="color:#C8D8E8;margin-top:6px">Book a free 20-minute call. We\'ll go through these leaks with your real numbers, and I\'ll tell you honestly what I\'d fix first. No pitch. — Jen</div><a href="/go/call">Book my free call →</a></div>'
+   +'<p class="small">A copy is on its way to '+esc(email)+'.</p>';
+  window.scrollTo(0,document.getElementById('app').offsetTop-20);
+}
+draw();
+})();
+</script>
+<script src="/track.js"></script>
+</body>
+</html>

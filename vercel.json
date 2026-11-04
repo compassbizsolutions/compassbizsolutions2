@@ -33,6 +33,10 @@
       "destination": "/guides/:slug/index.html"
     },
     {
+      "source": "/business-check",
+      "destination": "/business-check/index.html"
+    },
+    {
       "source": "/trades",
       "destination": "/trades/index.html"
     },

@@ -60,6 +60,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const { name, email, biz, phone, trade, answers, answers_raw, report, utm_source, utm_campaign, utm_medium } = req.body;
+    const mode = req.body.mode === "orders" ? "orders" : "trades";
     // Which post or site sent them (track.js): { src, utm_source, utm_medium, utm_campaign, ref, landing, at }
     const attribution = (req.body && req.body.attribution && typeof req.body.attribution === "object") ? req.body.attribution : null;
     // Structured answers ({ jobs: "20-40", ... }) so the FixKit intake can pre-fill
@@ -207,8 +208,20 @@ module.exports = async function handler(req, res) {
 
           <!-- What to do next -->
           <div style="margin:24px 0;">${mark(1)}
-            <div style="font-size:12px;font-weight:bold;color:#1A2332;letter-spacing:2px;margin-bottom:18px;">YOUR NEXT STEP — THREE OPTIONS:</div>
+            <div style="font-size:12px;font-weight:bold;color:#1A2332;letter-spacing:2px;margin-bottom:18px;">${mode === "orders" ? "YOUR NEXT STEP:" : "YOUR NEXT STEP — THREE OPTIONS:"}</div>
 
+${mode === "orders" ? `
+            <!-- Product and custom-order businesses: no FixKit plans yet, so the call is the next step -->
+            <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-top:3px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;">${mark(2)}
+              <div style="font-size:15px;font-weight:bold;color:#1A2332;margin-bottom:6px;">Free 20-minute call with Jen</div>
+              <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">We'll go through these three leaks together, put real numbers on them, and I'll tell you honestly what I'd fix first. No pitch.</div>
+              <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call?utm_source=bizcheck&utm_medium=email" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">Book my free call &rarr;</a>
+            </div>
+            <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-top:3px solid #1B2E4B;border-radius:8px;padding:18px 20px;margin-bottom:12px;">${mark(3)}
+              <div style="font-size:15px;font-weight:bold;color:#1A2332;margin-bottom:6px;">Want the office work off your plate?</div>
+              <div style="font-size:14px;color:#3E4E63;line-height:1.75;">Quotes, invoices, payment follow-ups and order tracking, handled, so you can stay in design and production. Admin help starts at $250/month.</div>
+            </div>
+            ` : `
             <!-- Snapshot tier -->
             <div style="background:#F7F5F2;border:1px solid #D8D4CD;border-top:3px solid #1B2E4B;border-radius:8px;padding:18px 20px;margin-bottom:12px;">${mark(2)}
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
@@ -278,13 +291,14 @@ module.exports = async function handler(req, res) {
               <a href="https://www.compassbizsolutions.com/reviewkit" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">See ReviewKit →</a>
             </div>` : ""}
 
+            `}
             ${fewReviews ? `
             <!-- ReviewKit — owners with few Google reviews -->
             <div style="background:#FFF8EF;border:1px solid #E9C9A3;border-left:4px solid #C8701A;border-radius:8px;padding:18px 20px;margin-bottom:12px;">${mark(9)}
               <div style="font-size:11px;font-weight:bold;color:#C8701A;letter-spacing:2px;margin-bottom:8px;">YOUR WORK IS BETTER THAN YOUR GOOGLE PAGE SAYS</div>
               <div style="font-size:15px;font-weight:bold;color:#1A2332;margin-bottom:6px;">You told us you have ${fewReviewsLabel} Google reviews</div>
               <div style="font-size:14px;color:#3E4E63;line-height:1.75;margin-bottom:12px;">
-                When someone searches for ${tradePhrase} company, the shop with more reviews usually gets the call, even if your work is better. Happy customers will leave one; they just need to be asked. ReviewKit sends a review request after every job, then replies to every review in your voice. Bad reviews are held for you to see first, never posted on their own. <strong>Review requests come with the Growth plan, $149/month.</strong>
+                When someone searches for ${tradePhrase} company, the shop with more reviews usually gets the call, even if your work is better. Happy customers will leave one; they just need to be asked. ReviewKit sends a review request after every ${mode === "orders" ? "order" : "job"}, then replies to every review in your voice. Bad reviews are held for you to see first, never posted on their own. <strong>Review requests come with the Growth plan, $149/month.</strong>
               </div>
               <a href="https://www.compassbizsolutions.com/reviewkit" style="display:inline-block;background:#C8701A;color:white;font-weight:bold;font-size:14px;padding:11px 24px;border-radius:8px;text-decoration:none;">See ReviewKit →</a>
             </div>` : ""}
