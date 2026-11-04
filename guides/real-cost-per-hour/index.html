@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>What Does Your Tech Really Cost Per Hour? (2027 Math for Trades) | Compass</title>
+<meta name="description" content="A $30/hr tech can cost a trades business $60–70 per billable hour. Here's the step-by-step math, plus a free calculator to run it with your own numbers."/>
+<link rel="canonical" href="https://www.compassbizsolutions.com/guides/real-cost-per-hour"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="Compass Business Solutions"/>
+<meta property="og:title" content="What does your tech really cost per hour?"/>
+<meta property="og:description" content="The step-by-step math for trades owners, plus a free calculator to run it with your own numbers."/>
+<meta property="og:url" content="https://www.compassbizsolutions.com/guides/real-cost-per-hour"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"What Does Your Tech Really Cost Per Hour? (2027 Math for Trades Owners)","author":{"@type":"Person","name":"Jen Voiselle"},"publisher":{"@type":"Organization","name":"Compass Business Solutions","logo":{"@type":"ImageObject","url":"https://www.compassbizsolutions.com/logo.png"}},"datePublished":"2026-10-27","dateModified":"2026-10-27","mainEntityOfPage":"https://www.compassbizsolutions.com/guides/real-cost-per-hour"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a tech's loaded cost per hour?","acceptedAnswer":{"@type":"Answer","text":"It's everything it costs you to have that tech working, divided by the hours you can actually bill: wages, payroll taxes, workers' comp, benefits, the truck, fuel, tools and phone, plus the paid hours that never make it onto an invoice."}},{"@type":"Question","name":"How much does a $30 an hour tech really cost?","acceptedAnswer":{"@type":"Answer","text":"In a common example, a $30/hr tech costs about $47.50 for every paid hour once taxes, workers' comp, benefits, the truck and tools are added. If 70% of paid hours get billed, that's about $68 per billable hour, before any office overhead or profit."}},{"@type":"Question","name":"What percent of a tech's hours are billable?","acceptedAnswer":{"@type":"Answer","text":"It varies by trade and shop. Drive time, parts runs, callbacks, meetings and shop time all get paid but not billed. Many owners guess high; tracking a few weeks of time is the only way to know your real number."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F4F7FC;color:#1B2E4B;line-height:1.75}
+.nav{background:#1B2E4B;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;letter-spacing:1px;text-decoration:none}
+.nav-logo span{color:#C8701A}
+.nav a.nav-link{color:rgba(255,255,255,.75);font-size:14px;text-decoration:none;font-weight:600}
+.hero{background:#1B2E4B;padding:44px 40px 38px;border-bottom:4px solid #C8701A}
+.hero-label{font-size:11px;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:10px}
+.hero-label a{color:inherit;text-decoration:none}
+h1{font-family:'Barlow Condensed',sans-serif;font-size:46px;font-weight:800;color:white;text-transform:uppercase;line-height:1;max-width:760px}
+.hero-sub{color:rgba(255,255,255,.75);margin-top:14px;max-width:640px}
+.byline{color:rgba(255,255,255,.5);font-size:13px;margin-top:14px}
+.container{max-width:760px;margin:0 auto;padding:36px 40px 60px}
+h2{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;text-transform:uppercase;margin:34px 0 10px;line-height:1.1}
+p{margin:0 0 14px}
+ul{margin:0 0 16px 22px}
+li{margin:0 0 6px}
+.math{background:#fff;border:1px solid #DCE4EF;border-radius:12px;padding:6px 0;margin:10px 0 18px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:9px 18px;border-top:1px solid #EEF2F8;font-size:15.5px}
+.row:first-child{border-top:none}
+.row b{font-variant-numeric:tabular-nums}
+.row.total{background:#FFF6EC;font-weight:700}
+.row.total b{color:#C8701A;font-size:18px}
+.note{font-size:13.5px;color:#5A7291}
+.big{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:56px;color:#C8701A;line-height:1}
+.calc{background:#1B2E4B;color:#F4F7FC;border-radius:14px;padding:22px 22px 18px;margin:16px 0 22px}
+.calc h3{font-family:'Barlow Condensed',sans-serif;font-size:24px;text-transform:uppercase;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.calc label{font-size:13px;color:#C8D8E8;display:block}
+.calc input{width:100%;margin-top:4px;padding:9px 10px;border-radius:8px;border:1px solid #3D6B9E;background:#111E31;color:#fff;font-size:16px;font-family:inherit}
+.out{margin-top:16px;border-top:1px solid #2E4566;padding-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.out div{font-size:13px;color:#C8D8E8}
+.out b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:34px;color:#E08930;line-height:1.1}
+.cta{background:#fff;border:1px solid #F2D3AE;border-left:5px solid #C8701A;border-radius:12px;padding:20px 22px;margin:28px 0}
+.cta b{font-size:18px;display:block;margin-bottom:4px}
+.btn{display:inline-block;background:#C8701A;color:#fff;text-decoration:none;font-weight:700;border-radius:9px;padding:12px 20px;margin-top:10px}
+.about{font-size:14px;color:#5A7291;border-top:1px solid #DCE4EF;padding-top:16px;margin-top:30px}
+.footer{background:#1B2E4B;padding:24px 40px;text-align:center;font-size:13px;color:rgba(255,255,255,0.45)}
+.footer a{color:rgba(255,255,255,0.7);text-decoration:none}
+@media(max-width:600px){.hero{padding:32px 16px}.container{padding:28px 16px 48px}.nav{padding:16px}h1{font-size:36px}.grid,.out{grid-template-columns:1fr}.row{padding:9px 14px;font-size:14.5px}}
+</style>
+</head>
+<body>
+<div class="nav"><a class="nav-logo" href="/">COMPASS <span>BUSINESS SOLUTIONS</span></a><a class="nav-link" href="/trades?start=1&src=guide-cost-per-hour">Free profit-leak check →</a></div>
+<div class="hero">
+  <div class="hero-label"><a href="/guides">Guides</a> · Pricing</div>
+  <h1>What does your tech really cost per hour?</h1>
+  <p class="hero-sub">The 2027 math most trades owners have never done, step by step, with a calculator so you can run it with your own numbers.</p>
+  <div class="byline">By Jen Voiselle · Compass Business Solutions</div>
+</div>
+<div class="container">
+  <p>Most owners price off a number that felt right a few years ago. The tech makes $30 an hour, the rate is $95, so it feels like there's $65 of room in every hour.</p>
+  <p>There isn't. Here's why, using one simple example. Your numbers will be different. That's the point of the calculator further down.</p>
+
+  <h2>Step 1: What a paid hour really costs</h2>
+  <p>Start with everything it costs you to have that tech on the clock for one hour. <span class="note">(Example numbers, rounded.)</span></p>
+  <div class="math">
+    <div class="row"><span>Wage</span><b>$30.00</b></div>
+    <div class="row"><span>Payroll taxes (Social Security, Medicare, unemployment), about 10%</span><b>$3.00</b></div>
+    <div class="row"><span>Workers' comp, about 5% of wages (yours depends on your trade and state)</span><b>$1.50</b></div>
+    <div class="row"><span>Health insurance and benefits, $600/month</span><b>$3.46</b></div>
+    <div class="row"><span>Truck: payment, insurance, fuel, maintenance, $1,500/month</span><b>$8.65</b></div>
+    <div class="row"><span>Tools, phone, uniforms, $150/month</span><b>$0.87</b></div>
+    <div class="row total"><span>Real cost of one paid hour</span><b>$47.48</b></div>
+  </div>
+  <p class="note">Monthly costs are spread over about 173 paid hours a month (40 hours a week).</p>
+
+  <h2>Step 2: Not every paid hour gets billed</h2>
+  <p>Drive time. Parts runs. Callbacks you don't charge for. Shop time, meetings, waiting on a customer. You pay for all of it, but none of it shows up on an invoice.</p>
+  <p>Say 70% of paid hours end up billed. Then every billable hour has to carry the cost of the unbilled ones:</p>
+  <div class="math">
+    <div class="row"><span>Real cost of one paid hour</span><b>$47.48</b></div>
+    <div class="row"><span>÷ share of hours you bill</span><b>70%</b></div>
+    <div class="row total"><span>Real cost per billable hour</span><b>$67.83</b></div>
+  </div>
+
+  <h2>Step 3: What's actually left from $95</h2>
+  <p>At a $95 rate, you're not keeping $65 an hour. You're keeping about:</p>
+  <p class="big">$27</p>
+  <p>And that's <b>before</b> the office, software, insurance, the owner's own pay and any profit. For a lot of shops, that $27 disappears fast. It's why so many busy trades businesses keep only 2 or 3 cents of every dollar, when industry benchmarks say closer to 20 cents is doable.</p>
+
+  <div class="calc" id="calc">
+    <h3>Run it with your numbers</h3>
+    <div class="grid">
+      <label>Tech's hourly wage ($)<input id="c_wage" type="number" inputmode="decimal" value="30"/></label>
+      <label>Payroll taxes (%)<input id="c_tax" type="number" inputmode="decimal" value="10"/></label>
+      <label>Workers' comp (% of wages)<input id="c_wc" type="number" inputmode="decimal" value="5"/></label>
+      <label>Benefits per month ($)<input id="c_ben" type="number" inputmode="decimal" value="600"/></label>
+      <label>Truck per month ($)<input id="c_truck" type="number" inputmode="decimal" value="1500"/></label>
+      <label>Tools &amp; phone per month ($)<input id="c_tools" type="number" inputmode="decimal" value="150"/></label>
+      <label>Share of paid hours you bill (%)<input id="c_bill" type="number" inputmode="decimal" value="70"/></label>
+      <label>Your hourly rate ($)<input id="c_rate" type="number" inputmode="decimal" value="95"/></label>
+    </div>
+    <div class="out">
+      <div>Real cost per paid hour<b id="o_paid">–</b></div>
+      <div>Real cost per billable hour<b id="o_bill">–</b></div>
+      <div>Left per billed hour, before overhead<b id="o_left">–</b></div>
+      <div>Left per year, per tech (example hours)<b id="o_year">–</b></div>
+    </div>
+  </div>
+
+  <h2>What to do with your number</h2>
+  <ul>
+    <li><b>If the gap is thin,</b> your rate is the first thing to look at. New quotes can get a new rate right away. Current customers get notice.</li>
+    <li><b>If your billable share is low,</b> look at routing, parts runs and callbacks before you look at your techs. It's usually the process, not the people.</li>
+    <li><b>If the truck line surprised you,</b> you're not alone. It's the cost most owners forget to count per hour.</li>
+  </ul>
+
+  <div class="cta">
+    <b>Want the full picture, not just one tech?</b>
+    The free profit leak check takes about 5 minutes and shows your top 3 leaks with a dollar amount on each one, using your own numbers. No card.
+    <br/><a class="btn" href="/trades?start=1&src=guide-cost-per-hour">Find my top 3 leaks →</a>
+  </div>
+
+  <p class="about">Jen Voiselle grew up in Marshfield and spent 23 years in Business Technology Operations in corporate America. She started Compass Business Solutions to help trades and service businesses keep more of what they earn. <a href="/go/call" style="color:#C8701A">Book a free 20-minute call</a>.</p>
+</div>
+<div class="footer">Compass Business Solutions · <a href="/guides">More guides</a> · <a href="/terms-and-conditions.html">Terms</a> · <a href="/privacy-policy.html">Privacy</a></div>
+<script>
+(function(){
+  var ids=['wage','tax','wc','ben','truck','tools','bill','rate'];
+  function v(k){var n=parseFloat(document.getElementById('c_'+k).value);return isNaN(n)?0:n;}
+  function money(n){return (n<0?'-$':'$')+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function calc(){
+    var hrs=173.33, wage=v('wage');
+    var paid=wage*(1+v('tax')/100+v('wc')/100)+(v('ben')+v('truck')+v('tools'))/hrs;
+    var share=Math.max(v('bill'),1)/100, perBill=paid/share, left=v('rate')-perBill;
+    var year=left*hrs*12*share;
+    document.getElementById('o_paid').textContent=money(paid);
+    document.getElementById('o_bill').textContent=money(perBill);
+    document.getElementById('o_left').textContent=money(left);
+    document.getElementById('o_year').textContent=(year<0?'-$':'$')+Math.round(Math.abs(year)).toLocaleString('en-US');
+  }
+  ids.forEach(function(k){document.getElementById('c_'+k).addEventListener('input',calc);});
+  calc();
+})();
+</script>
+<script src="/track.js"></script>
+</body>
+</html>
