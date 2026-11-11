@@ -176,6 +176,9 @@ textarea.field-input{min-height:110px;resize:vertical}
 </div>
 
 <script>
+// When someone first clicks into a form (helps tell people from bots)
+document.addEventListener('focusin', function(ev) { if (!window.cbsFormStart && ev.target && ev.target.form) window.cbsFormStart = Date.now(); });
+
 function handleQuote(e) {
   e.preventDefault();
   var form   = e.target;
@@ -201,6 +204,7 @@ function handleQuote(e) {
       message:  body.message  || '',
       timeline: body.timeline || '',
       budget:   body.budget   || '',
+      elapsed_sec: window.cbsFormStart ? Math.round((Date.now() - window.cbsFormStart) / 1000) : null,
       source:   'quote-form',
       category: 'quote_request',
     })
