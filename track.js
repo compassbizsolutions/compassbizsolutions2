@@ -36,6 +36,37 @@
   }
   window.cbsAttribution = function () { return read(); };
 
+  // Count steps (no personal info): page views, a daily visitor, and the steps
+  // pages report with window.cbsEvent('check_start') etc. Sam reads the totals.
+  var sent = {};
+  function send(e, once) {
+    try {
+      if (once) { if (sent[e]) return; sent[e] = 1; }
+      var a = read();
+      var body = JSON.stringify({ e: e, src: (a && (a.src || a.utm_source)) || 'direct', p: location.pathname });
+      if (navigator.sendBeacon) navigator.sendBeacon('/api/ev', new Blob([body], { type: 'text/plain' }));
+      else if (window.fetch) window.fetch('/api/ev', { method: 'POST', body: body, keepalive: true });
+    } catch (x) {}
+  }
+  window.cbsEvent = function (e) { send(String(e || ''), true); };
+  try {
+    var path = location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '').toLowerCase();
+    var parts = path.split('/').filter(Boolean).slice(0, 2);
+    send('view:' + (parts.length ? parts.join('/') : 'home'), true);
+    var today = new Date().toISOString().slice(0, 10);
+    if (localStorage.getItem('cbs_seen') !== today) { localStorage.setItem('cbs_seen', today); send('visitor', true); }
+  } catch (x) {}
+  document.addEventListener('click', function (ev) {
+    var el = ev.target && ev.target.closest ? ev.target.closest('a') : null;
+    if (!el) return;
+    var h = el.getAttribute('href') || '';
+    if (/calendly\.com|\/go\/[a-z0-9-]*call/i.test(h)) send('call_click', true);
+    else if (/\/course(\/|$)/.test(h)) send('course_click', true);
+    else if (/fieldkit/i.test(h)) send('fieldkit_click', true);
+    else if (/reviewkit/i.test(h)) send('reviewkit_click', true);
+    else if (/buy\.stripe\.com/.test(h)) send('buy_click', true);
+  }, true);
+
   // Add the source to form posts that go to our own APIs
   var API = /(compassbizsolutions\.com)?\/api\/(send-diagnostic|contact|waitlist|fieldkit-waitlist|fieldkit-founding-start|reviewkit-checkout|portal-signup|course-signup)/;
   var orig = window.fetch;
