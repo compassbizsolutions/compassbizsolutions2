@@ -857,12 +857,14 @@ function startDiagnostic() {
   document.getElementById('diag-questions').style.display = 'block';
   diagStep = 0;
   diagAnswers = {};
+  if (window.cbsEvent) cbsEvent('check_start');
   renderQuestion();
 }
 
 function renderQuestion() {
   var q = QUESTIONS[diagStep];
   var total = QUESTIONS.length;
+  if (window.cbsEvent) cbsEvent('check_q' + (diagStep + 1));
   document.getElementById('diag-progress').style.width = ((diagStep / total) * 100) + '%';
   document.getElementById('q-label').textContent = 'Question ' + (diagStep+1) + ' of ' + total;
   document.getElementById('q-text').textContent = q.q;
@@ -1032,6 +1034,7 @@ function qBack() {
 function showEmailCapture() {
   document.getElementById('diag-questions').style.display = 'none';
   document.getElementById('diag-email').style.display = 'block';
+  if (window.cbsEvent) cbsEvent('check_email');
 }
 
 function submitDiagnostic() {
@@ -1043,6 +1046,7 @@ function submitDiagnostic() {
     return;
   }
   err.style.display = 'none';
+  if (window.cbsEvent) cbsEvent('check_submit');
   document.getElementById('diag-email').style.display = 'none';
   document.getElementById('diag-loading').style.display = 'block';
 
@@ -1208,6 +1212,7 @@ function parseMoneyRange(text) {
 }
 
 function showResults(parsed, email) {
+  if (window.cbsEvent) cbsEvent('check_results');
   var wrap = document.getElementById('results-content');
   var leaks = (parsed && parsed.leaks && parsed.leaks.length) ? parsed.leaks : [];
 
@@ -1392,6 +1397,7 @@ function doneForYouHtml(leaks) {
     };
 
     function openCheckout(key, label) {
+      if (window.cbsEvent) cbsEvent('buy_click:' + String(key || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 30));
       var url = STRIPE_LINKS[key];
       if (url) {
         window.open(url, '_blank');
