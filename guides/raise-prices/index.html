@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How to Raise Prices Without Losing Customers | Compass</title>
+<meta name="description" content="How to raise prices without losing customers: the math on how many jobs you can lose and still come out ahead, plus a calculator and a script."/>
+<link rel="canonical" href="https://www.compassbizsolutions.com/guides/raise-prices"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="Compass Business Solutions"/>
+<meta property="og:title" content="How to raise your prices without losing customers"/>
+<meta property="og:description" content="The simple math on how many jobs you can lose after a price increase and still come out ahead, plus a free calculator."/>
+<meta property="og:url" content="https://www.compassbizsolutions.com/guides/raise-prices"/>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "How to Raise Your Prices Without Losing Customers (The Math for Trades Owners)", "author": {"@type": "Person", "name": "Jen Voiselle"}, "publisher": {"@type": "Organization", "name": "Compass Business Solutions", "logo": {"@type": "ImageObject", "url": "https://www.compassbizsolutions.com/logo.png"}}, "datePublished": "2026-11-18", "dateModified": "2026-11-18", "mainEntityOfPage": "https://www.compassbizsolutions.com/guides/raise-prices"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How much can I raise my prices before I lose money?", "acceptedAnswer": {"@type": "Answer", "text": "It depends on what you keep from each job. A simple rule: divide your price increase by (your margin per job plus the increase). If you keep 30% of each job and raise prices 8%, you could lose about 21% of your jobs and still make the same profit as before."}}, {"@type": "Question", "name": "How much notice should I give customers before a price increase?", "acceptedAnswer": {"@type": "Answer", "text": "There's no single rule, but about 30 days is a common, fair window for regular customers. New quotes can use the new price right away. Honor quotes and agreements already signed until they end or renew."}}, {"@type": "Question", "name": "Should I explain why I'm raising my prices?", "acceptedAnswer": {"@type": "Answer", "text": "Briefly, yes. One or two plain sentences about higher costs for parts, insurance or fuel is enough. Don't apologize, don't write a long letter, and don't offer a discount in the same breath."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F4F7FC;color:#1B2E4B;line-height:1.75}
+.nav{background:#1B2E4B;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;letter-spacing:1px;text-decoration:none}
+.nav-logo span{color:#C8701A}
+.nav a.nav-link{color:rgba(255,255,255,.75);font-size:14px;text-decoration:none;font-weight:600}
+.hero{background:#1B2E4B;padding:44px 40px 38px;border-bottom:4px solid #C8701A}
+.hero-label{font-size:11px;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:10px}
+.hero-label a{color:inherit;text-decoration:none}
+h1{font-family:'Barlow Condensed',sans-serif;font-size:46px;font-weight:800;color:white;text-transform:uppercase;line-height:1;max-width:760px}
+.hero-sub{color:rgba(255,255,255,.75);margin-top:14px;max-width:640px}
+.byline{color:rgba(255,255,255,.5);font-size:13px;margin-top:14px}
+.container{max-width:760px;margin:0 auto;padding:36px 40px 60px}
+h2{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;text-transform:uppercase;margin:34px 0 10px;line-height:1.1}
+p{margin:0 0 14px}
+ul{margin:0 0 16px 22px}
+li{margin:0 0 6px}
+.math{background:#fff;border:1px solid #DCE4EF;border-radius:12px;padding:6px 0;margin:10px 0 18px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:9px 18px;border-top:1px solid #EEF2F8;font-size:15.5px}
+.row:first-child{border-top:none}
+.row b{font-variant-numeric:tabular-nums}
+.row.total{background:#FFF6EC;font-weight:700}
+.row.total b{color:#C8701A;font-size:18px}
+.note{font-size:13.5px;color:#5A7291}
+.big{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:56px;color:#C8701A;line-height:1}
+.calc{background:#1B2E4B;color:#F4F7FC;border-radius:14px;padding:22px 22px 18px;margin:16px 0 22px}
+.calc h3{font-family:'Barlow Condensed',sans-serif;font-size:24px;text-transform:uppercase;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.calc label{font-size:13px;color:#C8D8E8;display:block}
+.calc input{width:100%;margin-top:4px;padding:9px 10px;border-radius:8px;border:1px solid #3D6B9E;background:#111E31;color:#fff;font-size:16px;font-family:inherit}
+.out{margin-top:16px;border-top:1px solid #2E4566;padding-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.out div{font-size:13px;color:#C8D8E8}
+.out b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:34px;color:#E08930;line-height:1.1}
+.cta{background:#fff;border:1px solid #F2D3AE;border-left:5px solid #C8701A;border-radius:12px;padding:20px 22px;margin:28px 0}
+.cta b{font-size:18px;display:block;margin-bottom:4px}
+.btn{display:inline-block;background:#C8701A;color:#fff;text-decoration:none;font-weight:700;border-radius:9px;padding:12px 20px;margin-top:10px}
+.about{font-size:14px;color:#5A7291;border-top:1px solid #DCE4EF;padding-top:16px;margin-top:30px}
+.footer{background:#1B2E4B;padding:24px 40px;text-align:center;font-size:13px;color:rgba(255,255,255,0.45)}
+.footer a{color:rgba(255,255,255,0.7);text-decoration:none}
+@media(max-width:600px){.hero{padding:32px 16px}.container{padding:28px 16px 48px}.nav{padding:16px}h1{font-size:36px}.grid,.out{grid-template-columns:1fr}.row{padding:9px 14px;font-size:14.5px}}
+</style>
+</head>
+<body>
+<div class="nav"><a class="nav-logo" href="/">COMPASS <span>BUSINESS SOLUTIONS</span></a><a class="nav-link" href="/trades?start=1&src=guide-raise-prices">Free profit-leak check →</a></div>
+<div class="hero">
+  <div class="hero-label"><a href="/guides">Guides</a> · Pricing</div>
+  <h1>How to raise your prices without losing customers</h1>
+  <p class="hero-sub">The math that takes the fear out of a price increase, step by step, with a calculator and a short script you can use for January.</p>
+  <div class="byline">By Jen Voiselle · Compass Business Solutions</div>
+</div>
+<div class="container">
+  <p>Here's the short answer on how to raise prices without losing customers: pick a number based on your real costs, tell your regulars plainly and early, and give new quotes the new price right away. Then do one bit of math, because it's what lets you sleep that night.</p>
+  <p>The math: a price increase lets you lose a surprising number of jobs before you make less money. In the example below, an 8% increase means you could lose about <b>1 in 5 jobs</b> and still keep the same profit. Lose only a few and you're up about <b>$10,000 a year</b>.</p>
+  <p>Your numbers will be different. That's what the calculator further down is for.</p>
+
+  <h2>Step 1: Know what you keep from each job</h2>
+  <p>Before you change a price, know what's left after the job pays for itself: labor, materials and the truck. <span class="note">(Example numbers, rounded.)</span></p>
+  <div class="math">
+    <div class="row"><span>Average job</span><b>$400</b></div>
+    <div class="row"><span>Job costs: tech's time, parts, truck</span><b>−$280</b></div>
+    <div class="row total"><span>Left from each job (30%)</span><b>$120</b></div>
+    <div class="row"><span>× jobs a year</span><b>400</b></div>
+    <div class="row total"><span>Left per year, to cover the office, you and profit</span><b>$48,000</b></div>
+  </div>
+  <p class="note">Not sure what your job costs really are? The <a href="/guides/real-cost-per-hour" style="color:#C8701A">real cost per hour guide</a> walks through the labor side, and the <a href="/guides/material-markup" style="color:#C8701A">materials markup guide</a> covers parts.</p>
+
+  <h2>Step 2: Raise the price and watch the gap grow</h2>
+  <p>Now raise prices 8%. The job costs don't change. Every extra dollar goes straight to the "left over" line.</p>
+  <div class="math">
+    <div class="row"><span>New average job ($400 + 8%)</span><b>$432</b></div>
+    <div class="row"><span>Job costs (same as before)</span><b>−$280</b></div>
+    <div class="row total"><span>Left from each job now</span><b>$152</b></div>
+  </div>
+  <p>That's an 8% price change but a <b>27% jump</b> in what you keep from each job ($120 to $152). That's why small price changes matter so much more than they feel like they should.</p>
+
+  <h2>Step 3: How many customers can you lose and still come out ahead?</h2>
+  <p>This is the number that matters. You used to need 400 jobs to clear $48,000. At $152 a job, you only need:</p>
+  <div class="math">
+    <div class="row"><span>$48,000 ÷ $152 per job</span><b>316 jobs</b></div>
+    <div class="row total"><span>Jobs you could lose and still break even</span><b>84 (21%)</b></div>
+  </div>
+  <p>The quick formula is <b>increase ÷ (margin + increase)</b>. Here that's 8% ÷ (30% + 8%) = about 21%.</p>
+  <p>Now be realistic. Say a few price shoppers leave and you lose 5% of your jobs, 20 out of 400:</p>
+  <div class="math">
+    <div class="row"><span>380 jobs × $152</span><b>$57,760</b></div>
+    <div class="row"><span>Before the increase</span><b>$48,000</b></div>
+    <div class="row total"><span>You're ahead by</span><b>$9,760 a year</b></div>
+  </div>
+  <p>And you did 20 fewer jobs to get there. Fewer evenings, less wear on the truck. Not a bad trade.</p>
+
+  <div class="calc" id="calc">
+    <h3>Run it with your numbers</h3>
+    <div class="grid">
+      <label>Average job today ($)<input id="c_job" type="number" inputmode="decimal" value="400"/></label>
+      <label>Job costs: labor, parts, truck ($)<input id="c_cost" type="number" inputmode="decimal" value="280"/></label>
+      <label>Jobs per year<input id="c_jobs" type="number" inputmode="decimal" value="400"/></label>
+      <label>Price increase (%)<input id="c_raise" type="number" inputmode="decimal" value="8"/></label>
+      <label>Jobs you think you'll lose (%)<input id="c_lose" type="number" inputmode="decimal" value="5"/></label>
+    </div>
+    <div class="out">
+      <div>Left per job: now → new<b id="o_job">–</b></div>
+      <div>Jobs you could lose and break even<b id="o_max">–</b></div>
+      <div>Left per year after the increase<b id="o_new">–</b></div>
+      <div>Change per year<b id="o_diff">–</b></div>
+    </div>
+  </div>
+
+  <h2>Step 4: How to tell your customers</h2>
+  <p>The math gets you the courage. How you say it is how you keep the customers. A few rules that work for any trade:</p>
+  <ul>
+    <li><b>New quotes get the new price now.</b> Nobody new knows your old price.</li>
+    <li><b>Regulars get notice.</b> About 30 days is fair. Honor anything already quoted or signed.</li>
+    <li><b>Keep it short.</b> Two or three sentences. No apology, no essay, no discount in the same breath.</li>
+    <li><b>Say it once, the same way to everyone.</b> Put it on the invoice, in an email or a text. Not a different story for each customer.</li>
+  </ul>
+  <p>Something like this:</p>
+  <div class="cta" style="border-left-color:#1B2E4B;border-color:#DCE4EF;margin:10px 0 18px">
+    "Hi Mary, a quick heads up: starting January 1, our rates are going up a bit to keep up with the cost of parts, insurance and fuel. Anything already scheduled or quoted stays at today's price. Thanks for trusting us with your home. We don't take it lightly."
+  </div>
+  <p>That's it. Most people have seen prices go up everywhere. What they remember is whether you showed up on time and did the job right.</p>
+
+  <h2>What to do with your number</h2>
+  <ul>
+    <li><b>If you could lose 15% or more and still break even,</b> you've got more room than you think. Fear is usually the only thing in the way.</li>
+    <li><b>If the margin per job is under 20%,</b> fix the job costs first. A price increase on a leaky job just makes a bigger leak.</li>
+    <li><b>If you haven't raised prices in two years or more,</b> you've already taken a pay cut. Your costs went up whether your prices did or not.</li>
+    <li><b>Pick a date and write it down.</b> January 1 is easy for everyone to remember.</li>
+  </ul>
+
+  <div class="cta">
+    <b>Not sure your prices are the problem?</b>
+    The free profit leak check takes about 5 minutes and shows your top 3 leaks with a dollar amount on each one, using your own numbers. No card.
+    <br/><a class="btn" href="/trades?start=1&src=guide-raise-prices">Find my top 3 leaks →</a>
+  </div>
+
+  <h2>Questions owners ask</h2>
+  <h3 style="font-size:18px;margin:18px 0 6px">How much can I raise my prices before I lose money?</h3>
+  <p>It depends on what you keep from each job. A simple rule: divide your price increase by (your margin per job plus the increase). If you keep 30% of each job and raise prices 8%, you could lose about 21% of your jobs and still make the same profit as before.</p>
+  <h3 style="font-size:18px;margin:18px 0 6px">How much notice should I give customers before a price increase?</h3>
+  <p>There's no single rule, but about 30 days is a common, fair window for regular customers. New quotes can use the new price right away. Honor quotes and agreements already signed until they end or renew.</p>
+  <h3 style="font-size:18px;margin:18px 0 6px">Should I explain why I'm raising my prices?</h3>
+  <p>Briefly, yes. One or two plain sentences about higher costs for parts, insurance or fuel is enough. Don't apologize, don't write a long letter, and don't offer a discount in the same breath.</p>
+
+  <p class="about">Jen Voiselle grew up in Marshfield and spent 23 years in Business Technology Operations in corporate America. She started Compass Business Solutions to help trades and service businesses keep more of what they earn. <a href="/go/call" style="color:#C8701A">Book a free 20-minute call</a>.</p>
+</div>
+<div class="footer">Compass Business Solutions · <a href="/guides">More guides</a> · <a href="/terms-and-conditions.html">Terms</a> · <a href="/privacy-policy.html">Privacy</a></div>
+<script>
+(function(){
+  var ids=['job','cost','jobs','raise','lose'];
+  function v(k){var n=parseFloat(document.getElementById('c_'+k).value);return isNaN(n)?0:n;}
+  function money(n){return (n<0?'-$':'$')+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function calc(){
+    var job=v('job'), cost=v('cost'), jobs=v('jobs'), r=v('raise')/100, lose=v('lose')/100;
+    var leftNow=job-cost, newJob=job*(1+r), leftNew=newJob-cost;
+    var yearNow=leftNow*jobs, yearNew=leftNew*jobs*(1-lose);
+    document.getElementById('o_job').textContent=money(leftNow)+' → '+money(leftNew);
+    var maxEl=document.getElementById('o_max');
+    if(leftNew>0&&leftNow>0){
+      var need=yearNow/leftNew, canLose=jobs-need;
+      maxEl.textContent=Math.floor(canLose).toLocaleString('en-US')+' ('+Math.round(canLose/jobs*100)+'%)';
+    } else {maxEl.textContent='Check job costs';}
+    document.getElementById('o_new').textContent=money(yearNew);
+    var d=yearNew-yearNow;
+    document.getElementById('o_diff').textContent=(d>=0?'+':'')+money(d);
+  }
+  ids.forEach(function(k){document.getElementById('c_'+k).addEventListener('input',calc);});
+  calc();
+})();
+</script>
+<script src="/track.js"></script>
+</body>
+</html>
