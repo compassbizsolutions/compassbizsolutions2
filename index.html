@@ -747,6 +747,9 @@
     });
   });
 
+  // When someone first clicks into a form (helps tell people from bots)
+  document.addEventListener('focusin', function(ev) { if (!window.cbsFormStart && ev.target && ev.target.form) window.cbsFormStart = Date.now(); });
+
   // Contact form
   function handleContact(e) {
     e.preventDefault();
@@ -768,8 +771,9 @@
         email:    body.email || '',
         business: body.business || '',
         service:  body.service || '',
-        message:  (body.phone ? 'Phone: ' + body.phone + '\n\n' : '') + (body.message || ''),
+        message:  body.message || '',
         phone:    body.phone || '',
+        elapsed_sec: window.cbsFormStart ? Math.round((Date.now() - window.cbsFormStart) / 1000) : null,
         source:   'contact-form',
         category: 'contact_form'
       })
