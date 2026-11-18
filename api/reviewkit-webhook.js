@@ -266,6 +266,15 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: "Invalid payload" });
   }
 
+  // Other apps share this Stripe account (Due North tags its checkouts and
+  // subscriptions with metadata.app = "duenorth"). Those aren't ReviewKit
+  // signups: no welcome email, no business row.
+  const obj = event.data && event.data.object;
+  const app = obj && obj.metadata && obj.metadata.app;
+  if (app && app !== "reviewkit") {
+    return res.status(200).json({ received: true, ignored: "other app" });
+  }
+
   try {
     switch (event.type) {
       case "checkout.session.completed": {

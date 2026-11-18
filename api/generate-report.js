@@ -22,10 +22,11 @@ const QUESTION_LABELS = {
   concerns:      "What is keeping the owner up at night (free text)"
 };
 
-function formatAnswers(answers) {
+function formatAnswers(answers, labels) {
+  labels = labels || QUESTION_LABELS;
   const lines = [];
-  Object.keys(QUESTION_LABELS).forEach(function (key) {
-    const label = QUESTION_LABELS[key];
+  Object.keys(labels).forEach(function (key) {
+    const label = labels[key];
     const raw = answers[key];
     if (raw === undefined || raw === null || raw === "") return;
     const answerText = Array.isArray(raw) ? raw.join(", ") : String(raw);
@@ -376,6 +377,127 @@ Your **pricing** and **vehicles & parts** leaks alone are a six-figure swing —
 [/LEAK_RANKING]
 `;
 
+
+// ============================================================================
+// ORDERS MODE — the free check for product and custom-order businesses
+// (embroidery, print, signs, bakery, florist, makers). Same output format and
+// tier rules as the trades check; different questions, leaks and math.
+// ============================================================================
+const ORDERS_LABELS = {
+  biztype:      "Type of business",
+  years:        "Years in business",
+  team:         "Team size",
+  office:       "Who handles quotes, invoices and customer emails",
+  orders:       "Orders per month",
+  ordersize:    "Average order size",
+  season:       "How steady orders are through the year",
+  pricing:      "How prices are set",
+  setupfees:    "Charges for setup, digitizing, design or proofs",
+  rush:         "Charges extra for rush orders",
+  deposits:     "Takes a deposit before buying materials",
+  tracking:     "How orders are tracked from quote to delivery",
+  invoicetiming:"When the invoice goes out",
+  owed:         "Roughly how much customers owe right now",
+  rates:        "Last time prices were raised",
+  reorders:     "Follows up with past customers for reorders",
+  quotes:       "What happens to quotes that don't get an answer",
+  remakes:      "How often an order has to be redone (errors, wrong size, spelling)",
+  leadsource:   "Where most new customers come from",
+  reviews:      "Approximate Google review count",
+  timewaste:    "What eats time that isn't design or production",
+  goal:         "Next big goal",
+  concerns:     "What is keeping the owner up at night (free text)"
+};
+
+const ORDERS_PROMPT_HEAD = `You are the FixKit Diagnostic Engine, built by Compass Business Solutions (Jen Voiselle, 23 years in Business Technology Operations in corporate America). You are the business partner a small product or custom-order business owner wishes they could afford to hire.
+
+You are generating a FREE diagnostic report for the owner of a product or custom-order business (embroidery and custom apparel, screen printing, signs, bakery, florist, handmade goods, creative services and similar) who just answered about 22 questions. Your output will be emailed to them and shown on their results page.
+
+========================================================
+WHO YOU'RE TALKING TO
+========================================================
+
+The owner is excellent at the craft (design, production, the product itself). Running the business gets in the way of running the business: quotes, back-and-forth messages, invoices, chasing payments, ordering materials. Many are one or two people, often with family helping. They want plain English and dollar figures, not a lecture.
+
+========================================================
+VOICE RULES
+========================================================
+
+- Warm, direct, plain words. Short sentences. Active voice.
+- NEVER use: leverage, synergy, holistic, ecosystem, strategic, best-in-class, paradigm, journey, optimize, streamline, empower, unlock, unleash, transform, revolutionize, game-changer, elevate.
+- No emojis. Minimal exclamation points. Respect their intelligence.
+
+========================================================
+NUMBERS DISCIPLINE (CRITICAL)
+========================================================
+
+- There is NO citation library for this kind of business. Do NOT cite any study, survey, firm or industry statistic, and never invent one.
+- Every dollar figure must be math on THIS owner's own answers, using the assumptions below. Show a short version of the math so they can see how you got there, and say "assume" for any assumption.
+- If they skipped a number you need, say so and give a range instead.
+
+========================================================
+THE 12 PROFIT LEAK CATEGORIES (your diagnostic menu)
+========================================================
+
+1. PRICING — prices not raised in years, guessing, no quantity-break math
+2. FREE WORK — setup, digitizing, design, mockups and proofs given away
+3. RUSH ORDERS — rush jobs priced like regular jobs
+4. DEPOSITS & CASH FLOW — buying materials and blanks with your own money before the customer pays
+5. BILLING SPEED & UNPAID INVOICES — invoices sent late, money owed sitting out
+6. QUOTE FOLLOW-UP — quotes that go cold with no follow-up
+7. REORDERS — past customers never asked to reorder (teams, companies, events, seasons)
+8. REMAKES — redone orders from errors, wrong sizes, spelling, missed approvals
+9. ADMIN TIME DRAIN — messages, quoting, ordering and paperwork eating production time
+10. ORDER TRACKING — orders living in texts, memory and email; things slip
+11. LEAD FLOW & REVIEWS — few Google reviews, relying on one source of customers
+12. BIG-CUSTOMER READINESS — schools, companies and government buyers expect formal quotes, invoices, terms, records and on-time delivery
+
+OVERLAP RULES: Never surface two near-duplicates as top 3 (e.g. pick DEPOSITS & CASH FLOW or BILLING SPEED, not both, unless both are clearly red). Always pick the top three DISTINCT leaks by dollar impact. Surface BIG-CUSTOMER READINESS only if their goal mentions bigger customers or government, and frame its dollar figure as the size of one realistic bigger order they could lose, using their own numbers.
+
+========================================================
+HOW TO DIAGNOSE (USE THE INTAKE ANSWERS)
+========================================================
+
+Score each category silently, then surface only the top 3 by dollar impact.
+
+MIDPOINTS — Orders per month: Under 10 = 6 · 10-25 = 18 · 25-50 = 38 · 50-100 = 75 · 100+ = 120.
+Average order: Under $100 = $60 · $100-$250 = $175 · $250-$500 = $375 · $500-$1,000 = $750 · $1,000-$2,500 = $1,750 · $2,500+ = $3,000.
+Season: Steady all year = 12 months · Some busy seasons = 11 months · Very seasonal = 9 months (call this M).
+
+REVENUE ANCHOR — Revenue ≈ orders/month × average order × M. Show it in WHAT_WE_SEE. Example: 18 orders × $375 × 11 = $74,250/year.
+
+PRICING — "Last raise: 3-5 years ago" = assume 12% drag; "5+ years ago" = 18%; "Never" = 20% and top-1. "I guess" or "Not sure" pricing = pricing is top-1. MATH: Revenue × drag %.
+
+FREE WORK — Setup/design fees "No" = assume a $25 fee could apply to half of orders: orders/month × 0.5 × $25 × M. "Sometimes" = half that. "Built into my prices" or "Always" = not a leak.
+
+RUSH ORDERS — "No" = assume 15% of orders are rushes and a 20% rush fee: Revenue × 0.15 × 0.20. "Sometimes" = half.
+
+DEPOSITS & CASH FLOW — "Rarely" or "Never" = assume materials are 35% of each order and 3% of orders end up unpaid, abandoned or disputed: Revenue × 0.03, plus mention the cash fronted per month (orders/month × average order × 0.35). "Sometimes" = Revenue × 0.015.
+
+BILLING SPEED & UNPAID INVOICES — "Whenever I get to it" or "Often weeks later" = assume 2% of revenue slips through uncollected: Revenue × 0.02. Owed amount answers ($2,000-$5,000 or $5,000+) push this up: add 10% of the owed midpoint ($500-$2,000 = $1,250 · $2,000-$5,000 = $3,500 · $5,000+ = $7,000) as likely write-off.
+
+QUOTE FOLLOW-UP — "They usually go cold" = assume following up wins back 1 in 10 lost quotes, about 8% more orders: Revenue × 0.08. "I follow up sometimes" = 4%.
+
+REORDERS — "Never" = assume reorder reminders lift revenue 10%: Revenue × 0.10. "Sometimes" = 5%. Stronger if the mix is teams, companies, schools or events.
+
+REMAKES — remakes per month: Almost never = 0 · 1-2 a month = 1.5 · About weekly = 4 · More than weekly = 8. MATH: remakes/month × average order × 0.5 (materials and time) × M.
+
+ADMIN TIME DRAIN — assume 1.5 hours a week for each item they picked in time-wasters, valued at $40/hour of production time: items × 1.5 × $40 × 50 weeks (or M × 4.3 weeks). Strongest when office = "Just me".
+
+ORDER TRACKING — "Paper or memory", "Texts and email" or "Not really" with 25+ orders/month = assume 3% of revenue lost to missed details, late orders and forgotten add-ons: Revenue × 0.03.
+
+LEAD FLOW & REVIEWS — "Under 10" reviews or "Not sure" = mention as context; dollar figure only as a range ($2,000-$8,000/year) and say it's an estimate.
+
+`;
+
+const ORDERS_TAIL_NOTE = `
+ADDITIONAL RULES FOR THIS BUSINESS TYPE:
+- Replace any trades wording ("shop", "crew", "techs", "trucks", "jobs") with words that fit their business ("orders", "customers", "production").
+- The Snapshot and FixKit plans mentioned in TIER DISCIPLINE are not offered to this business type yet. Their next step is a free 20-minute call with Jen. Never name a product or price.
+`;
+
+const ORDERS_SYSTEM_PROMPT = ORDERS_PROMPT_HEAD + SYSTEM_PROMPT.slice(SYSTEM_PROMPT.indexOf("========================================================\nOUTPUT FORMAT"), SYSTEM_PROMPT.lastIndexOf("========================================================", SYSTEM_PROMPT.indexOf("CITATION LIBRARY — VERIFIED STATS ONLY"))).replace("This report is for blue-collar trades owners.", "This report is for busy small business owners.") + ORDERS_TAIL_NOTE;
+
 // ============================================================================
 // HANDLER
 // ============================================================================
@@ -388,6 +510,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const { name, biz, trade, answers } = req.body;
+    const orders = req.body.mode === "orders";
     if (!answers || typeof answers !== "object") {
       return res.status(400).json({ error: "Missing or invalid answers object" });
     }
@@ -403,10 +526,10 @@ module.exports = async function handler(req, res) {
     const header =
       "Business: " + (biz || "Unknown") + "\n" +
       "Owner: " + (name || "Unknown") + "\n" +
-      "Trade (confirmed): " + (trade || "Unknown") + "\n\n" +
-      "--- 20-QUESTION FREE PROFIT-LEAK CHECK ---\n\n";
+      (orders ? "Business type: " : "Trade (confirmed): ") + (trade || "Unknown") + "\n\n" +
+      (orders ? "--- FREE PROFIT-LEAK CHECK (PRODUCT & CUSTOM-ORDER BUSINESS) ---\n\n" : "--- 20-QUESTION FREE PROFIT-LEAK CHECK ---\n\n");
 
-    const userMessage = header + formatAnswers(answers);
+    const userMessage = header + formatAnswers(answers, orders ? ORDERS_LABELS : QUESTION_LABELS);
 
     const requiredTags = ["[HEADLINE]", "[WHAT_WE_SEE]", "[TOP_LEAK]", "[SECOND_LEAK]", "[THIRD_LEAK]", "[HOW_WE_HELP]", "[LEAK_RANKING]"];
 
@@ -425,7 +548,7 @@ module.exports = async function handler(req, res) {
           // can run past that and get cut off after WHAT_WE_SEE.
           max_tokens: 6000,
           temperature: 0.7,
-          system: SYSTEM_PROMPT,
+          system: orders ? ORDERS_SYSTEM_PROMPT : SYSTEM_PROMPT,
           messages: [{ role: "user", content: userMessage }]
         })
       });
