@@ -25,6 +25,10 @@ const KNOWN = {
   home: HOME,
 };
 
+// Short codes printed in the profit leak workbooks (see numbers/leaks.js)
+const DL_TRADES = { gen: "general", hvac: "hvac", plumb: "plumbing", elec: "electrical", gc: "general-contracting", roof: "roofing", land: "landscaping", handy: "handyman", paint: "painting" };
+const DL_LEAKS = { pricing: "pricing", sched: "scheduling", labor: "employee-cost", plan: "recurring-revenue", extras: "estimate-to-invoice", cash: "cash-flow", repeat: "customer-churn", markup: "materials-markup", admin: "admin-time", parts: "vehicles-parts", billing: "billing-speed", calls: "lead-flow" };
+
 function kv() {
   return {
     url: process.env.lime_KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL,
@@ -42,7 +46,7 @@ async function kvCall(path, method) {
 function guessDest(code) {
   const m = code.match(/-(call|course|contact|fieldkit|reviewkit|bizcheck|home)(-\d+)?$/);
   if (m) return m[1];
-  if (/^(fb|ig|fbg|pin|li|story|tt|yt|em)-/.test(code)) return "check";
+  if (/^(fb|ig|fbg|pin|li|story|tt|yt|em|dl)-/.test(code)) return "check";
   return "";
 }
 
@@ -56,6 +60,9 @@ module.exports = async function handler(req, res) {
       // No saved link yet? A code named after a known page (check, course,
       // call, contact…) still goes there instead of the home page.
       let d = (link && link.dest) || (KNOWN[code] ? code : "") || guessDest(code);
+      // Workbook links: dl-<trade>-<leak> opens that leak's calculator for that trade
+      const dl = !link && code.match(/^dl-([a-z]+)-([a-z]+)$/);
+      if (dl && DL_TRADES[dl[1]] && (DL_LEAKS[dl[2]] || dl[2] === "all")) d = "https://www.compassbizsolutions.com/numbers?leak=" + (DL_LEAKS[dl[2]] || "all") + "&trade=" + DL_TRADES[dl[1]];
       // "etsy:price" etc. → the listing link saved in the admin's Marketing section
       if (/^etsy:[a-z]+$/.test(d)) {
         const e = (await kvCall("/get/" + encodeURIComponent("etsylink:" + d.slice(5)))) || "";
@@ -79,11 +86,11 @@ module.exports = async function handler(req, res) {
     if (code && /(^|\.)compassbizsolutions\.com$/.test(u.hostname)) {
       u.searchParams.set("src", code);
       u.searchParams.set("utm_source", platform);
-      u.searchParams.set("utm_medium", "social");
+      u.searchParams.set("utm_medium", platform === "dl" ? "download" : "social");
       u.searchParams.set("utm_campaign", code);
     } else if (code && /calendly\.com$/.test(u.hostname)) {
       u.searchParams.set("utm_source", platform);
-      u.searchParams.set("utm_medium", "social");
+      u.searchParams.set("utm_medium", platform === "dl" ? "download" : "social");
       u.searchParams.set("utm_campaign", code);
     }
     to = u.toString();

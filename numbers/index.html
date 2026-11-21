@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Run Your Numbers — Compass Business Solutions</title>
+<meta name="description" content="Free profit leak calculators for trades and home service owners: pricing, no-shows, unbilled extras, missed calls and more. Put in your numbers and see what each leak costs you a year."/>
+<link rel="canonical" href="https://www.compassbizsolutions.com/numbers"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1B2E4B;--navy-dark:#111E31;--amber:#C8701A;--amber2:#E08930;--muted:#5A7291;--light:#F4F7FC;--line:#D8E4F0;--green:#1E6B45}
+body{font-family:'DM Sans',sans-serif;background:var(--light);color:var(--navy);line-height:1.6}
+.nav{background:var(--navy);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:1px;text-decoration:none}
+.nav-logo span{color:var(--amber)}
+.nav a.nav-link{color:rgba(255,255,255,.75);font-size:14px;text-decoration:none;font-weight:600}
+.hero{background:var(--navy);padding:40px 40px 34px;border-bottom:4px solid var(--amber)}
+.hero-label{font-size:11px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,.5);text-transform:uppercase;margin-bottom:8px}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:46px;font-weight:900;color:#fff;text-transform:uppercase;line-height:1}
+.hero p{color:rgba(255,255,255,.75);margin-top:10px;max-width:640px}
+.pickers{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.pickers select{font:inherit;font-size:15px;padding:10px 12px;border-radius:8px;border:none;min-width:200px;color:var(--navy)}
+.wrap{max-width:860px;margin:0 auto;padding:28px 40px 60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px;margin-bottom:18px}
+.card h2{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;text-transform:uppercase;line-height:1.05}
+.tag{font-size:13px;color:var(--muted);margin:4px 0 14px}
+.what{font-size:15px;color:#2E3F55;margin-bottom:16px}
+.ex{font-size:12.5px;background:#FFF4E8;color:#8A4B0F;border-radius:8px;padding:8px 12px;margin-bottom:14px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+.f label{display:block;font-size:13px;font-weight:600;margin-bottom:4px}
+.f .help{font-size:11.5px;color:var(--muted);margin-top:3px}
+.inp{display:flex;align-items:center;border:1px solid #C8D6E8;border-radius:8px;background:#FBFCFE;overflow:hidden}
+.inp span{padding:0 10px;color:var(--muted);font-size:14px;font-weight:600}
+.inp input{border:none;background:transparent;font:inherit;font-size:16px;padding:10px 10px;width:100%;min-width:0;color:var(--navy)}
+.inp input:focus{outline:none}
+.inp:focus-within{border-color:var(--amber);box-shadow:0 0 0 2px rgba(200,112,26,.15)}
+.result{margin-top:18px;border-top:2px solid var(--amber);padding-top:16px}
+.big{font-family:'Barlow Condensed',sans-serif;font-size:52px;font-weight:900;color:var(--amber);line-height:1}
+.big small{font-size:20px;color:var(--muted);font-weight:700}
+.steps{margin-top:12px;font-size:14px}
+.steps div{display:grid;grid-template-columns:1.2fr 1.6fr auto;gap:10px;padding:6px 0;border-bottom:1px solid #EEF2F7}
+.steps .m{color:var(--muted)}
+.steps b{white-space:nowrap}
+.note{font-size:13px;color:var(--muted);margin-top:10px}
+.cta{background:var(--navy);color:#fff;border-radius:12px;padding:24px;margin-top:8px}
+.cta h3{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;text-transform:uppercase}
+.cta p{color:rgba(255,255,255,.8);margin:6px 0 14px;font-size:15px}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-block;background:var(--amber);color:#fff;text-decoration:none;font-weight:700;border-radius:8px;padding:12px 18px;font-size:15px}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.4)}
+.top3{background:#fff;border:2px solid var(--amber);border-radius:12px;padding:20px 24px;margin-bottom:18px}
+.top3 ol{margin:8px 0 0 20px}
+.top3 li{margin:4px 0}
+.mini{display:flex;justify-content:space-between;align-items:baseline;gap:12px;cursor:pointer}
+.mini .v{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:var(--amber);white-space:nowrap}
+.footer{background:var(--navy);padding:24px 40px;text-align:center;font-size:13px;color:rgba(255,255,255,.5)}
+.footer a{color:rgba(255,255,255,.75);text-decoration:none}
+@media(max-width:640px){.nav,.hero{padding-left:16px;padding-right:16px}.wrap{padding:20px 16px 48px}.hero h1{font-size:36px}.fields{grid-template-columns:1fr}.steps div{grid-template-columns:1fr auto}.steps .m{grid-column:1/-1;order:3;font-size:12.5px}.big{font-size:44px}.pickers select{min-width:0;flex:1}}
+</style>
+</head>
+<body>
+<div class="nav"><a class="nav-logo" href="/">COMPASS <span>BUSINESS SOLUTIONS</span></a><a class="nav-link" href="/quote">Talk to Jen →</a></div>
+<div class="hero">
+  <div class="hero-label">Run your numbers</div>
+  <h1 id="h1">What is this leak costing you?</h1>
+  <p id="sub">Put in your own numbers. Everything stays in your browser. Nothing is saved or sent.</p>
+  <div class="pickers">
+    <select id="leakSel" aria-label="Choose a profit leak"></select>
+    <select id="tradeSel" aria-label="Choose your trade"></select>
+  </div>
+</div>
+<div class="wrap" id="main"></div>
+<div class="footer">Compass Business Solutions · <a href="/trades?start=1">Free profit leak check</a> · <a href="/quote">Contact</a> · <a href="/privacy-policy.html">Privacy</a></div>
+<script src="/numbers/leaks.js"></script>
+<script>
+(function () {
+  var D = window.CBS_LEAKS, L = D.LEAKS, T = D.TRADES;
+  var q = new URLSearchParams(location.search);
+  var leakId = q.get('leak') || 'all', tradeId = T[q.get('trade')] ? q.get('trade') : 'general';
+  if (leakId !== 'all' && !L.some(function (l) { return l.id === leakId; })) leakId = 'all';
+  var vals = {};   // leak id -> inputs
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  var leakSel = document.getElementById('leakSel'), tradeSel = document.getElementById('tradeSel');
+  leakSel.innerHTML = '<option value="all">All 12 leaks</option>' + L.map(function (l) { return '<option value="' + l.id + '">' + l.n + '. ' + esc(l.short) + '</option>'; }).join('');
+  tradeSel.innerHTML = Object.keys(T).map(function (k) { return '<option value="' + k + '">' + esc(T[k].name) + '</option>'; }).join('');
+  leakSel.value = leakId; tradeSel.value = tradeId;
+  function setUrl() { var u = new URL(location.href); u.searchParams.set('leak', leakId); u.searchParams.set('trade', tradeId); history.replaceState(null, '', u); }
+  function resetVals() { vals = {}; L.forEach(function (l) { vals[l.id] = D.inputsFor(l, tradeId); }); }
+  leakSel.onchange = function () { leakId = leakSel.value; setUrl(); render(); };
+  tradeSel.onchange = function () { tradeId = tradeSel.value; resetVals(); setUrl(); render(); };
+  var units = { '$': ['$', ''], '%': ['', '%'], 'hrs': ['', 'hrs'], '#': ['', ''], 'min': ['', 'min'], 'wks': ['', 'weeks'], 'mo': ['', 'months'] };
+  function fieldHtml(l, f) {
+    var t = T[tradeId], u = units[f.unit] || ['', ''];
+    return '<div class="f"><label for="' + l.id + '-' + f.key + '">' + esc(D.fill(f.label, t)) + '</label><div class="inp">' + (u[0] ? '<span>' + u[0] + '</span>' : '') +
+      '<input id="' + l.id + '-' + f.key + '" type="number" inputmode="decimal" step="any" min="0" data-leak="' + l.id + '" data-key="' + f.key + '" value="' + esc(vals[l.id][f.key]) + '"/>' + (u[1] ? '<span>' + u[1] + '</span>' : '') + '</div>' +
+      (f.help ? '<div class="help">' + esc(D.fill(f.help, t)) + '</div>' : '') + '</div>';
+  }
+  function resultHtml(l) {
+    var r = l.calc(vals[l.id]);
+    return '<div class="big">' + D.money(r.total) + ' <small>' + (r.isCushion ? 'cushion to save' : 'a year') + '</small></div>' +
+      '<div class="steps">' + r.steps.map(function (s) { return '<div><span>' + esc(s[0]) + '</span><span class="m">' + esc(s[1]) + '</span><b>' + esc(s[2]) + '</b></div>'; }).join('') + '</div>' +
+      (r.note ? '<div class="note">' + esc(r.note) + '</div>' : '');
+  }
+  function leakCard(l) {
+    var t = T[tradeId];
+    return '<div class="card" id="card-' + l.id + '"><h2>' + l.n + '. ' + esc(D.fill(l.name, t)) + '</h2><div class="tag">' + esc(D.fill(l.tagline, t)) + '</div>' +
+      '<p class="what">' + esc(D.fill(l.what, t)) + '</p>' +
+      '<div class="ex">The numbers below are an example ' + esc(t.short) + ' business. Replace them with yours.</div>' +
+      '<div class="fields">' + l.fields.map(function (f) { return fieldHtml(l, f); }).join('') + '</div>' +
+      '<div class="result" id="res-' + l.id + '">' + resultHtml(l) + '</div></div>';
+  }
+  function top3Html() {
+    var list = L.map(function (l) { var r = l.calc(vals[l.id]); return { l: l, v: r.total, c: r.isCushion }; }).filter(function (x) { return !x.c; }).sort(function (a, b) { return b.v - a.v; });
+    var top = list.slice(0, 3), sum = top.reduce(function (a, x) { return a + x.v; }, 0);
+    return '<div class="top3" id="top3"><b>Your top 3 leaks</b> (updates as you type)<ol>' + top.map(function (x) { return '<li><a href="#card-' + x.l.id + '" style="color:inherit">' + esc(x.l.short) + '</a>: <b>' + D.money(x.v) + '</b> a year</li>'; }).join('') + '</ol>' +
+      '<div class="note">Together: about <b>' + D.money(sum) + '</b> a year. Some leaks overlap, so fix the biggest first instead of adding all 12.</div></div>';
+  }
+  function ctaHtml() {
+    return '<div class="cta"><h3>Want the full picture?</h3><p>The free profit leak check looks at all 12 leaks for your business and ranks your top 3 in dollars. It takes about 5 minutes. No card.</p>' +
+      '<div class="btns"><a class="btn" href="/trades?start=1">Run the free check →</a><a class="btn ghost" href="/quote">Talk to Jen about fixing it</a></div></div>';
+  }
+  function render() {
+    var t = T[tradeId];
+    document.getElementById('h1').textContent = leakId === 'all' ? 'All 12 profit leaks' : D.fill(L.filter(function (l) { return l.id === leakId; })[0].name, t);
+    var main = document.getElementById('main');
+    if (leakId === 'all') main.innerHTML = top3Html() + L.map(leakCard).join('') + ctaHtml();
+    else main.innerHTML = leakCard(L.filter(function (l) { return l.id === leakId; })[0]) + ctaHtml();
+  }
+  document.addEventListener('input', function (e) {
+    var el = e.target; if (!el.dataset || !el.dataset.leak) return;
+    var x = parseFloat(el.value); vals[el.dataset.leak][el.dataset.key] = isNaN(x) ? 0 : x;
+    var l = L.filter(function (z) { return z.id === el.dataset.leak; })[0];
+    document.getElementById('res-' + l.id).innerHTML = resultHtml(l);
+    var t3 = document.getElementById('top3'); if (t3) t3.outerHTML = top3Html();
+  });
+  resetVals(); render();
+})();
+</script>
+<script src="/track.js"></script>
+<script src="/ask-jen.js" defer></script>
+</body>
+</html>
