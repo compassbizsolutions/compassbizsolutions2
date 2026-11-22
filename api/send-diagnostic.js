@@ -309,7 +309,8 @@ ${mode === "orders" ? `
               <a href="https://calendly.com/jvoiselle612-s9gb/free-scoping-call" style="display:inline-block;background:#1B2E4B;color:white;font-weight:bold;font-size:14px;padding:10px 22px;border-radius:8px;text-decoration:none;">Book a Free Scoping Call →</a>
             </div>
           </div>
-          <p style="font-size:14px;color:#6B7A90;margin-bottom:4px;">${mark(6)}Questions? Reply to this email — I read every one.</p>
+          <p style="font-size:15px;color:#3E4E63;line-height:1.7;margin-bottom:10px;">${mark(6)}<strong>One quick favor:</strong> hit reply and tell me the #1 thing getting in the way of fixing these right now. One line is plenty. I read every reply myself.</p>
+          <p style="font-size:14px;color:#6B7A90;line-height:1.7;margin-bottom:14px;">Over the next week I'll send you a few short emails, one idea each, to help you fix what's above. If they're not for you, there's an unsubscribe link in every one.</p>
 
           <p style="margin:0;color:#3E4E63;font-size:15px;">— Jen, Compass Business Solutions</p>
         </div>
