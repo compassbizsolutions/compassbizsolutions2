@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How to Price a Maintenance Agreement: The Math | Compass</title>
+<meta name="description" content="How to price a maintenance agreement: add up what each member really costs you, then set a price that covers it. Simple math and a free calculator."/>
+<link rel="canonical" href="https://www.compassbizsolutions.com/guides/maintenance-agreement-pricing"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="Compass Business Solutions"/>
+<meta property="og:title" content="How to price a maintenance agreement"/>
+<meta property="og:description" content="What one member really costs you, what to charge, and a free calculator to run it with your own numbers."/>
+<meta property="og:url" content="https://www.compassbizsolutions.com/guides/maintenance-agreement-pricing"/>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "How to Price a Maintenance Agreement (The Simple Math for Trades Owners)", "author": {"@type": "Person", "name": "Jen Voiselle"}, "publisher": {"@type": "Organization", "name": "Compass Business Solutions", "logo": {"@type": "ImageObject", "url": "https://www.compassbizsolutions.com/logo.png"}}, "datePublished": "2026-11-25", "dateModified": "2026-11-25", "mainEntityOfPage": "https://www.compassbizsolutions.com/guides/maintenance-agreement-pricing"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How much should a maintenance agreement cost?", "acceptedAnswer": {"@type": "Answer", "text": "Add up what one member really costs you for a year: the visits (tech time, drive time and supplies), the cost of any repair discount, and office time. Then divide by (1 minus the margin you want to keep). In one example, a member who costs $234 a year to serve, at a 30% margin, comes to about $334 a year, or about $28 a month."}}, {"@type": "Question", "name": "Should I charge for a maintenance plan monthly or yearly?", "acceptedAnswer": {"@type": "Answer", "text": "Either can work. Monthly is easier for customers to say yes to and keeps the plan renewing on its own; yearly puts cash in the bank up front. If you offer monthly, remember card processing fees come out of every payment, so price them in."}}, {"@type": "Question", "name": "What should a maintenance agreement include?", "acceptedAnswer": {"@type": "Answer", "text": "Keep it simple: the scheduled visits, priority scheduling, and one clear perk like a repair discount or no trip charge. Every perk has a cost, so only offer what you've put a number on. Put the terms in writing: what's included, how it renews and how to cancel."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F4F7FC;color:#1B2E4B;line-height:1.75}
+.nav{background:#1B2E4B;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;letter-spacing:1px;text-decoration:none}
+.nav-logo span{color:#C8701A}
+.nav a.nav-link{color:rgba(255,255,255,.75);font-size:14px;text-decoration:none;font-weight:600}
+.hero{background:#1B2E4B;padding:44px 40px 38px;border-bottom:4px solid #C8701A}
+.hero-label{font-size:11px;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:10px}
+.hero-label a{color:inherit;text-decoration:none}
+h1{font-family:'Barlow Condensed',sans-serif;font-size:46px;font-weight:800;color:white;text-transform:uppercase;line-height:1;max-width:760px}
+.hero-sub{color:rgba(255,255,255,.75);margin-top:14px;max-width:640px}
+.byline{color:rgba(255,255,255,.5);font-size:13px;margin-top:14px}
+.container{max-width:760px;margin:0 auto;padding:36px 40px 60px}
+h2{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;text-transform:uppercase;margin:34px 0 10px;line-height:1.1}
+p{margin:0 0 14px}
+ul{margin:0 0 16px 22px}
+li{margin:0 0 6px}
+.math{background:#fff;border:1px solid #DCE4EF;border-radius:12px;padding:6px 0;margin:10px 0 18px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:9px 18px;border-top:1px solid #EEF2F8;font-size:15.5px}
+.row:first-child{border-top:none}
+.row b{font-variant-numeric:tabular-nums}
+.row.total{background:#FFF6EC;font-weight:700}
+.row.total b{color:#C8701A;font-size:18px}
+.note{font-size:13.5px;color:#5A7291}
+.big{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:56px;color:#C8701A;line-height:1}
+.calc{background:#1B2E4B;color:#F4F7FC;border-radius:14px;padding:22px 22px 18px;margin:16px 0 22px}
+.calc h3{font-family:'Barlow Condensed',sans-serif;font-size:24px;text-transform:uppercase;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.calc label{font-size:13px;color:#C8D8E8;display:block}
+.calc input{width:100%;margin-top:4px;padding:9px 10px;border-radius:8px;border:1px solid #3D6B9E;background:#111E31;color:#fff;font-size:16px;font-family:inherit}
+.out{margin-top:16px;border-top:1px solid #2E4566;padding-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.out div{font-size:13px;color:#C8D8E8}
+.out b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:34px;color:#E08930;line-height:1.1}
+.cta{background:#fff;border:1px solid #F2D3AE;border-left:5px solid #C8701A;border-radius:12px;padding:20px 22px;margin:28px 0}
+.cta b{font-size:18px;display:block;margin-bottom:4px}
+.btn{display:inline-block;background:#C8701A;color:#fff;text-decoration:none;font-weight:700;border-radius:9px;padding:12px 20px;margin-top:10px}
+.about{font-size:14px;color:#5A7291;border-top:1px solid #DCE4EF;padding-top:16px;margin-top:30px}
+.footer{background:#1B2E4B;padding:24px 40px;text-align:center;font-size:13px;color:rgba(255,255,255,0.45)}
+.footer a{color:rgba(255,255,255,0.7);text-decoration:none}
+@media(max-width:600px){.hero{padding:32px 16px}.container{padding:28px 16px 48px}.nav{padding:16px}h1{font-size:36px}.grid,.out{grid-template-columns:1fr}.row{padding:9px 14px;font-size:14.5px}}
+</style>
+</head>
+<body>
+<div class="nav"><a class="nav-logo" href="/">COMPASS <span>BUSINESS SOLUTIONS</span></a><a class="nav-link" href="/trades?start=1&src=guide-maintenance-agreement-pricing">Free profit-leak check →</a></div>
+<div class="hero">
+  <div class="hero-label"><a href="/guides">Guides</a> · Pricing</div>
+  <h1>How to price a maintenance agreement</h1>
+  <p class="hero-sub">What one member really costs you, what to charge, and how to check you're not paying customers to be on your plan. Step by step, with a calculator.</p>
+  <div class="byline">By Jen Voiselle · Compass Business Solutions</div>
+</div>
+<div class="container">
+  <p>Here's the short answer on how to price a maintenance agreement: add up everything one member costs you for a year (the visits, the drive time, the supplies, the discount you promised and the office time), then set a price that covers that cost and still leaves you a real margin.</p>
+  <p>In the example below, one member costs about <b>$234 a year</b> to take care of. To keep 30% of what they pay, the plan comes to about <b>$334 a year, or $28 a month</b>. A lot of owners guess $149 or $199 because that's what the shop down the road charges. Then every tune-up quietly costs them money.</p>
+  <p>It works the same for a furnace tune-up, a water heater flush, a pool opening and closing, a spring and fall cleanup, or a gutter and roof check. Your numbers will be different. That's what the calculator is for.</p>
+
+  <h2>Step 1: What one visit really costs you</h2>
+  <p>Start with a single scheduled visit. Count the drive, not just the time in the driveway. <span class="note">(Example numbers, rounded.)</span></p>
+  <div class="math">
+    <div class="row"><span>Tech time, including the drive</span><b>1.5 hours</b></div>
+    <div class="row"><span>× real cost per paid hour (wage, taxes, truck, tools)</span><b>$48</b></div>
+    <div class="row"><span>Labor for the visit</span><b>$72</b></div>
+    <div class="row"><span>Supplies: filters, chemicals, small parts</span><b>$15</b></div>
+    <div class="row total"><span>Real cost of one visit</span><b>$87</b></div>
+  </div>
+  <p class="note">Not sure what your tech's paid hour really costs? The <a href="/guides/real-cost-per-hour" style="color:#C8701A">real cost per hour guide</a> walks you through it. Most owners are surprised.</p>
+
+  <h2>Step 2: Add the perks and the paperwork</h2>
+  <p>Perks feel free when you write them on the brochure. They aren't. A 15% repair discount is real money every time a member calls you.</p>
+  <div class="math">
+    <div class="row"><span>2 visits a year × $87</span><b>$174</b></div>
+    <div class="row"><span>15% off repairs, on a member who spends $300 a year with you</span><b>$45</b></div>
+    <div class="row"><span>Office time: booking, reminders, billing, renewals</span><b>$15</b></div>
+    <div class="row total"><span>Real cost of one member, per year</span><b>$234</b></div>
+  </div>
+  <p>That office line is the one that gets skipped. Someone has to call Mrs. Thompson three times to get the fall visit on the calendar. That time is part of the plan.</p>
+
+  <h2>Step 3: Set the price with margin, not markup</h2>
+  <p>Here's where the math trips people up. Adding 30% to your cost does <b>not</b> leave you 30%.</p>
+  <div class="math">
+    <div class="row"><span>Cost + 30% markup ($234 × 1.30)</span><b>$304</b></div>
+    <div class="row"><span>What you actually keep ($70 ÷ $304)</span><b>23%</b></div>
+  </div>
+  <p>To <b>keep</b> 30%, divide by what's left after your margin:</p>
+  <div class="math">
+    <div class="row"><span>$234 ÷ (1 − 0.30)</span><b>$334 a year</b></div>
+    <div class="row"><span>Or monthly ($334 ÷ 12)</span><b>about $28</b></div>
+    <div class="row total"><span>You keep, per member, per year</span><b>$100</b></div>
+  </div>
+  <p class="note">Same trap as pricing parts. The <a href="/guides/material-markup" style="color:#C8701A">materials markup guide</a> has the markup vs. margin math in more detail.</p>
+
+  <h2>Step 4: Check it against what they'd pay without the plan</h2>
+  <p>A plan has to be a good deal for the customer too, or nobody signs up. Say your regular price for one of these visits is $189.</p>
+  <div class="math">
+    <div class="row"><span>2 visits at the regular price</span><b>$378</b></div>
+    <div class="row"><span>The plan</span><b>$334</b></div>
+    <div class="row total"><span>Member saves, before the repair discount</span><b>$44</b></div>
+  </div>
+  <p>Plus 15% off repairs and they're first on the list when the busy season hits. That's an easy yes. And you still keep $100 a member. With 100 members, that's about <b>$10,000 a year</b>, booked into your slow weeks, before you count a single repair they call you for.</p>
+  <p>If the plan comes out <i>more</i> than paying per visit, don't slash the price. Trim a perk, or look at why the visit costs so much to deliver. Drive time between members is usually the culprit, so group them by town.</p>
+
+  <div class="calc" id="calc">
+    <h3>Run it with your numbers</h3>
+    <div class="grid">
+      <label>Visits per year<input id="c_visits" type="number" inputmode="decimal" value="2"/></label>
+      <label>Hours per visit, with drive<input id="c_hrs" type="number" inputmode="decimal" value="1.5"/></label>
+      <label>Real cost per paid hour ($)<input id="c_rate" type="number" inputmode="decimal" value="48"/></label>
+      <label>Supplies per visit ($)<input id="c_sup" type="number" inputmode="decimal" value="15"/></label>
+      <label>Repair discount (%)<input id="c_disc" type="number" inputmode="decimal" value="15"/></label>
+      <label>Repairs per member per year ($)<input id="c_rep" type="number" inputmode="decimal" value="300"/></label>
+      <label>Office time per member per year ($)<input id="c_off" type="number" inputmode="decimal" value="15"/></label>
+      <label>Margin you want to keep (%)<input id="c_margin" type="number" inputmode="decimal" value="30"/></label>
+      <label>Regular price per visit ($)<input id="c_reg" type="number" inputmode="decimal" value="189"/></label>
+      <label>Number of members<input id="c_mem" type="number" inputmode="decimal" value="100"/></label>
+    </div>
+    <div class="out">
+      <div>Real cost per member, per year<b id="o_cost">–</b></div>
+      <div>Plan price: per year / per month<b id="o_price">–</b></div>
+      <div>You keep per year, all members<b id="o_keep">–</b></div>
+      <div>Member saves vs. paying per visit<b id="o_save">–</b></div>
+    </div>
+  </div>
+
+  <h2>What to do with your number</h2>
+  <ul>
+    <li><b>If your current plan price is below your cost line,</b> every renewal is a small loss. Raise it at renewal time, with notice, and honor what's already signed.</li>
+    <li><b>If the member savings come out negative,</b> trim a perk or tighten your routes before you touch the price.</li>
+    <li><b>If the office line made you wince,</b> automate the reminders and renewals. That's a process fix, not a pricing fix.</li>
+    <li><b>Put the terms in writing:</b> what's included, how it renews, how to cancel. Clear terms mean fewer awkward calls.</li>
+    <li><b>Book the visits for your slow season.</b> A plan's real gift is steady work in the weeks the phone goes quiet.</li>
+  </ul>
+
+  <div class="cta">
+    <b>Wondering where else money slips out?</b>
+    The free profit leak check takes about 5 minutes and shows your top 3 leaks with a dollar amount on each one, using your own numbers. No card.
+    <br/><a class="btn" href="/trades?start=1&src=guide-maintenance-agreement-pricing">Find my top 3 leaks →</a>
+  </div>
+
+  <h2>Questions owners ask</h2>
+  <h3 style="font-size:18px;margin:18px 0 6px">How much should a maintenance agreement cost?</h3>
+  <p>Add up what one member really costs you for a year: the visits (tech time, drive time and supplies), the cost of any repair discount, and office time. Then divide by (1 minus the margin you want to keep). In one example, a member who costs $234 a year to serve, at a 30% margin, comes to about $334 a year, or about $28 a month.</p>
+  <h3 style="font-size:18px;margin:18px 0 6px">Should I charge for a maintenance plan monthly or yearly?</h3>
+  <p>Either can work. Monthly is easier for customers to say yes to and keeps the plan renewing on its own; yearly puts cash in the bank up front. If you offer monthly, remember card processing fees come out of every payment, so price them in.</p>
+  <h3 style="font-size:18px;margin:18px 0 6px">What should a maintenance agreement include?</h3>
+  <p>Keep it simple: the scheduled visits, priority scheduling, and one clear perk like a repair discount or no trip charge. Every perk has a cost, so only offer what you've put a number on. Put the terms in writing: what's included, how it renews and how to cancel.</p>
+
+  <p class="about">Jen Voiselle grew up in Marshfield and spent 23 years in Business Technology Operations in corporate America. She started Compass Business Solutions to help trades and service businesses keep more of what they earn. <a href="/go/call" style="color:#C8701A">Book a free 20-minute call</a>.</p>
+</div>
+<div class="footer">Compass Business Solutions · <a href="/guides">More guides</a> · <a href="/terms-and-conditions.html">Terms</a> · <a href="/privacy-policy.html">Privacy</a></div>
+<script>
+(function(){
+  var ids=['visits','hrs','rate','sup','disc','rep','off','margin','reg','mem'];
+  function v(k){var n=parseFloat(document.getElementById('c_'+k).value);return isNaN(n)?0:n;}
+  function money(n){return (n<0?'-$':'$')+Math.round(Math.abs(n)).toLocaleString('en-US');}
+  function calc(){
+    var visits=v('visits');
+    var cost=visits*(v('hrs')*v('rate')+v('sup'))+v('rep')*v('disc')/100+v('off');
+    var m=Math.min(v('margin'),95)/100;
+    var price=cost/(1-m), keep=(price-cost)*v('mem'), save=visits*v('reg')-price;
+    document.getElementById('o_cost').textContent=money(cost);
+    document.getElementById('o_price').textContent=money(price)+' / $'+(price/12).toFixed(2);
+    document.getElementById('o_keep').textContent=money(keep);
+    document.getElementById('o_save').textContent=money(save);
+  }
+  ids.forEach(function(k){document.getElementById('c_'+k).addEventListener('input',calc);});
+  calc();
+})();
+</script>
+<script src="/track.js"></script>
+</body>
+</html>
