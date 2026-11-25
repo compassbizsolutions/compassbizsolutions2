@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How Much to Mark Up Materials (2027 Trades Math) | Compass</title>
+<meta name="description" content="How much to mark up materials? Cost plus 20% can leave you at break even. The real math for trades owners, plus a free calculator for your own parts."/>
+<link rel="canonical" href="https://www.compassbizsolutions.com/guides/material-markup"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="Compass Business Solutions"/>
+<meta property="og:title" content="How much should you mark up materials?"/>
+<meta property="og:description" content="Cost plus 20% can leave you at break even. The real math for trades owners, plus a free calculator for your own parts."/>
+<meta property="og:url" content="https://www.compassbizsolutions.com/guides/material-markup"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How Much to Mark Up Materials: The 2027 Math for Trades Owners","author":{"@type":"Person","name":"Jen Voiselle"},"publisher":{"@type":"Organization","name":"Compass Business Solutions","logo":{"@type":"ImageObject","url":"https://www.compassbizsolutions.com/logo.png"}},"datePublished":"2026-10-28","dateModified":"2026-10-28","mainEntityOfPage":"https://www.compassbizsolutions.com/guides/material-markup"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What's the difference between markup and margin?","acceptedAnswer":{"@type":"Answer","text":"Markup is figured on what you paid. Margin is figured on what you charged. A part that costs $100 and sells for $125 has a 25% markup but only a 20% margin, because the $25 you kept is 20% of the $125 price."}},{"@type":"Question","name":"What markup do I need for a 25% margin?","acceptedAnswer":{"@type":"Answer","text":"About 33.3%. To turn any margin into a markup, divide the margin by what's left: 25% ÷ 75% = 33.3%. For a 30% margin it's 30% ÷ 70% = 42.9%. That's markup on your real cost, not just the supply house receipt."}},{"@type":"Question","name":"Is it fair to mark up materials?","acceptedAnswer":{"@type":"Answer","text":"Yes. Markup isn't a tip on the part. It pays for the sales tax you paid, the trip to get it, returns, waste and the warranty when a part fails. Charging the receipt price means you're paying for all of that yourself."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F4F7FC;color:#1B2E4B;line-height:1.75}
+.nav{background:#1B2E4B;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:white;letter-spacing:1px;text-decoration:none}
+.nav-logo span{color:#C8701A}
+.nav a.nav-link{color:rgba(255,255,255,.75);font-size:14px;text-decoration:none;font-weight:600}
+.hero{background:#1B2E4B;padding:44px 40px 38px;border-bottom:4px solid #C8701A}
+.hero-label{font-size:11px;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:10px}
+.hero-label a{color:inherit;text-decoration:none}
+h1{font-family:'Barlow Condensed',sans-serif;font-size:46px;font-weight:800;color:white;text-transform:uppercase;line-height:1;max-width:760px}
+.hero-sub{color:rgba(255,255,255,.75);margin-top:14px;max-width:640px}
+.byline{color:rgba(255,255,255,.5);font-size:13px;margin-top:14px}
+.container{max-width:760px;margin:0 auto;padding:36px 40px 60px}
+h2{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;text-transform:uppercase;margin:34px 0 10px;line-height:1.1}
+p{margin:0 0 14px}
+ul{margin:0 0 16px 22px}
+li{margin:0 0 6px}
+.math{background:#fff;border:1px solid #DCE4EF;border-radius:12px;padding:6px 0;margin:10px 0 18px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:9px 18px;border-top:1px solid #EEF2F8;font-size:15.5px}
+.row:first-child{border-top:none}
+.row b{font-variant-numeric:tabular-nums}
+.row.total{background:#FFF6EC;font-weight:700}
+.row.total b{color:#C8701A;font-size:18px}
+.note{font-size:13.5px;color:#5A7291}
+.big{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:56px;color:#C8701A;line-height:1}
+.calc{background:#1B2E4B;color:#F4F7FC;border-radius:14px;padding:22px 22px 18px;margin:16px 0 22px}
+.calc h3{font-family:'Barlow Condensed',sans-serif;font-size:24px;text-transform:uppercase;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.calc label{font-size:13px;color:#C8D8E8;display:block}
+.calc input{width:100%;margin-top:4px;padding:9px 10px;border-radius:8px;border:1px solid #3D6B9E;background:#111E31;color:#fff;font-size:16px;font-family:inherit}
+.out{margin-top:16px;border-top:1px solid #2E4566;padding-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.out div{font-size:13px;color:#C8D8E8}
+.out b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:34px;color:#E08930;line-height:1.1}
+.cta{background:#fff;border:1px solid #F2D3AE;border-left:5px solid #C8701A;border-radius:12px;padding:20px 22px;margin:28px 0}
+.cta b{font-size:18px;display:block;margin-bottom:4px}
+.btn{display:inline-block;background:#C8701A;color:#fff;text-decoration:none;font-weight:700;border-radius:9px;padding:12px 20px;margin-top:10px}
+.about{font-size:14px;color:#5A7291;border-top:1px solid #DCE4EF;padding-top:16px;margin-top:30px}
+.footer{background:#1B2E4B;padding:24px 40px;text-align:center;font-size:13px;color:rgba(255,255,255,0.45)}
+.footer a{color:rgba(255,255,255,0.7);text-decoration:none}
+@media(max-width:600px){.hero{padding:32px 16px}.container{padding:28px 16px 48px}.nav{padding:16px}h1{font-size:36px}.grid,.out{grid-template-columns:1fr}.row{padding:9px 14px;font-size:14.5px}}
+</style>
+</head>
+<body>
+<div class="nav"><a class="nav-logo" href="/">COMPASS <span>BUSINESS SOLUTIONS</span></a><a class="nav-link" href="/trades?start=1&src=guide-material-markup">Free profit-leak check →</a></div>
+<div class="hero">
+  <div class="hero-label"><a href="/guides">Guides</a> · Pricing</div>
+  <h1>How much should you mark up materials?</h1>
+  <p class="hero-sub">The 2027 math behind your parts price, step by step, with a calculator so you can check your own markup in about a minute.</p>
+  <div class="byline">By Jen Voiselle · Compass Business Solutions</div>
+</div>
+<div class="container">
+  <p>Here's the short answer to how much to mark up materials: enough to cover what the part <b>really</b> cost you, not just what the receipt says, and then leave a margin on top. For a lot of shops that ends up well above the "cost plus 20%" they've been using for years.</p>
+  <p>Why? Because the receipt is only part of the cost. Sales tax, the trip to the supply house, returns and the stuff that ends up in the bottom of the truck all ride along with every part. In the example below, cost plus 20% doesn't make a profit at all. It breaks even. Almost to the penny.</p>
+
+  <h2>Step 1: Markup and margin are not the same number</h2>
+  <p>This trips up almost everyone, so let's get it out of the way. <b>Markup</b> is figured on what you paid. <b>Margin</b> is figured on what you charged.</p>
+  <p>A $100 part sold for $125 is a 25% markup. But the $25 you kept is only 20% of the $125 price, so your margin is 20%. Same $25, two different percentages.</p>
+  <div class="math">
+    <div class="row"><span>20% markup</span><b>16.7% margin</b></div>
+    <div class="row"><span>25% markup</span><b>20% margin</b></div>
+    <div class="row"><span>33.3% markup</span><b>25% margin</b></div>
+    <div class="row"><span>50% markup</span><b>33.3% margin</b></div>
+    <div class="row"><span>100% markup</span><b>50% margin</b></div>
+  </div>
+  <p>If you say "I want 25% on parts" and add 25%, you got 20%. That 5-point gap gets bigger on every job you do.</p>
+
+  <h2>Step 2: Find the real cost of the part</h2>
+  <p>Let's walk one job through. <span class="note">(Example numbers, rounded. Yours will be different, which is what the calculator is for.)</span></p>
+  <p>Your tech grabs $400 of parts at the supply house for one job. Here's what that $400 actually costs you:</p>
+  <div class="math">
+    <div class="row"><span>Supply house receipt</span><b>$400.00</b></div>
+    <div class="row"><span>Sales tax you paid at the counter (Massachusetts' rate is 6.25%, per the Mass. Department of Revenue)</span><b>$25.00</b></div>
+    <div class="row"><span>Supply run: 45 minutes of a tech who costs $47.48 per paid hour</span><b>$35.61</b></div>
+    <div class="row"><span>Returns, waste, wrong parts and shrinkage, 5% of the receipt</span><b>$20.00</b></div>
+    <div class="row total"><span>Real cost of the materials</span><b>$480.61</b></div>
+  </div>
+  <p class="note">Where does $47.48 come from? It's the example from <a href="/guides/real-cost-per-hour" style="color:#C8701A">what your tech really costs per hour</a>: wage plus taxes, comp, benefits, truck and tools. If you skipped that one, it's worth the five minutes.</p>
+  <p>And that list is the polite version. It doesn't count the part that fails in month eleven and gets replaced for free, or the boxes of fittings you bought "just in case" that are still on the shelf.</p>
+
+  <h2>Step 3: See what "cost plus 20%" really earns</h2>
+  <p>At cost plus 20% on the receipt, you'd charge the customer $480 for those parts.</p>
+  <div class="math">
+    <div class="row"><span>What you charged ($400 + 20%)</span><b>$480.00</b></div>
+    <div class="row"><span>Real cost of the materials</span><b>$480.61</b></div>
+    <div class="row total"><span>Profit on the materials</span><b>-$0.61</b></div>
+  </div>
+  <p>Sixty-one cents. In the wrong direction. You did the paperwork, carried the parts, took the risk on the warranty, and paid for the privilege.</p>
+  <p>Nobody notices this on one job. They notice it in December, when the year was busy and the bank account doesn't look like it.</p>
+
+  <h2>Step 4: How much to mark up materials, working back from your margin</h2>
+  <p>Flip it around. Decide what margin you want on materials, then work backward from the real cost. The formula is simple:</p>
+  <p><b>Price = real cost ÷ (1 − margin you want)</b></p>
+  <p>Say you want a 25% margin on materials:</p>
+  <div class="math">
+    <div class="row"><span>Real cost of the materials</span><b>$480.61</b></div>
+    <div class="row"><span>÷ (1 − 25%)</span><b>÷ 0.75</b></div>
+    <div class="row total"><span>Price to charge</span><b>$640.81</b></div>
+    <div class="row"><span>Profit on the materials</span><b>$160.20</b></div>
+    <div class="row"><span>Markup on the supply house receipt</span><b>60.2%</b></div>
+  </div>
+  <p>So in this example, to really keep 25 cents of every materials dollar, you'd need about 60% on top of the receipt. Not 20.</p>
+  <p class="big">60% vs 20%</p>
+  <p>That gap is the whole article. You don't have to land on 60% (your tax, trip time and waste might be lower), but you should know your own number instead of guessing it.</p>
+
+  <div class="calc" id="calc">
+    <h3>Check your own markup</h3>
+    <div class="grid">
+      <label>Supply house receipt ($)<input id="c_receipt" type="number" inputmode="decimal" value="400"/></label>
+      <label>Sales tax you paid (%)<input id="c_tax" type="number" inputmode="decimal" value="6.25"/></label>
+      <label>Supply run time (minutes)<input id="c_mins" type="number" inputmode="decimal" value="45"/></label>
+      <label>Tech's real cost per paid hour ($)<input id="c_hour" type="number" inputmode="decimal" value="47.48"/></label>
+      <label>Returns, waste &amp; shrinkage (%)<input id="c_waste" type="number" inputmode="decimal" value="5"/></label>
+      <label>Margin you want on materials (%)<input id="c_margin" type="number" inputmode="decimal" value="25"/></label>
+      <label>Markup you use today (%)<input id="c_now" type="number" inputmode="decimal" value="20"/></label>
+    </div>
+    <div class="out">
+      <div>Real cost of the materials<b id="o_cost">–</b></div>
+      <div>Price to charge<b id="o_price">–</b></div>
+      <div>Markup you need on the receipt<b id="o_markup">–</b></div>
+      <div>Profit at your markup today<b id="o_now">–</b></div>
+    </div>
+  </div>
+
+  <h2>What to do with your number</h2>
+  <ul>
+    <li><b>If you're near break even,</b> fix the markup on new quotes first. It's the easiest raise you'll ever give yourself, and the customer is paying for the trip to the supply house either way.</li>
+    <li><b>If the supply run line is big,</b> look at the process before the price. Stocking the trucks with the parts you use every week, or batching pickups, can cut that line way down.</li>
+    <li><b>If you use one flat markup on everything,</b> think about a sliding scale: a higher markup on small parts (where the trip cost is huge compared to the part) and a lower one on big-ticket equipment.</li>
+    <li><b>If you don't know your waste and returns number,</b> track it for one month. Count the returns you never made and the parts that didn't get billed. Most people are surprised.</li>
+  </ul>
+  <p>One more thing: you don't have to show your markup on the invoice. Plenty of shops price the whole job as one number. What matters is that the number you quote has the real cost of the materials baked in.</p>
+
+  <div class="cta">
+    <b>Materials are one leak. There are usually a few more.</b>
+    The free profit leak check takes about 5 minutes and shows your top 3 leaks with a dollar amount on each one, using your own numbers. No card.
+    <br/><a class="btn" href="/trades?start=1&src=guide-material-markup">Find my top 3 leaks →</a>
+  </div>
+
+  <h2>Questions owners ask</h2>
+  <p><b>What's the difference between markup and margin?</b><br/>Markup is figured on what you paid. Margin is figured on what you charged. A part that costs $100 and sells for $125 has a 25% markup but only a 20% margin, because the $25 you kept is 20% of the $125 price.</p>
+  <p><b>What markup do I need for a 25% margin?</b><br/>About 33.3%. To turn any margin into a markup, divide the margin by what's left: 25% ÷ 75% = 33.3%. For a 30% margin it's 30% ÷ 70% = 42.9%. That's markup on your real cost, not just the supply house receipt.</p>
+  <p><b>Is it fair to mark up materials?</b><br/>Yes. Markup isn't a tip on the part. It pays for the sales tax you paid, the trip to get it, returns, waste and the warranty when a part fails. Charging the receipt price means you're paying for all of that yourself.</p>
+
+  <p class="about">Jen Voiselle grew up in Marshfield and spent 23 years in Business Technology Operations in corporate America. She started Compass Business Solutions to help trades and service businesses keep more of what they earn. <a href="/go/call" style="color:#C8701A">Book a free 20-minute call</a>.</p>
+</div>
+<div class="footer">Compass Business Solutions · <a href="/guides">More guides</a> · <a href="/terms-and-conditions.html">Terms</a> · <a href="/privacy-policy.html">Privacy</a></div>
+<script>
+(function(){
+  var ids=['receipt','tax','mins','hour','waste','margin','now'];
+  function v(k){var n=parseFloat(document.getElementById('c_'+k).value);return isNaN(n)?0:n;}
+  function money(n){return (n<0?'-$':'$')+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function calc(){
+    var r=v('receipt');
+    var cost=r*(1+v('tax')/100)+(v('mins')/60)*v('hour')+r*v('waste')/100;
+    var m=Math.min(Math.max(v('margin'),0),95)/100, price=cost/(1-m);
+    var need=r>0?(price/r-1)*100:0;
+    var now=r*(1+v('now')/100)-cost;
+    document.getElementById('o_cost').textContent=money(cost);
+    document.getElementById('o_price').textContent=money(price);
+    document.getElementById('o_markup').textContent=need.toFixed(1)+'%';
+    document.getElementById('o_now').textContent=money(now);
+  }
+  ids.forEach(function(k){document.getElementById('c_'+k).addEventListener('input',calc);});
+  calc();
+})();
+</script>
+<script src="/track.js"></script>
+</body>
+</html>
